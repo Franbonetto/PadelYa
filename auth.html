@@ -1,0 +1,1536 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PadelYa - Acceder</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    /* ── AUTH-SPECIFIC STYLES ── */
+    body {
+      background: var(--color-bg-secondary);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 1.5rem 1rem 3rem;
+    }
+
+    .back-link {
+      align-self: flex-start;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      color: var(--color-gray);
+      text-decoration: none;
+      font-size: 0.875rem;
+      margin-bottom: 1.25rem;
+      transition: color 0.2s;
+    }
+    .back-link:hover { color: var(--color-accent); }
+
+    .auth-container {
+      background: var(--color-white);
+      border-radius: 16px;
+      box-shadow: 0 4px 24px rgba(27,79,114,0.10);
+      padding: 2rem 2rem 2.5rem;
+      width: 100%;
+      max-width: 420px;
+    }
+
+    /* Logo */
+    .logo {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 1.75rem;
+      text-decoration: none;
+    }
+    .logo-text {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--color-accent);
+      letter-spacing: -0.5px;
+    }
+
+    /* Tabs */
+    .tabs {
+      display: flex;
+      border-bottom: 2px solid var(--color-border);
+      margin-bottom: 1.75rem;
+      gap: 0;
+    }
+    .tab-btn {
+      flex: 1;
+      background: none;
+      border: none;
+      padding: 0.65rem 0;
+      font-size: 0.9375rem;
+      font-weight: 600;
+      color: var(--color-gray);
+      cursor: pointer;
+      border-bottom: 2.5px solid transparent;
+      margin-bottom: -2px;
+      transition: color 0.2s, border-color 0.2s;
+      font-family: inherit;
+    }
+    .tab-btn.active {
+      color: var(--color-accent);
+      border-bottom-color: var(--color-accent);
+    }
+    .tab-btn:hover:not(.active) { color: var(--color-primary); }
+
+    /* Panels */
+    .panel { display: none; }
+    .panel.active { display: block; }
+
+    /* Form elements */
+    .form-group {
+      margin-bottom: 1rem;
+    }
+    .form-group label {
+      display: block;
+      font-size: 0.8125rem;
+      font-weight: 600;
+      color: var(--color-dark);
+      margin-bottom: 0.35rem;
+    }
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 0.7rem 0.875rem;
+      border: 1.5px solid var(--color-border);
+      border-radius: 8px;
+      font-size: 0.9375rem;
+      font-family: inherit;
+      color: var(--color-dark);
+      background: var(--color-white);
+      transition: border-color 0.2s, box-shadow 0.2s;
+      outline: none;
+    }
+    .form-group input:focus,
+    .form-group textarea:focus {
+      border-color: var(--color-accent);
+      box-shadow: 0 0 0 3px rgba(46,134,193,0.12);
+    }
+    .form-group input::placeholder,
+    .form-group textarea::placeholder { color: #bbb; }
+
+    /* Password wrapper */
+    .input-password-wrap {
+      position: relative;
+    }
+    .input-password-wrap input {
+      padding-right: 2.75rem;
+    }
+    .toggle-password {
+      position: absolute;
+      right: 0.75rem;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--color-gray);
+      padding: 0;
+      display: flex;
+      align-items: center;
+    }
+    .toggle-password:hover { color: var(--color-accent); }
+
+    /* Forgot password */
+    .forgot-link {
+      display: block;
+      text-align: right;
+      font-size: 0.8125rem;
+      color: var(--color-accent);
+      text-decoration: none;
+      margin-top: 0.35rem;
+    }
+    .forgot-link:hover { text-decoration: underline; }
+
+    /* Divider */
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin: 1.25rem 0;
+      color: var(--color-gray);
+      font-size: 0.8125rem;
+    }
+    .divider::before,
+    .divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--color-border);
+    }
+
+    /* Bottom auth link */
+    .auth-bottom-link {
+      text-align: center;
+      margin-top: 1.25rem;
+      font-size: 0.875rem;
+      color: var(--color-gray);
+    }
+    .auth-bottom-link a {
+      color: var(--color-accent);
+      font-weight: 600;
+      text-decoration: none;
+    }
+    .auth-bottom-link a:hover { text-decoration: underline; }
+
+    /* Role cards */
+    .role-cards {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      margin: 1.25rem 0 1.5rem;
+    }
+    .role-card {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      padding: 1rem 1.1rem;
+      border: 2px solid var(--color-border);
+      border-radius: 12px;
+      cursor: pointer;
+      transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+      background: var(--color-white);
+      text-align: left;
+      width: 100%;
+      box-sizing: border-box;
+      font-family: inherit;
+    }
+    .role-card:hover {
+      border-color: var(--color-light-blue);
+      background: #f0f8ff;
+    }
+    .role-card.selected {
+      border-color: var(--color-accent);
+      background: #EBF5FB;
+      box-shadow: 0 0 0 3px rgba(46,134,193,0.12);
+    }
+    .role-card-icon {
+      flex-shrink: 0;
+      width: 40px;
+      height: 40px;
+      background: var(--color-light-blue);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .role-card.selected .role-card-icon { background: var(--color-accent); }
+    .role-card.selected .role-card-icon svg { color: white; }
+    .role-card-body { flex: 1; }
+    .role-card-title {
+      font-size: 0.9375rem;
+      font-weight: 700;
+      color: var(--color-dark);
+      margin-bottom: 0.2rem;
+    }
+    .role-card-desc {
+      font-size: 0.8rem;
+      color: var(--color-gray);
+      line-height: 1.4;
+    }
+    .role-card-badge {
+      display: inline-block;
+      margin-top: 0.4rem;
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 0.2rem 0.55rem;
+      border-radius: 99px;
+      background: #D5F5E3;
+      color: #1E8449;
+      letter-spacing: 0.02em;
+    }
+    .role-card-badge.blue {
+      background: #EBF5FB;
+      color: var(--color-accent);
+    }
+
+    /* Chips */
+    .chip-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 0.35rem;
+    }
+    .chip {
+      padding: 0.35rem 0.85rem;
+      border: 1.5px solid var(--color-border);
+      border-radius: 99px;
+      font-size: 0.8125rem;
+      font-weight: 500;
+      color: var(--color-dark);
+      cursor: pointer;
+      background: var(--color-white);
+      transition: border-color 0.18s, background 0.18s, color 0.18s;
+      font-family: inherit;
+    }
+    .chip:hover { border-color: var(--color-accent); color: var(--color-accent); }
+    .chip.selected {
+      background: var(--color-accent);
+      border-color: var(--color-accent);
+      color: var(--color-white);
+    }
+    .reg-cat-chip {
+      padding: 8px 16px;
+      border: 1.5px solid #E2E8F0;
+      border-radius: 50px;
+      font-size: 0.8125rem;
+      font-weight: 600;
+      color: #374151;
+      background: #fff;
+      cursor: pointer;
+      font-family: inherit;
+      transition: background 0.15s, border-color 0.15s, color 0.15s;
+    }
+    .reg-cat-chip:hover { border-color: #2E86C1; color: #2E86C1; }
+    .reg-cat-chip.selected { background: #2E86C1; border-color: #2E86C1; color: #fff; }
+
+    /* Prefix input */
+    .input-prefix-wrap {
+      display: flex;
+      align-items: center;
+      border: 1.5px solid var(--color-border);
+      border-radius: 8px;
+      overflow: hidden;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .input-prefix-wrap:focus-within {
+      border-color: var(--color-accent);
+      box-shadow: 0 0 0 3px rgba(46,134,193,0.12);
+    }
+    .input-prefix {
+      padding: 0.7rem 0.75rem;
+      font-size: 0.9375rem;
+      color: var(--color-gray);
+      background: var(--color-bg-secondary);
+      border-right: 1.5px solid var(--color-border);
+      font-weight: 600;
+    }
+    .input-prefix-wrap input {
+      border: none !important;
+      border-radius: 0 !important;
+      box-shadow: none !important;
+    }
+    .input-prefix-wrap input:focus { box-shadow: none !important; }
+
+    /* Checkbox */
+    .form-check {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.6rem;
+      margin: 0.75rem 0 1rem;
+      font-size: 0.8125rem;
+      color: var(--color-gray);
+      line-height: 1.4;
+    }
+    .form-check input[type="checkbox"] {
+      width: 16px;
+      height: 16px;
+      margin-top: 2px;
+      flex-shrink: 0;
+      accent-color: var(--color-accent);
+    }
+    .form-check a { color: var(--color-accent); text-decoration: none; }
+    .form-check a:hover { text-decoration: underline; }
+
+    /* Info box */
+    .info-box {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.65rem;
+      background: #EBF5FB;
+      border: 1.5px solid var(--color-light-blue);
+      border-radius: 10px;
+      padding: 0.85rem 1rem;
+      font-size: 0.8125rem;
+      color: var(--color-primary);
+      line-height: 1.5;
+      margin-top: 1rem;
+    }
+    .info-box svg { flex-shrink: 0; margin-top: 1px; }
+
+    /* Step back */
+    .step-back {
+      background: none;
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      color: var(--color-gray);
+      font-size: 0.875rem;
+      font-family: inherit;
+      margin-bottom: 1rem;
+      padding: 0;
+      transition: color 0.2s;
+    }
+    .step-back:hover { color: var(--color-accent); }
+
+    .section-title {
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: var(--color-dark);
+      margin: 0 0 0.25rem;
+    }
+    .section-subtitle {
+      font-size: 0.875rem;
+      color: var(--color-gray);
+      margin-bottom: 1.25rem;
+    }
+
+    .textarea-count {
+      text-align: right;
+      font-size: 0.75rem;
+      color: var(--color-gray);
+      margin-top: 0.25rem;
+    }
+
+    /* Buttons */
+    .btn-primary {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      width: 100%;
+      padding: 0.8rem 1rem;
+      background: var(--color-accent);
+      color: var(--color-white);
+      border: none;
+      border-radius: 10px;
+      font-size: 0.9375rem;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+      transition: background 0.2s, transform 0.1s;
+      text-decoration: none;
+      box-sizing: border-box;
+    }
+    .btn-primary:hover:not(:disabled) { background: var(--color-primary); }
+    .btn-primary:active:not(:disabled) { transform: scale(0.98); }
+    .btn-primary:disabled {
+      background: var(--color-light-blue);
+      cursor: not-allowed;
+      opacity: 0.7;
+    }
+
+    .btn-outline {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      width: 100%;
+      padding: 0.8rem 1rem;
+      background: var(--color-white);
+      color: var(--color-dark);
+      border: 1.5px solid var(--color-border);
+      border-radius: 10px;
+      font-size: 0.9375rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      transition: border-color 0.2s, background 0.2s;
+      text-decoration: none;
+      box-sizing: border-box;
+    }
+    .btn-outline:hover {
+      border-color: var(--color-accent);
+      background: #f0f8ff;
+    }
+
+    /* Helpers */
+    .mt-1 { margin-top: 0.75rem; }
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0 0.75rem;
+    }
+    @media (max-width: 400px) {
+      .two-col { grid-template-columns: 1fr; gap: 0; }
+    }
+
+    /* Registration progress bar */
+    .reg-step-circle {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      font-weight: 700;
+      flex-shrink: 0;
+      border: 2px solid var(--color-border);
+      background: var(--color-white);
+      color: var(--color-gray);
+      transition: all 0.3s;
+    }
+    .reg-step-circle.active { background: var(--color-accent); border-color: var(--color-accent); color: #fff; }
+    .reg-step-circle.done { background: var(--color-primary); border-color: var(--color-primary); color: #fff; }
+    .reg-step-line {
+      flex: 1;
+      height: 2px;
+      background: var(--color-border);
+      transition: background 0.3s;
+    }
+    .reg-step-line.done { background: var(--color-primary); }
+
+    /* Social login buttons */
+    .btn-social {
+      display: flex; align-items: center; justify-content: center; gap: 0.625rem;
+      width: 100%; padding: 0.8rem 1rem;
+      background: var(--color-white); color: var(--color-dark);
+      border: 1.5px solid var(--color-border); border-radius: 10px;
+      font-size: 0.9375rem; font-weight: 600; cursor: pointer; font-family: inherit;
+      transition: border-color 0.2s, background 0.2s; margin-bottom: 0.625rem; box-sizing: border-box;
+    }
+    .btn-social:hover { border-color: var(--color-accent); background: #f0f8ff; }
+    .btn-social-apple { background: #000; color: #fff; border-color: #000; margin-bottom: 0; }
+    .btn-social-apple:hover { background: #1a1a1a; }
+
+    /* ── DARK MODE ── */
+    :root {
+      --color-primary: #178BFF;
+      --color-accent: #178BFF;
+      --color-light-blue: rgba(23,139,255,0.3);
+      --color-white: #0D1E3A;
+      --color-bg-secondary: #071224;
+      --color-gray: #A8B3C7;
+      --color-dark: #F5F7FA;
+      --color-border: rgba(255,255,255,0.08);
+    }
+    body { background: #071224; color: #F5F7FA; }
+    .auth-container {
+      background: #0D1E3A;
+      border: 1px solid rgba(255,255,255,0.08);
+      box-shadow: 0 4px 24px rgba(0,0,0,0.5);
+    }
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      background: rgba(255,255,255,0.05);
+      color: #F5F7FA;
+      border-color: rgba(255,255,255,0.08);
+    }
+    .form-group input::placeholder,
+    .form-group textarea::placeholder { color: #6B7A8F; }
+    .input-prefix { background: rgba(255,255,255,0.03); border-right-color: rgba(255,255,255,0.08); }
+    .role-card { background: rgba(255,255,255,0.03); }
+    .role-card:hover { background: rgba(23,139,255,0.08); border-color: rgba(23,139,255,0.3); }
+    .role-card.selected { background: rgba(23,139,255,0.15); box-shadow: 0 0 0 3px rgba(23,139,255,0.2); }
+    .info-box { background: rgba(23,139,255,0.1); border-color: rgba(23,139,255,0.3); color: #A8B3C7; }
+    .btn-outline { background: rgba(255,255,255,0.03); color: #F5F7FA; border-color: rgba(255,255,255,0.08); }
+    .btn-outline:hover { background: rgba(23,139,255,0.1); border-color: #178BFF; color: #F5F7FA; }
+    .btn-social { background: rgba(255,255,255,0.05); color: #F5F7FA; border-color: rgba(255,255,255,0.08); }
+    .btn-social:hover { background: rgba(23,139,255,0.1); border-color: #178BFF; }
+    .btn-social-apple { background: #111; border-color: #333; }
+    .btn-social-apple:hover { background: #1a1a1a; }
+    .reg-cat-chip { background: rgba(255,255,255,0.05); color: #F5F7FA; border-color: rgba(255,255,255,0.08); }
+    .reg-cat-chip:hover { border-color: #178BFF; color: #178BFF; }
+    .reg-cat-chip.selected { background: #178BFF; border-color: #178BFF; color: #fff; }
+    .role-card-badge { background: rgba(39,174,96,0.15); color: #27AE60; }
+    .role-card-badge.blue { background: rgba(23,139,255,0.15); color: #178BFF; }
+    .chip { background: rgba(255,255,255,0.05); color: #F5F7FA; border-color: rgba(255,255,255,0.08); }
+    .chip.selected { background: #178BFF; border-color: #178BFF; }
+    .reg-step-circle { background: rgba(255,255,255,0.05); color: #A8B3C7; border-color: rgba(255,255,255,0.08); }
+    .reg-step-circle.active { background: #178BFF; border-color: #178BFF; color: #fff; }
+    .reg-step-circle.done { background: #0D6EFD; border-color: #0D6EFD; color: #fff; }
+    .reg-step-line { background: rgba(255,255,255,0.08); }
+    .reg-step-line.done { background: #178BFF; }
+  </style>
+</head>
+<body>
+
+  <a href="index.html" class="back-link">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+    Volver al inicio
+  </a>
+
+  <div class="auth-container">
+
+    <!-- Logo -->
+    <a href="index.html" class="logo">
+      <img src="assets/logo-padelya.png" alt="PadelYa" style="height:40px;object-fit:contain;">
+    </a>
+
+    <!-- Tabs -->
+    <div class="tabs">
+      <button class="tab-btn active" id="tab-login" onclick="switchTab('login')">Iniciar sesión</button>
+      <button class="tab-btn" id="tab-register" onclick="switchTab('register')">Registrarme</button>
+    </div>
+
+    <!-- ======================== LOGIN PANEL ======================== -->
+    <div class="panel active" id="panel-login">
+      <h2 class="section-title">Bienvenido de vuelta</h2>
+      <p class="section-subtitle">Ingresá a tu cuenta de PadelYa.</p>
+
+      <form id="login-form" onsubmit="handleLogin(event)">
+        <div class="form-group">
+          <label for="login-email">Email</label>
+          <input type="email" id="login-email" placeholder="vos@ejemplo.com" required />
+        </div>
+
+        <div class="form-group">
+          <label for="login-password">Contraseña</label>
+          <div class="input-password-wrap">
+            <input type="password" id="login-password" placeholder="Tu contraseña" required />
+            <button type="button" class="toggle-password" onclick="togglePassword('login-password', this)" aria-label="Mostrar/ocultar contraseña">
+              <svg id="eye-login" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            </button>
+          </div>
+          <a href="#" class="forgot-link">¿Olvidaste tu contraseña?</a>
+        </div>
+
+        <button type="submit" class="btn-primary">Iniciar sesión</button>
+      </form>
+
+      <div class="divider">o</div>
+
+      <button type="button" class="btn-outline" onclick="loginAs('jugador')">
+        <svg width="18" height="18" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+          <path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9.1 3.2l6.8-6.8C35.7 2.3 30.2 0 24 0 14.8 0 6.9 5.4 3 13.3l7.9 6.1C12.7 13.1 17.9 9.5 24 9.5z"/>
+          <path fill="#34A853" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v8.5h12.7c-.6 3-2.3 5.5-4.8 7.2l7.6 5.9C43.8 37.5 46.5 31.5 46.5 24.5z"/>
+          <path fill="#4A90D9" d="M10.9 28.6C10.3 26.9 10 25.1 10 23.2s.3-3.7.9-5.4L3 11.7C1.1 15.3 0 19.4 0 23.8c0 4.3 1.1 8.4 3 12l7.9-7.2z"/>
+          <path fill="#FBBC05" d="M24 48c6.2 0 11.4-2 15.2-5.5l-7.6-5.9c-2.1 1.4-4.7 2.2-7.6 2.2-6.1 0-11.3-3.6-13.1-8.7l-7.9 6.1C6.9 43 14.8 48 24 48z"/>
+        </svg>
+        Continuar con Google
+      </button>
+
+      <p class="auth-bottom-link">
+        ¿No tenés cuenta? <a href="#" onclick="switchTab('register'); return false;">Registrate</a>
+      </p>
+    </div>
+
+    <!-- ======================== REGISTER PANEL ======================== -->
+    <div class="panel" id="panel-register">
+
+      <!-- STEP 1: Role selection -->
+      <div id="step-1">
+        <h2 class="section-title">¿Cómo querés usar PadelYa?</h2>
+        <p class="section-subtitle">Elegí tu rol para continuar.</p>
+
+        <div class="role-cards">
+
+          <button type="button" class="role-card" id="card-jugador" onclick="selectRole('jugador')">
+            <div class="role-card-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2E86C1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="10" cy="5" r="3"/>
+                <path d="M10 11c-4 0-7 2-7 4.5V17h14v-1.5C17 13 14 11 10 11z"/>
+                <line x1="17" y1="8" x2="22" y2="13"/>
+                <line x1="19.5" y1="10.5" x2="17.5" y2="8.5"/>
+                <ellipse cx="19.5" cy="7.5" rx="2.5" ry="1.5" transform="rotate(45 19.5 7.5)" stroke-width="1.8"/>
+              </svg>
+            </div>
+            <div class="role-card-body">
+              <div class="role-card-title">Jugador</div>
+              <div class="role-card-desc">Buscá partido, subí de categoría y seguí tu progreso.</div>
+              <span class="role-card-badge">Acceso inmediato</span>
+            </div>
+          </button>
+
+          <button type="button" class="role-card" id="card-profesor" onclick="selectRole('profesor')">
+            <div class="role-card-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2E86C1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="8" cy="5" r="2.5"/>
+                <path d="M8 10c-3.5 0-6 1.8-6 4V15h12v-1c0-2.2-2.5-4-6-4z"/>
+                <line x1="16" y1="4" x2="20" y2="4"/>
+                <line x1="16" y1="8" x2="20" y2="8"/>
+                <line x1="16" y1="12" x2="20" y2="12"/>
+                <rect x="14" y="2" width="8" height="12" rx="1" stroke-width="1.5"/>
+              </svg>
+            </div>
+            <div class="role-card-body">
+              <div class="role-card-title">Profesor</div>
+              <div class="role-card-desc">Llegá a cientos de jugadores que buscan mejorar.</div>
+              <span class="role-card-badge">2 meses gratis</span>
+            </div>
+          </button>
+
+        </div>
+
+        <button type="button" class="btn-primary" id="btn-continue" disabled onclick="goToStep2()">Continuar</button>
+      </div>
+
+      <!-- STEP 2: Forms -->
+      <div id="step-2" style="display:none;">
+
+        <button type="button" class="step-back" onclick="goToStep1()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+          Volver
+        </button>
+
+        <!-- ── JUGADOR FORM — 2 sub-steps ── -->
+        <div id="form-jugador" style="display:none;">
+
+          <!-- Progress bar -->
+          <div style="margin-bottom:1.5rem;">
+            <div style="display:flex;align-items:center;gap:0;margin-bottom:0.5rem;" id="reg-progress-bar">
+              <div class="reg-step-circle active" id="rsc-1">1</div>
+              <div class="reg-step-line" id="rsl-1"></div>
+              <div class="reg-step-circle" id="rsc-2">2</div>
+            </div>
+            <div style="display:flex;justify-content:space-between;font-size:0.7rem;color:var(--color-gray);font-weight:600;">
+              <span>Acceso</span><span style="text-align:right;">Tu perfil</span>
+            </div>
+          </div>
+
+          <!-- ── Sub-step 1: Entrada rápida ── -->
+          <div id="reg-step-1">
+            <h2 class="section-title">Empezá en 2 minutos</h2>
+            <p class="section-subtitle">Usá tu cuenta de Google o registrate con email.</p>
+
+            <button type="button" class="btn-social" onclick="loginAs('jugador')">
+              <svg width="18" height="18" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+                <path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9.1 3.2l6.8-6.8C35.7 2.3 30.2 0 24 0 14.8 0 6.9 5.4 3 13.3l7.9 6.1C12.7 13.1 17.9 9.5 24 9.5z"/>
+                <path fill="#34A853" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v8.5h12.7c-.6 3-2.3 5.5-4.8 7.2l7.6 5.9C43.8 37.5 46.5 31.5 46.5 24.5z"/>
+                <path fill="#4A90D9" d="M10.9 28.6C10.3 26.9 10 25.1 10 23.2s.3-3.7.9-5.4L3 11.7C1.1 15.3 0 19.4 0 23.8c0 4.3 1.1 8.4 3 12l7.9-7.2z"/>
+                <path fill="#FBBC05" d="M24 48c6.2 0 11.4-2 15.2-5.5l-7.6-5.9c-2.1 1.4-4.7 2.2-7.6 2.2-6.1 0-11.3-3.6-13.1-8.7l-7.9 6.1C6.9 43 14.8 48 24 48z"/>
+              </svg>
+              Continuar con Google
+            </button>
+            <button type="button" class="btn-social btn-social-apple" onclick="loginAs('jugador')">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+              Continuar con Apple
+            </button>
+
+            <div class="divider">o</div>
+
+            <div class="form-group">
+              <label for="j-email">Email</label>
+              <input type="email" id="j-email" placeholder="vos@ejemplo.com" required autocomplete="email" />
+              <div class="field-error" id="err-email" style="display:none;color:#C0392B;font-size:0.75rem;margin-top:0.25rem;">Ingresá un email válido.</div>
+            </div>
+
+            <div class="form-group">
+              <label for="j-password">Contraseña</label>
+              <div class="input-password-wrap">
+                <input type="password" id="j-password" placeholder="Mínimo 8 caracteres" required minlength="8" autocomplete="new-password" />
+                <button type="button" class="toggle-password" onclick="togglePassword('j-password', this)" aria-label="Mostrar/ocultar contraseña">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                </button>
+              </div>
+              <div class="field-error" id="err-password" style="display:none;color:#C0392B;font-size:0.75rem;margin-top:0.25rem;">La contraseña debe tener al menos 8 caracteres.</div>
+            </div>
+
+            <div class="form-group" style="margin-top:0.25rem;">
+              <label for="j-celular">Celular <span style="font-size:0.75rem;color:var(--color-gray);font-weight:400;">(opcional)</span></label>
+              <div class="input-prefix-wrap">
+                <span class="input-prefix">+54 9</span>
+                <input type="tel" id="j-celular" placeholder="2284-XXXXXX" maxlength="12" />
+              </div>
+            </div>
+
+            <div class="form-group" style="margin-top:0.25rem;">
+              <label>Sexo</label>
+              <div style="display:inline-flex;gap:10px;width:100%;">
+                <button type="button" id="chip-sexo-m"
+                  onclick="selectSexo('masculino')"
+                  style="flex:1;padding:12px;text-align:center;border:1px solid rgba(255,255,255,0.1);border-radius:10px;background:rgba(255,255,255,0.04);color:#A8B3C7;font-size:14px;cursor:pointer;font-family:inherit;transition:all 0.15s;">
+                  Masculino
+                </button>
+                <button type="button" id="chip-sexo-f"
+                  onclick="selectSexo('femenino')"
+                  style="flex:1;padding:12px;text-align:center;border:1px solid rgba(255,255,255,0.1);border-radius:10px;background:rgba(255,255,255,0.04);color:#A8B3C7;font-size:14px;cursor:pointer;font-family:inherit;transition:all 0.15s;">
+                  Femenino
+                </button>
+              </div>
+              <div class="field-error" id="err-sexo" style="display:none;color:#C0392B;font-size:0.75rem;margin-top:0.25rem;">Seleccioná tu sexo para continuar.</div>
+            </div>
+
+            <button type="button" class="btn-primary" style="margin-top:0.5rem;" onclick="irAlPaso2()">Continuar</button>
+          </div>
+
+          <!-- ── Sub-step 2: Nombre ── -->
+          <div id="reg-step-2" style="display:none;">
+            <button type="button" class="step-back" onclick="showRegStep(1)">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+              Volver
+            </button>
+
+            <h2 class="section-title">Un último dato</h2>
+            <p class="section-subtitle">¿Cómo te llamás?</p>
+
+            <div class="form-group">
+              <label for="j-nombre-completo">Nombre y apellido</label>
+              <input type="text" id="j-nombre-completo" placeholder="Ej: Martín Rodríguez" required autocomplete="name" />
+              <div class="field-error" id="err-nombre" style="display:none;color:#C0392B;font-size:0.75rem;margin-top:0.25rem;">Ingresá tu nombre completo.</div>
+            </div>
+
+            <div class="form-group" style="margin-top:1.25rem;">
+              <label style="font-size:0.8125rem;font-weight:600;color:#374151;">¿En qué categoría jugás?</label>
+              <div id="chips-reg-cat" style="display:flex;flex-wrap:wrap;gap:0.5rem;margin-top:0.5rem;">
+                <button type="button" class="reg-cat-chip" onclick="selectRegCat(this)">Principiante</button>
+                <button type="button" class="reg-cat-chip" onclick="selectRegCat(this)">7ª</button>
+                <button type="button" class="reg-cat-chip" onclick="selectRegCat(this)">6ª</button>
+                <button type="button" class="reg-cat-chip" onclick="selectRegCat(this)">5ª</button>
+                <button type="button" class="reg-cat-chip" onclick="selectRegCat(this)">4ª</button>
+                <button type="button" class="reg-cat-chip" onclick="selectRegCat(this)">3ª</button>
+              </div>
+              <p style="font-size:0.75rem;color:#6B7280;margin:0.5rem 0 0;line-height:1.4;">Tu categoría es orientativa hasta que la verifiques con ACOP.</p>
+            </div>
+
+            <label class="form-check" style="margin-top:1.25rem;">
+              <input type="checkbox" id="j-terms" required />
+              Confirmo que estos son mis datos reales y acepto los <a href="#">términos y condiciones</a> de PadelYa.
+            </label>
+            <div class="field-error" id="err-terms" style="display:none;color:#C0392B;font-size:0.75rem;margin-top:0.25rem;">Debés aceptar los términos para continuar.</div>
+
+            <button type="button" class="btn-primary" style="margin-top:1.25rem;background:#1B4F72;" onclick="createAccount()">Quiero jugar hoy</button>
+          </div>
+
+        </div>
+
+        <!-- ── PROFESOR FORM — Paso 1 de 3: Datos básicos ── -->
+        <div id="form-profesor" style="display:none;">
+
+          <!-- Indicador de pasos -->
+          <div style="margin-bottom:1.5rem;">
+            <div style="display:flex;align-items:center;gap:0;margin-bottom:0.5rem;">
+              <div class="reg-step-circle active">1</div>
+              <div class="reg-step-line"></div>
+              <div class="reg-step-circle">2</div>
+              <div class="reg-step-line"></div>
+              <div class="reg-step-circle">3</div>
+            </div>
+            <div style="display:flex;justify-content:space-between;font-size:0.7rem;color:var(--color-gray);font-weight:600;">
+              <span>Datos básicos</span><span>Perfil</span><span>Membresía</span>
+            </div>
+          </div>
+
+          <h2 class="section-title">Tus datos básicos</h2>
+          <p class="section-subtitle">Paso 1 de 3 — El perfil completo va después.</p>
+
+          <div class="two-col">
+            <div class="form-group">
+              <label for="p-nombre">Nombre</label>
+              <input type="text" id="p-nombre" placeholder="Nombre" />
+            </div>
+            <div class="form-group">
+              <label for="p-apellido">Apellido</label>
+              <input type="text" id="p-apellido" placeholder="Apellido" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="p-email">Email</label>
+            <input type="email" id="p-email" placeholder="vos@ejemplo.com" />
+          </div>
+          <div class="form-group">
+            <label for="p-password">Contraseña</label>
+            <div class="input-password-wrap">
+              <input type="password" id="p-password" placeholder="Mínimo 8 caracteres" minlength="8" />
+              <button type="button" class="toggle-password" onclick="togglePassword('p-password', this)" aria-label="Mostrar/ocultar contraseña">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+              </button>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="p-tel">Teléfono de contacto</label>
+            <input type="tel" id="p-tel" placeholder="+54 9 2284 000000" />
+          </div>
+          <label class="form-check">
+            <input type="checkbox" id="p-terms" />
+            Acepto los <a href="#">términos y condiciones</a> de PadelYa.
+          </label>
+          <button type="button" class="btn-primary" style="margin-top:0.5rem;" onclick="goToProfesorStep2()">Continuar</button>
+
+        </div>
+
+        <!-- ── PROFESOR Paso 2 de 3: Perfil profesional ── -->
+        <div id="prof-step-2" style="display:none;">
+
+          <button type="button" class="step-back" onclick="goToProfesorStep1()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+            Volver
+          </button>
+
+          <!-- Indicador de pasos -->
+          <div style="margin-bottom:1.5rem;">
+            <div style="display:flex;align-items:center;gap:0;margin-bottom:0.5rem;">
+              <div class="reg-step-circle done">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              </div>
+              <div class="reg-step-line done"></div>
+              <div class="reg-step-circle active">2</div>
+              <div class="reg-step-line"></div>
+              <div class="reg-step-circle">3</div>
+            </div>
+            <div style="display:flex;justify-content:space-between;font-size:0.7rem;color:var(--color-gray);font-weight:600;">
+              <span>Datos básicos</span><span>Perfil</span><span>Membresía</span>
+            </div>
+          </div>
+
+          <h2 class="section-title">Tu perfil profesional</h2>
+          <p class="section-subtitle">Esta info la ven los jugadores que te buscan.</p>
+
+          <div class="form-group">
+            <label for="p-exp2">Años de experiencia</label>
+            <input type="number" id="p-exp2" placeholder="Ej: 5" min="0" max="50" />
+          </div>
+          <div class="form-group">
+            <label>Categorías que enseñás</label>
+            <div class="chip-group">
+              <button type="button" class="chip" onclick="selectChip(this,'p-cat2',true)">Principiante</button>
+              <button type="button" class="chip" onclick="selectChip(this,'p-cat2',true)">7ª</button>
+              <button type="button" class="chip" onclick="selectChip(this,'p-cat2',true)">6ª</button>
+              <button type="button" class="chip" onclick="selectChip(this,'p-cat2',true)">5ª</button>
+              <button type="button" class="chip" onclick="selectChip(this,'p-cat2',true)">4ª</button>
+              <button type="button" class="chip" onclick="selectChip(this,'p-cat2',true)">3ª</button>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Especialidades</label>
+            <div class="chip-group">
+              <button type="button" class="chip" onclick="selectChip(this,'p-esp2',true)">Menores</button>
+              <button type="button" class="chip" onclick="selectChip(this,'p-esp2',true)">Adultos</button>
+              <button type="button" class="chip" onclick="selectChip(this,'p-esp2',true)">Alto rendimiento</button>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="p-precio2">Precio por clase</label>
+            <div class="input-prefix-wrap">
+              <span class="input-prefix">$</span>
+              <input type="number" id="p-precio2" placeholder="5000" min="0" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="p-bio2">Bio corta</label>
+            <textarea id="p-bio2" rows="3" placeholder="Contá brevemente tu experiencia..." maxlength="200" oninput="updateCount(this,'p-bio2-count')"></textarea>
+            <div class="textarea-count"><span id="p-bio2-count">0</span> / 200</div>
+          </div>
+          <button type="button" class="btn-primary" onclick="goToProfesorStep3()">Continuar</button>
+
+        </div>
+
+        <!-- ── PROFESOR Paso 3 de 3: Paywall ── -->
+        <div id="prof-step-3" style="display:none;">
+
+          <button type="button" class="step-back" onclick="goToProfesorStep2From3()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+            Volver
+          </button>
+
+          <!-- Indicador de pasos -->
+          <div style="margin-bottom:1.5rem;">
+            <div style="display:flex;align-items:center;gap:0;margin-bottom:0.5rem;">
+              <div class="reg-step-circle done">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              </div>
+              <div class="reg-step-line done"></div>
+              <div class="reg-step-circle done">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              </div>
+              <div class="reg-step-line done"></div>
+              <div class="reg-step-circle active">3</div>
+            </div>
+            <div style="display:flex;justify-content:space-between;font-size:0.7rem;color:var(--color-gray);font-weight:600;">
+              <span>Datos básicos</span><span>Perfil</span><span>Membresía</span>
+            </div>
+          </div>
+
+          <h2 class="section-title" style="font-size:1.25rem;">Activá tu membresía para empezar</h2>
+          <p class="section-subtitle">Tus primeros 2 meses son gratis. No se te cobrará nada hasta el día <span class="fecha-libre" style="font-weight:700;color:var(--color-primary);"></span>.</p>
+
+          <!-- Beneficios -->
+          <div style="background:var(--color-bg-secondary);border-radius:12px;padding:1rem 1.1rem;margin-bottom:1.25rem;">
+            <div style="display:flex;align-items:flex-start;gap:0.6rem;margin-bottom:0.6rem;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1E8449" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;margin-top:1px;"><circle cx="12" cy="12" r="10"/><polyline points="9 12 11 14 15 10"/></svg>
+              <span style="font-size:0.875rem;color:var(--color-dark);">Aparecés frente a cientos de jugadores en Olavarría</span>
+            </div>
+            <div style="display:flex;align-items:flex-start;gap:0.6rem;margin-bottom:0.6rem;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1E8449" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;margin-top:1px;"><circle cx="12" cy="12" r="10"/><polyline points="9 12 11 14 15 10"/></svg>
+              <span style="font-size:0.875rem;color:var(--color-dark);">Perfil profesional verificado</span>
+            </div>
+            <div style="display:flex;align-items:flex-start;gap:0.6rem;margin-bottom:0.6rem;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1E8449" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;margin-top:1px;"><circle cx="12" cy="12" r="10"/><polyline points="9 12 11 14 15 10"/></svg>
+              <span style="font-size:0.875rem;color:var(--color-dark);">Reseñas de alumnos</span>
+            </div>
+            <div style="display:flex;align-items:flex-start;gap:0.6rem;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1E8449" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;margin-top:1px;"><circle cx="12" cy="12" r="10"/><polyline points="9 12 11 14 15 10"/></svg>
+              <span style="font-size:0.875rem;color:var(--color-dark);">Panel de estadísticas de visibilidad</span>
+            </div>
+          </div>
+
+          <!-- Separador método de pago -->
+          <div class="divider" style="margin:1.25rem 0 1rem;">Método de pago (demo)</div>
+
+          <!-- Tipo de tarjeta -->
+          <div class="form-group">
+            <label>Tipo de tarjeta</label>
+            <div style="display:flex;gap:0.5rem;margin-top:0.35rem;">
+              <button type="button" id="btn-credito" class="chip selected" style="flex:1;text-align:center;" onclick="selectTipoTarjeta('credito')">Crédito</button>
+              <button type="button" id="btn-debito" class="chip" style="flex:1;text-align:center;" onclick="selectTipoTarjeta('debito')">Débito</button>
+            </div>
+          </div>
+
+          <!-- Número de tarjeta -->
+          <div class="form-group">
+            <label for="p-card-num">Número de tarjeta</label>
+            <input type="text" id="p-card-num" placeholder="0000 0000 0000 0000" maxlength="19" inputmode="numeric" oninput="formatCardNumber(this)" />
+          </div>
+
+          <!-- Nombre en la tarjeta -->
+          <div class="form-group">
+            <label for="p-card-name">Nombre en la tarjeta</label>
+            <input type="text" id="p-card-name" placeholder="Como figura en la tarjeta" autocomplete="cc-name" />
+          </div>
+
+          <!-- Vencimiento y CVV -->
+          <div class="two-col">
+            <div class="form-group">
+              <label for="p-card-exp">Vencimiento</label>
+              <input type="text" id="p-card-exp" placeholder="MM/AA" maxlength="5" inputmode="numeric" />
+            </div>
+            <div class="form-group">
+              <label for="p-card-cvv">CVV</label>
+              <input type="text" id="p-card-cvv" placeholder="•••" maxlength="4" inputmode="numeric" />
+            </div>
+          </div>
+
+          <!-- Texto legal -->
+          <p style="font-size:0.7rem;color:var(--color-gray);line-height:1.5;margin:0.5rem 0 1rem;">
+            No se realizará ningún cobro durante los primeros 2 meses. A partir del <span class="fecha-libre" style="font-weight:600;"></span> se cobrará $29.990/mes. Podés cancelar cuando quieras.
+          </p>
+
+          <button type="button" class="btn-primary" style="background:#1B4F72;font-size:1rem;" onclick="completarRegistroProfesor()">Activar 2 meses gratis</button>
+
+          <!-- Seguridad -->
+          <div style="display:flex;align-items:center;justify-content:center;gap:0.4rem;margin-top:1rem;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--color-gray)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            <span style="font-size:0.75rem;color:var(--color-gray);">Pago seguro procesado por Mercado Pago</span>
+          </div>
+
+        </div>
+
+        <!-- ── PROFESOR Paso 4: Confirmación ── -->
+        <div id="prof-step-4" style="display:none;text-align:center;padding:1rem 0 0.5rem;">
+
+          <div style="width:72px;height:72px;background:#D5F5E3;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 1.25rem;">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#1E8449" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+
+          <h2 class="section-title" style="text-align:center;">¡Bienvenido a PadelYa Profesores!</h2>
+          <p style="font-size:0.875rem;color:var(--color-gray);line-height:1.5;margin:0.4rem 0 1rem;text-align:center;">
+            Tu perfil está en revisión. Te avisamos cuando esté activo (hasta 48hs).
+          </p>
+
+          <!-- Badge Profe Fundador -->
+          <div style="display:inline-flex;align-items:center;gap:0.4rem;background:#FEF9E7;border:1.5px solid #F9E79F;border-radius:99px;padding:0.35rem 0.9rem;margin-bottom:1rem;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="#B7950B" stroke="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <span style="font-size:0.8rem;font-weight:700;color:#B7950B;letter-spacing:0.02em;">Profe Fundador</span>
+          </div>
+
+          <p style="font-size:0.8125rem;color:var(--color-gray);margin:0 0 1.5rem;">
+            Tu período gratuito vence el <span class="fecha-libre" style="font-weight:700;color:var(--color-primary);"></span>
+          </p>
+
+          <a href="profesor-panel.html" class="btn-primary" style="background:#1B4F72;">Ir a mi panel</a>
+
+        </div>
+
+        <!-- ── COMPLEJO FORM ── -->
+        <div id="form-complejo" style="display:none;">
+          <h2 class="section-title">Creá tu cuenta</h2>
+          <p class="section-subtitle">Registrá tu complejo en PadelYa.</p>
+          <form onsubmit="handleRegister(event, 'complejo')">
+            <div class="form-group">
+              <label for="c-nombre-complejo">Nombre del complejo</label>
+              <input type="text" id="c-nombre-complejo" placeholder="Ej: Complejo Los Pinos" required />
+            </div>
+            <div class="form-group">
+              <label for="c-nombre">Tu nombre</label>
+              <input type="text" id="c-nombre" placeholder="Nombre y apellido" required />
+            </div>
+            <div class="form-group">
+              <label for="c-email">Email</label>
+              <input type="email" id="c-email" placeholder="vos@ejemplo.com" required />
+            </div>
+            <div class="form-group">
+              <label for="c-password">Contraseña</label>
+              <div class="input-password-wrap">
+                <input type="password" id="c-password" placeholder="Mínimo 8 caracteres" required minlength="8" />
+                <button type="button" class="toggle-password" onclick="togglePassword('c-password', this)" aria-label="Mostrar/ocultar contraseña">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                </button>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="c-tel">Teléfono</label>
+              <input type="tel" id="c-tel" placeholder="+54 9 2284 000000" required />
+            </div>
+            <div class="form-group">
+              <label for="c-dir">Dirección del complejo</label>
+              <input type="text" id="c-dir" placeholder="Av. del Valle 450, Olavarría" required />
+            </div>
+            <div class="form-group">
+              <label for="c-canchas">Cantidad de canchas</label>
+              <input type="number" id="c-canchas" placeholder="Ej: 4" min="1" required />
+            </div>
+            <label class="form-check">
+              <input type="checkbox" required />
+              Acepto los <a href="#">términos y condiciones</a> de PadelYa.
+            </label>
+            <button type="submit" class="btn-primary">Enviar solicitud</button>
+            <div class="info-box mt-1">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+              Tu complejo quedará en revisión. Te avisamos por email cuando sea aprobado (1-2 días hábiles).
+            </div>
+          </form>
+        </div>
+
+      </div>
+      <!-- end step-2 -->
+
+    </div>
+    <!-- end panel-register -->
+
+  </div>
+  <!-- end auth-container -->
+
+  <!-- Paywall gate overlay -->
+  <div id="paywall-gate" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:500;flex-direction:column;align-items:center;justify-content:center;padding:1rem;">
+    <div style="background:white;border-radius:20px;padding:2rem 1.5rem;max-width:340px;width:100%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.25);">
+      <div style="width:56px;height:56px;background:#EBF5FB;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--color-accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      </div>
+      <h3 style="font-size:1.15rem;font-weight:700;color:var(--color-dark);margin:0 0 0.5rem;">Completá tu membresía para continuar</h3>
+      <p style="font-size:0.875rem;color:var(--color-gray);margin:0 0 1.25rem;line-height:1.5;">Tus primeros 2 meses son gratis</p>
+      <button onclick="document.getElementById('paywall-gate').style.display='none'; window.location.href='auth.html'" class="btn-primary" style="margin-bottom:0.75rem;">Activar ahora</button>
+      <p style="font-size:0.75rem;color:var(--color-gray);margin:0;">Sin membresía activa no podés aparecer en la app</p>
+    </div>
+  </div>
+
+  <!-- Welcome modal -->
+  <div id="welcome-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:400;align-items:center;justify-content:center;" onclick="closeWelcomeModal(event)">
+    <div style="background:white;border-radius:20px;padding:2rem 1.5rem;max-width:340px;width:calc(100% - 2rem);text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.2);" onclick="event.stopPropagation()">
+      <div style="width:64px;height:64px;background:#D5F5E3;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#1E8449" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <h3 style="font-size:1.25rem;font-weight:700;color:var(--color-dark);margin:0 0 0.5rem;">¡Bienvenido a PadelYa!</h3>
+      <p style="font-size:0.875rem;color:var(--color-gray);margin:0 0 1.5rem;line-height:1.5;">Completá tu perfil para recibir mejores sugerencias de partido.</p>
+      <button onclick="irAlHome()" class="btn-primary">¡A jugar!</button>
+    </div>
+  </div>
+
+  <script>
+    /* ── Demo users ── */
+    var USERS = [
+      { email: 'admin@padelya.com',    password: 'admin123',    rol: 'admin' },
+      { email: 'jugador@padelya.com',  password: 'jugador123',  rol: 'jugador' },
+      { email: 'profe@padelya.com',    password: 'profe123',    rol: 'profesor' },
+      { email: 'complejo@padelya.com', password: 'complejo123', rol: 'complejo' }
+    ];
+    var ROL_DEST = {
+      admin:    'admin-panel.html',
+      jugador:  'jugador-home.html',
+      profesor: 'profesor-panel.html',
+      complejo: 'complejo-panel.html'
+    };
+
+    /* Lee ?redirect= de la URL y lo guarda en sessionStorage */
+    (function() {
+      var params = new URLSearchParams(window.location.search);
+      var redirect = params.get('redirect');
+      if (redirect) sessionStorage.setItem('redirect', redirect);
+    })();
+
+    /* Guarda sesión y redirige respetando ?redirect= */
+    function loginAs(rol) {
+      sessionStorage.setItem('loggedIn', 'true');
+      sessionStorage.setItem('rol', rol);
+      if (rol === 'jugador') {
+        if (!sessionStorage.getItem('mesActual')) {
+          sessionStorage.setItem('partidosJugados', '0');
+          sessionStorage.setItem('mesActual', String(new Date().getMonth()));
+          sessionStorage.setItem('sexo', _sexoSeleccionado || 'masculino');
+      sessionStorage.setItem('esPremium', 'false');
+        }
+      }
+      var redirect = sessionStorage.getItem('redirect');
+      if (redirect) {
+        sessionStorage.removeItem('redirect');
+        window.location.href = redirect;
+        return;
+      }
+      window.location.href = ROL_DEST[rol] || 'jugador-home.html';
+    }
+
+    var selectedRole = null;
+
+    /* ── Tab switching ── */
+    function switchTab(tab) {
+      document.querySelectorAll('.tab-btn').forEach(function(b){ b.classList.remove('active'); });
+      document.querySelectorAll('.panel').forEach(function(p){ p.classList.remove('active'); });
+      document.getElementById('tab-' + tab).classList.add('active');
+      document.getElementById('panel-' + tab).classList.add('active');
+    }
+
+    /* ── Role selection ── */
+    function selectRole(role) {
+      selectedRole = role;
+      document.querySelectorAll('.role-card').forEach(function(c){ c.classList.remove('selected'); });
+      var card = document.getElementById('card-' + role);
+      if (card) {
+        card.classList.add('selected');
+        // Swap icon stroke color
+        card.querySelectorAll('svg').forEach(function(svg){
+          svg.setAttribute('stroke', 'white');
+        });
+        document.querySelectorAll('.role-card:not(.selected) svg').forEach(function(svg){
+          svg.setAttribute('stroke', '#2E86C1');
+        });
+      }
+      document.getElementById('btn-continue').disabled = false;
+    }
+
+    /* ── Step navigation ── */
+    function goToStep2() {
+      if (!selectedRole) return;
+      document.getElementById('step-1').style.display = 'none';
+      document.getElementById('step-2').style.display = 'block';
+      document.getElementById('form-jugador').style.display = 'none';
+      document.getElementById('form-profesor').style.display = 'none';
+      document.getElementById('form-complejo').style.display = 'none';
+      document.getElementById('form-' + selectedRole).style.display = 'block';
+      if (selectedRole === 'jugador') { showRegStep(1); }
+      window.scrollTo(0, 0);
+    }
+
+    function goToStep1() {
+      document.getElementById('step-2').style.display = 'none';
+      document.getElementById('step-1').style.display = 'block';
+    }
+
+    /* ── Password show/hide ── */
+    function togglePassword(inputId, btn) {
+      var input = document.getElementById(inputId);
+      var isHidden = input.type === 'password';
+      input.type = isHidden ? 'text' : 'password';
+      btn.innerHTML = isHidden
+        ? '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/></svg>'
+        : '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>';
+    }
+
+    /* ── Chip selection ── */
+    function selectChip(chip, group, multi) {
+      if (multi) {
+        chip.classList.toggle('selected');
+      } else {
+        var parent = chip.parentElement;
+        parent.querySelectorAll('.chip').forEach(function(c){ c.classList.remove('selected'); });
+        chip.classList.add('selected');
+      }
+      // Update category description if chip-cat
+      if (chip.classList.contains('chip-cat') && chip.classList.contains('selected')) {
+        var desc = document.getElementById('cat-desc');
+        if (desc) desc.textContent = chip.getAttribute('data-desc') || '';
+      }
+    }
+
+    /* ── Textarea counter ── */
+    function updateCount(textarea, countId) {
+      document.getElementById(countId).textContent = textarea.value.length;
+    }
+
+    /* ── Jugador sub-step navigation ── */
+    function showRegStep(n) {
+      [1,2].forEach(function(i) {
+        var el = document.getElementById('reg-step-' + i);
+        if (el) el.style.display = (i === n) ? 'block' : 'none';
+        var circle = document.getElementById('rsc-' + i);
+        if (circle) {
+          circle.classList.remove('active','done');
+          if (i < n) circle.classList.add('done');
+          else if (i === n) circle.classList.add('active');
+        }
+      });
+      var line = document.getElementById('rsl-1');
+      if (line) line.classList.toggle('done', n > 1);
+    }
+
+    function selectRegCat(chip) {
+      document.querySelectorAll('#chips-reg-cat .reg-cat-chip').forEach(function(c) {
+        c.classList.remove('selected');
+      });
+      chip.classList.add('selected');
+    }
+
+    var _sexoSeleccionado = '';
+
+    function selectSexo(sexo) {
+      _sexoSeleccionado = sexo;
+      var estActivo = 'background:rgba(23,139,255,0.15);border:1px solid #178BFF;color:#F5F7FA;font-weight:600;';
+      var estInactivo = 'flex:1;padding:12px;text-align:center;border:1px solid rgba(255,255,255,0.1);border-radius:10px;background:rgba(255,255,255,0.04);color:#A8B3C7;font-size:14px;cursor:pointer;font-family:inherit;transition:all 0.15s;';
+      var activo = 'flex:1;padding:12px;text-align:center;border-radius:10px;font-size:14px;cursor:pointer;font-family:inherit;transition:all 0.15s;' + estActivo;
+      document.getElementById('chip-sexo-m').style.cssText = sexo === 'masculino' ? activo : estInactivo;
+      document.getElementById('chip-sexo-f').style.cssText = sexo === 'femenino'  ? activo : estInactivo;
+      document.getElementById('err-sexo').style.display = 'none';
+    }
+
+    function irAlPaso2() {
+      var emailEl = document.getElementById('j-email');
+      var passwordEl = document.getElementById('j-password');
+      var emailVal = emailEl ? emailEl.value.trim() : '';
+      var passVal = passwordEl ? passwordEl.value : '';
+      var valid = true;
+      document.getElementById('err-email').style.display = (!emailVal || !/\S+@\S+\.\S+/.test(emailVal)) ? 'block' : 'none';
+      if (!emailVal || !/\S+@\S+\.\S+/.test(emailVal)) valid = false;
+      document.getElementById('err-password').style.display = (passVal.length < 8) ? 'block' : 'none';
+      if (passVal.length < 8) valid = false;
+      document.getElementById('err-sexo').style.display = !_sexoSeleccionado ? 'block' : 'none';
+      if (!_sexoSeleccionado) valid = false;
+      if (!valid) return;
+      showRegStep(2);
+    }
+
+    function createAccount() {
+      var nombre = (document.getElementById('j-nombre-completo').value || '').trim();
+      var terms = document.getElementById('j-terms');
+      var valid = true;
+      document.getElementById('err-nombre').style.display = !nombre ? 'block' : 'none';
+      if (!nombre) valid = false;
+      document.getElementById('err-terms').style.display = (!terms || !terms.checked) ? 'block' : 'none';
+      if (!terms || !terms.checked) valid = false;
+      if (!valid) return;
+
+      var emailEl = document.getElementById('j-email');
+      var celEl = document.getElementById('j-celular');
+      var email = (emailEl && emailEl.value.trim()) ? emailEl.value.trim() : '';
+      var celular = (celEl && celEl.value.trim()) ? celEl.value.trim() : '';
+
+      sessionStorage.setItem('loggedIn', 'true');
+      sessionStorage.setItem('rol', 'jugador');
+      sessionStorage.setItem('email', email || 'jugador@padelya.com');
+      sessionStorage.setItem('nombre', nombre);
+      if (celular) sessionStorage.setItem('celular', celular);
+      var selectedCatEl = document.querySelector('#chips-reg-cat .reg-cat-chip.selected');
+      var categoria = selectedCatEl ? selectedCatEl.textContent.trim() : '7ª';
+      sessionStorage.setItem('categoria', categoria);
+      sessionStorage.setItem('estadoCategoria', 'orientativa');
+      sessionStorage.setItem('acopVerificado', 'false');
+      sessionStorage.setItem('partidosJugados', '0');
+      sessionStorage.setItem('mesActual', String(new Date().getMonth()));
+      sessionStorage.setItem('esPremium', 'false');
+
+      var redirect = sessionStorage.getItem('redirect');
+      if (redirect) {
+        sessionStorage.removeItem('redirect');
+        window.location.href = redirect;
+      } else {
+        window.location.href = 'jugador-home.html';
+      }
+    }
+
+    /* ── Form submissions ── */
+    function handleLogin(e) {
+      e.preventDefault();
+      var email = document.getElementById('login-email').value.trim().toLowerCase();
+      var password = document.getElementById('login-password').value;
+      var user = null;
+      for (var i = 0; i < USERS.length; i++) {
+        if (USERS[i].email === email && USERS[i].password === password) { user = USERS[i]; break; }
+      }
+      if (!user) {
+        alert('Email o contraseña incorrectos.\n\nUsuarios de demo:\njugador@padelya.com / jugador123\nprofe@padelya.com / profe123\ncomplejo@padelya.com / complejo123\nadmin@padelya.com / admin123');
+        return;
+      }
+      sessionStorage.setItem('email', user.email);
+      loginAs(user.rol);
+    }
+
+    function handleRegister(e, role) {
+      e.preventDefault();
+      if (role === 'jugador') {
+        loginAs('jugador');
+      } else {
+        alert('¡Solicitud enviada! Te avisamos por email cuando sea aprobado (1-2 días hábiles).');
+      }
+    }
+
+    /* ── Profesor multi-step navigation ── */
+    function goToProfesorStep2() {
+      document.getElementById('form-profesor').style.display = 'none';
+      document.getElementById('prof-step-2').style.display = 'block';
+      window.scrollTo(0, 0);
+    }
+
+    function goToProfesorStep1() {
+      document.getElementById('prof-step-2').style.display = 'none';
+      document.getElementById('form-profesor').style.display = 'block';
+      window.scrollTo(0, 0);
+    }
+
+    function goToProfesorStep3() {
+      document.getElementById('prof-step-2').style.display = 'none';
+      document.getElementById('prof-step-3').style.display = 'block';
+      window.scrollTo(0, 0);
+    }
+
+    function goToProfesorStep2From3() {
+      document.getElementById('prof-step-3').style.display = 'none';
+      document.getElementById('prof-step-2').style.display = 'block';
+      window.scrollTo(0, 0);
+    }
+
+    function completarRegistroProfesor() {
+      document.getElementById('prof-step-3').style.display = 'none';
+      document.getElementById('prof-step-4').style.display = 'block';
+      window.scrollTo(0, 0);
+    }
+
+    /* ── Tarjeta de crédito/débito ── */
+    function selectTipoTarjeta(tipo) {
+      document.getElementById('btn-credito').classList.remove('selected');
+      document.getElementById('btn-debito').classList.remove('selected');
+      document.getElementById('btn-' + tipo).classList.add('selected');
+    }
+
+    function formatCardNumber(input) {
+      var v = input.value.replace(/\D/g, '').substring(0, 16);
+      var parts = [];
+      for (var i = 0; i < v.length; i += 4) { parts.push(v.substring(i, i + 4)); }
+      input.value = parts.join(' ');
+    }
+
+    /* ── Fecha libre (hoy + 60 días) ── */
+    function fechaLibre() {
+      var d = new Date();
+      d.setDate(d.getDate() + 60);
+      return d.getDate().toString().padStart(2, '0') + '/' + (d.getMonth() + 1).toString().padStart(2, '0') + '/' + d.getFullYear();
+    }
+
+    /* ── Paywall gate ── */
+    function showPaywallGate() {
+      var gate = document.getElementById('paywall-gate');
+      gate.style.display = 'flex';
+    }
+
+    /* Inicializar fechas dinámicas */
+    document.querySelectorAll('.fecha-libre').forEach(function(el) {
+      el.textContent = fechaLibre();
+    });
+    /* ── ACOP player database ── */
+    window.JUGADORES_ACOP = (function() {
+      function e(ap, nom, cat, gen) {
+        return { apellido: ap, nombre: nom, categoria: cat, genero: gen };
+      }
+      return [
+        // DAMAS 7ª
+        e('ABDALA','MARIANGELES','7ª','F'),e('ALBIN','MONICA','7ª','F'),e('ALE','AGUSTINA','7ª','F'),e('ALONSO','SILVIA YOLANDA','7ª','F'),e('ALVARO','LUCIA','7ª','F'),e('ANDRADE','VERONICA AYLEN','7ª','F'),e('ANSELMO','MICAELA','7ª','F'),e('ANTISTA','ROMINA MARIA','7ª','F'),e('ARRAMON','MARIANELA','7ª','F'),e('AUADT','FERNANDA','7ª','F'),e('AVILA','KARINA','7ª','F'),e('BARRECA','MANUELA','7ª','F'),e('BARZOLA','BRITTANY','7ª','F'),e('BASQUES EMILIOZZI','SANDRA ANALIA','7ª','F'),e('BENEDETTO','MICAELA','7ª','F'),e('BRAHIM','SOLEDAD','7ª','F'),e('BRAVO','ALDANA','7ª','F'),e('BRAVO','BETTINA','7ª','F'),e('BRAVO','JULIANA','7ª','F'),e('BUZEKI','MARIA EUGENIA','7ª','F'),e('CABRERA','DANIELA','7ª','F'),e('CALVO','ILEANA','7ª','F'),e('CAMPLONE','LUCIANA','7ª','F'),e('CARDILO','SILVIA GRACIELA','7ª','F'),e('CASTRO','LUZ','7ª','F'),e('CATALDI','VALENTINA','7ª','F'),e('CATALDI','VICTORIA','7ª','F'),e('COCCONI','MERCEDES','7ª','F'),e('CONSTANCIO','YANINA','7ª','F'),e('COSCIA','VANESA','7ª','F'),e('COWES','MARIANA','7ª','F'),e('DE LIBANO ELORRIETA','LUCRECIA','7ª','F'),e('DEL VALLE','LILIANA','7ª','F'),e('DELLE DONNE','SOLEDAD','7ª','F'),e('DIAZ','DAIANA','7ª','F'),e('DIRAZAR MOYA','FLORENCIA','7ª','F'),e('EIDILSTEIN','TAMARA YAEL','7ª','F'),e('ENRIQUE STEINBERG','ANGELES','7ª','F'),e('FARRA','ESTEFANIA BELEN','7ª','F'),e('FARRA','GISEL','7ª','F'),e('FEREZ','MELISA SOLEDAD','7ª','F'),e('FERNANDEZ','NUBI','7ª','F'),e('FERRERI','MARIELA','7ª','F'),e('FERREYRA','MARCELA SANDRA','7ª','F'),e('FINOCCHIO','MARIA NOE','7ª','F'),e('GAINZA','MARIA ELVIRA','7ª','F'),e('GALLI','LUCIANA','7ª','F'),e('GALLI','MARIANA','7ª','F'),e('GARRIDO','MARIA CELESTE','7ª','F'),e('GOMEZ','MARIEL','7ª','F'),e('GONZALEZ','ZOE','7ª','F'),e('GONZALEZ SABATO','MARINA','7ª','F'),e('GUASURA COLMAN','JULIANA','7ª','F'),e('GUILLEN','ALEJANDRA','7ª','F'),e('IACULLI','GERALDINE','7ª','F'),e('ITURBE','ANTONELLA','7ª','F'),e('IZZI','LAURA','7ª','F'),e('JEREZ','MARCELA','7ª','F'),e('JUAN','VALENTINA','7ª','F'),e('JUAREZ','MARIA EUGENIA','7ª','F'),e('JUNGER','ROMINA','7ª','F'),e('LAFON','SOLANGE ANABELA','7ª','F'),e('LAGOS','HEBE','7ª','F'),e('LEMIEZ','MARINA','7ª','F'),e('LOPEZ','GISELLE','7ª','F'),e('LOPEZ','LEILA MARINA','7ª','F'),e('LUNA','CAMILA AGUSTINA','7ª','F'),e('MARCHIONI','MARIA VICTORIA','7ª','F'),e('MARECOS','MERI','7ª','F'),e('MARINI','ELIANA','7ª','F'),e('MARTIN','ANABELLA','7ª','F'),e('MARTINO','NICOLE','7ª','F'),e('MINER','BERNARDITA','7ª','F'),e('MIRANDA','MARIA FABIANA','7ª','F'),e('MOLINARI','MARIANA SOLEDAD','7ª','F'),e('MONTERO','LUCIANA','7ª','F'),e('MONTERO','PAOLA ROSANA','7ª','F'),e('MORAGA','IRIS','7ª','F'),e('NAGEL','PIERINA','7ª','F'),e('NARDIN','MARISA','7ª','F'),e('NASELLO','MERCEDES','7ª','F'),e('NAVAR','ANTONELLA','7ª','F'),e('NEGRO','BERENICE','7ª','F'),e('NIEVAS','ELIANA','7ª','F'),e('NOTARARIGO','MARIA ALEJANDRA','7ª','F'),e('OLIVERA','CAROLINA','7ª','F'),e('PATRONELLI','MACARENA','7ª','F'),e('PELLEJERO','MANUELA','7ª','F'),e('PIZARRO','ROCIO','7ª','F'),e('PIZZANO','ANDREA','7ª','F'),e('PODAZZA','LUCIANA','7ª','F'),e('RAMIREZ','MELISA','7ª','F'),e('REANO','MARIANELA','7ª','F'),e('REINOSO','PAULA','7ª','F'),e('RESSIA','DEBORA','7ª','F'),e('RIQUELME','AGUSTINA','7ª','F'),e('RODRIGUEZ ROSSI','MARIA LAURA','7ª','F'),e('ROJAS','ELIANA','7ª','F'),e('ROLDAN','VANESA','7ª','F'),e('SANABRIA MASSON','AGUSTINA','7ª','F'),e('SCHMIDT','MARISOL','7ª','F'),e('SCHNEIDER','CAROLINA','7ª','F'),e('SCHWINDT','MARIA LAURA','7ª','F'),e('SOBRON','PATRICIA','7ª','F'),e('SOVA','MARIANA','7ª','F'),e('SUANNO','PAULA ANDREA','7ª','F'),e('TAMBUCCI YABEN','CAMILA','7ª','F'),e('TEGANO','MARIANA','7ª','F'),e('TENTONI','CANDELARIA','7ª','F'),e('TOLOSA','MACARENA','7ª','F'),e('UNZAGA','GABRIELA','7ª','F'),e('URBINA','ISABEL','7ª','F'),e('URRUTIA','GABRIELA BELEN','7ª','F'),e('URRUTIA','MERCEDES','7ª','F'),e('VALES','GUADALUPE','7ª','F'),e('VAZQUEZ','AGUSTINA','7ª','F'),e('VAZQUEZ','MELISA','7ª','F'),e('VICTORIA','MARIELA','7ª','F'),e('VIZCAY','CARLA','7ª','F'),e('WAIMANN','PILAR','7ª','F'),e('ZULIANI','BELEN','7ª','F'),e('ZURCHER','ERNA','7ª','F'),
+        e('ABRIL INOSTROZA','','7ª','F'),e('ARENA','LUCRECIA','7ª','F'),e('BAHL','CELINA','7ª','F'),e('BALDINI','PIERINA','7ª','F'),e('BARRAGAN','VERONICA','7ª','F'),e('BIARLO','JESICA','7ª','F'),e('BOSQUE','DELFINA','7ª','F'),e('BRAVO','CARLA','7ª','F'),e('BUSTO','MAITENA','7ª','F'),e('CAPUSELLI','DANIELA','7ª','F'),e('CASTARES','MARIA SOL','7ª','F'),e('DE LA QUINTANA','MARIELA OLGA','7ª','F'),e('DI GIANO','VALERIA','7ª','F'),e('DI ROCCO','AINHOA','7ª','F'),e('DURRUTY','MARIA XIMENA','7ª','F'),e('GAVIO','MARIA','7ª','F'),e('GONZALEZ','LUNA','7ª','F'),e('GREGORINI','ROCIO','7ª','F'),e('HAMMERSCHMIDT','MARIANGELES','7ª','F'),e('LANZILLOTTA','STEFANIA','7ª','F'),e('LARSEN','VALENTINA','7ª','F'),e('MENDOZA','PILAR','7ª','F'),e('MONTES','NADIA ROBERTA','7ª','F'),e('PIRIZ','SILVINA','7ª','F'),e('ROLDAN','MARIA FERNANDA','7ª','F'),e('ROSSETTI','FLAVIA','7ª','F'),e('SANTANGELO','LUCIA','7ª','F'),e('SARFIEL','MARIA JOSE','7ª','F'),e('SCHWINDT','PAOLA LORENA','7ª','F'),e('SONCINI','PAMELA','7ª','F'),e('UGALDE','MARIANA','7ª','F'),e('VIERA','LUCRECIA','7ª','F'),e('YUNGBLUT','LAURA NOEMI','7ª','F'),
+        // DAMAS 6ª
+        e('AMERICO','CATALINA','6ª','F'),e('ANSELMO','MARCELA','6ª','F'),e('ARANZAZU','AGUSTINA','6ª','F'),e('ARMANAZQUI','ROMINA','6ª','F'),e('AVILES','CAROLINA','6ª','F'),e('AZZATTO','MELISA','6ª','F'),e('BAHL','CAROLINA','6ª','F'),e('BAQUER','GUILLERMINA','6ª','F'),e('BARRIONUEVO','CLAUDIA','6ª','F'),e('BARRIONUEVO','ROCIO','6ª','F'),e('BATISTA','LOURDES','6ª','F'),e('BATTAGLIA','ANABELLA','6ª','F'),e('BECKER','LAURA DANIELA','6ª','F'),e('BERRUETA','EUGENIA','6ª','F'),e('BERRUETA','MARIA CELESTE','6ª','F'),e('BERRUETA','MILAGROS','6ª','F'),e('BLANC','ANTONELLA','6ª','F'),e('BURGOS','EMILY','6ª','F'),e('CABRERA','DAIANA','6ª','F'),e('CABRI','MARIA PAULINA','6ª','F'),e('CAMPOS','CLAUDIA','6ª','F'),e('CASTRO','YANINA','6ª','F'),e('CHANTIR','CALANIT','6ª','F'),e('CHAVEZ','NANCY','6ª','F'),e('CIPRES','AGUSTINA','6ª','F'),e('CIUFFO','VERONICA','6ª','F'),e('CLARK','MABEL','6ª','F'),e('CONRADO','MAILEN','6ª','F'),e('CURA','CECILIA LUCIA','6ª','F'),e('DA COSTA FIUSA','LUCRECIA','6ª','F'),e('DA RIOS','MARIA VALERIA','6ª','F'),e('DITZEL','M EMILIA','6ª','F'),e('ECHAIDE','MARIA ELISA','6ª','F'),e('ESNAL','GUADALUPE','6ª','F'),e('ETULAIN','MARIA ALEJANDRA','6ª','F'),e('FAURE','CAMILA','6ª','F'),e('FERNANDEZ MELO','DOLORES','6ª','F'),e('FERNANDEZ STEINBERG','VALENTINA','6ª','F'),e('FRASCAROLI','LORENA','6ª','F'),e('FREYRE','MALVINA','6ª','F'),e('FUENTES','LUCIANA','6ª','F'),e('GAINZA','MARIA ELISA','6ª','F'),e('GALA','YAMILA','6ª','F'),e('GHIANO','NATALIA','6ª','F'),e('GIL','GABRIELA VANESA','6ª','F'),e('GOMEZ','ALEJANDRA','6ª','F'),e('GOMEZ','CRIS','6ª','F'),e('GOROSITO','LORENA','6ª','F'),e('GUANUCO','MACARENA','6ª','F'),e('HERRERO','GISELA','6ª','F'),e('IRIARTE','MARIA EMILIA','6ª','F'),e('JARA','CARINA VANESA','6ª','F'),e('KEES','FERNANDA','6ª','F'),e('LAGRAVE','MARIANGELES','6ª','F'),e('LALLI','DANIELA','6ª','F'),e('LARA','MELISA','6ª','F'),e('LEAL','JOSEFINA','6ª','F'),e('LEO','MACARENA','6ª','F'),e('LIGGERINI GELSO','FLORENCIA','6ª','F'),e('LOPEZ','NATALIA','6ª','F'),e('LOZA','CATALINA','6ª','F'),e('MARADEO','FLORENCIA','6ª','F'),e('MARCHIONI','MARIA DE LOS MILAGROS','6ª','F'),e('MARIA','PIERINA','6ª','F'),e('MARIELA','CASTANEDA','6ª','F'),e('MARTIN','ALEJANDRA','6ª','F'),e('MARTIN','LILIANA VERONICA','6ª','F'),e('MOLLER','ALEJANDRA','6ª','F'),e('MORIONES','ANDREA ALEJANDRA','6ª','F'),e('MORIONES','SILVANA','6ª','F'),e('ORLANDO','ROSANA','6ª','F'),e('ORTEGA','MARISA ANAHI','6ª','F'),e('OTTONELLO','JULIETA','6ª','F'),e('PACHECO','VALERIA SOLEDAD','6ª','F'),e('PAVONE','MILAGROS','6ª','F'),e('PINEDA','AYELEN','6ª','F'),e('POYO','JOSEFINA','6ª','F'),e('POZO','KARINA','6ª','F'),e('QUIROGA','CELESTE','6ª','F'),e('RAMIREZ','MARIA NIEVES','6ª','F'),e('RIVAS TROTTI','LUNA','6ª','F'),e('RIVERA','FLAVIA MARINA','6ª','F'),e('SALVANESCHI','BETIANA','6ª','F'),e('SAN JULIAN','YESICA','6ª','F'),e('SANCHEZ','PAMELA','6ª','F'),e('SANSIMONI','VALERIA','6ª','F'),e('SEQUEIRA','GINA','6ª','F'),e('SEQUEIRA','PAMELA','6ª','F'),e('SILVA','MARIA ROSA','6ª','F'),e('SORAGNI','BELEN','6ª','F'),e('SUAREZ','KARINA','6ª','F'),e('TAMBUCCI','ANTONELA','6ª','F'),e('TEIXEIRA','DIANA','6ª','F'),e('TRIPICHIO','SOFIA','6ª','F'),e('VAZQUEZ','BELEN','6ª','F'),e('VAZQUEZ','MARIA JIMENA','6ª','F'),e('VENZI','MAYRA','6ª','F'),e('VIDOVI','CINTIA','6ª','F'),e('VINUALES','MARIA JOSEFINA','6ª','F'),e('ZORZANO','YAMILA','6ª','F'),
+        // DAMAS 5ª
+        e('ALARCO','MARIANA','5ª','F'),e('ALBIN','GUADALUPE','5ª','F'),e('ALLOGGIA BORZI','CECILIA','5ª','F'),e('ALSINA','ESTEFANIA','5ª','F'),e('ALVAREZ','MARIA ROCIO','5ª','F'),e('AMAN','SILVIA MARIELA','5ª','F'),e('BEORLEGUI','JULIETA','5ª','F'),e('BUEY MINNIG','VICTORIA','5ª','F'),e('BULANT','MARIA LUZ','5ª','F'),e('CABALLERO','MARTINA','5ª','F'),e('CANU','MARINA','5ª','F'),e('CASTRO','VALERIA','5ª','F'),e('CATALA','FATIMA','5ª','F'),e('DASTUGUE','PAOLA','5ª','F'),e('DEL VALLE','MELISA','5ª','F'),e('DOLAGARAY','MARIA PIA','5ª','F'),e('DOMINGUEZ','MARIA EUGENIA','5ª','F'),e('DURANONA','MATILDE','5ª','F'),e('ESNAL','NATALIA','5ª','F'),e('ETCHECHURI','ANABEL','5ª','F'),e('FAEDDA','FERNANDA','5ª','F'),e('GAINZA','MARIA JULIANA','5ª','F'),e('GAMONDI','PAOLA','5ª','F'),e('HULS','GABRIELA','5ª','F'),e('IRAZABAL','SARA','5ª','F'),e('ITURREGUI','ANA','5ª','F'),e('LONGHINI','CINTIA','5ª','F'),e('MAIZ','MARIA VICTORIA','5ª','F'),e('MANETTI','FLORENCIA','5ª','F'),e('MAS','VERONICA','5ª','F'),e('MICCIO','FLORENCIA','5ª','F'),e('MORETTI','ALDANA','5ª','F'),e('NAVARRO','ALICIA','5ª','F'),e('NAVARRO','ANDREA','5ª','F'),e('NAVARRO','LUCIANA','5ª','F'),e('NESCI REGERT','FIORELA','5ª','F'),e('NIETO','MARIA LAURA','5ª','F'),e('NOVO','LAURA','5ª','F'),e('OLIVERA','PAOLA','5ª','F'),e('PEKER','JULIANA','5ª','F'),e('PIAZZA','MARIA CLARA','5ª','F'),e('PIECENTE','ESTEFANIA','5ª','F'),e('PINEL','ANTONELLA','5ª','F'),e('PINERO','MARILINA','5ª','F'),e('PONCE','KARINA','5ª','F'),e('PONCE DE LEON','CAMILA','5ª','F'),e('ROJAS','AGUSTINA','5ª','F'),e('RUSCHETTI','MARIA JOSE','5ª','F'),e('SAEZ','CAMILA','5ª','F'),e('SCHWINDT','MARIELA','5ª','F'),e('SUAREZ','ROSARIO','5ª','F'),e('TELLEZ GONZALEZ','MARIA MERCEDES','5ª','F'),e('TOLEDO','SOLEDAD','5ª','F'),e('TRUMPIO','LORENA','5ª','F'),e('VAZQUEZ','BARBARA','5ª','F'),e('YUNGBLUT','KARINA','5ª','F'),
+        // DAMAS 4ª
+        e('ALLEN','ORIANA','4ª','F'),e('ANCEL','SILVINA','4ª','F'),e('ANZUINO','MICHELLE','4ª','F'),e('BLANCO','AGUSTINA','4ª','F'),e('BLOCK','KATIA','4ª','F'),e('DUCA MANZUR','LUISINA','4ª','F'),e('GYARMATTI','MARCELA','4ª','F'),e('IRAZABAL','MIA','4ª','F'),e('MARTINEZ GURRIERI','PILAR','4ª','F'),e('NEGRETE','SANDRA','4ª','F'),e('PEREIRA DAS VINHAS','MARIA INES','4ª','F'),e('PICCHI','LUCRECIA','4ª','F'),e('PIZZANO','VERONICA','4ª','F'),e('RICCOBENE','NATALIA','4ª','F'),e('SAK','JULIETA SOLEDAD','4ª','F'),e('SALINAS A','PAOLA','4ª','F'),e('SUAREZ','ANA PAULA','4ª','F'),e('WAGNER','MERCEDES EDITH','4ª','F'),
+        // DAMAS 3ª
+        e('BATISTA','VALENTINA','3ª','F'),e('LONGHINI','MARIA','3ª','F'),e('RAFECA','YANELLA AGOSTINA','3ª','F'),e('RODRIGUEZ','JOSEFINA','3ª','F'),
+        // DAMAS 2ª
+        e('ALLEN','REBECA','2ª','F'),e('DOS SANTOS','JAZMIN','2ª','F'),
+        // CABALLEROS 7ª (incluye 8va)
+        e('ACUNA','CARLOS SEBASTIAN','7ª','M'),e('ADORNO','OSVALDO WALTER','7ª','M'),e('ALVAREZ','ANDRES','7ª','M'),e('ALVAREZ','MARIO','7ª','M'),e('ALVAREZ','PABLO','7ª','M'),e('ALVAREZ','VICTOR','7ª','M'),e('ANGULO','EZEQUIEL','7ª','M'),e('ANGULO','MARCOS','7ª','M'),e('ANGULO','PATRICIO NICOLAS','7ª','M'),e('AQUEVEQUE','LEONARDO','7ª','M'),e('ARANZA','ARON','7ª','M'),e('AROUXET','OSCAR','7ª','M'),e('ARRAMON','AXEL','7ª','M'),e('BARRAZA','RAMIRO RAUL','7ª','M'),e('BARRERA','MARCOS','7ª','M'),e('BARZOLA','DYLAN','7ª','M'),e('BERRETERREIX','AXEL','7ª','M'),e('BIKART','NICOLAS MARTIN','7ª','M'),e('BLUA','OLIVER','7ª','M'),e('BONAVETTI','JUAN','7ª','M'),e('BUCCIARELLI','OSVALDO ALEJANDRO','7ª','M'),e('BUCCIARELLI','SIMON','7ª','M'),e('CABRERA','BAUTISTA','7ª','M'),e('CANABAL','MARTIN','7ª','M'),e('CARBAJAL','VALENTIN','7ª','M'),e('CARDONE','FEDERICO','7ª','M'),e('CARMUSCIANO','LUCAS','7ª','M'),e('CASAS','MATEO','7ª','M'),e('CASSOU','FERMIN','7ª','M'),e('CASTANARES','CRISTIAN','7ª','M'),e('CASTRO','LUIS','7ª','M'),e('CATALDI','ITALO','7ª','M'),e('CERVINO','JUAN PABLO','7ª','M'),e('CHIARENZA','NICOLAS','7ª','M'),e('CHIRON','GERVACIO','7ª','M'),e('CONSTANTINO','RENZO','7ª','M'),e('CONTI','FABRICIO','7ª','M'),e('CORSO','MATIAS','7ª','M'),e('CORTEJARENA','RAMIRO','7ª','M'),e('CRUZ','VLADIMIR','7ª','M'),e('D ELIA','FRANCO','7ª','M'),e('DA ROSA','RAMON','7ª','M'),e('DARGEL','LEONEL','7ª','M'),e('DIAZ','LUIS ALBERTO','7ª','M'),e('DIAZ','LUIS RICARDO','7ª','M'),e('DMARTINO','GONZALO','7ª','M'),e('DUARTE','ALBERTO','7ª','M'),e('ELBEY','ALAN','7ª','M'),e('FERNANDEZ SPINOLA','MARTIN','7ª','M'),e('FERRAIUELO','CRISTIAN','7ª','M'),e('FERREIRA','AGUSTIN','7ª','M'),e('FERREIRA','FACUNDO','7ª','M'),e('FRIAS','HUGO ERNESTO','7ª','M'),e('FRIAS','MARTIN ALBERTO','7ª','M'),e('GABURRI','BENJAMIN','7ª','M'),e('GALOTTI','CARLOS OSMAR','7ª','M'),e('GALOTTI','MARTIN','7ª','M'),e('GARCIA MARTI','LUCIANO','7ª','M'),e('GIANGRECO','SEBASTIAN','7ª','M'),e('GIANZANTI','IGNACIO','7ª','M'),e('GILES','MARCELO NAHUEL','7ª','M'),e('GOMEZ BANOVIC','WALTER JAVIER','7ª','M'),e('GRAF','GERMAN','7ª','M'),e('GRAF','LEONARDO','7ª','M'),e('HANSEL','NICOLAS','7ª','M'),e('HERNANDEZ','NESTOR','7ª','M'),e('HERNANDEZ','ULISES','7ª','M'),e('IBARGOYEN','FRANCISCO','7ª','M'),e('KOLEP','FERNANDO','7ª','M'),e('LAMBRE','MARCELO','7ª','M'),e('LEGUIZAMON','BRAIAN','7ª','M'),e('LEIRA','RENATO','7ª','M'),e('LEON','AGUSTIN','7ª','M'),e('LONARDI','TOMAS','7ª','M'),e('LOPEZ','MATIAS EZEQUIEL','7ª','M'),e('LOPEZ BAIGORRIA','RODRIGO','7ª','M'),e('LOVISO ARISTEGUI','NICOLAS','7ª','M'),e('LUCERO','AARON','7ª','M'),e('LUNA','OMAR','7ª','M'),e('LUPORI','FRANCO','7ª','M'),e('MAC INTYRE','JORGE','7ª','M'),e('MALDONADO','MIQUEAS','7ª','M'),e('MANEIRO','BRAIAN','7ª','M'),e('MELOTTO','FELIPE','7ª','M'),e('MELOTTO','JUAN JOSE','7ª','M'),e('MENDES','FACUNDO','7ª','M'),e('MINO','JUAN','7ª','M'),e('MUNARRIZ','LUIS','7ª','M'),e('NAVARRO','DAMIAN DARIO','7ª','M'),e('NOCETTI','FRANCISCO','7ª','M'),e('OTTAVIANO','FACUNDO','7ª','M'),e('PAIS','ALEXANDER','7ª','M'),e('PALACIO','BENJAMIN','7ª','M'),e('PALADINO','FRANCISCO','7ª','M'),e('PALOMEQUE','FRANCISCO','7ª','M'),e('PAVONE','CIRO','7ª','M'),e('PEDREIRA','ALAN','7ª','M'),e('PLUIS','MAURICIO','7ª','M'),e('PONCE','GONZALO','7ª','M'),e('RAMOS','FEDERICO','7ª','M'),e('RAMUNDO','MAURICIO','7ª','M'),e('REGUERO','NICOLAS','7ª','M'),e('ROLDAN','FRANCISCO','7ª','M'),e('ROLDAN','GABINO','7ª','M'),e('ROSSI','NAHUEL','7ª','M'),e('SANGEL','EMANUEL','7ª','M'),e('SCHILLING','FACUNDO GABRIEL','7ª','M'),e('SCIPIONE NIEVAS','AGUSTIN','7ª','M'),e('SILES','RENZO SEBASTIAN','7ª','M'),e('SOLEZIO','MATEO','7ª','M'),e('STEIMBACH','KEVIN DAVID','7ª','M'),e('SVEC','IVO','7ª','M'),e('TASSARA','GUIDO','7ª','M'),e('TAYELDIN','PABLO','7ª','M'),e('TELLO','ARIEL','7ª','M'),e('TELLO','BRAIAN','7ª','M'),e('TRIVINO','JORGE','7ª','M'),e('URRETAVIZCAYA','PABLO','7ª','M'),e('UTIN','SANTIAGO','7ª','M'),e('VALICENTII','FRANCO','7ª','M'),e('VAN DER PLOEG','EITAN','7ª','M'),e('VILLARREAL','JUAN IGNACIO','7ª','M'),e('VILLAVERDE','ESTEBAN','7ª','M'),
+        e('ABAD','IGNACIO','7ª','M'),e('ACEVEDO','LUCAS','7ª','M'),e('AIRES','MAURICIO','7ª','M'),e('AIZPURU','MANUEL','7ª','M'),e('ALAYE','FRANCISCO','7ª','M'),e('ALCAZA','CLAUDIO','7ª','M'),e('ALONSO','ALEJANDRO ANTONIO','7ª','M'),e('ALVAREZ','DIEGO JOAQUIN','7ª','M'),e('ALVAREZ','FRANCO','7ª','M'),e('AMADO','JOAQUIN','7ª','M'),e('ARAMBURU','ANDRES','7ª','M'),e('AREVALO ESTEVEZ','NICOLAS','7ª','M'),e('AROUXET','SEBASTIAN ARIEL','7ª','M'),e('ASTIZ','FERMIN','7ª','M'),e('AVILA','SERGIO ALBERTO','7ª','M'),e('AYALA','CARLOS ANDRES','7ª','M'),e('BAHL','JUAN','7ª','M'),e('BAHL','NESTOR','7ª','M'),e('BARDEL','DAMIAN','7ª','M'),e('BARON','BAUTISTA','7ª','M'),e('BARQUIN PEDRAZA','JUAN MANUEL','7ª','M'),e('BARRALLE','FRANCISCO','7ª','M'),e('BATISTA','SEBASTIAN','7ª','M'),e('BECKER','MARCO','7ª','M'),e('BEFUMO','BERNARDO','7ª','M'),e('BELATI','MATEO','7ª','M'),e('BELEN','NAHUEL','7ª','M'),e('BELSITO','GONZALO','7ª','M'),e('BERNABE','LEANDRO EZEQUIEL','7ª','M'),e('BIANCO','ANDRES','7ª','M'),e('BIANCO','MAURICIO','7ª','M'),e('BISCAINO','CRISTIAN','7ª','M'),e('BLANCHET','MATIAS','7ª','M'),e('BLUA','JOSE LUIS','7ª','M'),e('BONETTO','FEDERICO','7ª','M'),e('BONIFACIO','ROBERTO','7ª','M'),e('BONINO','AGUSTIN','7ª','M'),e('BONINO','SERGIO','7ª','M'),e('BRAVO','DIEGO','7ª','M'),e('BRAVO','NAHUEL','7ª','M'),e('BRUNI','DANIEL','7ª','M'),e('BULANT','EDILIO','7ª','M'),e('BULANT','KEVIN','7ª','M'),e('BUSCHINI','CARLOS','7ª','M'),e('BUSTOS','MATIAS','7ª','M'),e('CABRERA','DANIEL ALBERTO','7ª','M'),e('CALVO','JONATAN','7ª','M'),e('CAMACHO','HECTOR','7ª','M'),e('CAMINO','LEONARDO','7ª','M'),e('CANETE','ANGEL','7ª','M'),e('CANETE','ANGEL NORBERTO','7ª','M'),e('CANIZO','SANTIAGO','7ª','M'),e('CARDONE','IGNACIO','7ª','M'),e('CARDONE','VALENTINO','7ª','M'),e('CASTANEDA','FRANCO','7ª','M'),e('CASTRO','MARIANO','7ª','M'),e('CASTRO','YONATAN','7ª','M'),e('CASTRO SILVA','LEANDRO','7ª','M'),e('CEPEDA','FAUSTO','7ª','M'),e('CEPEDA','GUSTAVO','7ª','M'),e('CEPEDA','LAUTARO','7ª','M'),e('CERDERA','IGNACIO DANIEL','7ª','M'),e('CIELO','ALEJO','7ª','M'),e('CIRIOLI','LEOPOLDO','7ª','M'),e('CLAR','JONATAN','7ª','M'),e('CONTRERA','MANUEL','7ª','M'),e('CORBEIRA','JOSE','7ª','M'),e('CORNEJO','RAMIRO JOSE','7ª','M'),e('CORREA','FACUNDO','7ª','M'),e('COZ','MARCELO','7ª','M'),e('CURCA','LUCAS','7ª','M'),e('DAMICO','ESTEBAN','7ª','M'),e('DANELLI','ALAN','7ª','M'),e('DELFINO','CESAR','7ª','M'),e('DELLA MAGGIORA','MATIAS','7ª','M'),e('DI ROCCO','CRISTIAN','7ª','M'),e('DIAZ MOLINA','GERONIMO','7ª','M'),e('DIB','FERNANDO','7ª','M'),e('DIEZ','JOAQUIN','7ª','M'),e('DIGERONIMO','ARTURO','7ª','M'),e('DILASCIO','PABLO','7ª','M'),e('DIRAZAR','TOMAS','7ª','M'),e('DIRGAM','ALEJANDRO','7ª','M'),e('DONOFRIO','LUCIAN','7ª','M'),e('DOS SANTOS','GUSTAVO','7ª','M'),e('DOUCEDE','NAHUEL','7ª','M'),e('ELMES','LUCAS','7ª','M'),e('ESTEVES','ALEJANDRO','7ª','M'),e('ETCHEGARAY','AXEL','7ª','M'),e('ETCHEPARE','EMMANUEL','7ª','M'),e('FALASCO','MATEO','7ª','M'),e('FARIAS','SEBASTIAN','7ª','M'),e('FARRA','AGUSTIN','7ª','M'),e('FENIGER','RAMIRO','7ª','M'),e('FERNANDEZ CARBONE','PABLO ANDRES','7ª','M'),e('FERREYRA','RICHARD','7ª','M'),e('FONSECA','JAVIER','7ª','M'),e('FRANCO','JONATHAN','7ª','M'),e('FUENTES','GONZALO','7ª','M'),e('GALLO','KEVIN','7ª','M'),e('GALVAN','PABLO','7ª','M'),e('GAMBERINI','LUCIANO','7ª','M'),e('GARCIA','DYLAN','7ª','M'),e('GARCIA','JUAN ALBERTO','7ª','M'),e('GELMI','JUAN','7ª','M'),e('GELMI','LUCAS','7ª','M'),e('GIACOMASO','FRANCISCO','7ª','M'),e('GIACOMASO','JESUS','7ª','M'),e('GILES','JUAN MARCOS SEBASTIAN','7ª','M'),e('GIORGIO','FRANCISCO','7ª','M'),e('GODOY','MARCOS','7ª','M'),e('GOLINELLI','BRUNO','7ª','M'),e('GOMEZ','EDGARDO LEONEL','7ª','M'),e('GOMEZ MURGA','ALEJANDRO','7ª','M'),e('GOYENETCHE BRIENZO','FRANCO','7ª','M'),e('GRAF','AGUSTIN','7ª','M'),e('GRIGUOLI','TOMAS','7ª','M'),e('HAAG','MILTON','7ª','M'),e('HAMMER','FEDERICO','7ª','M'),e('HANSSON','TOMAS','7ª','M'),e('HERLEIN','TOMAS','7ª','M'),e('HERMANN','DAMIAN','7ª','M'),e('HERMINA','JOAQUIN','7ª','M'),e('HERNANDEZ','MARCOS','7ª','M'),e('HERRERO','ALEJO','7ª','M'),e('HOFFMANN','RICARDO','7ª','M'),e('IBANEZ','MARCOS','7ª','M'),e('IGLESIAS','EMILIANO','7ª','M'),e('IGUINIZ','JUAN IGNACIO','7ª','M'),e('IGUINIZ','PEDRO','7ª','M'),e('INCAURGARAT','EMILIO','7ª','M'),e('IRIARTE','SANTIAGO','7ª','M'),e('IRIBARNE','JUAN JOSE','7ª','M'),e('IRIGOYEN','ENZO LEONEL','7ª','M'),e('JARA','FRANCO','7ª','M'),e('JUAREZ','DIEGO EDUARDO','7ª','M'),e('KAIN','ESTEBAN','7ª','M'),e('KEGREISS','MATIAS','7ª','M'),e('KENNY','ALEJANDRO','7ª','M'),e('KROHN','NICOLAS','7ª','M'),e('LABORDE','FRANCISCO','7ª','M'),e('LEAL','DIEGO','7ª','M'),e('LEAL','HECTOR DAMIAN','7ª','M'),e('LEDESMA','SANTIAGO','7ª','M'),e('LEN','MATIAS','7ª','M'),e('LESTARPE','ENZO MATIAS','7ª','M'),e('LOPEZ BAIGORRIA','FRANCO','7ª','M'),e('LOPEZ MURATTORE','ARIEL','7ª','M'),e('LOPREITE','CLAUDIO LEONARDO','7ª','M'),e('MACHIS','JOEL','7ª','M'),e('MACIAS','AGUSTIN','7ª','M'),e('MAGARINOS','DIEGO','7ª','M'),e('MAIZ','FEDERICO','7ª','M'),e('MALDONADO','EDUARDO','7ª','M'),e('MARIACA','RODRIGO','7ª','M'),e('MARIN','JOSIAS','7ª','M'),e('MARINANGELI','LUCAS','7ª','M'),e('MARINO','ARIEL','7ª','M'),e('MARIO','ADRIANO','7ª','M'),e('MARTEL','AGUSTIN','7ª','M'),e('MARTEL','JOAQUIN','7ª','M'),e('MARTIN','JONATAN','7ª','M'),e('MARTIN','MATIAS','7ª','M'),e('MARTINEZ','CESAR HORACIO NAZARENO','7ª','M'),e('MASSON','JEREMIAS','7ª','M'),e('MASTRANGELO','OCTAVIO','7ª','M'),e('MECCIA','JUAN','7ª','M'),e('MELIVILU','LUKA','7ª','M'),e('MELO','NICOLAS EZEQUIEL','7ª','M'),e('MENDEZ RUIZ','AGUSTIN','7ª','M'),e('MENON','MATIAS','7ª','M'),e('MILIA','AGUSTIN','7ª','M'),e('MIRACCO','JUAN CRUZ','7ª','M'),e('MONDINI','JOSE LUIS','7ª','M'),e('MONTOTE','NESTOR','7ª','M'),e('NAGEL','GUILLERMO','7ª','M'),e('NAVARRO','MARTIN ADOLFO','7ª','M'),e('NAVARRO','SEBASTIAN','7ª','M'),e('NICOLAS','GALLO','7ª','M'),e('NIEVES','JONATAN','7ª','M'),e('OLAZAR','INAKI','7ª','M'),e('OLAZAR','RUBEN','7ª','M'),e('OLGUIN','SANTIAGO','7ª','M'),e('ORITI','MARCOS','7ª','M'),e('ORRADRE','VALENTINO','7ª','M'),e('ORTIZ','BERNARDO','7ª','M'),e('ORTIZ','MARCELO CEDAR','7ª','M'),e('OSINAGA','JORGE','7ª','M'),e('OTAVIANO','FELIPE','7ª','M'),e('OTERO','NESTOR FABIAN','7ª','M'),e('PAGANO','TOMAS','7ª','M'),e('PALMIERI','ELOY','7ª','M'),e('PANIAGUA','HERNAN','7ª','M'),e('PARAMO','ENZO','7ª','M'),e('PASSARDI','ROMAN','7ª','M'),e('PASTORE','EMILIO','7ª','M'),e('PATRONELLI','PEDRO JAVIER','7ª','M'),e('PENALVA','GUSTAVO','7ª','M'),e('PEREZ','CARLOS','7ª','M'),e('PERI','MARIANO','7ª','M'),e('PESSACG','ULISES','7ª','M'),e('PIETRAFESA','TOMAS','7ª','M'),e('PIETROBONO','AGUSTIN','7ª','M'),e('PIGHINI','GERMAN','7ª','M'),e('PINEDO','ESTEBAN','7ª','M'),e('PONCE','LUIS','7ª','M'),e('POSADA','CHRISTIAN','7ª','M'),e('POTES','MARCOS','7ª','M'),e('RAMIREZ','JUAN ESTEBAN','7ª','M'),e('RAMIREZ','LUCAS','7ª','M'),e('RAO','GONZALO','7ª','M'),e('RASCHIA','CLAUDIO ANDRES','7ª','M'),e('REAL','DIEGO GERMAN','7ª','M'),e('RECAVARREN','JEREMIAS','7ª','M'),e('RESER','JULIO','7ª','M'),e('RESSIA','THOMAS','7ª','M'),e('REY','MARIO DANIEL','7ª','M'),e('RIVAS','FRANCISCO','7ª','M'),e('RODRIGUEZ','NICOLAS','7ª','M'),e('ROMERO','EMILIANO','7ª','M'),e('ROSA','JUAN CRUZ','7ª','M'),e('RUIZ','MARCELO ANDRES','7ª','M'),e('RYPSTRA','ENZO AGUSTIN','7ª','M'),e('SAGARDOY','MAXIMILIANO','7ª','M'),e('SAIZ','BRAIAN','7ª','M'),e('SAK','SANTIAGO','7ª','M'),e('SALVATIERRA','FEDERICO','7ª','M'),e('SAN JULIAN','BENJAMIN','7ª','M'),e('SANCHEZ','FEDERICO','7ª','M'),e('SANDEZ','ANGEL','7ª','M'),e('SANTANA','MATIAS ALEJANDRO','7ª','M'),e('SCHLOTTKE','DANIEL','7ª','M'),e('SCHWINDT','DIEGO MARTIN','7ª','M'),e('SCHWINDT','JUAN CARLOS','7ª','M'),e('SELLERA','MIGUEL','7ª','M'),e('SEMEJEN','GERMAN','7ª','M'),e('SERRANO','FELIPE','7ª','M'),e('SERRIS','INAKI','7ª','M'),e('SOSA','JONATAN','7ª','M'),e('SOSA','SANTIAGO','7ª','M'),e('SOTELO','KEVIN','7ª','M'),e('SPINALI','GABRIEL','7ª','M'),e('STIEB','JONATHAN','7ª','M'),e('SUAREZ','QUIMEY','7ª','M'),e('TAPIA','EMILIANO','7ª','M'),e('TEIXEIRA','JOSE','7ª','M'),e('TEIXEIRA MOREIRA','AGUSTIN','7ª','M'),e('TERRASANTA','DANTE','7ª','M'),e('TOGNANA','ALEJANDRO','7ª','M'),e('TOLEDO','SEBASTIAN','7ª','M'),e('TRAVERS','EMILIANO','7ª','M'),e('TROIA','JOAQUIN','7ª','M'),e('TUCCIO','BRAIAN','7ª','M'),e('UGALDE','JUAN MARTIN','7ª','M'),e('URRUTIA','JUAN ANDRES','7ª','M'),e('VACCARO','EMANUEL','7ª','M'),e('VALEIRAS','NICOLAS','7ª','M'),e('VALENTI','MARTIN','7ª','M'),e('VALES','DIEGO','7ª','M'),e('VALLEJO','DAMIAN','7ª','M'),e('VARELA','JERONIMO','7ª','M'),e('VEDELINI','JOSE LUIS','7ª','M'),e('VEGA','FERNANDO EMMANUEL','7ª','M'),e('VEGA','JUAN','7ª','M'),e('VERA','NICOLAS AGUSTIN','7ª','M'),e('VERBAG','DARIO','7ª','M'),e('VIDAL','IVAN','7ª','M'),e('VIDOVI','OSCAR','7ª','M'),e('VIGO','JUAN SEBASTIAN','7ª','M'),e('VILLALVA','JULIAN','7ª','M'),e('VISCONTI','SEBASTIAN','7ª','M'),e('VITALE','FEDERICO','7ª','M'),e('WAIMANN','GERMAN ROLANDO','7ª','M'),e('WAIMANN','SANTIAGO','7ª','M'),e('ZALAZAR','LUCIO','7ª','M'),
+        // CABALLEROS 6ª
+        e('ABDALA','MATEO','6ª','M'),e('ACOSTA','MARTIN','6ª','M'),e('AGUERO','MATIAS','6ª','M'),e('AGUISNAGA','SANTIAGO','6ª','M'),e('AIRES','MARCELO DARIAN','6ª','M'),e('ALCOBEDO','MARCOS DAMIAN','6ª','M'),e('ALFARO','JULIO','6ª','M'),e('ALI','YAMIL','6ª','M'),e('ALONSO','MAXIMILIANO','6ª','M'),e('ALTAMIRANDA','MARCELO','6ª','M'),e('ALVAREZ','MAXIMILIANO','6ª','M'),e('ANDIA','JUAN MANUEL','6ª','M'),e('ANDRICH','JUAN IGNACIO','6ª','M'),e('ANGULO','ESTEBAN','6ª','M'),e('ANGULO','GUILLERMO JAVIER','6ª','M'),e('ANGULO','JULIO','6ª','M'),e('ANGULO','MATEO','6ª','M'),e('ARAGUINO','MARCOS','6ª','M'),e('ARAUJO','LEONARDO','6ª','M'),e('AREVALO','PABLO','6ª','M'),e('AREVALO ESTEVEZ','EZEQUIEL ESTEBAN','6ª','M'),e('ARMANAZQUI','URIEL','6ª','M'),e('AROUXET','LUCAS','6ª','M'),e('ARRAMON','ALEJO','6ª','M'),e('ARTAZA','CLAUDIO','6ª','M'),e('AZCONA','JORGE','6ª','M'),e('BANACH','MARTIN','6ª','M'),e('BARDEL','VALENTIN','6ª','M'),e('BARRERA','GUSTAVO RAFAEL','6ª','M'),e('BARRIONUEVO','FACUNDO','6ª','M'),e('BARRIONUEVO','RUBEN OSCAR','6ª','M'),e('BELLAGAMBA','MARCOS','6ª','M'),e('BENITO','NICOLAS','6ª','M'),e('BENZ','ALAN','6ª','M'),e('BETTIGA','GERMAN','6ª','M'),e('BIANCHI','GIANLUCA','6ª','M'),e('BIANCHINI','NAHUEL','6ª','M'),e('BIANUCCI','BARTOLOME','6ª','M'),e('BIANUCCI','SERAFIN','6ª','M'),e('BIBILONI','EMANUEL','6ª','M'),e('BIONDI','GONZALO','6ª','M'),e('BLANCO','LUCAS','6ª','M'),e('BORGHETTI','DAVID','6ª','M'),e('BORGHETTI','JOAQUIN','6ª','M'),e('BOUCIGUEZ','JUAN JOSE','6ª','M'),e('BRESS','LEONARDO','6ª','M'),e('BRUNI','EMMANUEL','6ª','M'),e('BUEY MINNIG','FRANCISCO','6ª','M'),e('BUYANOVSKY','LEON FEDERICO','6ª','M'),e('CABALLERO','FABIAN','6ª','M'),e('CABRERA','NICOLAS','6ª','M'),e('CAMPOS','GASTON','6ª','M'),e('CANO','FRANCISCO','6ª','M'),e('CANONE','MARIO ALBERTO','6ª','M'),e('CAPPONI','DARIO','6ª','M'),e('CAPUTO','FRANCO','6ª','M'),e('CARLINO','SIMON','6ª','M'),e('CARRO','LUCAS DANIEL','6ª','M'),e('CARUSO','GERMAN','6ª','M'),e('CASANOVAS','GONZALO HERNAN','6ª','M'),e('CASTRO','FIDEL','6ª','M'),e('CASTRO','OMAR MAURICIO','6ª','M'),e('CEA','MAURICIO','6ª','M'),e('CEPEDA','PABLO MARTIN','6ª','M'),e('CIBRAN','AGUSTIN','6ª','M'),e('CIRIOLI','CARLOS ALBERTO','6ª','M'),e('CLEYP','LAUTARO','6ª','M'),e('COLO','GERONIMO','6ª','M'),e('COLO','IVAN','6ª','M'),e('CORADINI','JORGE','6ª','M'),e('COSENTINO','ALAN','6ª','M'),e('COSTILLA','JUAN EMILIO','6ª','M'),e('CRESPO','LEANDRO','6ª','M'),e('CUNIOLI','ARIEL','6ª','M'),e('DA COSTA FIUSA','JUAN MANUEL','6ª','M'),e('DA RIOS','MARIANO','6ª','M'),e('DE LUCIA','LEANDRO','6ª','M'),e('DE OLIVEIRA SANTOS','MARIANO','6ª','M'),e('DEBITTO','FRANCO','6ª','M'),e('DEL RIO','JORGE','6ª','M'),e('DEL VALLE','MAXIMILIANO','6ª','M'),e('DELLA MAGGIORA','PEDRO GABRIEL','6ª','M'),e('DETTLER','MILTON','6ª','M'),e('DI MATEO','LUCIANO','6ª','M'),e('DI SALVO','ANTONINO','6ª','M'),e('DIETRICH','ALFREDO','6ª','M'),e('DOGHELAR','EMILIO','6ª','M'),e('DOMINGUEZ','ROBERTO','6ª','M'),e('ERGUY','PATXI','6ª','M'),e('ERROBIDART','MATIAS','6ª','M'),e('ERROBIDART','RICARDO','6ª','M'),e('ESNAL','RICARDO EMMANUEL','6ª','M'),e('ESPIL','JUAN','6ª','M'),e('ESTEVES FOURCADE','NICOLAS','6ª','M'),e('ETCHECHURI','PEDRO','6ª','M'),e('EYLER','FERNANDO','6ª','M'),e('FALCIGLIA FIGUEROA','SANTIAGO','6ª','M'),e('FERNANDEZ','FLAVIO DANIEL','6ª','M'),e('FERNANDEZ','JULIAN','6ª','M'),e('FERNANDEZ','LALU','6ª','M'),e('FERNANDEZ','MARIO DANIEL','6ª','M'),e('FILIPPIN','RUBEN MARIANO','6ª','M'),e('FRANZINO','CARLOS','6ª','M'),e('FRASCHETTI','SEBASTIAN','6ª','M'),e('FRAYSSE','BAUTISTA','6ª','M'),e('FREITES','GONZALO','6ª','M'),e('FREYRE','WILLIAM ANDRES','6ª','M'),e('FRIAS','ALEXANDER','6ª','M'),e('FURNARI','NICOLAS','6ª','M'),e('GABURRI','NICOLAS','6ª','M'),e('GALLI','JUAN AGUSTIN','6ª','M'),e('GAMONDI','JOSE LUIS','6ª','M'),e('GILES','GASTON','6ª','M'),e('GOBEL','NICOLAS','6ª','M'),e('GOMEZ','PABLO GASTON','6ª','M'),e('GOMEZ BANOVIC','EZEQUIEL','6ª','M'),e('GOMEZ MERLOS','FRANCO','6ª','M'),e('GONZALEZ','MARCOS','6ª','M'),e('GONZALEZ','NAHUEL','6ª','M'),e('GOTTFRIT','JORGE','6ª','M'),e('GRAF ITHURRALDE','MARTIN','6ª','M'),e('GRAF ITHURRALDE','NICOLAS','6ª','M'),e('GRIFES','JUAN','6ª','M'),e('GUARROCHENA','DIEGO SEBASTIAN','6ª','M'),e('GUARROCHENA','FRANCISCO','6ª','M'),e('HARITCHET','BAUTISTA','6ª','M'),e('HEIM','BRAIAN','6ª','M'),e('HERBOSA','SERGIO','6ª','M'),e('HERMANN','SEBASTIAN','6ª','M'),e('HERNANDEZ','CESAR IGNACIO','6ª','M'),e('HERNANDEZ','LEONARDO','6ª','M'),e('HERRERA','JOSE','6ª','M'),e('HERRERA','NICOLAS ANDRES','6ª','M'),e('HERRERA','RODRIGO','6ª','M'),e('HOFFMANN','GUILLERMO FEDERICO','6ª','M'),e('HOXMARK','ERIK','6ª','M'),e('IACULLI','ALEX','6ª','M'),e('IBARRA','SERGIO','6ª','M'),e('IGLESIAS','GONZALO','6ª','M'),e('IKES','IGNACIO','6ª','M'),e('IRASTORZA','IGNACIO','6ª','M'),e('IRAZABAL','JONATAN','6ª','M'),e('ISIDRO','AGUSTIN','6ª','M'),e('KAIN SUTIL','LAUTARO','6ª','M'),e('KROHN','FRANCISCO','6ª','M'),e('KROTTER','RUBEN','6ª','M'),e('LAGANO','DANIEL','6ª','M'),e('LARIOS','NICOLAS','6ª','M'),e('LAURENZ','FRANCO','6ª','M'),e('LEAL','RENZO DAVID','6ª','M'),e('LEVONCHUK','PAUL LUCAS','6ª','M'),e('LITA','BENJAMIN','6ª','M'),e('LLERA','FRANCISCO','6ª','M'),e('LONGHINI','LAUTARO','6ª','M'),e('LOPEZ','CHRISTIAN','6ª','M'),e('LOPEZ','FERNANDO','6ª','M'),e('LOZA','ALFREDO','6ª','M'),e('LOZA ARMANAZQUI','THIAGO','6ª','M'),e('MAIDANA','SIMON','6ª','M'),e('MANSUR','YAMIL','6ª','M'),e('MANUEL','FACUNDO','6ª','M'),e('MANUEL','MATIAS','6ª','M'),e('MARIANO','JOAQUIN','6ª','M'),e('MARINI','BRIAN LEONEL','6ª','M'),e('MARINI','MAXIMILIANO','6ª','M'),e('MARQUEZ','VALENTIN','6ª','M'),e('MARTI','BRUNO DANIEL','6ª','M'),e('MARTIN','AYRTON','6ª','M'),e('MARTINEZ','FEDERICO','6ª','M'),e('MATEO','JUAN IGNACIO','6ª','M'),e('MATITTI ZUNIGA','JOSE LUIS','6ª','M'),e('MAZZEY','IGNACIO','6ª','M'),e('MC DONALD','JOAQUIN','6ª','M'),e('MEDINA','LUCAS','6ª','M'),e('MELO','LUCAS','6ª','M'),e('MERLO BATISTA','EZEQUIEL','6ª','M'),e('MERLOS PUYO','RODOLFO','6ª','M'),e('MONDI','OSCAR','6ª','M'),e('MONTEIRO','FRANCO','6ª','M'),e('MORUA','CLAUDIO','6ª','M'),e('MOYANO','GERMAN','6ª','M'),e('MUSA','DAMIAN','6ª','M'),e('NAGEL','CARLOS','6ª','M'),e('NAVARRO','IGNACIO OMAR','6ª','M'),e('NEGRO','EMANUEL','6ª','M'),e('NEUVILLE','MAURICIO','6ª','M'),e('NIEVES','TOMAS','6ª','M'),e('NUNEZ','RICARDO LUIS','6ª','M'),e('OLARIAGA','ESTEBAN','6ª','M'),e('OLGUIN','JERONIMO','6ª','M'),e('OLIVAN','NICOLAS','6ª','M'),e('OLIVETI','FRANCO','6ª','M'),e('OLMEDO','EMILIANO','6ª','M'),e('ORIFICI','SANTIAGO','6ª','M'),e('PAGANO','MATIAS','6ª','M'),e('PAGANO','VICTOR','6ª','M'),e('PAGGI','MARCELO','6ª','M'),e('PALACIO','DIEGO','6ª','M'),e('PALACIOS','JUAN EMILIO','6ª','M'),e('PALLOTTI KAMLOFSKY','MATIAS NICOLAS','6ª','M'),e('PATERNESI','FEDERICO','6ª','M'),e('PAZ','CRISTIAN','6ª','M'),e('PELLEJERO','FELIPE','6ª','M'),e('PEREZ','JUAN ALBERTO','6ª','M'),e('PEREZ','MANUEL','6ª','M'),e('PEY','MATIAS','6ª','M'),e('PIAZZA','GUILLERMO','6ª','M'),e('PICAZO','LUCIANO','6ª','M'),e('PISTASOLI','ALEJANDRO MARCOS MARCELO','6ª','M'),e('PLANES','LUCIANO','6ª','M'),e('POPP','RAMIRO','6ª','M'),e('PUCHEU','FRANCISCO','6ª','M'),e('QUINTAS','ESTEBAN','6ª','M'),e('RAIMONDI','FRANCISCO','6ª','M'),e('RAMALLO','CLAUDIO','6ª','M'),e('RAMIREZ CUESTA','EMILIO DANIEL','6ª','M'),e('REY','THOMAS','6ª','M'),e('RICCOBENE','JUAN PABLO','6ª','M'),e('RIVERO','PABLO NICOLAS','6ª','M'),e('RODRIGUEZ','FABIAN','6ª','M'),e('RODRIGUEZ','JOSE','6ª','M'),e('RODRIGUEZ','SEBASTIAN','6ª','M'),e('ROLDAN','NICOLAS','6ª','M'),e('ROMERO','SAMUEL','6ª','M'),e('ROSA','DIEGO','6ª','M'),e('ROSENDE','JULIO','6ª','M'),e('SAAVEDRA','MAURICIO','6ª','M'),e('SAENZ BURUAGA','SEBASTIAN','6ª','M'),e('SAEZ','CHRISTIAN JAVIER','6ª','M'),e('SAEZ','MAURO','6ª','M'),e('SAIZAR','FRANCO','6ª','M'),e('SAIZAR','JOAQUIN','6ª','M'),e('SALIAS','JUAN PABLO','6ª','M'),e('SALVARESCHI','RODRIGO','6ª','M'),e('SALVATIERRA','EMILIANO','6ª','M'),e('SANCHEZ','JULIAN EZEQUIEL','6ª','M'),e('SANTIAGO','GUSTAVO EMMANUEL','6ª','M'),e('SAUTU','PABLO','6ª','M'),e('SAVI','MARIANO','6ª','M'),e('SCARPITTA','LUCIANO','6ª','M'),e('SCARPITTA','MARCELO VICTOR','6ª','M'),e('SCHAMBERGER','FRANCO','6ª','M'),e('SCHAMBERGER','MATIAS','6ª','M'),e('SCHILLING','GABRIEL','6ª','M'),e('SEAMBELAR','GASTON','6ª','M'),e('SENGER','AGUSTIN','6ª','M'),e('SERANTES','ALEJANDRO','6ª','M'),e('SERANTES','JEREMIAS','6ª','M'),e('SILVA','MARIANO','6ª','M'),e('SOS BRISA','ESTEBAN NAHUEL','6ª','M'),e('SOTO','FACUNDO','6ª','M'),e('SPINOLA','SAUL ESTEBAN','6ª','M'),e('STAGNARO','MAURICIO','6ª','M'),e('STREMEL','MATIAS','6ª','M'),e('SUAREZ','DANIEL OSCAR','6ª','M'),e('SUAREZ','THIAGO','6ª','M'),e('TASSAN','MATIAS','6ª','M'),e('TEIXEIRA','JOSE LUIS','6ª','M'),e('TESONE','IGNACIO','6ª','M'),e('TESTONI','MARTIN','6ª','M'),e('TISERA','PABLO GERMAN','6ª','M'),e('TOLOSA','DAMIAN GERMAN','6ª','M'),e('TOLOSA','LUCAS','6ª','M'),e('TORRES BOOTH','JUAN MANUEL','6ª','M'),e('TRAPANI','LUCIANO','6ª','M'),e('TRONCOSO','DARIO RUBEN','6ª','M'),e('VALICENTI','AGUSTIN','6ª','M'),e('VALICENTI','LUIS','6ª','M'),e('VAZQUEZ','BRUNO','6ª','M'),e('VECCHIO','MATIAS','6ª','M'),e('VEGA','LAUTARO','6ª','M'),e('VEGA','SEBASTIAN','6ª','M'),e('VELAZ','ENZO','6ª','M'),e('VERA','NELSON','6ª','M'),e('VICENTE','RACA','6ª','M'),e('VILLAR','GUILLERMO','6ª','M'),e('VIOLANTE','RICARDO','6ª','M'),e('VISCONTI','FRANCO','6ª','M'),e('VISCONTI','JUAN EMILIO','6ª','M'),e('VIVINETTO','NICOLAS','6ª','M'),e('WAIMANN','DAVID','6ª','M'),e('WISNER','FRANCO','6ª','M'),e('ZALBA','NICOLAS','6ª','M'),e('ZAMPINI','GUILLERMO','6ª','M'),e('ZANAZZI','FACUNDO','6ª','M'),e('ZARCO','LUIS','6ª','M'),e('ZERDA','EMMANUEL','6ª','M'),e('ZERDA','LUCIANO BENJAMIN','6ª','M'),e('ZULAICA','MAXIMILIANO','6ª','M'),e('ZURITA','FACUNDO MARTIN','6ª','M'),
+        // CABALLEROS 5ª
+        e('ABDALA','SIMON','5ª','M'),e('ACOSTA','WALTER','5ª','M'),e('AGUER','GUSTAVO','5ª','M'),e('AGUER','IVAN','5ª','M'),e('AGUIRRE','IVAN','5ª','M'),e('ALESSANDRI','MANUEL','5ª','M'),e('ALLOGGIA ALRIC','IGNACIO','5ª','M'),e('ALSINA','MATIAS','5ª','M'),e('AMERICO','MAXIMILIANO','5ª','M'),e('ANDENOCHE','GUSTAVO MARTIN','5ª','M'),e('ARISPE','GUILLERMO','5ª','M'),e('AROUXET','SANTIAGO','5ª','M'),e('BALDI','MARTIN','5ª','M'),e('BARBOSA','CRISTIAN','5ª','M'),e('BARZOLA','DIEGO LEANDRO','5ª','M'),e('BARZOLA','IGNACIO','5ª','M'),e('BAUCHWITZ','MARTIN IGNACIO','5ª','M'),e('BENEDETTO','MARTIN','5ª','M'),e('BIANCO','DOMINGO JOSE','5ª','M'),e('BILBAO','ESTEBAN ALEJANDRO','5ª','M'),e('BLOCK','TOBIAS','5ª','M'),e('BORGHI','JUAN','5ª','M'),e('BRUSSINI','JUAN PABLO','5ª','M'),e('BUCHE','JONATAN IVAN','5ª','M'),e('BURGARDT','NICOLAS','5ª','M'),e('BURNET','MARTIN','5ª','M'),e('CABELLO','MANUEL ULISES','5ª','M'),e('CAMBITELI','RAMIRO','5ª','M'),e('CANIZO','FRANCISO','5ª','M'),e('CANTONI','AGUSTIN','5ª','M'),e('CARDOSO','ARIEL','5ª','M'),e('CASTANOLDO','GONZALO','5ª','M'),e('CESPEDES','MARCELO','5ª','M'),e('COLO','NESTOR JAVIER','5ª','M'),e('CORDOBA','SEBASTIAN','5ª','M'),e('DEL VALLE','MARCELO','5ª','M'),e('DEL VALLE','MARCOS','5ª','M'),e('DEVINCENCI','SIMON','5ª','M'),e('DIAZ','GUSTADO DANIEL','5ª','M'),e('DIETRICH','VALENTIN','5ª','M'),e('DOMINA','MARTIN','5ª','M'),e('DOMINGUEZ','LUCAS','5ª','M'),e('DOS SANTOS','CHRISTIAN','5ª','M'),e('DOS SANTOS','GABRIEL MARIO','5ª','M'),e('DOS SANTOS','IVAN','5ª','M'),e('DUMERAUF','IGNACIO','5ª','M'),e('ECHEGARAY','PAUL GASTON','5ª','M'),e('ERGUY','GUSTAVO','5ª','M'),e('ERROBIDART','LEONARDO JAVIER','5ª','M'),e('ESPIL','GABRIEL','5ª','M'),e('EUGUI','FEDERICO','5ª','M'),e('FAILLA','EMILIO','5ª','M'),e('FALASCO','LUIS','5ª','M'),e('FAZIO','NICOLAS','5ª','M'),e('FERNANDEZ','FERNANDO JAVIER','5ª','M'),e('FERNANDEZ','JUAN MANUEL','5ª','M'),e('GAITAN','NICOLAS','5ª','M'),e('GALBARINO','SANTIAGO MANUEL','5ª','M'),e('GAMONDI','TOMAS','5ª','M'),e('GARCIA','ANGEL','5ª','M'),e('GARCIA MARTI','EMILIANO','5ª','M'),e('GARISOAIN','MARCELO','5ª','M'),e('GIOIA','LUCIANO DANIEL','5ª','M'),e('GONZALEZ','ANDRES DAVID','5ª','M'),e('GONZALEZ','DIEGO OMAR','5ª','M'),e('GONZALEZ','FRANCO','5ª','M'),e('GONZALEZ PADIN','MATIAS','5ª','M'),e('GUALLAN','JORGE','5ª','M'),e('HERBOSA','SERGIO LUCIANO','5ª','M'),e('HERRERA','DANIEL','5ª','M'),e('HERRERA','LUCAS','5ª','M'),e('HOFFMANN','NICOLAS','5ª','M'),e('HUERTAS','ALEJANDRO','5ª','M'),e('HUERTAS','FERNANDO','5ª','M'),e('IGLESIAS','MATIAS','5ª','M'),e('IGUINIZ','LUIS ALBERTO','5ª','M'),e('INGLISO','MARIANO','5ª','M'),e('IRIARTE','FRANCISCO','5ª','M'),e('IRISO','BRAIAN','5ª','M'),e('ITURRALDE','IGNACIO JOSE','5ª','M'),e('LABORDA','EMILIO','5ª','M'),e('LANDONI','ROBERTO CARLOS','5ª','M'),e('LASTRA','RAMIRO','5ª','M'),e('LESCANO','FABIAN','5ª','M'),e('LIMA','ADRIAN','5ª','M'),e('LINDNER','MARTIN','5ª','M'),e('LIZASU','SEBASTIAN','5ª','M'),e('LLOMPART','JUAN MARIA','5ª','M'),e('LLORENTE','LAUREANO','5ª','M'),e('LOUGE','FRANCO','5ª','M'),e('MATRELLA','FERNANDO','5ª','M'),e('MAUERER','MATIAS','5ª','M'),e('MEDINA','NAHUEL','5ª','M'),e('MERLOS','ALEJANDRO','5ª','M'),e('MIRANDA','GABRIEL','5ª','M'),e('MOCOROA','MARTIN','5ª','M'),e('MONTEIRO','DAVID','5ª','M'),e('MONTEIRO','LUCIANO','5ª','M'),e('MUJICA','FRANCO','5ª','M'),e('NARVARTE','TOMAS','5ª','M'),e('NIEVAS','LEANDRO','5ª','M'),e('NOVACOVSKY','MATIAS MARCELO','5ª','M'),e('NOVACOVSKY','SEBASTIAN','5ª','M'),e('NUNEZ GARCIA','ISAIAS','5ª','M'),e('OCCHI','SERGIO','5ª','M'),e('ORTIZ','GONZALO','5ª','M'),e('OTERO','IGNACIO','5ª','M'),e('PASCAL','SERGIO','5ª','M'),e('PATRONI','EZEQUIEL','5ª','M'),e('PATTI','FRANCISCO','5ª','M'),e('PAVONE','CRISTIAN','5ª','M'),e('PERALTA','LUCAS ANTONIO','5ª','M'),e('PIGHINI','MARIANO','5ª','M'),e('PINEDA','JULIO','5ª','M'),e('PINEIRO BOZZOLO','ALEJANDRO','5ª','M'),e('PIOLI','ALEJANDRO JAVIER','5ª','M'),e('PRECCI','FRANCO','5ª','M'),e('PRONINO','LEONARDO','5ª','M'),e('RAVI PINTO','ENZO','5ª','M'),e('RIVEIRO','CARLOS','5ª','M'),e('ROBLEDO','MARTIN','5ª','M'),e('RODRIGUEZ','ALEJANDRO','5ª','M'),e('RODRIGUEZ','CRISTIAN','5ª','M'),e('RODRIGUEZ','FEDERICO','5ª','M'),e('RODRIGUEZ','GERARDO','5ª','M'),e('RODRIGUEZ','IGNACIO','5ª','M'),e('RODRIGUEZ','MARIANO','5ª','M'),e('ROLDAN','DIEGO','5ª','M'),e('ROMERO','MARCOS','5ª','M'),e('ROSENDE','JUAN IGNACIO','5ª','M'),e('RUIZ','GUILLERMO','5ª','M'),e('RUIZ','SEBASTIAN','5ª','M'),e('RUIZ DIAZ','MARTIN','5ª','M'),e('SALAZAR','SANTINO','5ª','M'),e('SANCHEZ','DANIEL','5ª','M'),e('SANTILLAN','FACUNDO','5ª','M'),e('SANTOS','BERNARDO','5ª','M'),e('SANZ','LUCIANO','5ª','M'),e('SAUCO','SANTIAGO FACUNDO','5ª','M'),e('SCHWAB','ALCIDES MARIO','5ª','M'),e('SEQUEIRA','BRAIAN','5ª','M'),e('SOMOZA','GONZALO','5ª','M'),e('SUAREZ','TIZZIANO','5ª','M'),e('TAHUIL','SANTIAGO','5ª','M'),e('TIRADOR','GERARDO','5ª','M'),e('TOMAS','SANTIAGO NICOLAS','5ª','M'),e('TORRES','MARCOS','5ª','M'),e('TUMINI','ANDRES','5ª','M'),e('VECCHIO','SEBASTIAN','5ª','M'),e('VELO','EMMANUEL','5ª','M'),e('VENECIANO','JUAN IGNACIO','5ª','M'),e('VERBAG','ALEJANDRO','5ª','M'),e('WEIMANN','ALEJANDRO','5ª','M'),
+        // CABALLEROS 4ª
+        e('AGUER','ALEX','4ª','M'),e('AGUERRE','LUCIANO','4ª','M'),e('ALMENTA','FEDERICO','4ª','M'),e('ANSELMO','MATIAS','4ª','M'),e('ARROQUI','TADEO','4ª','M'),e('ARTAZA','IGNACIO','4ª','M'),e('BERHO','FACUNDO','4ª','M'),e('BIANCHI','AGUSTIN','4ª','M'),e('BILOTTO','FACUNDO','4ª','M'),e('BILOTTO','IGNACIO','4ª','M'),e('BRIONES','FABIAN','4ª','M'),e('BUEY','MARCOS','4ª','M'),e('CARDOSO','JORGE ESTEBAN','4ª','M'),e('CASTILLO','RENZO','4ª','M'),e('COLO','GERMAN','4ª','M'),e('CORIA','AGUSTIN','4ª','M'),e('CORTES','GONZALO','4ª','M'),e('DE CASO','YAGO','4ª','M'),e('DEL VALLE','ARIEL MARCELO','4ª','M'),e('DIGIACOMO','LAUTARO','4ª','M'),e('DOMINGUEZ','MARCELO CARLOS','4ª','M'),e('DURANONA','BELISARIO','4ª','M'),e('ESTEVES','MATIAS','4ª','M'),e('EYARCH','MATIAS EZEQUIEL','4ª','M'),e('FELIX','RODRIGO','4ª','M'),e('GELY','JUAN CRUZ','4ª','M'),e('GONZALEZ','EUGENIO','4ª','M'),e('GONZALEZ','SEBASTIAN','4ª','M'),e('GROSSO','JUAN','4ª','M'),e('HAFFNER','SEBASTIAN','4ª','M'),e('HERNANDEZ','AGUSTIN','4ª','M'),e('HERNANDEZ','ROGELIO','4ª','M'),e('HOLZMAN','RICARDO','4ª','M'),e('ITURREGUI','MARIO ERNESTO','4ª','M'),e('JEREMIAS','ACUNA','4ª','M'),e('LANARO','PAULO','4ª','M'),e('LARRIEU LACOSTE','JULIAN','4ª','M'),e('LASCIOLI','CLAUDIO ANGEL','4ª','M'),e('LEAL','RENZO','4ª','M'),e('LIS','EMMANUEL','4ª','M'),e('LOPEZ','BRAYTON','4ª','M'),e('LUNA','CARLOS MARCELO','4ª','M'),e('MELIVILU','FRANCISCO','4ª','M'),e('MONTES DE OCA','AUGUSTO','4ª','M'),e('NANTON','NANDOR','4ª','M'),e('NIEVES','YAMIL','4ª','M'),e('PAZ','IGNACIO','4ª','M'),e('PERALTA','RODRIGO','4ª','M'),e('RAMIRO','SERANTES','4ª','M'),e('RIOS','JORGE','4ª','M'),e('RUBEN','CHRISTIAN','4ª','M'),e('SAENZ BURUAGA','SANTIAGO','4ª','M'),e('SARRA','SANTIAGO','4ª','M'),e('SCRIMIZZI','JUAN I','4ª','M'),e('SEGHEZZO','FACUNDO','4ª','M'),e('SERANTES','NICOLAS','4ª','M'),e('SEVERO','ANDRES','4ª','M'),e('SGRILLETTI','JUAN MARTIN','4ª','M'),e('SOLLE','GUIDO','4ª','M'),e('SOSA','FACUNDO','4ª','M'),e('SOTELO','FACUNDO','4ª','M'),e('STOESSEL','DIEGO','4ª','M'),e('STREMEL','NICOLAS','4ª','M'),e('TALBOT WRIGHT','BAUTISTA','4ª','M'),e('TOMAS','JUAN','4ª','M'),e('TOMASSI','BAUTISTA','4ª','M'),e('URRUTIA','IGNACIO','4ª','M'),e('VAZQUEZ','GASTON','4ª','M'),e('VIDAL','DAMIAN','4ª','M'),e('VIVAS','MARTIN','4ª','M'),e('VIVAS','SERGIO','4ª','M'),e('VOLONTE','IGNACIO','4ª','M'),e('ZAMPINI','BAUTISTA','4ª','M'),e('ZISKEVICH RESSIA','IVAN','4ª','M'),e('ZULAICA','MARCELINO','4ª','M'),
+        // CABALLEROS 3ª
+        e('ACEVEDO NUNEZ','LAUTARO','3ª','M'),e('AMERICO','DARIAN','3ª','M'),e('ANSELMO','CRISTIAN','3ª','M'),e('BARRAGAN','IAN','3ª','M'),e('BARRAGAN','MARTIN','3ª','M'),e('BARSI','SANTIAGO','3ª','M'),e('BIANCHI','BAUTISTA','3ª','M'),e('BLOCK','EZEQUIEL','3ª','M'),e('CASENAVE','GERMAN','3ª','M'),e('CASTILLO','FRANCO','3ª','M'),e('CESAREO','LAUTARO','3ª','M'),e('CORREA','ALVARO TOMAS','3ª','M'),e('CORTEJARENA','FERMIN','3ª','M'),e('DA RIOS','NOEL EZEQUIEL','3ª','M'),e('DURANONA','INDALECIO','3ª','M'),e('EIROA','PABLO','3ª','M'),e('FERNANDEZ','FRANCO','3ª','M'),e('FILARDO','JUAN','3ª','M'),e('FILIPPIN','RICARDO ALBERTO','3ª','M'),e('GARRIDO','FRANCO IVAN','3ª','M'),e('HERNANDEZ','CESAR HUMBERTO','3ª','M'),e('HOFFMANN','DANIEL','3ª','M'),e('LAGRAVE','CRISTIAN','3ª','M'),e('LANFRANCHI','MATIAS','3ª','M'),e('LONGHINI','JUAN JOSE','3ª','M'),e('LOPEZ','IAN','3ª','M'),e('LOPEZ','JAVIER','3ª','M'),e('LOPEZ MOCCIO','MAXIMILIANO','3ª','M'),e('MADDIO','RAUL OSCAR','3ª','M'),e('MARTINEZ BOGADO','GABRIEL','3ª','M'),e('MAS','GASTON','3ª','M'),e('MENDIBERRY','ALVARO','3ª','M'),e('OLMEDO','BENJAMIN','3ª','M'),e('PAIZ','FABRICIO','3ª','M'),e('PIAZZA','JORGE NICOLAS','3ª','M'),e('PINEDA','GABRIEL','3ª','M'),e('RESSIA','GASTON','3ª','M'),e('ROSATTO','JOSE PABLO','3ª','M'),e('SANDINI','FRANCO','3ª','M'),e('SUAREZ','MARTIN','3ª','M'),e('TOMAS','ALAN','3ª','M'),e('UGALDE','MARTIN IGNACIO','3ª','M'),e('VIDELA','ANDRES MATIAS','3ª','M'),e('VIOLA','NICOLAS','3ª','M'),e('ZULAICA','MANUEL','3ª','M'),
+        // CABALLEROS 2ª
+        e('ALESANDRI','GUSTAVO','2ª','M'),e('BRUNI','EZEQUIEL','2ª','M'),e('CIANCIO','PABLO','2ª','M'),e('CONTE','MATEO','2ª','M'),e('CORREA','JULIAN','2ª','M'),e('DOMINGUEZ','IMANOL','2ª','M'),e('GAINZA','DARDO','2ª','M'),e('GONZALEZ FRESTA','EZEQUIEL','2ª','M'),e('GONZALEZ FRESTA','SEBASTIAN','2ª','M'),e('GRECCO','EZEQUIEL','2ª','M'),e('HERNANDEZ','JOAQUIN','2ª','M'),e('ITURREGUI','NICOLAS','2ª','M'),e('ITURREGUI','RAMIRO','2ª','M'),e('LLORENTE','LUCIO','2ª','M'),e('MAC INTYRE','KEVIN','2ª','M'),e('MASSON','NICOLAS HORACIO','2ª','M'),e('MUSUMECI','MAXIMILIANO','2ª','M'),e('PALACIOS','BERNARDO','2ª','M'),e('PINEDA','SANTIAGO','2ª','M'),e('RAO','BERNARDO','2ª','M'),e('REYES','BRUNO ALBERTO','2ª','M'),e('REYES','GABRIEL','2ª','M'),e('SALIAS','SEBASTIAN','2ª','M'),e('SCARAVILLI','FRANCO','2ª','M'),e('SILVERII','LEONARDO','2ª','M'),e('SILVERII','MARCOS','2ª','M'),
+        // CABALLEROS 1ª
+        e('GAMONDI','TEO','1ª','M'),e('LASCIOLI','IGNACIO','1ª','M')
+      ];
+    })();
+
+    function normalizarTexto(str) {
+      if (!str) return '';
+      return str
+        .toUpperCase()
+        .trim()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .replace(/[^A-Z0-9\s]/g, '')
+        .replace(/\s+/g, ' ')
+        .trim();
+    }
+
+    function verificarACOP(apellido, nombre) {
+      console.log('Total jugadores ACOP:', window.JUGADORES_ACOP ? window.JUGADORES_ACOP.length : 'NO EXISTE');
+      if (!window.JUGADORES_ACOP) return { encontrado: false };
+
+      var apNorm = normalizarTexto(apellido);
+      var noNorm = nombre ? normalizarTexto(nombre) : '';
+      if (!apNorm) return { encontrado: false };
+
+      var resultados = [];
+
+      for (var i = 0; i < window.JUGADORES_ACOP.length; i++) {
+        var j = window.JUGADORES_ACOP[i];
+        var jApNorm = normalizarTexto(j.apellido);
+        var jNoNorm = normalizarTexto(j.nombre);
+
+        if (jApNorm === apNorm) {
+          if (noNorm) {
+            var palabrasNombre = noNorm.split(' ');
+            var coincideNombre = palabrasNombre.some(function(p) {
+              return p.length > 2 && jNoNorm.indexOf(p) !== -1;
+            });
+            if (coincideNombre) resultados.push(j);
+          } else {
+            resultados.push(j);
+          }
+        }
+      }
+
+      // Fallback: solo por apellido si no encontró con nombre
+      if (resultados.length === 0 && noNorm) {
+        for (var ii = 0; ii < window.JUGADORES_ACOP.length; ii++) {
+          var jj = window.JUGADORES_ACOP[ii];
+          if (normalizarTexto(jj.apellido) === apNorm) resultados.push(jj);
+        }
+      }
+
+      if (resultados.length === 0) return { encontrado: false };
+
+      var primero = resultados[0];
+      var cat = primero.categoria;
+      return {
+        encontrado: true,
+        categoria: cat,
+        genero: primero.genero,
+        nombre: primero.nombre,
+        apellido: primero.apellido,
+        estado: (cat === '1\u00aa' || cat === '2\u00aa') ? 'pendiente' : 'verificado',
+        multiples: resultados.length > 1,
+        todos: resultados
+      };
+    }
+
+    (function() {
+      var params = new URLSearchParams(window.location.search);
+      var tab = params.get('tab');
+      var rol = params.get('rol');
+      if (tab === 'registro') switchTab('register');
+      else if (tab === 'login') switchTab('login');
+      if (rol === 'profesor') selectRole('profesor');
+    })();
+
+  </script>
+
+</body>
+</html>

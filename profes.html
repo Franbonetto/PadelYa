@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mejorá tu juego · PadelYa</title>
+  <style>
+    /* Variables, reset, base */
+    :root {
+      --color-primary: #178BFF;
+      --color-dark: #F5F7FA;
+      --color-gray: #A8B3C7;
+      --bg: #071224;
+      --bg-2: #0A1630;
+      --bg-card: #0D1E3A;
+      --border: rgba(255,255,255,0.08);
+      --green-pelota: #D6FF00;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; scrollbar-width: none; }
+    body {
+      font-family: 'Geist', system-ui, -apple-system, sans-serif;
+      background: #071224;
+      color: #F5F7FA;
+      -webkit-font-smoothing: antialiased;
+      max-width: 680px;
+      margin: 0 auto;
+      min-height: 100vh;
+      padding-bottom: 80px;
+    }
+    body::-webkit-scrollbar { display: none; }
+
+    /* Header */
+    .header {
+      position: sticky;
+      top: 0;
+      background: rgba(7,18,36,0.97);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      padding: 1rem 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      z-index: 50;
+    }
+    .logo-img { display: block; }
+    .header-cta {
+      font-size: 0.8125rem;
+      font-weight: 700;
+      color: #F5F7FA;
+      text-decoration: none;
+      background: #178BFF;
+      border: none;
+      border-radius: 50px;
+      padding: 0.375rem 0.875rem;
+      box-shadow: 0 0 12px rgba(23,139,255,0.3);
+      transition: all 0.2s ease;
+    }
+    .header-cta:hover { box-shadow: 0 0 20px rgba(23,139,255,0.5); }
+
+    /* Hero */
+    .hero-profes {
+      padding: 1.75rem 1.25rem 1.25rem;
+      background: #0A1630;
+      color: #F5F7FA;
+    }
+    .hero-profes h1 {
+      font-size: 1.625rem;
+      font-weight: 900;
+      line-height: 1.2;
+      margin-bottom: 0.375rem;
+      letter-spacing: -0.5px;
+      color: #F5F7FA;
+    }
+    .hero-profes p {
+      font-size: 0.9375rem;
+      color: #A8B3C7;
+      line-height: 1.5;
+    }
+
+    /* Filtros */
+    .filters-wrap {
+      background: #0A1630;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      padding: 1rem 1.25rem;
+    }
+    .filter-row {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-bottom: 0.75rem;
+    }
+    .filter-row:last-child { margin-bottom: 0; }
+    .filter-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #A8B3C7;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 0.5rem;
+    }
+    .chip {
+      padding: 0.375rem 0.875rem;
+      border-radius: 99px;
+      border: 1.5px solid rgba(255,255,255,0.15);
+      background: transparent;
+      font-size: 0.8125rem;
+      font-weight: 600;
+      color: #A8B3C7;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.2s ease;
+    }
+    .chip.active {
+      background: #178BFF;
+      border-color: #178BFF;
+      color: #F5F7FA;
+    }
+
+    /* Lista de profes */
+    .profes-list {
+      padding: 1.25rem 1.25rem 6rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    /* Card de profe */
+    .profe-card {
+      background: #0D1E3A;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.08);
+      overflow: hidden;
+      transition: all 0.2s ease;
+    }
+    .profe-card:hover {
+      border-color: rgba(23,139,255,0.3);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    }
+    .profe-card-header {
+      padding: 1.25rem 1.25rem 0;
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+    }
+    .profe-avatar {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      font-weight: 900;
+      color: #F5F7FA;
+      flex-shrink: 0;
+    }
+    .profe-meta { flex: 1; min-width: 0; }
+    .profe-name { font-size: 1.0625rem; font-weight: 800; color: #F5F7FA; margin-bottom: 0.25rem; }
+    .profe-rating {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: #F5F7FA;
+      margin-bottom: 0.5rem;
+    }
+    .rating-star { color: #F39C12; }
+    .rating-count { color: #A8B3C7; font-weight: 500; }
+    .profe-chips { display: flex; flex-wrap: wrap; gap: 0.375rem; margin-bottom: 0.5rem; }
+    .chip-tag {
+      display: inline-block;
+      padding: 0.2rem 0.6rem;
+      border-radius: 99px;
+      background: rgba(23,139,255,0.12);
+      color: #178BFF;
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+    .profe-card-body {
+      padding: 0.75rem 1.25rem;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      margin-top: 1rem;
+    }
+    .profe-detail {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.8125rem;
+      color: #A8B3C7;
+      margin-bottom: 0.375rem;
+    }
+    .profe-detail strong { color: #F5F7FA; font-weight: 700; }
+    .profe-price {
+      font-size: 1rem;
+      font-weight: 800;
+      color: #178BFF;
+      margin-bottom: 0.875rem;
+    }
+    .profe-badge-fundador {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.375rem;
+      background: rgba(214,255,0,0.1);
+      color: #D6FF00;
+      border: 1px solid rgba(214,255,0,0.2);
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.25rem 0.75rem;
+      border-radius: 99px;
+      margin-bottom: 1rem;
+    }
+    .profe-actions {
+      display: flex;
+      gap: 0.75rem;
+    }
+    .btn-perfil {
+      flex: 1;
+      padding: 0.75rem;
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 10px;
+      background: transparent;
+      color: #F5F7FA;
+      font-size: 0.875rem;
+      font-weight: 700;
+      text-align: center;
+      text-decoration: none;
+      font-family: inherit;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .btn-perfil:hover { border-color: rgba(23,139,255,0.4); color: #178BFF; }
+    .btn-whatsapp {
+      flex: 1;
+      padding: 0.75rem;
+      border: none;
+      border-radius: 10px;
+      background: #25D366;
+      color: #F5F7FA;
+      font-size: 0.875rem;
+      font-weight: 700;
+      text-align: center;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      font-family: inherit;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    /* Estado vacío */
+    .empty-state {
+      text-align: center;
+      padding: 3rem 1.25rem;
+      color: #A8B3C7;
+    }
+    .empty-state-icon {
+      width: 64px;
+      height: 64px;
+      background: #0D1E3A;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1rem;
+      color: #A8B3C7;
+    }
+    .empty-state h3 { font-size: 1rem; font-weight: 700; color: #F5F7FA; margin-bottom: 0.5rem; }
+    .empty-state p { font-size: 0.875rem; line-height: 1.5; margin-bottom: 1.25rem; }
+    .btn-register {
+      display: inline-block;
+      padding: 0.75rem 1.5rem;
+      background: #178BFF;
+      color: #F5F7FA;
+      border-radius: 50px;
+      font-size: 0.875rem;
+      font-weight: 700;
+      text-decoration: none;
+      box-shadow: 0 0 16px rgba(23,139,255,0.3);
+      transition: all 0.2s ease;
+    }
+    .btn-register:hover { box-shadow: 0 0 24px rgba(23,139,255,0.5); }
+
+    /* Nav + sheets — igual que el resto del proyecto */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      max-width: 680px;
+      background: rgba(7,18,36,0.97);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-top: 1px solid rgba(255,255,255,0.06);
+      display: flex;
+      align-items: center;
+      padding: 8px 0 20px;
+      z-index: 100;
+    }
+    .nav-item {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      padding: 4px 0;
+      color: #A8B3C7;
+      text-decoration: none;
+      font-size: 10px;
+      font-weight: 500;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-family: inherit;
+      transition: color 0.15s;
+    }
+    .nav-item.active { color: #178BFF; }
+    .nav-item.active svg { stroke: #178BFF; }
+    .nav-create {
+      flex: 0 0 auto;
+      width: 52px;
+      height: 52px;
+      background: #178BFF;
+      border-radius: 50%;
+      border: none;
+      cursor: pointer;
+      font-family: inherit;
+      color: white;
+      margin-top: -12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 20px rgba(23,139,255,0.5);
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+    .nav-create:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 28px rgba(23,139,255,0.7);
+    }
+    .nav-create:active { transform: scale(0.97); }
+    .sheet-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 200;
+    }
+    .sheet-overlay.open { display: block; animation: fadeInOverlay 0.2s ease; }
+    @keyframes fadeInOverlay { from { opacity:0 } to { opacity:1 } }
+    .bottom-sheet {
+      position: fixed;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%) translateY(100%);
+      width: 100%;
+      max-width: 680px;
+      background: #0D1E3A;
+      border-radius: 20px 20px 0 0;
+      padding: 1rem 1.25rem calc(1.5rem + env(safe-area-inset-bottom));
+      z-index: 201;
+      transition: transform 0.3s cubic-bezier(0.32,0.72,0,1);
+    }
+    .bottom-sheet.open { transform: translateX(-50%) translateY(0); }
+    .sheet-handle { width: 40px; height: 4px; background: rgba(255,255,255,0.12); border-radius: 2px; margin: 0 auto 1.25rem; }
+    .sheet-title { font-size: 1.0625rem; font-weight: 800; color: #F5F7FA; margin-bottom: 1rem; }
+    .sheet-option {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem;
+      border-radius: 12px;
+      text-decoration: none;
+      color: inherit;
+      border: 1px solid rgba(255,255,255,0.08);
+      margin-bottom: 0.75rem;
+      transition: background 0.15s;
+    }
+    .sheet-option:last-child { margin-bottom: 0; }
+    .sheet-option:active { background: rgba(255,255,255,0.05); }
+    .sheet-option-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: rgba(23,139,255,0.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      color: #178BFF;
+    }
+    .sheet-option-title { font-size: 0.9375rem; font-weight: 700; color: #F5F7FA; }
+    .sheet-option-sub { font-size: 0.8125rem; color: #A8B3C7; margin-top: 0.125rem; }
+  </style>
+</head>
+<body>
+
+  <header class="header">
+    <img src="assets/logo-padelya.png" alt="PadelYa" style="height:40px;object-fit:contain;">
+    <a href="auth.html?tab=registro&rol=profesor" class="header-cta">Quiero ser profe</a>
+  </header>
+
+  <!-- Hero -->
+  <div class="hero-profes">
+    <h1>Mejorá tu juego</h1>
+    <p>Los mejores profes de pádel en Olavarría</p>
+  </div>
+
+  <!-- Filtros -->
+  <div class="filters-wrap">
+    <div class="filter-label">Especialidad</div>
+    <div class="filter-row">
+      <button class="chip active" onclick="filterChip(this,'esp')">Todos</button>
+      <button class="chip" onclick="filterChip(this,'esp')">Menores</button>
+      <button class="chip" onclick="filterChip(this,'esp')">Adultos</button>
+      <button class="chip" onclick="filterChip(this,'esp')">Alto rendimiento</button>
+    </div>
+    <div class="filter-label" style="margin-top:0.75rem;">Modalidad</div>
+    <div class="filter-row">
+      <button class="chip active" onclick="filterChip(this,'mod')">Todas</button>
+      <button class="chip" onclick="filterChip(this,'mod')">Individual</button>
+      <button class="chip" onclick="filterChip(this,'mod')">Grupal</button>
+    </div>
+    <div class="filter-label" style="margin-top:0.75rem;">Categoría</div>
+    <div class="filter-row">
+      <button class="chip active" onclick="filterChip(this,'cat')">Todas</button>
+      <button class="chip" onclick="filterChip(this,'cat')">Principiante</button>
+      <button class="chip" onclick="filterChip(this,'cat')">7ª a 5ª</button>
+      <button class="chip" onclick="filterChip(this,'cat')">4ª a 2ª</button>
+    </div>
+  </div>
+
+  <!-- Lista de profes -->
+  <main class="profes-list">
+
+    <!-- Card 1: Lucas Fernández — mejor promedio -->
+    <article class="profe-card">
+      <div class="profe-card-header">
+        <div class="profe-avatar" style="background: linear-gradient(135deg, #178BFF, #0D5DB5);">LF</div>
+        <div class="profe-meta">
+          <div class="profe-name">Lucas Fernández</div>
+          <div class="profe-rating">
+            <svg class="rating-star" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <span>4.8</span>
+            <span class="rating-count">· 18 reseñas</span>
+          </div>
+          <div class="profe-chips">
+            <span class="chip-tag">Adultos</span>
+            <span class="chip-tag">Menores</span>
+          </div>
+        </div>
+      </div>
+      <div class="profe-card-body">
+        <div class="profe-detail"><span>Enseña</span><strong>7ª a 4ª</strong></div>
+        <div class="profe-detail"><span>Modalidad</span><strong>Individual · Grupal</strong></div>
+        <div class="profe-price">Desde $15.000 la clase</div>
+        <div class="profe-badge-fundador">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          Profe Fundador
+        </div>
+        <div class="profe-actions">
+          <a href="auth.html?redirect=profesor-perfil-publico.html" class="btn-perfil">Ver perfil</a>
+          <a href="https://wa.me/5492284000001?text=Hola%20Lucas%2C%20te%20encontr%C3%A9%20en%20PadelYa%20y%20quiero%20consultar%20sobre%20clases." class="btn-whatsapp">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            WhatsApp
+          </a>
+        </div>
+      </div>
+    </article>
+
+    <!-- Card 2: Sofía Martínez -->
+    <article class="profe-card">
+      <div class="profe-card-header">
+        <div class="profe-avatar" style="background: linear-gradient(135deg, #6C3483, #9B59B6);">SM</div>
+        <div class="profe-meta">
+          <div class="profe-name">Sofía Martínez</div>
+          <div class="profe-rating">
+            <svg class="rating-star" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <span>4.6</span>
+            <span class="rating-count">· 11 reseñas</span>
+          </div>
+          <div class="profe-chips">
+            <span class="chip-tag">Menores</span>
+            <span class="chip-tag">Alto rendimiento</span>
+          </div>
+        </div>
+      </div>
+      <div class="profe-card-body">
+        <div class="profe-detail"><span>Enseña</span><strong>Principiante a 6ª</strong></div>
+        <div class="profe-detail"><span>Modalidad</span><strong>Individual · Grupal</strong></div>
+        <div class="profe-price">Desde $12.000 la clase</div>
+        <div class="profe-badge-fundador">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          Profe Fundador
+        </div>
+        <div class="profe-actions">
+          <a href="auth.html?redirect=profesor-perfil-publico.html" class="btn-perfil">Ver perfil</a>
+          <a href="https://wa.me/5492284000002?text=Hola%20Sof%C3%ADa%2C%20te%20encontr%C3%A9%20en%20PadelYa%20y%20quiero%20consultar%20sobre%20clases." class="btn-whatsapp">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            WhatsApp
+          </a>
+        </div>
+      </div>
+    </article>
+
+    <!-- Estado vacío — Próximamente más profes -->
+    <div class="empty-state">
+      <div class="empty-state-icon">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      </div>
+      <h3>Próximamente más profes en Olavarría</h3>
+      <p>Estamos incorporando profes de pádel certificados.<br>¿Sos profe? Registrate y llegá a cientos de jugadores.</p>
+      <a href="auth.html?tab=registro&rol=profesor" class="btn-register">Quiero ser profe en PadelYa</a>
+    </div>
+
+  </main>
+
+  <!-- Navegación inferior -->
+  <nav class="bottom-nav" role="navigation" aria-label="Navegación principal">
+    <a href="jugador-home.html" class="nav-item" aria-label="Inicio">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+        <polyline points="9 22 9 12 15 12 15 22"/>
+      </svg>
+      <span>Inicio</span>
+    </a>
+    <a href="jugador-buscar.html" class="nav-item" aria-label="Partidos">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+        <rect x="2" y="4" width="20" height="16" rx="2"/>
+        <line x1="12" y1="4" x2="12" y2="20"/>
+        <line x1="2" y1="12" x2="6" y2="12"/>
+        <line x1="18" y1="12" x2="22" y2="12"/>
+      </svg>
+      <span>Partidos</span>
+    </a>
+    <button class="nav-create" onclick="window.location.href='jugador-crear.html'" type="button" aria-label="Crear partido">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <line x1="12" y1="5" x2="12" y2="19"/>
+        <line x1="5" y1="12" x2="19" y2="12"/>
+      </svg>
+    </button>
+    <a href="profes.html" class="nav-item active" aria-label="Entrenà">
+      <svg width="22" height="22" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+        <ellipse cx="50" cy="38" rx="26" ry="30"/>
+        <circle cx="41" cy="28" r="4" fill="currentColor" stroke="none"/>
+        <circle cx="50" cy="28" r="4" fill="currentColor" stroke="none"/>
+        <circle cx="59" cy="28" r="4" fill="currentColor" stroke="none"/>
+        <circle cx="41" cy="38" r="4" fill="currentColor" stroke="none"/>
+        <circle cx="50" cy="38" r="4" fill="currentColor" stroke="none"/>
+        <circle cx="59" cy="38" r="4" fill="currentColor" stroke="none"/>
+        <circle cx="41" cy="48" r="4" fill="currentColor" stroke="none"/>
+        <circle cx="50" cy="48" r="4" fill="currentColor" stroke="none"/>
+        <circle cx="59" cy="48" r="4" fill="currentColor" stroke="none"/>
+        <path d="M38 66 L50 68 L62 66 L58 68 L50 95 L42 68 Z"/>
+        <rect x="44" y="67" width="12" height="28" rx="6"/>
+      </svg>
+      <span>Entrenà</span>
+    </a>
+    <a href="jugador-perfil.html" class="nav-item" aria-label="Perfil">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+        <circle cx="12" cy="8" r="4"/>
+        <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
+      </svg>
+      <span>Perfil</span>
+    </a>
+  </nav>
+
+  <!-- Sheet: Crear -->
+  <div id="sheet-overlay-crear" class="sheet-overlay" onclick="closeCrearMenu()"></div>
+  <div id="sheet-crear" class="bottom-sheet" role="dialog" aria-label="Crear">
+    <div class="sheet-handle"></div>
+    <div class="sheet-title">Crear</div>
+    <a href="jugador-crear.html" class="sheet-option">
+      <div class="sheet-option-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M3 9h18M9 21V9"/></svg>
+      </div>
+      <div>
+        <div class="sheet-option-title">Crear partido</div>
+        <div class="sheet-option-sub">Publicá un turno y encontrá jugadores</div>
+      </div>
+    </a>
+  </div>
+
+  <script>
+    /* ── Demo data fallback ── */
+    (function() {
+      if (!sessionStorage.getItem('loggedIn')) {
+        sessionStorage.setItem('loggedIn', 'true');
+        sessionStorage.setItem('nombre', 'Martín Rodríguez');
+        sessionStorage.setItem('categoria', '5ª');
+        sessionStorage.setItem('estadoCategoria', 'orientativa');
+        sessionStorage.setItem('sexo', 'masculino');
+      }
+    })();
+    function filterChip(chip, group) {
+      document.querySelectorAll('[onclick*="' + group + '"]').forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+    }
+    function openCrearMenu() {
+      document.getElementById('sheet-overlay-crear').classList.add('open');
+      document.getElementById('sheet-crear').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeCrearMenu() {
+      document.getElementById('sheet-overlay-crear').classList.remove('open');
+      document.getElementById('sheet-crear').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,1516 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PadelYa - Panel del Profesor</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      background: var(--color-bg-secondary);
+      padding-bottom: 2rem;
+    }
+    .page-content {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 0 1rem 2rem;
+    }
+
+    /* Header */
+    .header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--color-white);
+      border-bottom: 1px solid var(--color-border);
+      padding: 0.85rem 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .avatar-circle {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--color-accent);
+      color: var(--color-white);
+      font-size: 0.9rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .header-greeting strong {
+      display: block;
+      font-size: 0.9375rem;
+      font-weight: 700;
+      color: var(--color-dark);
+    }
+    .header-greeting .meta {
+      font-size: 0.75rem;
+      color: var(--color-gray);
+    }
+    .header-icon-btn {
+      width: 40px;
+      height: 40px;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      color: var(--color-primary);
+      transition: background 0.15s;
+      text-decoration: none;
+    }
+    .header-icon-btn:hover { background: var(--color-bg-secondary); }
+
+    /* Badge */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      padding: 0.2rem 0.6rem;
+      border-radius: 99px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    .badge-certified { background: #EBF5FB; color: var(--color-accent); }
+    .badge-gold {
+      background: linear-gradient(135deg, #F9A825, #F57F17);
+      color: #fff;
+      font-size: 0.65rem;
+    }
+    .badge-green { background: #D5F5E3; color: #1E8449; }
+    .badge-gray { background: var(--color-bg-secondary); color: var(--color-gray); }
+    .badge-orange { background: #FDEBD0; color: #D35400; }
+
+    /* Section */
+    .section { margin-top: 1.5rem; }
+    .section-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 0.875rem;
+    }
+    .section-head h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--color-dark);
+      margin: 0;
+    }
+    .section-head a {
+      font-size: 0.8125rem;
+      font-weight: 600;
+      color: var(--color-accent);
+      text-decoration: none;
+    }
+    .section-head a:hover { opacity: 0.75; }
+
+    /* Stats grid */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.75rem;
+    }
+    @media (min-width: 480px) {
+      .stats-grid { grid-template-columns: repeat(4, 1fr); }
+    }
+    .stat-card {
+      background: var(--color-white);
+      border: 1px solid var(--color-border);
+      border-radius: 14px;
+      padding: 1rem;
+      text-align: center;
+    }
+    .stat-number {
+      font-size: 1.75rem;
+      font-weight: 800;
+      color: var(--color-primary);
+      line-height: 1;
+    }
+    .stat-label {
+      font-size: 0.75rem;
+      color: var(--color-gray);
+      font-weight: 600;
+      margin-top: 0.25rem;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+
+    /* Calendar */
+    .calendar-card {
+      background: var(--color-white);
+      border: 1px solid var(--color-border);
+      border-radius: 14px;
+      overflow: hidden;
+    }
+    .calendar-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 1.25rem;
+      border-bottom: 1px solid var(--color-border);
+    }
+    .calendar-header h4 {
+      font-size: 0.9375rem;
+      font-weight: 700;
+      color: var(--color-dark);
+    }
+    .cal-nav {
+      display: flex;
+      gap: 0.5rem;
+    }
+    .cal-nav button {
+      width: 32px;
+      height: 32px;
+      border: 1px solid var(--color-border);
+      background: var(--color-white);
+      border-radius: 8px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--color-dark);
+      transition: background 0.15s;
+    }
+    .cal-nav button:hover { background: var(--color-bg-secondary); }
+
+    .week-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      border-bottom: 1px solid var(--color-border);
+    }
+    .week-day {
+      padding: 0.5rem 0.25rem;
+      text-align: center;
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: var(--color-gray);
+      text-transform: uppercase;
+      border-right: 1px solid var(--color-border);
+    }
+    .week-day:last-child { border-right: none; }
+
+    .week-dates {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+    }
+    .week-date {
+      padding: 0.5rem 0.25rem;
+      text-align: center;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--color-dark);
+      border-right: 1px solid var(--color-border);
+      cursor: pointer;
+      transition: background 0.15s;
+      position: relative;
+    }
+    .week-date:last-child { border-right: none; }
+    .week-date:hover { background: var(--color-bg-secondary); }
+    .week-date.today {
+      background: var(--color-primary);
+      color: var(--color-white);
+      border-radius: 0;
+    }
+    .week-date .dot {
+      position: absolute;
+      bottom: 4px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--color-accent);
+    }
+    .week-date.today .dot { background: var(--color-light-blue); }
+
+    /* Time slots */
+    .slots-list {
+      padding: 0.75rem 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .slot-item {
+      display: flex;
+      align-items: center;
+      gap: 0.875rem;
+      padding: 0.75rem 1rem;
+      border: 1px solid var(--color-border);
+      border-radius: 10px;
+      background: var(--color-white);
+      transition: background 0.15s;
+    }
+    .slot-item:hover { background: var(--color-bg-secondary); }
+    .slot-time {
+      font-size: 0.875rem;
+      font-weight: 700;
+      color: var(--color-primary);
+      min-width: 72px;
+    }
+    .slot-info { flex: 1; }
+    .slot-student {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--color-dark);
+    }
+    .slot-detail {
+      font-size: 0.775rem;
+      color: var(--color-gray);
+      margin-top: 1px;
+    }
+    .slot-actions {
+      display: flex;
+      gap: 0.375rem;
+    }
+    .btn-xs {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.3rem 0.7rem;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+      border: none;
+      transition: background 0.15s;
+    }
+    .btn-xs-primary { background: var(--color-accent); color: white; }
+    .btn-xs-primary:hover { background: var(--color-primary); }
+    .btn-xs-outline { background: transparent; color: var(--color-dark); border: 1px solid var(--color-border); }
+    .btn-xs-outline:hover { border-color: var(--color-accent); color: var(--color-accent); }
+
+    .add-slot-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.65rem;
+      border: 2px dashed var(--color-border);
+      border-radius: 10px;
+      background: transparent;
+      color: var(--color-gray);
+      font-size: 0.8125rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      width: 100%;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .add-slot-btn:hover { border-color: var(--color-accent); color: var(--color-accent); }
+
+    /* Students list */
+    .students-list {
+      background: var(--color-white);
+      border: 1px solid var(--color-border);
+      border-radius: 14px;
+      overflow: hidden;
+    }
+    .student-row {
+      display: flex;
+      align-items: center;
+      gap: 0.875rem;
+      padding: 0.875rem 1rem;
+      border-bottom: 1px solid var(--color-border);
+      transition: background 0.15s;
+    }
+    .student-row:last-child { border-bottom: none; }
+    .student-row:hover { background: var(--color-bg-secondary); }
+    .student-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--color-light-blue);
+      color: var(--color-primary);
+      font-size: 0.8rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .student-info { flex: 1; }
+    .student-name {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--color-dark);
+    }
+    .student-meta {
+      font-size: 0.775rem;
+      color: var(--color-gray);
+      margin-top: 1px;
+    }
+    .student-progress {
+      text-align: right;
+    }
+    .student-classes {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--color-primary);
+    }
+    .student-next {
+      font-size: 0.7rem;
+      color: var(--color-gray);
+    }
+
+    /* Earnings */
+    .earnings-card {
+      background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+      border-radius: 14px;
+      padding: 1.5rem;
+      color: var(--color-white);
+    }
+    .earnings-label {
+      font-size: 0.8rem;
+      opacity: 0.8;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      font-weight: 600;
+    }
+    .earnings-amount {
+      font-size: 2.25rem;
+      font-weight: 800;
+      line-height: 1.1;
+      margin: 0.25rem 0;
+    }
+    .earnings-sub {
+      font-size: 0.8rem;
+      opacity: 0.75;
+    }
+    .earnings-row {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1.25rem;
+    }
+    .earnings-item {
+      flex: 1;
+      background: rgba(255,255,255,0.15);
+      border-radius: 10px;
+      padding: 0.75rem 1rem;
+    }
+    .earnings-item-value {
+      font-size: 1.25rem;
+      font-weight: 800;
+    }
+    .earnings-item-label {
+      font-size: 0.725rem;
+      opacity: 0.8;
+      margin-top: 2px;
+    }
+
+    /* Btn full */
+    .btn-full {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      width: 100%;
+      padding: 0.75rem;
+      background: var(--color-accent);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+      text-decoration: none;
+      transition: background 0.2s;
+      margin-top: 1rem;
+    }
+    .btn-full:hover { background: var(--color-primary); }
+    .btn-full-outline {
+      background: transparent;
+      color: var(--color-accent);
+      border: 1.5px solid var(--color-accent);
+    }
+    .btn-full-outline:hover { background: var(--color-accent); color: white; }
+
+    /* Panel tabs */
+    .panel-tabs {
+      display: flex;
+      gap: 0;
+      background: var(--color-white);
+      border: 1px solid var(--color-border);
+      border-radius: 12px;
+      overflow: hidden;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .panel-tabs::-webkit-scrollbar { display: none; }
+    .panel-tab {
+      flex: none;
+      padding: 0.6rem 1rem;
+      border: none;
+      background: transparent;
+      font-size: 0.8125rem;
+      font-weight: 600;
+      color: var(--color-gray);
+      cursor: pointer;
+      font-family: inherit;
+      white-space: nowrap;
+      transition: background 0.15s, color 0.15s;
+      border-right: 1px solid var(--color-border);
+    }
+    .panel-tab:last-child { border-right: none; }
+    .panel-tab.active { background: var(--color-primary); color: white; }
+    .panel-tab:not(.active):hover { background: var(--color-bg-secondary); color: var(--color-dark); }
+
+    /* Agenda calendar */
+    .cal-day {
+      aspect-ratio: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.1s;
+      position: relative;
+      padding: 2px;
+    }
+    .cal-day:hover { background: var(--color-bg-secondary); }
+    .cal-day-empty { cursor: default; }
+    .cal-day-empty:hover { background: transparent; }
+    .cal-day-today .cal-day-num { background: var(--color-accent); color: white; border-radius: 50%; width: 26px; height: 26px; display: flex; align-items: center; justify-content: center; }
+    .cal-day-selected .cal-day-num { background: var(--color-primary); color: white; border-radius: 50%; width: 26px; height: 26px; display: flex; align-items: center; justify-content: center; }
+    .cal-day-num { font-size: 0.8125rem; font-weight: 600; color: var(--color-dark); width: 26px; height: 26px; display: flex; align-items: center; justify-content: center; }
+    .cal-day-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--color-accent); position: absolute; bottom: 3px; left: 50%; transform: translateX(-50%); }
+    .cal-day-selected.cal-day-today .cal-day-num { background: var(--color-primary); }
+
+    /* Form */
+    .form-group { margin-bottom: 1rem; }
+    .form-group label { display: block; font-size: 0.8125rem; font-weight: 600; color: var(--color-dark); margin-bottom: 0.375rem; }
+    .form-group input, .form-group textarea, .form-group select {
+      width: 100%;
+      padding: 0.65rem 0.875rem;
+      border: 1.5px solid var(--color-border);
+      border-radius: 10px;
+      font-size: 0.875rem;
+      font-family: inherit;
+      color: var(--color-dark);
+      background: white;
+      outline: none;
+      box-sizing: border-box;
+      transition: border-color 0.15s;
+    }
+    .form-group input:focus, .form-group textarea:focus { border-color: var(--color-accent); }
+    .form-group textarea { resize: vertical; min-height: 72px; }
+
+    /* Chips */
+    .chips { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+    .chip {
+      padding: 0.375rem 0.875rem;
+      border: 1.5px solid var(--color-border);
+      border-radius: 99px;
+      font-size: 0.8125rem;
+      font-weight: 600;
+      color: var(--color-gray);
+      cursor: pointer;
+      font-family: inherit;
+      background: white;
+      transition: border-color 0.15s, color 0.15s, background 0.15s;
+    }
+    .chip.selected { border-color: var(--color-accent); color: var(--color-accent); background: #EBF5FB; }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="header-left">
+      <div class="avatar-circle" aria-label="Avatar de Lucas Fernández">LF</div>
+      <div class="header-greeting">
+        <strong>Hola, Lucas</strong>
+        <div style="display:flex;align-items:center;gap:0.4rem;margin-top:1px;">
+          <span class="meta">Profesor certificado</span>
+          <span style="display:inline-flex;align-items:center;gap:3px;padding:0.15rem 0.5rem;border-radius:99px;font-size:0.65rem;font-weight:700;background:#EBF5FB;color:var(--color-accent);white-space:nowrap;">
+            <svg width="8" height="8" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            Membresía Activa
+          </span>
+        </div>
+      </div>
+    </div>
+    <a href="index.html" class="header-icon-btn" aria-label="Volver al inicio">
+      <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>
+      </svg>
+    </a>
+  </header>
+
+  <main class="page-content">
+
+    <!-- Badges row -->
+    <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-top:1rem;">
+      <span class="badge badge-certified">
+        <svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+        Certificado
+      </span>
+      <span class="badge badge-gold">
+        <svg width="10" height="10" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        Profe Fundador
+      </span>
+      <span class="badge" style="background:#F5EEF8;color:#7D3C98;">⭐ 4.9 · 38 reseñas</span>
+    </div>
+
+    <!-- Especialidades -->
+    <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-top:0.625rem;">
+      <span style="font-size:0.7rem;font-weight:700;color:var(--color-gray);text-transform:uppercase;letter-spacing:0.04em;align-self:center;">Especialidades:</span>
+      <span class="badge badge-certified">Adultos</span>
+      <span class="badge badge-certified">Menores</span>
+      <span class="badge badge-certified">Alto rendimiento</span>
+    </div>
+
+    <!-- Tab navigation -->
+    <div class="panel-tabs" style="margin-top:1.25rem;">
+      <button class="panel-tab active" onclick="switchPanelTab('dashboard', this)">Dashboard</button>
+      <button class="panel-tab" onclick="switchPanelTab('perfil', this)">Mi perfil</button>
+      <button class="panel-tab" onclick="switchPanelTab('agenda', this)">Mi Agenda</button>
+      <button class="panel-tab" onclick="switchPanelTab('resenas', this)">Reseñas</button>
+      <button class="panel-tab" onclick="switchPanelTab('suscripcion', this)">Suscripción</button>
+    </div>
+
+    <!-- TAB: Dashboard -->
+    <div id="tab-dashboard">
+
+    <!-- Beneficios profe -->
+    <div class="section" style="margin-top:1rem;">
+      <div style="background:linear-gradient(135deg,var(--color-primary),var(--color-accent));border-radius:14px;padding:1.25rem;color:white;position:relative;overflow:hidden;">
+        <div style="position:absolute;top:-20px;right:-20px;width:80px;height:80px;background:rgba(255,255,255,0.06);border-radius:50%;"></div>
+        <div style="display:flex;align-items:flex-start;gap:1rem;">
+          <div style="width:44px;height:44px;background:rgba(255,255,255,0.18);border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <svg width="22" height="22" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+              <ellipse cx="11" cy="11" rx="8" ry="8" transform="rotate(-45 11 11)"/>
+              <line x1="16" y1="16" x2="22" y2="22"/>
+              <line x1="8" y1="11" x2="14" y2="11"/>
+              <line x1="11" y1="8" x2="11" y2="14"/>
+            </svg>
+          </div>
+          <div style="flex:1;">
+            <div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:0.25rem;">
+              <span style="font-weight:800;font-size:0.9375rem;">Jugá con descuento de profe</span>
+              <span style="font-size:0.65rem;font-weight:700;background:rgba(255,255,255,0.2);border:1px solid rgba(255,255,255,0.3);border-radius:99px;padding:0.15rem 0.5rem;white-space:nowrap;">Beneficio exclusivo</span>
+            </div>
+            <p style="font-size:0.8rem;opacity:0.85;line-height:1.5;margin:0 0 0.875rem;">Como profesor activo, pagás solo $500 por partido (50% de descuento). Tu membresía incluye este beneficio.</p>
+            <a href="jugador-buscar.html" style="display:inline-flex;align-items:center;gap:0.4rem;background:white;color:var(--color-primary);font-size:0.8125rem;font-weight:800;padding:0.5rem 1rem;border-radius:8px;text-decoration:none;transition:opacity 0.15s;" onmouseover="this.style.opacity='0.9'" onmouseout="this.style.opacity='1'">
+              <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              Buscar partido
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="section">
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-number">12</div>
+          <div class="stat-label">Alumnos activos</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">8</div>
+          <div class="stat-label">Clases esta semana</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">47</div>
+          <div class="stat-label">Clases totales</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number" style="font-size:1.4rem;">4.9</div>
+          <div class="stat-label">Calificación</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Earnings card -->
+    <div class="section">
+      <div class="earnings-card">
+        <div class="earnings-label">Ingresos este mes</div>
+        <div class="earnings-amount">$96,000</div>
+        <div class="earnings-sub">12 clases · $8,000 por clase</div>
+        <div class="earnings-row">
+          <div class="earnings-item">
+            <div class="earnings-item-value">$64,000</div>
+            <div class="earnings-item-label">Cobrado</div>
+          </div>
+          <div class="earnings-item">
+            <div class="earnings-item-value">$32,000</div>
+            <div class="earnings-item-label">Pendiente</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Weekly calendar -->
+    <div class="section">
+      <div class="section-head">
+        <h3>Agenda semanal</h3>
+        <a href="#">Ver mes →</a>
+      </div>
+
+      <div class="calendar-card">
+        <div class="calendar-header">
+          <h4>Mayo 2026</h4>
+          <div class="cal-nav">
+            <button aria-label="Semana anterior">
+              <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+            </button>
+            <button aria-label="Semana siguiente">
+              <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="week-grid">
+          <div class="week-day">Lun</div>
+          <div class="week-day">Mar</div>
+          <div class="week-day">Mié</div>
+          <div class="week-day">Jue</div>
+          <div class="week-day">Vie</div>
+          <div class="week-day">Sáb</div>
+          <div class="week-day">Dom</div>
+        </div>
+
+        <div class="week-dates">
+          <div class="week-date">19</div>
+          <div class="week-date today">20<span class="dot"></span></div>
+          <div class="week-date">21<span class="dot"></span></div>
+          <div class="week-date">22<span class="dot"></span></div>
+          <div class="week-date">23</div>
+          <div class="week-date">24<span class="dot"></span></div>
+          <div class="week-date">25</div>
+        </div>
+
+        <!-- Today's slots -->
+        <div class="slots-list">
+          <div style="font-size:0.75rem;font-weight:700;color:var(--color-gray);text-transform:uppercase;letter-spacing:0.04em;margin-bottom:0.25rem;">Martes 20 · Hoy</div>
+
+          <div class="slot-item">
+            <div class="slot-time">09:00 hs</div>
+            <div class="slot-info">
+              <div class="slot-student">Valentina Romero</div>
+              <div class="slot-detail">Cancha 2 · Las Terrazas Pádel · 6ª categoría</div>
+            </div>
+            <div class="slot-actions">
+              <button class="btn-xs btn-xs-outline" onclick="alert('Cancelar clase')">Cancelar</button>
+            </div>
+          </div>
+
+          <div class="slot-item">
+            <div class="slot-time">11:00 hs</div>
+            <div class="slot-info">
+              <div class="slot-student">Pedro Salcedo</div>
+              <div class="slot-detail">Cancha 1 · Chingoland · 7ª categoría</div>
+            </div>
+            <div class="slot-actions">
+              <button class="btn-xs btn-xs-outline" onclick="alert('Cancelar clase')">Cancelar</button>
+            </div>
+          </div>
+
+          <div class="slot-item">
+            <div class="slot-time">18:00 hs</div>
+            <div class="slot-info">
+              <div class="slot-student">Grupo Principiantes (3 alumnos)</div>
+              <div class="slot-detail">Cancha 3 · Sport Arena Pádel · clase grupal</div>
+            </div>
+            <div class="slot-actions">
+              <button class="btn-xs btn-xs-primary" onclick="alert('Ver detalle')">Ver</button>
+            </div>
+          </div>
+
+          <button class="add-slot-btn" onclick="alert('Agregar disponibilidad')">
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Agregar disponibilidad
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Students list -->
+    <div class="section">
+      <div class="section-head">
+        <h3>Mis alumnos</h3>
+        <a href="#" onclick="alert('Ver todos los alumnos'); return false;">Ver todos →</a>
+      </div>
+
+      <div class="students-list">
+
+        <div class="student-row">
+          <div class="student-avatar">VR</div>
+          <div class="student-info">
+            <div class="student-name">Valentina Romero</div>
+            <div class="student-meta">6ª categoría · Desde enero 2026</div>
+          </div>
+          <div class="student-progress">
+            <div class="student-classes">14 clases</div>
+            <div class="student-next">Próx: Mié 20</div>
+          </div>
+        </div>
+
+        <div class="student-row">
+          <div class="student-avatar" style="background:#EAF4F1;color:#1E7A60;">PS</div>
+          <div class="student-info">
+            <div class="student-name">Pedro Salcedo</div>
+            <div class="student-meta">7ª categoría · Desde marzo 2026</div>
+          </div>
+          <div class="student-progress">
+            <div class="student-classes">8 clases</div>
+            <div class="student-next">Próx: Mié 20</div>
+          </div>
+        </div>
+
+        <div class="student-row">
+          <div class="student-avatar" style="background:#F5EEF8;color:#7D3C98;">MG</div>
+          <div class="student-info">
+            <div class="student-name">Mariana González</div>
+            <div class="student-meta">6ª categoría · Desde febrero 2026</div>
+          </div>
+          <div class="student-progress">
+            <div class="student-classes">11 clases</div>
+            <div class="student-next">Próx: Jue 21</div>
+          </div>
+        </div>
+
+        <div class="student-row">
+          <div class="student-avatar" style="background:#FEF9E7;color:#B7950B;">JL</div>
+          <div class="student-info">
+            <div class="student-name">Jorge Leiva</div>
+            <div class="student-meta">5ª categoría · Desde diciembre 2025</div>
+          </div>
+          <div class="student-progress">
+            <div class="student-classes">22 clases</div>
+            <div class="student-next">Próx: Sáb 22</div>
+          </div>
+        </div>
+
+      </div>
+
+      <a href="#" class="btn-full btn-full-outline" onclick="alert('Agregar alumno'); return false;">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
+        Agregar alumno
+      </a>
+    </div>
+
+    <!-- Reviews -->
+    <div class="section">
+      <div class="section-head">
+        <h3>Últimas reseñas</h3>
+        <a href="#">Ver todas →</a>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:0.75rem;">
+
+        <div class="card" style="padding:1rem;">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.5rem;">
+            <div style="font-weight:700;font-size:0.875rem;">Valentina R.</div>
+            <div style="color:#F39C12;font-size:0.875rem;">★★★★★</div>
+          </div>
+          <p style="font-size:0.8125rem;color:var(--color-gray);line-height:1.5;">"Lucas es un profe increíble, muy paciente y explica muy bien. En 3 meses ya subí de categoría."</p>
+        </div>
+
+        <div class="card" style="padding:1rem;">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.5rem;">
+            <div style="font-weight:700;font-size:0.875rem;">Jorge L.</div>
+            <div style="color:#F39C12;font-size:0.875rem;">★★★★★</div>
+          </div>
+          <p style="font-size:0.8125rem;color:var(--color-gray);line-height:1.5;">"Muy buen profe, se adapta al nivel de cada uno. Las clases grupales son un caño."</p>
+        </div>
+
+      </div>
+    </div>
+
+    </div><!-- /tab-dashboard -->
+
+    <!-- TAB: Mi perfil -->
+    <div id="tab-perfil" style="display:none;" class="section">
+      <!-- Indicador de completitud -->
+<div style="background:white;border-radius:14px;border:1.5px solid var(--color-border);padding:1.25rem;margin-bottom:1rem;">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.75rem;">
+    <span style="font-size:0.9375rem;font-weight:800;color:var(--color-dark);">Tu perfil está <span id="perfil-pct">72</span>% completo</span>
+    <span style="font-size:0.8125rem;font-weight:700;color:#27AE60;">Buen comienzo</span>
+  </div>
+  <div style="height:8px;background:var(--color-bg-secondary);border-radius:99px;overflow:hidden;margin-bottom:0.875rem;">
+    <div id="perfil-bar" style="height:100%;width:72%;background:linear-gradient(90deg,#1B4F72,#2E86C1);border-radius:99px;transition:width 0.4s ease;"></div>
+  </div>
+  <div style="font-size:0.8rem;color:var(--color-gray);line-height:1.6;">
+    <div style="display:flex;align-items:center;gap:0.5rem;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#27AE60" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Foto de perfil · Bio · Especialidades · WhatsApp</div>
+    <div style="display:flex;align-items:center;gap:0.5rem;margin-top:0.25rem;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#E67E22" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>Falta: precios, horarios orientativos</div>
+  </div>
+</div>
+
+<!-- SECCIÓN: Foto -->
+<div style="background:white;border-radius:14px;border:1.5px solid var(--color-border);padding:1.25rem;margin-bottom:1rem;">
+  <div style="font-size:0.75rem;font-weight:700;color:var(--color-gray);text-transform:uppercase;letter-spacing:0.04em;margin-bottom:1rem;">Foto de perfil</div>
+  <div style="display:flex;align-items:center;gap:1rem;">
+    <div style="width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,#1B4F72,#2E86C1);display:flex;align-items:center;justify-content:center;font-size:1.5rem;font-weight:900;color:white;flex-shrink:0;">LF</div>
+    <div>
+      <button type="button" style="padding:0.5rem 1rem;background:var(--color-bg-secondary);border:1.5px solid var(--color-border);border-radius:8px;font-size:0.8125rem;font-weight:700;color:var(--color-dark);cursor:pointer;font-family:inherit;margin-bottom:0.5rem;display:block;" onclick="document.getElementById('input-foto').click()">Cambiar foto principal</button>
+      <button type="button" style="padding:0.5rem 1rem;background:var(--color-bg-secondary);border:1.5px solid var(--color-border);border-radius:8px;font-size:0.8125rem;font-weight:700;color:var(--color-dark);cursor:pointer;font-family:inherit;" onclick="document.getElementById('input-fotos').click()">Agregar fotos (máx. 2)</button>
+      <input type="file" id="input-foto" accept="image/*" style="display:none;">
+      <input type="file" id="input-fotos" accept="image/*" multiple style="display:none;">
+    </div>
+  </div>
+</div>
+
+<!-- SECCIÓN: Información básica -->
+<div style="background:white;border-radius:14px;border:1.5px solid var(--color-border);padding:1.25rem;margin-bottom:1rem;">
+  <div style="font-size:0.75rem;font-weight:700;color:var(--color-gray);text-transform:uppercase;letter-spacing:0.04em;margin-bottom:1rem;">Información básica</div>
+
+  <div style="margin-bottom:1rem;">
+    <label style="display:block;font-size:0.8125rem;font-weight:700;color:var(--color-dark);margin-bottom:0.375rem;">Nombre completo</label>
+    <input type="text" value="Lucas Fernández" style="width:100%;padding:0.75rem;border:1.5px solid var(--color-border);border-radius:10px;font-size:0.9375rem;font-family:inherit;color:var(--color-dark);outline:none;" onfocus="this.style.borderColor='#2E86C1'" onblur="this.style.borderColor='var(--color-border)'">
+  </div>
+
+  <div style="margin-bottom:1rem;">
+    <label style="display:block;font-size:0.8125rem;font-weight:700;color:var(--color-dark);margin-bottom:0.375rem;">Bio corta</label>
+    <textarea id="bio-field" maxlength="200" rows="3" style="width:100%;padding:0.75rem;border:1.5px solid var(--color-border);border-radius:10px;font-size:0.9375rem;font-family:inherit;color:var(--color-dark);resize:none;outline:none;line-height:1.5;" onfocus="this.style.borderColor='#2E86C1'" onblur="this.style.borderColor='var(--color-border)'" oninput="updateBioCounter(this)">Profe de pádel con 8 años de experiencia. Especializado en menores y adultos recreativos. Clases individuales y grupales en los mejores complejos de Olavarría.</textarea>
+    <div style="text-align:right;font-size:0.75rem;color:var(--color-gray);margin-top:0.25rem;"><span id="bio-counter">133</span>/200</div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem;">
+    <div>
+      <label style="display:block;font-size:0.8125rem;font-weight:700;color:var(--color-dark);margin-bottom:0.375rem;">Años de experiencia</label>
+      <input type="number" value="8" min="0" max="50" style="width:100%;padding:0.75rem;border:1.5px solid var(--color-border);border-radius:10px;font-size:0.9375rem;font-family:inherit;color:var(--color-dark);outline:none;" onfocus="this.style.borderColor='#2E86C1'" onblur="this.style.borderColor='var(--color-border)'">
+    </div>
+    <div>
+      <label style="display:block;font-size:0.8125rem;font-weight:700;color:var(--color-dark);margin-bottom:0.375rem;">WhatsApp</label>
+      <input type="tel" value="2284000001" placeholder="Sin 0 ni 15" style="width:100%;padding:0.75rem;border:1.5px solid var(--color-border);border-radius:10px;font-size:0.9375rem;font-family:inherit;color:var(--color-dark);outline:none;" onfocus="this.style.borderColor='#2E86C1'" onblur="this.style.borderColor='var(--color-border)'">
+    </div>
+  </div>
+
+  <div>
+    <label style="display:block;font-size:0.8125rem;font-weight:700;color:var(--color-dark);margin-bottom:0.5rem;">Estado</label>
+    <div style="display:flex;gap:0.75rem;">
+      <button type="button" class="toggle-estado active" data-val="activo" onclick="selectEstado(this)" style="flex:1;padding:0.625rem;border:1.5px solid #1B4F72;border-radius:10px;background:#EBF5FB;font-size:0.8125rem;font-weight:700;color:#1B4F72;cursor:pointer;font-family:inherit;">Jugador activo</button>
+      <button type="button" class="toggle-estado" data-val="ex" onclick="selectEstado(this)" style="flex:1;padding:0.625rem;border:1.5px solid var(--color-border);border-radius:10px;background:white;font-size:0.8125rem;font-weight:700;color:var(--color-gray);cursor:pointer;font-family:inherit;">Ex jugador competitivo</button>
+    </div>
+  </div>
+</div>
+
+<!-- SECCIÓN: Especialidades -->
+<div style="background:white;border-radius:14px;border:1.5px solid var(--color-border);padding:1.25rem;margin-bottom:1rem;">
+  <div style="font-size:0.75rem;font-weight:700;color:var(--color-gray);text-transform:uppercase;letter-spacing:0.04em;margin-bottom:1rem;">Especialidades <span style="font-weight:500;text-transform:none;font-size:0.7rem;">(máx. 3)</span></div>
+  <div style="display:flex;flex-wrap:wrap;gap:0.5rem;">
+    <button type="button" class="edit-chip active" onclick="toggleEditChip(this,'esp',3)" style="padding:0.5rem 1rem;border-radius:99px;border:1.5px solid #1B4F72;background:#EBF5FB;color:#1B4F72;font-size:0.8125rem;font-weight:700;cursor:pointer;font-family:inherit;">Menores</button>
+    <button type="button" class="edit-chip active" onclick="toggleEditChip(this,'esp',3)" style="padding:0.5rem 1rem;border-radius:99px;border:1.5px solid #1B4F72;background:#EBF5FB;color:#1B4F72;font-size:0.8125rem;font-weight:700;cursor:pointer;font-family:inherit;">Adultos</button>
+    <button type="button" class="edit-chip" onclick="toggleEditChip(this,'esp',3)" style="padding:0.5rem 1rem;border-radius:99px;border:1.5px solid var(--color-border);background:white;color:var(--color-gray);font-size:0.8125rem;font-weight:700;cursor:pointer;font-family:inherit;">Alto rendimiento</button>
+  </div>
+</div>
+
+<!-- SECCIÓN: Categorías que enseña -->
+<div style="background:white;border-radius:14px;border:1.5px solid var(--color-border);padding:1.25rem;margin-bottom:1rem;">
+  <div style="font-size:0.75rem;font-weight:700;color:var(--color-gray);text-transform:uppercase;letter-spacing:0.04em;margin-bottom:1rem;">Categorías que enseña</div>
+  <div style="display:flex;flex-wrap:wrap;gap:0.5rem;">
+    <button type="button" class="edit-chip" onclick="toggleEditChip(this,'cat',6)" style="padding:0.5rem 1rem;border-radius:99px;border:1.5px solid var(--color-border);background:white;color:var(--color-gray);font-size:0.8125rem;font-weight:700;cursor:pointer;font-family:inherit;">Principiante</button>
+    <button type="button" class="edit-chip active" onclick="toggleEditChip(this,'cat',6)" style="padding:0.5rem 1rem;border-radius:99px;border:1.5px solid #1B4F72;background:#EBF5FB;color:#1B4F72;font-size:0.8125rem;font-weight:700;cursor:pointer;font-family:inherit;">7ª</button>
+    <button type="button" class="edit-chip active" onclick="toggleEditChip(this,'cat',6)" style="padding:0.5rem 1rem;border-radius:99px;border:1.5px solid #1B4F72;background:#EBF5FB;color:#1B4F72;font-size:0.8125rem;font-weight:700;cursor:pointer;font-family:inherit;">6ª</button>
+    <button type="button" class="edit-chip active" onclick="toggleEditChip(this,'cat',6)" style="padding:0.5rem 1rem;border-radius:99px;border:1.5px solid #1B4F72;background:#EBF5FB;color:#1B4F72;font-size:0.8125rem;font-weight:700;cursor:pointer;font-family:inherit;">5ª</button>
+    <button type="button" class="edit-chip active" onclick="toggleEditChip(this,'cat',6)" style="padding:0.5rem 1rem;border-radius:99px;border:1.5px solid #1B4F72;background:#EBF5FB;color:#1B4F72;font-size:0.8125rem;font-weight:700;cursor:pointer;font-family:inherit;">4ª</button>
+    <button type="button" class="edit-chip" onclick="toggleEditChip(this,'cat',6)" style="padding:0.5rem 1rem;border-radius:99px;border:1.5px solid var(--color-border);background:white;color:var(--color-gray);font-size:0.8125rem;font-weight:700;cursor:pointer;font-family:inherit;">3ª</button>
+  </div>
+</div>
+
+<!-- SECCIÓN: Modalidad -->
+<div style="background:white;border-radius:14px;border:1.5px solid var(--color-border);padding:1.25rem;margin-bottom:1rem;">
+  <div style="font-size:0.75rem;font-weight:700;color:var(--color-gray);text-transform:uppercase;letter-spacing:0.04em;margin-bottom:1rem;">Modalidad</div>
+  <div style="display:flex;gap:0.5rem;flex-wrap:wrap;">
+    <button type="button" class="edit-chip active" onclick="toggleEditChip(this,'mod',3)" style="padding:0.5rem 1rem;border-radius:99px;border:1.5px solid #1B4F72;background:#EBF5FB;color:#1B4F72;font-size:0.8125rem;font-weight:700;cursor:pointer;font-family:inherit;">Individual</button>
+    <button type="button" class="edit-chip active" onclick="toggleEditChip(this,'mod',3)" style="padding:0.5rem 1rem;border-radius:99px;border:1.5px solid #1B4F72;background:#EBF5FB;color:#1B4F72;font-size:0.8125rem;font-weight:700;cursor:pointer;font-family:inherit;">Grupal</button>
+  </div>
+</div>
+
+<!-- SECCIÓN: Precios -->
+<div style="background:white;border-radius:14px;border:1.5px solid var(--color-border);padding:1.25rem;margin-bottom:1rem;">
+  <div style="font-size:0.75rem;font-weight:700;color:var(--color-gray);text-transform:uppercase;letter-spacing:0.04em;margin-bottom:1rem;">Precios orientativos</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
+    <div>
+      <label style="display:block;font-size:0.8125rem;font-weight:700;color:var(--color-dark);margin-bottom:0.375rem;">Clase individual desde</label>
+      <div style="display:flex;align-items:center;border:1.5px solid var(--color-border);border-radius:10px;overflow:hidden;" onfocuswithin="this.style.borderColor='#2E86C1'">
+        <span style="padding:0.75rem 0.5rem 0.75rem 0.875rem;font-size:0.9375rem;color:var(--color-gray);font-weight:600;">$</span>
+        <input type="number" value="15000" min="0" style="flex:1;padding:0.75rem 0.75rem 0.75rem 0;border:none;font-size:0.9375rem;font-family:inherit;color:var(--color-dark);outline:none;width:100%;" onfocus="this.closest('div').style.borderColor='#2E86C1'" onblur="this.closest('div').style.borderColor='var(--color-border)'">
+      </div>
+    </div>
+    <div>
+      <label style="display:block;font-size:0.8125rem;font-weight:700;color:var(--color-dark);margin-bottom:0.375rem;">Clase grupal desde</label>
+      <div style="display:flex;align-items:center;border:1.5px solid var(--color-border);border-radius:10px;overflow:hidden;">
+        <span style="padding:0.75rem 0.5rem 0.75rem 0.875rem;font-size:0.9375rem;color:var(--color-gray);font-weight:600;">$</span>
+        <input type="number" value="8000" min="0" style="flex:1;padding:0.75rem 0.75rem 0.75rem 0;border:none;font-size:0.9375rem;font-family:inherit;color:var(--color-dark);outline:none;width:100%;" onfocus="this.closest('div').style.borderColor='#2E86C1'" onblur="this.closest('div').style.borderColor='var(--color-border)'">
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SECCIÓN: Horarios orientativos -->
+<div style="background:white;border-radius:14px;border:1.5px solid var(--color-border);padding:1.25rem;margin-bottom:5rem;">
+  <div style="font-size:0.75rem;font-weight:700;color:var(--color-gray);text-transform:uppercase;letter-spacing:0.04em;margin-bottom:1rem;">Horarios orientativos</div>
+  <div style="font-size:0.8125rem;color:var(--color-gray);margin-bottom:1rem;">Marcá los días y franjas en que solés estar disponible</div>
+  <div id="horarios-grid" style="display:flex;flex-direction:column;gap:0.625rem;">
+  </div>
+</div>
+
+<!-- Botón guardar sticky -->
+<div style="position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:680px;background:white;border-top:1px solid var(--color-border);padding:1rem 1.25rem calc(1rem + env(safe-area-inset-bottom));z-index:50;">
+  <button type="button" onclick="guardarPerfil()" style="width:100%;padding:0.875rem;background:linear-gradient(135deg,#1B4F72,#2E86C1);color:white;border:none;border-radius:12px;font-size:1rem;font-weight:800;cursor:pointer;font-family:inherit;letter-spacing:-0.2px;">Guardar cambios</button>
+</div>
+    </div>
+
+    <!-- TAB: Mi Agenda -->
+    <div id="tab-agenda" style="display:none;">
+
+      <!-- Resumen del día -->
+      <div class="section" id="agenda-hoy-card">
+        <div style="background:linear-gradient(135deg,var(--color-primary),var(--color-accent));border-radius:14px;padding:1.25rem;color:white;">
+          <div style="font-size:0.8rem;opacity:0.85;margin-bottom:0.25rem;">Buenos días, Lucas</div>
+          <div style="font-size:1.1rem;font-weight:800;margin-bottom:0.875rem;">Hoy tenés <span id="agenda-count-hoy">0</span> clases programadas</div>
+          <div id="agenda-list-hoy" style="display:flex;flex-direction:column;gap:0.5rem;">
+            <!-- Inyectado por JS -->
+          </div>
+          <div style="margin-top:1rem;font-size:0.7rem;opacity:0.7;border-top:1px solid rgba(255,255,255,0.2);padding-top:0.75rem;">Recibís este resumen por WhatsApp todos los días a las 7am</div>
+        </div>
+      </div>
+
+      <!-- Calendario mensual -->
+      <div class="section">
+        <div class="section-head">
+          <h3>Mi Agenda</h3>
+        </div>
+        <div style="background:var(--color-white);border:1px solid var(--color-border);border-radius:14px;overflow:hidden;">
+          <!-- Header del mes -->
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:1rem 1.25rem;border-bottom:1px solid var(--color-border);">
+            <button onclick="agendaPrevMonth()" style="width:32px;height:32px;border:1px solid var(--color-border);background:white;border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--color-dark);font-family:inherit;">
+              <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+            </button>
+            <span id="agenda-month-label" style="font-weight:700;font-size:0.9375rem;color:var(--color-dark);"></span>
+            <button onclick="agendaNextMonth()" style="width:32px;height:32px;border:1px solid var(--color-border);background:white;border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--color-dark);font-family:inherit;">
+              <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+            </button>
+          </div>
+          <!-- Días de la semana -->
+          <div style="display:grid;grid-template-columns:repeat(7,1fr);border-bottom:1px solid var(--color-border);">
+            <div style="padding:0.5rem 0.25rem;text-align:center;font-size:0.7rem;font-weight:700;color:var(--color-gray);text-transform:uppercase;border-right:1px solid var(--color-border);">Lu</div>
+            <div style="padding:0.5rem 0.25rem;text-align:center;font-size:0.7rem;font-weight:700;color:var(--color-gray);text-transform:uppercase;border-right:1px solid var(--color-border);">Ma</div>
+            <div style="padding:0.5rem 0.25rem;text-align:center;font-size:0.7rem;font-weight:700;color:var(--color-gray);text-transform:uppercase;border-right:1px solid var(--color-border);">Mi</div>
+            <div style="padding:0.5rem 0.25rem;text-align:center;font-size:0.7rem;font-weight:700;color:var(--color-gray);text-transform:uppercase;border-right:1px solid var(--color-border);">Ju</div>
+            <div style="padding:0.5rem 0.25rem;text-align:center;font-size:0.7rem;font-weight:700;color:var(--color-gray);text-transform:uppercase;border-right:1px solid var(--color-border);">Vi</div>
+            <div style="padding:0.5rem 0.25rem;text-align:center;font-size:0.7rem;font-weight:700;color:var(--color-gray);text-transform:uppercase;border-right:1px solid var(--color-border);">Sa</div>
+            <div style="padding:0.5rem 0.25rem;text-align:center;font-size:0.7rem;font-weight:700;color:var(--color-gray);text-transform:uppercase;">Do</div>
+          </div>
+          <!-- Grilla de días -->
+          <div id="agenda-cal-grid" style="display:grid;grid-template-columns:repeat(7,1fr);padding:0.5rem;gap:2px;"></div>
+        </div>
+      </div>
+
+      <!-- Vista del día seleccionado -->
+      <div class="section">
+        <div id="agenda-day-view"></div>
+      </div>
+
+    </div><!-- /tab-agenda -->
+
+    <!-- TAB: Reseñas (placeholder) -->
+    <div id="tab-resenas" style="display:none;" class="section">
+      <div style="background:var(--color-white);border:1px solid var(--color-border);border-radius:14px;padding:1.5rem;text-align:center;">
+        <svg width="40" height="40" fill="none" stroke="var(--color-gray)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" style="margin-bottom:0.75rem;"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        <div style="font-weight:700;color:var(--color-dark);margin-bottom:0.375rem;">Tus reseñas</div>
+        <p style="font-size:0.8125rem;color:var(--color-gray);">Las reseñas de tus alumnos van a aparecer acá.</p>
+      </div>
+    </div>
+
+    <!-- TAB: Suscripción -->
+    <div id="tab-suscripcion" style="display:none;" class="section">
+
+      <!-- Estado de membresía -->
+      <div style="background:var(--color-white);border:1px solid var(--color-border);border-radius:14px;overflow:hidden;margin-bottom:1rem;">
+        <div style="background:linear-gradient(135deg,var(--color-primary),var(--color-accent));padding:1.5rem;color:white;">
+          <div style="font-size:0.75rem;font-weight:700;opacity:0.8;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:0.25rem;">Tu membresía PadelYa Profesores</div>
+          <div style="font-size:1.5rem;font-weight:800;line-height:1.1;">Período gratuito</div>
+          <div style="font-size:0.8rem;opacity:0.8;margin-top:0.3rem;">Profe Fundador · 2 meses gratis</div>
+        </div>
+        <div style="padding:1rem 1.25rem;">
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:0.5rem 0;border-bottom:1px solid var(--color-border);font-size:0.875rem;">
+            <span style="color:var(--color-gray);">Estado</span>
+            <span style="display:inline-flex;align-items:center;gap:4px;font-weight:700;color:#1E8449;">
+              <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+              Activa
+            </span>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:0.5rem 0;border-bottom:1px solid var(--color-border);font-size:0.875rem;">
+            <span style="color:var(--color-gray);">Próximo cobro</span>
+            <span style="font-weight:700;color:var(--color-dark);" id="sub-fecha-cobro">—</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:0.5rem 0;font-size:0.875rem;">
+            <span style="color:var(--color-gray);">Tarifa mensual</span>
+            <span style="font-weight:700;color:var(--color-dark);">$29.990/mes</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Lo que incluye -->
+      <div style="background:var(--color-white);border:1px solid var(--color-border);border-radius:14px;padding:1.25rem;margin-bottom:1rem;">
+        <div style="font-weight:700;font-size:0.9375rem;color:var(--color-dark);margin-bottom:1rem;">Tu membresía incluye</div>
+        <div style="display:flex;flex-direction:column;gap:0.75rem;">
+
+          <div style="display:flex;align-items:flex-start;gap:0.75rem;">
+            <div style="width:20px;height:20px;background:#EBF5FB;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;">
+              <svg width="10" height="10" fill="none" stroke="var(--color-accent)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <span style="font-size:0.875rem;color:var(--color-dark);line-height:1.4;">Perfil público visible para todos los jugadores</span>
+          </div>
+
+          <div style="display:flex;align-items:flex-start;gap:0.75rem;">
+            <div style="width:20px;height:20px;background:#EBF5FB;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;">
+              <svg width="10" height="10" fill="none" stroke="var(--color-accent)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <span style="font-size:0.875rem;color:var(--color-dark);line-height:1.4;">Estadísticas de visibilidad de tu perfil</span>
+          </div>
+
+          <div style="display:flex;align-items:flex-start;gap:0.75rem;">
+            <div style="width:20px;height:20px;background:#EBF5FB;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;">
+              <svg width="10" height="10" fill="none" stroke="var(--color-accent)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <span style="font-size:0.875rem;color:var(--color-dark);line-height:1.4;">Reseñas verificadas de alumnos</span>
+          </div>
+
+          <div style="display:flex;align-items:flex-start;gap:0.75rem;">
+            <div style="width:20px;height:20px;background:#EBF5FB;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;">
+              <svg width="10" height="10" fill="none" stroke="var(--color-accent)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <span style="font-size:0.875rem;color:var(--color-dark);line-height:1.4;">Agenda personal de clases</span>
+          </div>
+
+          <div style="display:flex;align-items:flex-start;gap:0.75rem;">
+            <div style="width:20px;height:20px;background:#EBF5FB;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;">
+              <svg width="10" height="10" fill="none" stroke="var(--color-accent)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <span style="font-size:0.875rem;color:var(--color-dark);line-height:1.4;">50% de descuento en partidos (<strong>$500 por partido</strong>)</span>
+          </div>
+
+          <div style="display:flex;align-items:flex-start;gap:0.75rem;">
+            <div style="width:20px;height:20px;background:#EBF5FB;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;">
+              <svg width="10" height="10" fill="none" stroke="var(--color-accent)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <span style="font-size:0.875rem;color:var(--color-dark);line-height:1.4;">Resumen diario de clases a las 7am por WhatsApp</span>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Acciones -->
+      <button style="width:100%;padding:0.75rem;border:1.5px solid var(--color-border);border-radius:10px;background:transparent;font-size:0.875rem;font-weight:600;color:var(--color-gray);cursor:pointer;font-family:inherit;" onclick="alert('Para cancelar tu suscripción contactá a soporte@padelya.ar')">Cancelar suscripción</button>
+
+    </div>
+
+  </main>
+
+  <!-- Modal: Agregar/editar clase -->
+  <div id="modal-agenda" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:300;align-items:flex-end;justify-content:center;" onclick="if(event.target===this)cerrarModalClase()">
+    <div style="background:white;border-radius:20px 20px 0 0;padding:1.5rem;width:100%;max-width:720px;max-height:90vh;overflow-y:auto;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem;">
+        <h3 style="font-size:1rem;font-weight:700;color:var(--color-dark);margin:0;">Nueva clase</h3>
+        <button onclick="cerrarModalClase()" style="width:32px;height:32px;border:none;background:var(--color-bg-secondary);border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:inherit;">
+          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="form-group">
+        <label>Fecha</label>
+        <input type="date" id="modal-clase-fecha" />
+      </div>
+      <div class="form-group">
+        <label>Hora</label>
+        <input type="time" id="modal-clase-hora" />
+      </div>
+      <div class="form-group">
+        <label>Nombre del alumno</label>
+        <input type="text" id="modal-clase-alumno" placeholder="Ej: Valentina Romero" />
+      </div>
+      <div class="form-group">
+        <label>Tipo de clase</label>
+        <div class="chips" id="modal-tipo-chips">
+          <button class="chip selected" type="button" onclick="selectChip(this)">Individual</button>
+          <button class="chip" type="button" onclick="selectChip(this)">Grupal</button>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Lugar / cancha</label>
+        <input type="text" id="modal-clase-lugar" placeholder="Ej: Chingoland · Cancha 2" />
+      </div>
+      <div class="form-group">
+        <label>Notas <span style="font-weight:400;color:var(--color-gray);">(opcional)</span></label>
+        <textarea id="modal-clase-notas" placeholder="Ej: Traer pelotero"></textarea>
+      </div>
+      <button id="btn-guardar-clase" class="btn-full" style="margin-top:0;" onclick="guardarClase()">Guardar</button>
+    </div>
+  </div>
+
+  <!-- Botón flotante agregar clase -->
+  <button id="btn-add-clase" style="display:none;position:fixed;bottom:1.5rem;right:1.5rem;width:52px;height:52px;background:var(--color-accent);color:white;border:none;border-radius:50%;cursor:pointer;font-size:1.5rem;font-weight:300;box-shadow:0 4px 16px rgba(46,134,193,0.4);align-items:center;justify-content:center;z-index:200;font-family:inherit;" onclick="abrirModalClase(agendaSelectedDay)">
+    <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+  </button>
+
+  <script>
+    (function() {
+      var rol = sessionStorage.getItem('rol');
+      if (!rol || (rol !== 'profesor' && rol !== 'admin')) window.location.href = 'auth.html';
+    })();
+
+    /* Datos de la agenda */
+    var agendaClases = [
+      { id:1, fecha:'2026-05-21', hora:'09:00', alumno:'Valentina Romero', tipo:'Individual', lugar:'Chingoland · Cancha 2', notas:'' },
+      { id:2, fecha:'2026-05-21', hora:'11:00', alumno:'Pedro Salcedo', tipo:'Individual', lugar:'Chingoland · Cancha 1', notas:'Traer pelotero' },
+      { id:3, fecha:'2026-05-21', hora:'18:00', alumno:'Grupo Principiantes (3 alumnos)', tipo:'Grupal', lugar:'Sport Arena Pádel · Cancha 3', notas:'' },
+      { id:4, fecha:'2026-05-22', hora:'09:00', alumno:'Mariana González', tipo:'Individual', lugar:'Las Terrazas Pádel · Cancha 1', notas:'' },
+      { id:5, fecha:'2026-05-22', hora:'18:00', alumno:'Jorge Leiva', tipo:'Individual', lugar:'Chingoland · Cancha 2', notas:'Clase de técnica' },
+      { id:6, fecha:'2026-05-24', hora:'10:00', alumno:'Grupo Avanzados (4 alumnos)', tipo:'Grupal', lugar:'Sport Arena Pádel · Cancha 1', notas:'' },
+      { id:7, fecha:'2026-05-26', hora:'09:00', alumno:'Ana Fernández', tipo:'Individual', lugar:'Chingoland · Cancha 3', notas:'' },
+    ];
+
+    var agendaCurrentDate = new Date(2026, 4, 1); // mayo 2026
+    var agendaSelectedDay = '2026-05-21'; // hoy por defecto
+
+    function renderAgendaCalendar() {
+      var year = agendaCurrentDate.getFullYear();
+      var month = agendaCurrentDate.getMonth();
+      var monthNames = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+      document.getElementById('agenda-month-label').textContent = monthNames[month] + ' ' + year;
+
+      var firstDay = new Date(year, month, 1).getDay();
+      firstDay = (firstDay + 6) % 7; // JS: 0=Dom → convertir a Lun=0
+      var daysInMonth = new Date(year, month + 1, 0).getDate();
+
+      var grid = document.getElementById('agenda-cal-grid');
+      grid.innerHTML = '';
+
+      // Días vacíos al inicio
+      for (var i = 0; i < firstDay; i++) {
+        var empty = document.createElement('div');
+        empty.className = 'cal-day cal-day-empty';
+        grid.appendChild(empty);
+      }
+
+      // Días del mes
+      for (var d = 1; d <= daysInMonth; d++) {
+        var dateStr = year + '-' + String(month + 1).padStart(2, '0') + '-' + String(d).padStart(2, '0');
+        var dayEl = document.createElement('div');
+        dayEl.className = 'cal-day';
+        if (dateStr === agendaSelectedDay) dayEl.classList.add('cal-day-selected');
+        if (dateStr === '2026-05-21') dayEl.classList.add('cal-day-today');
+
+        var hasClasses = agendaClases.some(function(c) { return c.fecha === dateStr; });
+
+        dayEl.innerHTML = '<span class="cal-day-num">' + d + '</span>' + (hasClasses ? '<span class="cal-day-dot"></span>' : '');
+        dayEl.onclick = (function(ds) { return function() { selectAgendaDay(ds); }; })(dateStr);
+        grid.appendChild(dayEl);
+      }
+
+      renderAgendaDayView(agendaSelectedDay);
+      renderAgendaHoy();
+    }
+
+    function selectAgendaDay(dateStr) {
+      agendaSelectedDay = dateStr;
+      renderAgendaCalendar();
+    }
+
+    function agendaPrevMonth() {
+      agendaCurrentDate.setMonth(agendaCurrentDate.getMonth() - 1);
+      renderAgendaCalendar();
+    }
+
+    function agendaNextMonth() {
+      agendaCurrentDate.setMonth(agendaCurrentDate.getMonth() + 1);
+      renderAgendaCalendar();
+    }
+
+    function renderAgendaDayView(dateStr) {
+      var clases = agendaClases.filter(function(c) { return c.fecha === dateStr; });
+      clases.sort(function(a, b) { return a.hora.localeCompare(b.hora); });
+
+      var parts = dateStr.split('-');
+      var dayNames = ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
+      var d = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
+      var label = dayNames[d.getDay()] + ' ' + parseInt(parts[2]) + '/' + parseInt(parts[1]);
+
+      var container = document.getElementById('agenda-day-view');
+      container.innerHTML = '<div style="font-size:0.8125rem;font-weight:700;color:var(--color-gray);text-transform:uppercase;letter-spacing:0.04em;margin-bottom:0.75rem;">' + label + '</div>';
+
+      if (clases.length === 0) {
+        container.innerHTML += '<div style="text-align:center;padding:1.5rem;color:var(--color-gray);font-size:0.875rem;">Sin clases este día</div>';
+        return;
+      }
+
+      clases.forEach(function(c) {
+        var borderColor = c.tipo === 'Individual' ? 'var(--color-accent)' : '#1E8449';
+        container.innerHTML += '<div style="background:white;border:1px solid var(--color-border);border-left:3px solid ' + borderColor + ';border-radius:10px;padding:0.75rem 1rem;display:flex;align-items:flex-start;gap:0.75rem;margin-bottom:0.5rem;">' +
+          '<div style="font-size:0.875rem;font-weight:700;color:var(--color-primary);min-width:52px;">' + c.hora + '</div>' +
+          '<div style="flex:1;">' +
+            '<div style="font-size:0.875rem;font-weight:700;color:var(--color-dark);">' + c.alumno + '</div>' +
+            '<div style="font-size:0.75rem;color:var(--color-gray);margin-top:1px;">' + c.lugar + '</div>' +
+            (c.notas ? '<div style="font-size:0.7rem;color:var(--color-gray);margin-top:3px;font-style:italic;">' + c.notas + '</div>' : '') +
+          '</div>' +
+          '<div style="display:flex;gap:0.375rem;">' +
+            '<button style="font-size:0.7rem;font-weight:700;padding:0.25rem 0.6rem;border-radius:6px;border:1px solid var(--color-border);background:transparent;cursor:pointer;color:var(--color-dark);font-family:inherit;" onclick="editarClase(' + c.id + ')">Editar</button>' +
+            '<button style="font-size:0.7rem;font-weight:700;padding:0.25rem 0.6rem;border-radius:6px;border:1px solid #F5B7B1;background:transparent;cursor:pointer;color:#C0392B;font-family:inherit;" onclick="eliminarClase(' + c.id + ')">Eliminar</button>' +
+          '</div>' +
+        '</div>';
+      });
+    }
+
+    function renderAgendaHoy() {
+      var hoy = '2026-05-21';
+      var clases = agendaClases.filter(function(c) { return c.fecha === hoy; });
+      clases.sort(function(a, b) { return a.hora.localeCompare(b.hora); });
+      document.getElementById('agenda-count-hoy').textContent = clases.length;
+      var list = document.getElementById('agenda-list-hoy');
+      list.innerHTML = '';
+      clases.forEach(function(c) {
+        list.innerHTML += '<div style="background:rgba(255,255,255,0.15);border-radius:8px;padding:0.5rem 0.75rem;display:flex;gap:0.75rem;align-items:center;">' +
+          '<span style="font-weight:800;font-size:0.875rem;min-width:48px;">' + c.hora + '</span>' +
+          '<span style="font-size:0.8rem;">' + c.alumno + ' · ' + c.lugar.split(' · ')[0] + '</span>' +
+        '</div>';
+      });
+    }
+
+    function selectChip(el) {
+      var parent = el.closest('.chips');
+      parent.querySelectorAll('.chip').forEach(function(c) { c.classList.remove('selected'); });
+      el.classList.add('selected');
+    }
+
+    function abrirModalClase(fecha) {
+      document.getElementById('modal-clase-fecha').value = fecha || agendaSelectedDay;
+      document.getElementById('modal-clase-hora').value = '';
+      document.getElementById('modal-clase-alumno').value = '';
+      document.getElementById('modal-clase-lugar').value = '';
+      document.getElementById('modal-clase-notas').value = '';
+      document.querySelectorAll('#modal-tipo-chips .chip').forEach(function(c) { c.classList.remove('selected'); });
+      document.querySelector('#modal-tipo-chips .chip').classList.add('selected'); // Individual por defecto
+      document.getElementById('btn-guardar-clase').onclick = guardarClase;
+      document.getElementById('modal-agenda').style.display = 'flex';
+    }
+
+    function cerrarModalClase() {
+      document.getElementById('modal-agenda').style.display = 'none';
+    }
+
+    function guardarClase() {
+      var fecha = document.getElementById('modal-clase-fecha').value;
+      var hora = document.getElementById('modal-clase-hora').value;
+      var alumno = document.getElementById('modal-clase-alumno').value.trim();
+      var lugar = document.getElementById('modal-clase-lugar').value.trim();
+      var notas = document.getElementById('modal-clase-notas').value.trim();
+      var tipoSel = document.querySelector('#modal-tipo-chips .chip.selected');
+      var tipo = tipoSel ? tipoSel.textContent : 'Individual';
+
+      if (!fecha || !hora || !alumno || !lugar) {
+        alert('Completá fecha, hora, alumno y lugar.');
+        return;
+      }
+
+      agendaClases.push({ id: Date.now(), fecha: fecha, hora: hora, alumno: alumno, tipo: tipo, lugar: lugar, notas: notas });
+      cerrarModalClase();
+      agendaSelectedDay = fecha;
+      agendaCurrentDate = new Date(fecha + 'T00:00:00');
+      renderAgendaCalendar();
+    }
+
+    function editarClase(id) {
+      var clase = agendaClases.find(function(c) { return c.id === id; });
+      if (!clase) return;
+      document.getElementById('modal-clase-fecha').value = clase.fecha;
+      document.getElementById('modal-clase-hora').value = clase.hora;
+      document.getElementById('modal-clase-alumno').value = clase.alumno;
+      document.getElementById('modal-clase-lugar').value = clase.lugar;
+      document.getElementById('modal-clase-notas').value = clase.notas;
+      document.querySelectorAll('#modal-tipo-chips .chip').forEach(function(c) {
+        c.classList.toggle('selected', c.textContent === clase.tipo);
+      });
+      document.getElementById('btn-guardar-clase').onclick = function() {
+        agendaClases = agendaClases.filter(function(c) { return c.id !== id; });
+        var fecha = document.getElementById('modal-clase-fecha').value;
+        var hora = document.getElementById('modal-clase-hora').value;
+        var alumno = document.getElementById('modal-clase-alumno').value.trim();
+        var lugar = document.getElementById('modal-clase-lugar').value.trim();
+        var notas = document.getElementById('modal-clase-notas').value.trim();
+        var tipoSel = document.querySelector('#modal-tipo-chips .chip.selected');
+        var tipo = tipoSel ? tipoSel.textContent : 'Individual';
+        agendaClases.push({ id: Date.now(), fecha: fecha, hora: hora, alumno: alumno, tipo: tipo, lugar: lugar, notas: notas });
+        cerrarModalClase();
+        renderAgendaCalendar();
+        document.getElementById('btn-guardar-clase').onclick = guardarClase;
+      };
+      document.getElementById('modal-agenda').style.display = 'flex';
+    }
+
+    function eliminarClase(id) {
+      if (!confirm('¿Eliminás esta clase?')) return;
+      agendaClases = agendaClases.filter(function(c) { return c.id !== id; });
+      renderAgendaCalendar();
+    }
+
+    function switchPanelTab(tab, btn) {
+      ['dashboard', 'perfil', 'agenda', 'resenas', 'suscripcion'].forEach(function(t) {
+        var el = document.getElementById('tab-' + t);
+        if (el) el.style.display = 'none';
+      });
+      document.querySelectorAll('.panel-tab').forEach(function(b) { b.classList.remove('active'); });
+      var el = document.getElementById('tab-' + tab);
+      if (el) el.style.display = 'block';
+      btn.classList.add('active');
+
+      // Mostrar/ocultar botón + de agenda
+      var btnAdd = document.getElementById('btn-add-clase');
+      if (btnAdd) btnAdd.style.display = (tab === 'agenda') ? 'flex' : 'none';
+
+      if (tab === 'agenda') { renderAgendaCalendar(); }
+      if (tab === 'suscripcion') {
+        var d = new Date(2026, 4, 21);
+        d.setDate(d.getDate() + 60);
+        var f = d.getDate().toString().padStart(2, '0') + '/' + (d.getMonth() + 1).toString().padStart(2, '0') + '/' + d.getFullYear();
+        var el2 = document.getElementById('sub-fecha-cobro');
+        if (el2) el2.textContent = f;
+      }
+    }
+
+    /* ---- Editor de perfil ---- */
+    function updateBioCounter(el) {
+      var counter = document.getElementById('bio-counter');
+      if (counter) counter.textContent = el.value.length;
+    }
+
+    function selectEstado(btn) {
+      document.querySelectorAll('.toggle-estado').forEach(function(b) {
+        b.style.borderColor = 'var(--color-border)';
+        b.style.background = 'white';
+        b.style.color = 'var(--color-gray)';
+      });
+      btn.style.borderColor = '#1B4F72';
+      btn.style.background = '#EBF5FB';
+      btn.style.color = '#1B4F72';
+    }
+
+    function toggleEditChip(btn, group, max) {
+      var parent = btn.closest('div');
+      var activos = parent.querySelectorAll('.edit-chip.active');
+      if (btn.classList.contains('active')) {
+        btn.classList.remove('active');
+        btn.style.borderColor = 'var(--color-border)';
+        btn.style.background = 'white';
+        btn.style.color = 'var(--color-gray)';
+      } else {
+        if (activos.length >= max) {
+          activos[0].classList.remove('active');
+          activos[0].style.borderColor = 'var(--color-border)';
+          activos[0].style.background = 'white';
+          activos[0].style.color = 'var(--color-gray)';
+        }
+        btn.classList.add('active');
+        btn.style.borderColor = '#1B4F72';
+        btn.style.background = '#EBF5FB';
+        btn.style.color = '#1B4F72';
+      }
+      recalcularPerfil();
+    }
+
+    function recalcularPerfil() {
+      var pct = document.getElementById('perfil-pct');
+      var bar = document.getElementById('perfil-bar');
+      if (!pct || !bar) return;
+      var campos = [
+        document.querySelector('#tab-perfil input[type="text"]'),
+        document.getElementById('bio-field'),
+        document.querySelector('#tab-perfil input[type="tel"]'),
+        document.querySelectorAll('#tab-perfil .edit-chip.active').length > 0,
+        document.querySelectorAll('.horario-franja.sel').length > 0
+      ];
+      var rellenos = campos.filter(function(c) { return c && (c === true || c.value); }).length;
+      var nuevo = Math.round((rellenos / campos.length) * 100);
+      pct.textContent = nuevo;
+      bar.style.width = nuevo + '%';
+    }
+
+    var dias = ['Lun','Mar','Mié','Jue','Vie','Sáb','Dom'];
+    var franjas = ['Mañana','Tarde','Noche'];
+    var horariosState = {};
+
+    function initHorarios() {
+      var grid = document.getElementById('horarios-grid');
+      if (!grid) return;
+      grid.innerHTML = '';
+      franjas.forEach(function(franja) {
+        var row = document.createElement('div');
+        row.style.cssText = 'display:flex;align-items:center;gap:0.5rem;';
+        var label = document.createElement('span');
+        label.style.cssText = 'font-size:0.8125rem;font-weight:700;color:var(--color-dark);width:52px;flex-shrink:0;';
+        label.textContent = franja;
+        row.appendChild(label);
+        var chips = document.createElement('div');
+        chips.style.cssText = 'display:flex;gap:0.375rem;flex-wrap:wrap;';
+        dias.forEach(function(dia) {
+          var key = dia + '-' + franja;
+          var btn = document.createElement('button');
+          btn.type = 'button';
+          btn.textContent = dia;
+          btn.className = 'horario-franja';
+          btn.dataset.key = key;
+          btn.style.cssText = 'padding:0.3rem 0.6rem;border-radius:8px;border:1.5px solid var(--color-border);background:white;font-size:0.75rem;font-weight:600;color:var(--color-gray);cursor:pointer;font-family:inherit;';
+          btn.onclick = function() {
+            var sel = btn.classList.toggle('sel');
+            if (sel) {
+              btn.style.borderColor = '#1B4F72';
+              btn.style.background = '#EBF5FB';
+              btn.style.color = '#1B4F72';
+            } else {
+              btn.style.borderColor = 'var(--color-border)';
+              btn.style.background = 'white';
+              btn.style.color = 'var(--color-gray)';
+            }
+          };
+          chips.appendChild(btn);
+        });
+        row.appendChild(chips);
+        grid.appendChild(row);
+      });
+      ['Lun-Mañana','Mar-Mañana','Lun-Tarde','Mié-Tarde','Vie-Tarde'].forEach(function(k) {
+        var btn = grid.querySelector('[data-key="' + k + '"]');
+        if (btn) btn.click();
+      });
+    }
+
+    function guardarPerfil() {
+      var btn = event.currentTarget;
+      var orig = btn.textContent;
+      btn.textContent = 'Guardado';
+      btn.style.background = '#27AE60';
+      setTimeout(function() {
+        btn.textContent = orig;
+        btn.style.background = 'linear-gradient(135deg,#1B4F72,#2E86C1)';
+      }, 2000);
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      initHorarios();
+      var bioField = document.getElementById('bio-field');
+      if (bioField) {
+        var counter = document.getElementById('bio-counter');
+        if (counter) counter.textContent = bioField.value.length;
+      }
+    });
+  </script>
+
+</body>
+</html>

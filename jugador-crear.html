@@ -1,0 +1,1355 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PadelYa - Crear partido</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    /* ── Design tokens ── */
+    :root {
+      --bg:        #071224;
+      --bg-card:   #0C1A2E;
+      --bg-card2:  #0F2040;
+      --blue:      #178BFF;
+      --blue-dim:  rgba(23,139,255,0.12);
+      --blue-glow: rgba(23,139,255,0.35);
+      --text:      #F5F7FA;
+      --text-sub:  #A8B3C7;
+      --text-dim:  #5C6E87;
+      --border:    rgba(255,255,255,0.07);
+      --border-hi: rgba(255,255,255,0.13);
+      --green:     #D6FF00;
+      --green-dim: rgba(214,255,0,0.12);
+    }
+
+    /* ── Reset / base ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Geist', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Page layout ── */
+    .page-content { padding-bottom: 100px; }
+
+    /* ── Page header ── */
+    .page-header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(7,18,36,0.92);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      padding: 0.875rem 1rem;
+    }
+    .page-header-inner {
+      max-width: 600px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .back-btn {
+      display: flex;
+      align-items: center;
+      gap: 0.375rem;
+      color: var(--blue);
+      font-weight: 600;
+      font-size: 0.9rem;
+      text-decoration: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      font-family: inherit;
+    }
+    .back-btn:hover { opacity: 0.8; }
+    .page-header-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .step-counter {
+      font-size: 0.8rem;
+      color: var(--text-dim);
+      font-weight: 500;
+    }
+
+    /* ── Step progress bar ── */
+    .step-progress {
+      max-width: 600px;
+      margin: 1.25rem auto 0;
+      padding: 0 1rem 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 0;
+    }
+    .step-circle {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      font-weight: 700;
+      flex-shrink: 0;
+      transition: background 0.3s, color 0.3s, border-color 0.3s;
+      border: 2px solid var(--border-hi);
+      background: transparent;
+      color: var(--text-dim);
+    }
+    .step-circle.active {
+      background: var(--blue);
+      border-color: var(--blue);
+      color: #fff;
+    }
+    .step-circle.done {
+      background: rgba(23,139,255,0.3);
+      border-color: var(--blue);
+      color: var(--blue);
+    }
+    .step-line {
+      flex: 1;
+      height: 2px;
+      background: var(--border);
+      transition: background 0.3s;
+    }
+    .step-line.done { background: var(--blue); }
+
+    /* ── Form area ── */
+    .form-area {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 1.5rem 1rem;
+    }
+
+    .step-panel { display: none; }
+    .step-panel.active { display: block; }
+
+    .form-section-title {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      margin-bottom: 0.625rem;
+    }
+    .form-block {
+      margin-bottom: 1.5rem;
+    }
+
+    /* ── Chip group ── */
+    .chip-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    /* ── Chips ── */
+    .chip {
+      background: rgba(255,255,255,0.05);
+      border: 1.5px solid var(--border-hi);
+      color: var(--text-sub);
+      font-size: 0.875rem;
+      font-weight: 600;
+      padding: 0.45rem 1rem;
+      border-radius: 50px;
+      cursor: pointer;
+      font-family: inherit;
+      transition: background 0.2s, border-color 0.2s, color 0.2s, opacity 0.2s;
+    }
+    .chip:hover {
+      border-color: rgba(23,139,255,0.4);
+      color: var(--blue);
+    }
+    .chip.active {
+      background: var(--blue);
+      border-color: var(--blue);
+      color: #fff;
+    }
+    .chip:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+    }
+
+    /* ── Court cards ── */
+    .court-card {
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      padding: 1rem;
+      cursor: pointer;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      background: var(--bg-card);
+      color: var(--text);
+      user-select: none;
+    }
+    .court-card:hover { border-color: rgba(23,139,255,0.3); }
+    .court-card.selected {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px rgba(23,139,255,0.12);
+    }
+    .court-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 0.375rem;
+    }
+    .court-name { font-weight: 700; font-size: 0.95rem; color: var(--text); }
+    .court-address { font-size: 0.8rem; color: var(--text-dim); margin-bottom: 0.625rem; }
+    .court-times { display: flex; flex-wrap: wrap; gap: 0.375rem; margin-bottom: 0.5rem; }
+    .time-chip {
+      background: var(--blue-dim);
+      color: var(--blue);
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 0.2rem 0.6rem;
+      border-radius: 20px;
+    }
+    .court-count { font-size: 0.78rem; color: var(--text-dim); }
+    .court-detail { font-size: 0.72rem; color: var(--blue); font-style: normal; margin-top: 1px; margin-bottom: 0.375rem; }
+
+    /* ── Court radio dot ── */
+    .court-radio-dot {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      border: 2px solid var(--border-hi);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: border-color 0.2s;
+    }
+    .court-card.selected .court-radio-dot { border-color: var(--blue); }
+    .court-radio-inner {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--blue);
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+    .court-card.selected .court-radio-inner { opacity: 1; }
+
+    /* ── Info note ── */
+    .info-note {
+      background: var(--blue-dim);
+      border: 1px solid rgba(23,139,255,0.2);
+      border-radius: 8px;
+      padding: 0.625rem 0.875rem;
+      margin-top: 0.75rem;
+      display: flex;
+      gap: 0.5rem;
+      font-size: 0.775rem;
+      color: var(--text-sub);
+      line-height: 1.5;
+    }
+    .info-note svg { flex-shrink: 0; margin-top: 1px; }
+
+    /* ── Cat adjacency error ── */
+    .cat-error {
+      font-size: 0.75rem;
+      color: #F87171;
+      margin-top: 0.375rem;
+      min-height: 1em;
+    }
+
+    /* ── Modalidad tooltip ── */
+    .tipo-info-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+      background: var(--border-hi);
+      color: var(--text-dim);
+      font-size: 0.6rem;
+      font-weight: 800;
+      border: none;
+      cursor: pointer;
+      font-family: inherit;
+      margin-left: 0.3rem;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    .tipo-info-btn:hover { background: var(--blue); color: white; }
+    .tipo-info-popover {
+      display: none;
+      background: var(--bg-card2);
+      border: 1.5px solid var(--border-hi);
+      border-radius: 10px;
+      padding: 0.65rem 0.875rem;
+      font-size: 0.8rem;
+      color: var(--text);
+      line-height: 1.55;
+      margin-top: 0.5rem;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+    }
+
+    /* ── Buttons ── */
+    .btn-primary {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 50px;
+      background: var(--blue);
+      color: #fff;
+      font-family: inherit;
+      font-size: 0.9375rem;
+      font-weight: 700;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: opacity 0.2s;
+    }
+    .btn-primary:hover { opacity: 0.88; }
+    .btn-outline {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex: 1;
+      height: 50px;
+      background: transparent;
+      color: var(--text-sub);
+      font-family: inherit;
+      font-size: 0.9375rem;
+      font-weight: 600;
+      border: 1.5px solid var(--border-hi);
+      border-radius: 50px;
+      cursor: pointer;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .btn-outline:hover {
+      border-color: rgba(23,139,255,0.4);
+      color: var(--blue);
+    }
+
+    /* ── Button bar ── */
+    .btn-bar {
+      display: flex;
+      gap: 0.75rem;
+      margin-top: 2rem;
+    }
+
+    /* ── Summary card (step 2) ── */
+    .summary-card {
+      background: var(--bg-card);
+      border: 1.5px solid var(--border);
+      border-radius: 14px;
+      padding: 1.25rem;
+      margin-bottom: 1.25rem;
+    }
+    .summary-card-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 0.875rem;
+    }
+    .summary-complejo {
+      font-weight: 800;
+      font-size: 1.0625rem;
+      color: var(--text);
+    }
+    .summary-turno {
+      font-size: 0.875rem;
+      color: var(--text-sub);
+      margin-bottom: 0.625rem;
+    }
+    .summary-tags {
+      display: flex;
+      gap: 0.375rem;
+      flex-wrap: wrap;
+      margin-bottom: 0.875rem;
+    }
+    .summary-tag {
+      background: var(--blue-dim);
+      color: var(--blue);
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.2rem 0.6rem;
+      border-radius: 99px;
+    }
+    .player-dots {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .player-dots-row { display: flex; gap: 4px; }
+    .dot-you {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: var(--blue);
+      color: white;
+      font-size: 0.65rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .dot-empty {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: transparent;
+      border: 2px dashed var(--border-hi);
+    }
+    .players-count-text {
+      font-size: 0.8125rem;
+      font-weight: 700;
+      color: var(--text-dim);
+    }
+
+    /* ── Crear disponible block ── */
+    .crear-disponible-block {
+      background: var(--bg-card);
+      border: 1.5px solid var(--border);
+      border-radius: 14px;
+      padding: 1.25rem;
+    }
+    .crear-disponible-desc {
+      font-size: 0.875rem;
+      color: var(--text-sub);
+      margin-bottom: 0.875rem;
+      line-height: 1.5;
+    }
+
+    /* ── Crear limite block ── */
+    .crear-limite-block {
+      background: var(--bg-card2);
+      border: 1.5px solid rgba(23,139,255,0.3);
+      border-radius: 14px;
+      padding: 1.25rem;
+    }
+    .crear-limite-title {
+      font-size: 0.9375rem;
+      font-weight: 800;
+      color: var(--text);
+      margin-bottom: 0.375rem;
+    }
+    .crear-limite-desc {
+      font-size: 0.8125rem;
+      color: var(--text-sub);
+      margin-bottom: 1rem;
+    }
+    .crear-limite-btns {
+      display: flex;
+      flex-direction: column;
+      gap: 0.625rem;
+    }
+    .btn-comprar {
+      display: block;
+      text-align: center;
+      padding: 0.7rem 1rem;
+      background: var(--blue);
+      color: white;
+      border-radius: 10px;
+      font-size: 0.875rem;
+      font-weight: 700;
+      text-decoration: none;
+      font-family: inherit;
+    }
+    .btn-ver-premium {
+      display: block;
+      text-align: center;
+      padding: 0.7rem 1rem;
+      border: 1.5px solid var(--blue);
+      color: var(--blue);
+      border-radius: 10px;
+      font-size: 0.875rem;
+      font-weight: 700;
+      text-decoration: none;
+      font-family: inherit;
+    }
+
+    /* ── Confirmation (step 3) ── */
+    .confirm-icon-wrap {
+      width: 72px;
+      height: 72px;
+      background: var(--green-dim);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1rem;
+    }
+    .confirm-title {
+      font-size: 1.375rem;
+      font-weight: 800;
+      color: var(--text);
+      margin-bottom: 0.375rem;
+    }
+    .confirm-subtitle {
+      font-size: 0.875rem;
+      color: var(--text-sub);
+      margin-bottom: 1.5rem;
+    }
+    .confirm-summary-card {
+      background: var(--bg-card);
+      border: 1.5px solid var(--border);
+      border-radius: 14px;
+      padding: 1.25rem;
+      margin-bottom: 1.25rem;
+    }
+    .confirm-complejo {
+      font-weight: 800;
+      font-size: 1.0625rem;
+      color: var(--text);
+      margin-bottom: 0.25rem;
+    }
+    .confirm-turno {
+      font-size: 0.875rem;
+      color: var(--text-sub);
+      margin-bottom: 0.625rem;
+    }
+    .confirm-tags { display: flex; gap: 0.375rem; flex-wrap: wrap; }
+    .confirm-tag {
+      background: var(--blue-dim);
+      color: var(--blue);
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.2rem 0.6rem;
+      border-radius: 99px;
+    }
+    .share-card {
+      background: var(--bg-card2);
+      border-radius: 14px;
+      padding: 1.25rem;
+      margin-bottom: 1.25rem;
+      text-align: center;
+    }
+    .share-card-title {
+      font-weight: 700;
+      font-size: 0.875rem;
+      color: var(--text);
+      margin-bottom: 0.375rem;
+    }
+    .share-card-sub {
+      font-size: 0.8rem;
+      color: var(--text-sub);
+      margin-bottom: 0.875rem;
+    }
+    .share-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.6rem 1.25rem;
+      background: rgba(255,255,255,0.07);
+      border: 1.5px solid var(--border-hi);
+      border-radius: 10px;
+      font-size: 0.875rem;
+      font-weight: 700;
+      color: var(--text);
+      cursor: pointer;
+      font-family: inherit;
+      transition: background 0.2s;
+    }
+    .share-btn:hover { background: rgba(255,255,255,0.12); }
+
+    /* ── Bottom nav ── */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      max-width: 680px;
+      background: rgba(7,18,36,0.97);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-top: 1px solid rgba(255,255,255,0.06);
+      display: flex;
+      align-items: center;
+      padding: 8px 0 20px;
+      z-index: 100;
+    }
+    .nav-item {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      padding: 4px 0;
+      color: #A8B3C7;
+      text-decoration: none;
+      font-size: 10px;
+      font-weight: 500;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-family: inherit;
+      transition: color 0.15s;
+    }
+    .nav-item.active { color: #178BFF; }
+    .nav-item.active svg { stroke: #178BFF; }
+    .nav-create {
+      flex: 0 0 auto;
+      width: 52px;
+      height: 52px;
+      background: #178BFF;
+      border-radius: 50%;
+      border: none;
+      cursor: pointer;
+      font-family: inherit;
+      color: white;
+      margin-top: -12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 20px rgba(23,139,255,0.5);
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+    .nav-create:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 28px rgba(23,139,255,0.7);
+    }
+    .nav-create:active { transform: scale(0.97); }
+    .logo-img { height: 36px; object-fit: contain; display: block; }
+  </style>
+</head>
+<body>
+
+  <!-- ================================================================
+       PAGE HEADER
+       ================================================================ -->
+  <header class="page-header" id="main-header">
+    <div class="page-header-inner">
+      <a href="jugador-home.html" class="back-btn" id="back-btn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="15 18 9 12 15 6"/>
+        </svg>
+        Volver
+      </a>
+      <img src="assets/logo-padelya.png" alt="PadelYa" style="height:40px;object-fit:contain;">
+      <span class="step-counter" id="step-counter">Paso 1 de 2</span>
+    </div>
+    <!-- Step progress indicator -->
+    <div class="step-progress" id="step-progress">
+      <div class="step-circle active" id="sc-1">1</div>
+      <div class="step-line" id="sl-1"></div>
+      <div class="step-circle" id="sc-2">2</div>
+    </div>
+  </header>
+
+  <!-- ================================================================
+       FORM AREA
+       ================================================================ -->
+  <main class="page-content">
+    <div class="form-area" id="form-area">
+
+      <!-- ======================================================
+           STEP 1: Datos del partido
+           ====================================================== -->
+      <div class="step-panel active" id="step-1">
+
+        <!-- Categoría -->
+        <div class="form-block">
+          <p class="form-section-title">Categoría (elegí hasta 2)</p>
+          <div class="chip-group" id="chips-categoria">
+            <button class="chip" data-group="categoria">Principiante</button>
+            <button class="chip" data-group="categoria">7ª</button>
+            <button class="chip" data-group="categoria">6ª</button>
+            <button class="chip" data-group="categoria">5ª</button>
+            <button class="chip" data-group="categoria">4ª</button>
+            <button class="chip" data-group="categoria">3ª</button>
+          </div>
+          <div id="cat-error" class="cat-error"></div>
+          <p style="font-size:0.78rem;color:var(--text-dim);margin-top:0.25rem;">Podés elegir hasta 2 categorías contiguas, ej: 5ª y 6ª</p>
+        </div>
+
+        <!-- Tipo -->
+        <div class="form-block">
+          <p class="form-section-title">Tipo de partido</p>
+          <div class="chip-group">
+            <button class="chip" data-group="tipo">Masculino</button>
+            <button class="chip" data-group="tipo">Femenino</button>
+            <button class="chip" data-group="tipo">Mixto</button>
+          </div>
+        </div>
+
+        <!-- Modalidad -->
+        <div class="form-block">
+          <p class="form-section-title">
+            Modalidad
+            <button class="tipo-info-btn" onclick="toggleModalidadInfo(event)" type="button" aria-label="¿Qué es Competitivo o Amistoso?">?</button>
+          </p>
+          <div id="modalidad-info-popover" class="tipo-info-popover">
+            <strong>Competitivo</strong> — El resultado suma puntos al Índice PadelYa de cada jugador.<br>
+            <strong>Amistoso</strong> — Partido sin impacto en el Índice. Ideal para practicar o jugar con amigos.
+          </div>
+          <div class="chip-group" style="margin-top:0.5rem;">
+            <button class="chip" data-group="modalidad">Competitivo</button>
+            <button class="chip" data-group="modalidad">Amistoso</button>
+          </div>
+        </div>
+
+        <!-- Complejo preferido -->
+        <div class="form-block">
+          <p class="form-section-title">Complejo preferido</p>
+          <div style="display:flex;flex-direction:column;gap:0.75rem;">
+
+            <!-- Court 1 -->
+            <div class="court-card selected" data-court="1">
+              <div class="court-card-header">
+                <span class="court-name">Chingoland</span>
+                <div class="court-radio-dot"><div class="court-radio-inner"></div></div>
+              </div>
+              <div class="court-detail">Complejo de Federico Chingotto, top 2 mundial</div>
+              <div class="court-address">Río Negro 4651 (Área 226)</div>
+              <div class="court-count">4 canchas disponibles</div>
+            </div>
+
+            <!-- Court 2 -->
+            <div class="court-card" data-court="2">
+              <div class="court-card-header">
+                <span class="court-name">Las Terrazas Pádel</span>
+                <div class="court-radio-dot"><div class="court-radio-inner"></div></div>
+              </div>
+              <div class="court-address">Collinet 2760 / 2784</div>
+              <div class="court-count">3 canchas disponibles</div>
+            </div>
+
+            <!-- Court 3 -->
+            <div class="court-card" data-court="3">
+              <div class="court-card-header">
+                <span class="court-name">Sport Arena Pádel</span>
+                <div class="court-radio-dot"><div class="court-radio-inner"></div></div>
+              </div>
+              <div class="court-address">Las Heras 1350</div>
+              <div class="court-count">2 canchas disponibles</div>
+            </div>
+
+            <!-- Court 4 -->
+            <div class="court-card" data-court="4">
+              <div class="court-card-header">
+                <span class="court-name">La Esperanza Pádel</span>
+                <div class="court-radio-dot"><div class="court-radio-inner"></div></div>
+              </div>
+              <div class="court-address">Av. Colón 1555</div>
+              <div class="court-count">1 cancha disponible</div>
+            </div>
+
+            <!-- Court 5 -->
+            <div class="court-card" data-court="5">
+              <div class="court-card-header">
+                <span class="court-name">Club de Amigos</span>
+                <div class="court-radio-dot"><div class="court-radio-inner"></div></div>
+              </div>
+              <div class="court-address">Av. Ituzaingó 950</div>
+              <div class="court-count">3 canchas disponibles</div>
+            </div>
+
+            <!-- Court 6 -->
+            <div class="court-card" data-court="6">
+              <div class="court-card-header">
+                <span class="court-name">Oasis Pádel</span>
+                <div class="court-radio-dot"><div class="court-radio-inner"></div></div>
+              </div>
+              <div class="court-address">Independencia 3172</div>
+              <div class="court-count">2 canchas disponibles</div>
+            </div>
+
+            <!-- Court 7 -->
+            <div class="court-card" data-court="7">
+              <div class="court-card-header">
+                <span class="court-name">Runa Pádel</span>
+                <div class="court-radio-dot"><div class="court-radio-inner"></div></div>
+              </div>
+              <div class="court-address">Lebensohn 1850</div>
+              <div class="court-count">1 cancha disponible</div>
+            </div>
+
+            <!-- Court 8 -->
+            <div class="court-card" data-court="8">
+              <div class="court-card-header">
+                <span class="court-name">Padel Time</span>
+                <div class="court-radio-dot"><div class="court-radio-inner"></div></div>
+              </div>
+              <div class="court-address">Ramón Rendón 1679</div>
+              <div class="court-count">2 canchas disponibles</div>
+            </div>
+
+            <!-- Court 9 -->
+            <div class="court-card" data-court="9">
+              <div class="court-card-header">
+                <span class="court-name">Club de Pádel El Nuevo Jardín</span>
+                <div class="court-radio-dot"><div class="court-radio-inner"></div></div>
+              </div>
+              <div class="court-address">Av. de los Trabajadores 3749-3799</div>
+              <div class="court-count">3 canchas disponibles</div>
+            </div>
+
+            <!-- Court 10 -->
+            <div class="court-card" data-court="10">
+              <div class="court-card-header">
+                <span class="court-name">El Triunfo</span>
+                <div class="court-radio-dot"><div class="court-radio-inner"></div></div>
+              </div>
+              <div class="court-address">Av. del Valle 1050</div>
+              <div class="court-count">3 canchas disponibles</div>
+            </div>
+
+            <!-- Court 11 -->
+            <div class="court-card" data-court="11">
+              <div class="court-card-header">
+                <span class="court-name">Lagartos Pádel</span>
+                <div class="court-radio-dot"><div class="court-radio-inner"></div></div>
+              </div>
+              <div class="court-address">Av. del Valle 3823</div>
+              <div class="court-count">2 canchas disponibles</div>
+            </div>
+
+            <!-- Court 12 -->
+            <div class="court-card" data-court="12">
+              <div class="court-card-header">
+                <span class="court-name">Serrano Pádel</span>
+                <div class="court-radio-dot"><div class="court-radio-inner"></div></div>
+              </div>
+              <div class="court-address">Av. Pellegrini 5400</div>
+              <div class="court-count">4 canchas disponibles</div>
+            </div>
+
+            <!-- Court 13 -->
+            <div class="court-card" data-court="13">
+              <div class="court-card-header">
+                <span class="court-name">Pueblo Padel Club</span>
+                <div class="court-radio-dot"><div class="court-radio-inner"></div></div>
+              </div>
+              <div class="court-address">Av. Fundadores y Av. Unión, Colonia Hinojo</div>
+              <div class="court-count">2 canchas disponibles</div>
+            </div>
+
+            <!-- Court 14 -->
+            <div class="court-card" data-court="14">
+              <div class="court-card-header">
+                <span class="court-name">Pádel Búfalos</span>
+                <div class="court-radio-dot"><div class="court-radio-inner"></div></div>
+              </div>
+              <div class="court-address">Luciano Fortabat 1274</div>
+              <div class="court-count">1 cancha disponible</div>
+            </div>
+
+          </div>
+
+          <!-- Slot picker — mostrado al seleccionar un complejo -->
+          <div id="slots-block" style="margin-top:1.25rem;display:none;">
+            <p class="form-section-title">Turno preferido</p>
+            <div class="chip-group" id="chips-slot">
+              <!-- populado por JS -->
+            </div>
+          </div>
+
+          <!-- Nota informativa -->
+          <div class="info-note">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+            La cancha se reserva cuando se completen los 4 jugadores.
+          </div>
+        </div>
+
+        <button class="btn-primary" id="btn-step1-next">Siguiente →</button>
+      </div><!-- /step-1 -->
+
+
+      <!-- ======================================================
+           STEP 2: Resumen y pago del plus
+           ====================================================== -->
+      <div class="step-panel" id="step-2">
+
+        <!-- Summary card -->
+        <div class="summary-card">
+          <div class="summary-card-label">Tu partido</div>
+          <div class="summary-complejo" id="sum-complejo">Chingoland</div>
+          <div class="summary-turno" id="sum-turno">Martes · 20:00 hs</div>
+          <div class="summary-tags" id="sum-tags">
+            <span class="summary-tag" id="sum-cat">5ª</span>
+            <span class="summary-tag" id="sum-tipo">Masculino</span>
+            <span class="summary-tag" id="sum-mod">Competitivo</span>
+          </div>
+          <div class="player-dots">
+            <div class="player-dots-row">
+              <div class="dot-you">vos</div>
+              <div class="dot-empty"></div>
+              <div class="dot-empty"></div>
+              <div class="dot-empty"></div>
+            </div>
+            <span class="players-count-text">1 / 4 jugadores</span>
+          </div>
+        </div>
+
+        <!-- Confirmación de publicación -->
+        <div id="crear-disponible" class="crear-disponible-block">
+          <div class="crear-disponible-desc">
+            Tu partido se publicar&aacute; y el matchmaking buscar&aacute; jugadores autom&aacute;ticamente.
+          </div>
+          <button class="btn-primary" onclick="publicarPartido()">Publicar partido</button>
+        </div>
+
+        <!-- Límite alcanzado -->
+        <div id="crear-limite" style="display:none;" class="crear-limite-block">
+          <div class="crear-limite-title">Límite de partidos alcanzado</div>
+          <div class="crear-limite-desc">Usaste tus 3 partidos de este mes. Se renuevan el 1ro del mes.</div>
+          <div class="crear-limite-btns">
+            <a href="premium.html" class="btn-comprar">Comprar pase $999</a>
+            <a href="premium.html" class="btn-ver-premium">Ver Premium desde $5.999/mes</a>
+          </div>
+        </div>
+
+        <div class="btn-bar" style="margin-top:1.25rem;">
+          <button class="btn-outline" id="btn-step2-back">← Atrás</button>
+        </div>
+      </div><!-- /step-2 -->
+
+
+      <!-- ======================================================
+           STEP 3: Confirmación
+           ====================================================== -->
+      <div class="step-panel" id="step-3">
+
+        <div style="text-align:center;padding:1.5rem 0;">
+          <div class="confirm-icon-wrap">
+            <svg width="36" height="36" fill="none" stroke="var(--green)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <h2 class="confirm-title">¡Partido publicado!</h2>
+          <p class="confirm-subtitle">Ya está visible para jugadores de tu nivel en Olavarría.</p>
+        </div>
+
+        <!-- Summary card confirmación -->
+        <div class="confirm-summary-card">
+          <div class="confirm-complejo" id="conf-complejo">Chingoland</div>
+          <div class="confirm-turno" id="conf-turno">Martes · 20:00 hs</div>
+          <div class="confirm-tags" id="conf-tags"></div>
+        </div>
+
+        <!-- Compartir -->
+        <div class="share-card">
+          <div class="share-card-title">Compartí el partido para llenarlo más rápido</div>
+          <p class="share-card-sub">Sin datos personales · Solo el complejo, horario y nivel</p>
+          <button onclick="compartirPartido()" class="share-btn">
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+            Compartir partido
+          </button>
+        </div>
+
+        <a href="jugador-buscar.html?tab=mis" class="btn-primary" style="text-decoration:none;">Ver mis partidos →</a>
+
+      </div><!-- /step-3 -->
+
+    </div><!-- /form-area -->
+  </main>
+
+  <!-- ================================================================
+       BOTTOM NAV
+       ================================================================ -->
+  <nav class="bottom-nav" role="navigation" aria-label="Navegación principal">
+    <a href="jugador-home.html" class="nav-item" aria-label="Inicio">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+        <polyline points="9 22 9 12 15 12 15 22"/>
+      </svg>
+      <span>Inicio</span>
+    </a>
+    <a href="jugador-buscar.html" class="nav-item" aria-label="Partidos">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+        <rect x="2" y="4" width="20" height="16" rx="2"/>
+        <line x1="12" y1="4" x2="12" y2="20"/>
+        <line x1="2" y1="12" x2="6" y2="12"/>
+        <line x1="18" y1="12" x2="22" y2="12"/>
+      </svg>
+      <span>Partidos</span>
+    </a>
+    <button class="nav-create" onclick="window.location.href='jugador-crear.html'" type="button" aria-label="Crear partido">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <line x1="12" y1="5" x2="12" y2="19"/>
+        <line x1="5" y1="12" x2="19" y2="12"/>
+      </svg>
+    </button>
+    <a href="profes.html" class="nav-item" aria-label="Entrenà">
+      <svg width="22" height="22" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+        <ellipse cx="50" cy="38" rx="26" ry="30"/>
+        <circle cx="41" cy="28" r="4" fill="currentColor" stroke="none"/>
+        <circle cx="50" cy="28" r="4" fill="currentColor" stroke="none"/>
+        <circle cx="59" cy="28" r="4" fill="currentColor" stroke="none"/>
+        <circle cx="41" cy="38" r="4" fill="currentColor" stroke="none"/>
+        <circle cx="50" cy="38" r="4" fill="currentColor" stroke="none"/>
+        <circle cx="59" cy="38" r="4" fill="currentColor" stroke="none"/>
+        <circle cx="41" cy="48" r="4" fill="currentColor" stroke="none"/>
+        <circle cx="50" cy="48" r="4" fill="currentColor" stroke="none"/>
+        <circle cx="59" cy="48" r="4" fill="currentColor" stroke="none"/>
+        <path d="M38 66 L50 68 L62 66 L58 68 L50 95 L42 68 Z"/>
+        <rect x="44" y="67" width="12" height="28" rx="6"/>
+      </svg>
+      <span>Entrenà</span>
+    </a>
+    <a href="jugador-perfil.html" class="nav-item" aria-label="Perfil">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+        <circle cx="12" cy="8" r="4"/>
+        <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
+      </svg>
+      <span>Perfil</span>
+    </a>
+  </nav>
+
+  <!-- ================================================================
+       JAVASCRIPT
+       ================================================================ -->
+  <script>
+    /* ── Demo data fallback ── */
+    (function() {
+      if (!sessionStorage.getItem('loggedIn')) {
+        sessionStorage.setItem('loggedIn', 'true');
+        sessionStorage.setItem('nombre', 'Martín Rodríguez');
+        sessionStorage.setItem('categoria', '5ª');
+        sessionStorage.setItem('estadoCategoria', 'orientativa');
+        sessionStorage.setItem('sexo', 'masculino');
+      }
+    })();
+
+    /* ---- Helpers ---- */
+    const $ = id => document.getElementById(id);
+    const $$ = sel => document.querySelectorAll(sel);
+
+    var CATEGORIAS = ['Principiante', '7ª', '6ª', '5ª', '4ª', '3ª'];
+
+    function showCatError(msg) {
+      var err = document.getElementById('cat-error');
+      if (err) err.textContent = msg;
+    }
+    function hideCatError() {
+      var err = document.getElementById('cat-error');
+      if (err) err.textContent = '';
+    }
+    function updateCatStates() {
+      var chips = Array.from($$('.chip[data-group="categoria"]'));
+      var active = chips.filter(function(c) { return c.classList.contains('active'); });
+      var idxs = active.map(function(c) {
+        return CATEGORIAS.indexOf(c.textContent.trim());
+      }).sort(function(a, b) { return a - b; });
+
+      if (active.length === 0) {
+        chips.forEach(function(c) { c.style.opacity = ''; c.disabled = false; });
+        return;
+      }
+      var minI = idxs[0];
+      chips.forEach(function(c) {
+        var ci = CATEGORIAS.indexOf(c.textContent.trim());
+        var isActive = c.classList.contains('active');
+        var allowed;
+        if (active.length >= 2) {
+          allowed = isActive;
+        } else {
+          allowed = isActive || (ci >= minI - 1 && ci <= minI + 1);
+        }
+        c.style.opacity = allowed ? '' : '0.4';
+        c.disabled = !allowed;
+      });
+    }
+
+    /* ---- Chip select (single or multi) ---- */
+    $$('[data-group]').forEach(chip => {
+      if (!chip.classList.contains('court-card')) {
+        chip.addEventListener('click', () => {
+          const group = chip.dataset.group;
+          if (group === 'categoria') {
+            var chips = Array.from($$('.chip[data-group="categoria"]'));
+            var active = chips.filter(function(c) { return c.classList.contains('active'); });
+            if (chip.classList.contains('active')) {
+              chip.classList.remove('active');
+              hideCatError();
+              updateCatStates();
+              return;
+            }
+            var idxs = active.map(function(c) {
+              return CATEGORIAS.indexOf(c.textContent.trim());
+            }).sort(function(a, b) { return a - b; });
+            var newIdx = CATEGORIAS.indexOf(chip.textContent.trim());
+            if (active.length >= 2) {
+              return; /* already 2, shouldn't reach here via disabled btn */
+            }
+            if (active.length === 1 && Math.abs(newIdx - idxs[0]) > 1) {
+              showCatError('Solo podés elegir categorías contiguas.');
+              return;
+            }
+            hideCatError();
+            chip.classList.add('active');
+            updateCatStates();
+          } else {
+            $$(`[data-group="${group}"]`).forEach(c => c.classList.remove('active'));
+            chip.classList.add('active');
+          }
+        });
+      }
+    });
+
+    /* ---- Court card selection ---- */
+    const courtCards = $$('.court-card');
+    courtCards.forEach(card => {
+      card.addEventListener('click', () => {
+        courtCards.forEach(c => c.classList.remove('selected'));
+        card.classList.add('selected');
+        renderSlots(card.dataset.court);
+      });
+    });
+
+    /* ---- Court time slots ---- */
+    const courtSlots = {
+      1: ['08:00','09:30','11:00','14:00','15:30','17:00','18:30','20:00','21:30'],
+      2: ['08:00','09:30','11:00','17:00','18:30','20:00','21:30'],
+      3: ['09:00','10:30','14:00','17:00','18:30','20:00'],
+      4: ['10:00','17:00','18:30','20:00'],
+      5: ['08:00','09:30','11:00','14:00','17:00','18:30','20:00'],
+      6: ['08:00','10:00','14:00','16:00','18:00','20:00'],
+      7: ['09:00','11:00','17:00','18:30','20:00'],
+      8: ['08:00','09:30','14:00','17:00','18:30','20:00','21:30'],
+      9: ['08:00','09:30','11:00','14:00','17:00','18:30','20:00'],
+      10: ['08:00','09:30','11:00','14:00','17:00','18:30','20:00','21:30'],
+      11: ['09:00','11:00','17:00','18:30','20:00'],
+      12: ['08:00','09:30','11:00','14:00','15:30','17:00','18:30','20:00','21:30'],
+      13: ['10:00','14:00','16:00','18:00','20:00'],
+      14: ['17:00','18:30','20:00','21:30']
+    };
+
+    function renderSlots(courtId) {
+      const slots = courtSlots[courtId] || [];
+      const container = $('chips-slot');
+      container.innerHTML = '';
+      slots.forEach(s => {
+        const btn = document.createElement('button');
+        btn.className = 'chip';
+        btn.type = 'button';
+        btn.dataset.group = 'slot';
+        btn.textContent = s + ' hs';
+        btn.addEventListener('click', () => {
+          $$('.chip[data-group="slot"]').forEach(c => c.classList.remove('active'));
+          btn.classList.add('active');
+        });
+        container.appendChild(btn);
+      });
+      $('slots-block').style.display = 'block';
+    }
+
+    // Mostrar slots del complejo seleccionado por defecto al cargar
+    renderSlots(1);
+
+    /* ---- Court data ---- */
+    const courtData = {
+      1:  { name: 'Chingoland',                    addr: 'Río Negro 4651 (Área 226)' },
+      2:  { name: 'Las Terrazas Pádel',             addr: 'Collinet 2760 / 2784' },
+      3:  { name: 'Sport Arena Pádel',              addr: 'Las Heras 1350' },
+      4:  { name: 'La Esperanza Pádel',             addr: 'Av. Colón 1555' },
+      5:  { name: 'Club de Amigos',                 addr: 'Av. Ituzaingó 950' },
+      6:  { name: 'Oasis Pádel',                    addr: 'Independencia 3172' },
+      7:  { name: 'Runa Pádel',                     addr: 'Lebensohn 1850' },
+      8:  { name: 'Padel Time',                     addr: 'Ramón Rendón 1679' },
+      9:  { name: 'Club de Pádel El Nuevo Jardín',  addr: 'Av. de los Trabajadores 3749-3799' },
+      10: { name: 'El Triunfo',                     addr: 'Av. del Valle 1050' },
+      11: { name: 'Lagartos Pádel',                 addr: 'Av. del Valle 3823' },
+      12: { name: 'Serrano Pádel',                  addr: 'Av. Pellegrini 5400' },
+      13: { name: 'Pueblo Padel Club',              addr: 'Av. Fundadores y Av. Unión, Colonia Hinojo' },
+      14: { name: 'Pádel Búfalos',                  addr: 'Luciano Fortabat 1274' }
+    };
+
+    /* ---- Step navigation ---- */
+    let currentStep = 1;
+
+    const stepPanels  = [null, $('step-1'), $('step-2'), $('step-3')];
+    const stepCircles = [null, $('sc-1'), $('sc-2')];
+    const stepLines   = [null, $('sl-1')];
+
+    function showStep(n) {
+      stepPanels.forEach((p, i) => { if (i > 0) p.classList.remove('active'); });
+      if (stepPanels[n]) stepPanels[n].classList.add('active');
+
+      // Ocultar header y barra de progreso en paso 3 (confirmación)
+      const isConfirmation = n === 3;
+      $('main-header').style.display = isConfirmation ? 'none' : '';
+
+      if (!isConfirmation) {
+        // Actualizar círculos — solo hay 2 pasos interactivos
+        for (let i = 1; i <= 2; i++) {
+          stepCircles[i].classList.remove('active', 'done');
+          if (i < n) stepCircles[i].classList.add('done');
+          else if (i === n) stepCircles[i].classList.add('active');
+        }
+        // Actualizar líneas
+        stepLines[1].classList.toggle('done', n > 1);
+        $('step-counter').textContent = `Paso ${n} de 2`;
+      }
+
+      // Comportamiento del botón Volver
+      if (n === 1) {
+        $('back-btn').href = 'jugador-home.html';
+        $('back-btn').removeAttribute('data-step');
+      } else {
+        $('back-btn').href = '#';
+        $('back-btn').dataset.step = n - 1;
+      }
+
+      currentStep = n;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    /* Flecha volver en header */
+    $('back-btn').addEventListener('click', e => {
+      const step = parseInt($('back-btn').dataset.step);
+      if (!isNaN(step)) {
+        e.preventDefault();
+        showStep(step);
+      }
+    });
+
+    /* ---- Helpers de validación ---- */
+    function getChipVal(group) {
+      const active = document.querySelector(`.chip.active[data-group="${group}"]`);
+      return active ? active.textContent.trim() : null;
+    }
+
+    function validateStep1() {
+      const errors = [];
+      const cats = document.querySelectorAll('.chip.active[data-group="categoria"]');
+      if (cats.length === 0) errors.push('Seleccioná al menos una categoría.');
+      if (!getChipVal('tipo')) errors.push('Seleccioná el tipo de partido.');
+      if (!getChipVal('modalidad')) errors.push('Seleccioná la modalidad.');
+      const court = document.querySelector('.court-card.selected');
+      if (!court) errors.push('Seleccioná un complejo.');
+      const slot = document.querySelector('.chip.active[data-group="slot"]');
+      if (!slot) errors.push('Seleccioná un turno disponible.');
+      return errors;
+    }
+
+    /* ---- Paso 1 → 2 ---- */
+    $('btn-step1-next').addEventListener('click', () => {
+      const errors = validateStep1();
+      if (errors.length) {
+        alert(errors.join('\n'));
+        return;
+      }
+      updateSummary();
+      showStep(2);
+    });
+
+    /* ---- Paso 2: Atrás ---- */
+    $('btn-step2-back').addEventListener('click', () => showStep(1));
+
+    /* ---- Build summary ---- */
+    function updateSummary() {
+      const cats = Array.from(document.querySelectorAll('.chip.active[data-group="categoria"]')).map(c => c.textContent.trim());
+      const cat = cats.join(' y ') || '5ª';
+      const tipo = getChipVal('tipo') || 'Masculino';
+      const mod  = getChipVal('modalidad') || 'Competitivo';
+      const courtCard = document.querySelector('.court-card.selected');
+      const courtId   = courtCard ? courtCard.dataset.court : '1';
+      const court     = courtData[courtId] || { name: 'Chingoland', addr: 'Río Negro 4651 (Área 226)' };
+      const slot      = document.querySelector('.chip.active[data-group="slot"]');
+      const slotText  = slot ? slot.textContent.trim() : '20:00 hs';
+
+      const days = ['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
+      const d = new Date(); d.setDate(d.getDate() + 2);
+      const dayLabel = days[d.getDay()] + ' ' + d.getDate() + '/' + (d.getMonth() + 1);
+      const turnoStr = dayLabel + ' · ' + slotText;
+
+      // Step 2 summary
+      if ($('sum-complejo')) $('sum-complejo').textContent = court.name;
+      if ($('sum-turno'))    $('sum-turno').textContent    = turnoStr;
+      if ($('sum-cat'))      $('sum-cat').textContent      = cat;
+      if ($('sum-tipo'))     $('sum-tipo').textContent     = tipo;
+      if ($('sum-mod'))      $('sum-mod').textContent      = mod;
+
+      // Step 3 confirmation
+      if ($('conf-complejo')) $('conf-complejo').textContent = court.name;
+      if ($('conf-turno'))    $('conf-turno').textContent    = turnoStr;
+      const tagsEl = $('conf-tags');
+      if (tagsEl) tagsEl.innerHTML = [cat, tipo, mod].map(t =>
+        `<span class="confirm-tag">${t}</span>`
+      ).join('');
+    }
+
+    /* ---- Mostrar bloque correcto según disponibilidad ---- */
+    (function() {
+      var jugados   = parseInt(sessionStorage.getItem('partidosJugados') || '0');
+      var esPremium = sessionStorage.getItem('esPremium') === 'true';
+      if (!esPremium && jugados >= 3) {
+        var disp  = document.getElementById('crear-disponible');
+        var lim   = document.getElementById('crear-limite');
+        if (disp) disp.style.display = 'none';
+        if (lim)  lim.style.display  = 'block';
+      }
+    })();
+
+    /* ---- Publicar partido ---- */
+    function publicarPartido() {
+      var jugados = parseInt(sessionStorage.getItem('partidosJugados') || '0');
+      sessionStorage.setItem('partidosJugados', String(jugados + 1));
+
+      var cats = Array.from(document.querySelectorAll('.chip.active[data-group="categoria"]')).map(function(c) { return c.textContent.trim(); });
+      var cat  = cats.join('/') || '5ª';
+      var tipo = getChipVal('tipo') || 'Masculino';
+      var mod  = getChipVal('modalidad') || 'Competitivo';
+      var courtCard = document.querySelector('.court-card.selected');
+      var courtId   = courtCard ? courtCard.dataset.court : '1';
+      var court     = courtData[courtId] || { name: 'Chingoland' };
+      var slot      = document.querySelector('.chip.active[data-group="slot"]');
+      var slotText  = slot ? slot.textContent.trim() : '20:00 hs';
+
+      var nuevoPartido = { club: court.name, hora: slotText, cat: cat, tipo: tipo, mod: mod, jugadores: 1, total: 4 };
+      var stored   = sessionStorage.getItem('misPartidos');
+      var partidos = stored ? JSON.parse(stored) : [];
+      partidos.unshift(nuevoPartido);
+      sessionStorage.setItem('misPartidos', JSON.stringify(partidos));
+
+      updateSummary();
+      showStep(3);
+    }
+
+    /* ---- Confirmación (alias por compatibilidad) ---- */
+    function showConfirmation() {
+      publicarPartido();
+    }
+
+    /* ---- Compartir partido ---- */
+    function compartirPartido() {
+      const complejo = $('conf-complejo') ? $('conf-complejo').textContent : 'Chingoland';
+      const turno    = $('conf-turno')    ? $('conf-turno').textContent    : '';
+      const tags     = $('conf-tags')     ? $('conf-tags').textContent.trim() : '';
+      const texto    = `¡Busco jugador para completar partido!\n${complejo} · ${turno}\n${tags}\nUnite en PadelYa`;
+      if (navigator.share) {
+        navigator.share({ text: texto }).catch(() => {});
+      } else {
+        navigator.clipboard.writeText(texto)
+          .then(() => alert('Texto copiado al portapapeles.'))
+          .catch(() => alert(texto));
+      }
+    }
+
+    /* ---- Modalidad tooltip ---- */
+    function toggleModalidadInfo(e) {
+      e.stopPropagation();
+      var pop = document.getElementById('modalidad-info-popover');
+      var isOpen = pop.style.display === 'block';
+      pop.style.display = isOpen ? 'none' : 'block';
+      if (!isOpen) {
+        setTimeout(function() {
+          document.addEventListener('click', closeModalidadInfo);
+        }, 0);
+      }
+    }
+    function closeModalidadInfo() {
+      var pop = document.getElementById('modalidad-info-popover');
+      pop.style.display = 'none';
+      document.removeEventListener('click', closeModalidadInfo);
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Configuración · PadelYa</title>
+  <style>
+    :root {
+      --color-primary: #1B4F72;
+      --color-accent: #2E86C1;
+      --color-bg-secondary: #F4F6F9;
+      --color-border: #E8EDF2;
+      --color-dark: #0F2035;
+      --color-gray: #7A8B99;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #F8FBFF;
+      color: var(--color-dark);
+      max-width: 680px;
+      margin: 0 auto;
+      min-height: 100vh;
+      padding-bottom: 80px;
+    }
+    .header {
+      position: sticky;
+      top: 0;
+      background: rgba(255,255,255,0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--color-border);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0 1.25rem;
+      height: 56px;
+      z-index: 50;
+    }
+    .back-btn {
+      width: 36px;
+      height: 36px;
+      border: none;
+      background: var(--color-bg-secondary);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--color-dark);
+      flex-shrink: 0;
+    }
+    .header-title { font-size: 1.0625rem; font-weight: 800; color: var(--color-dark); }
+
+    /* Sections */
+    .config-section {
+      padding: 1.25rem 1.25rem 0;
+    }
+    .section-label {
+      font-size: 0.6875rem;
+      font-weight: 700;
+      color: var(--color-gray);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 0.75rem;
+      padding: 0 0.25rem;
+    }
+    .card {
+      background: white;
+      border-radius: 14px;
+      border: 1.5px solid var(--color-border);
+      overflow: hidden;
+    }
+    .setting-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.875rem 1.125rem;
+      border-bottom: 1px solid var(--color-border);
+      gap: 1rem;
+    }
+    .setting-row:last-child { border-bottom: none; }
+    .setting-label {
+      font-size: 0.9375rem;
+      font-weight: 600;
+      color: var(--color-dark);
+    }
+    .setting-sub {
+      font-size: 0.8rem;
+      color: var(--color-gray);
+      margin-top: 0.125rem;
+    }
+    .setting-value {
+      font-size: 0.875rem;
+      color: var(--color-gray);
+      font-weight: 500;
+      text-align: right;
+      flex-shrink: 0;
+    }
+
+    /* Chips para preferencias */
+    .chips-setting {
+      padding: 0.875rem 1.125rem;
+      border-bottom: 1px solid var(--color-border);
+    }
+    .chips-setting:last-child { border-bottom: none; }
+    .chips-setting-label {
+      font-size: 0.8125rem;
+      font-weight: 700;
+      color: var(--color-dark);
+      margin-bottom: 0.625rem;
+    }
+    .chips-row { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .chip {
+      padding: 0.375rem 0.875rem;
+      border-radius: 99px;
+      border: 1.5px solid var(--color-border);
+      background: var(--color-bg-secondary);
+      font-size: 0.8125rem;
+      font-weight: 600;
+      color: var(--color-gray);
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.15s;
+    }
+    .chip.active {
+      background: var(--color-primary);
+      border-color: var(--color-primary);
+      color: white;
+    }
+    .chip.day {
+      width: 42px;
+      padding: 0.375rem 0;
+      text-align: center;
+    }
+
+    /* Toggle switch */
+    .toggle-wrap {
+      position: relative;
+      width: 48px;
+      height: 28px;
+      flex-shrink: 0;
+    }
+    .toggle-wrap input { opacity: 0; width: 0; height: 0; }
+    .toggle-slider {
+      position: absolute;
+      inset: 0;
+      background: #E8EDF2;
+      border-radius: 28px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .toggle-slider::before {
+      content: '';
+      position: absolute;
+      width: 22px;
+      height: 22px;
+      left: 3px;
+      top: 3px;
+      background: white;
+      border-radius: 50%;
+      transition: transform 0.2s;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.15);
+    }
+    .toggle-wrap input:checked + .toggle-slider { background: var(--color-primary); }
+    .toggle-wrap input:checked + .toggle-slider::before { transform: translateX(20px); }
+
+    /* Input field */
+    .setting-input {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1.5px solid var(--color-border);
+      border-radius: 10px;
+      font-size: 0.9375rem;
+      font-family: inherit;
+      color: var(--color-dark);
+      outline: none;
+      margin-top: 0.5rem;
+      background: white;
+    }
+    .setting-input:focus { border-color: var(--color-accent); }
+
+    /* Membership badge */
+    .plan-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.375rem;
+      padding: 0.25rem 0.75rem;
+      border-radius: 99px;
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+    .plan-free { background: var(--color-bg-secondary); color: var(--color-gray); }
+    .plan-premium { background: linear-gradient(135deg,#F9A825,#F57F17); color: white; }
+
+    /* Danger zone */
+    .btn-danger {
+      width: 100%;
+      padding: 0.875rem;
+      background: white;
+      border: 1.5px solid #E74C3C;
+      border-radius: 12px;
+      color: #E74C3C;
+      font-size: 0.9375rem;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+      margin-top: 0.75rem;
+      transition: background 0.15s;
+    }
+    .btn-danger:active { background: #FADBD8; }
+
+    /* Modal */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 200;
+      align-items: center;
+      justify-content: center;
+      padding: 1.25rem;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal-box {
+      background: white;
+      border-radius: 16px;
+      padding: 1.5rem;
+      width: 100%;
+      max-width: 360px;
+      text-align: center;
+    }
+    .modal-title { font-size: 1.0625rem; font-weight: 800; color: var(--color-dark); margin-bottom: 0.5rem; }
+    .modal-sub { font-size: 0.875rem; color: var(--color-gray); margin-bottom: 1.25rem; line-height: 1.5; }
+    .modal-actions { display: flex; gap: 0.75rem; }
+    .btn-cancel {
+      flex: 1;
+      padding: 0.75rem;
+      border: 1.5px solid var(--color-border);
+      border-radius: 10px;
+      background: white;
+      font-size: 0.875rem;
+      font-weight: 700;
+      color: var(--color-dark);
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .btn-confirm-danger {
+      flex: 1;
+      padding: 0.75rem;
+      border: none;
+      border-radius: 10px;
+      background: #E74C3C;
+      color: white;
+      font-size: 0.875rem;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .chevron-right {
+      color: var(--color-gray);
+      flex-shrink: 0;
+    }
+    .config-section:last-of-type { padding-bottom: 2rem; }
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      max-width: 680px;
+      background: rgba(7,18,36,0.97);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-top: 1px solid rgba(255,255,255,0.06);
+      display: flex;
+      align-items: center;
+      padding: 8px 0 20px;
+      z-index: 100;
+    }
+    .nav-item {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      padding: 4px 0;
+      color: #A8B3C7;
+      text-decoration: none;
+      font-size: 10px;
+      font-weight: 500;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-family: inherit;
+      transition: color 0.15s;
+    }
+    .nav-item.active { color: #178BFF; }
+    .nav-item.active svg { stroke: #178BFF; }
+    .nav-create {
+      flex: 0 0 auto;
+      width: 52px;
+      height: 52px;
+      background: #178BFF;
+      border-radius: 50%;
+      border: none;
+      cursor: pointer;
+      font-family: inherit;
+      color: white;
+      margin-top: -12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 20px rgba(23,139,255,0.5);
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+    .nav-create:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 28px rgba(23,139,255,0.7);
+    }
+    .nav-create:active { transform: scale(0.97); }
+    .logo-img { height: 36px; object-fit: contain; display: block; }
+  </style>
+</head>
+<body>
+
+  <header class="header">
+    <button class="back-btn" onclick="history.back()" aria-label="Volver">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+    </button>
+    <img src="assets/logo-padelya.png" alt="PadelYa" style="height:40px;object-fit:contain;">
+  </header>
+
+  <!-- PREFERENCIAS DE JUEGO -->
+  <div class="config-section">
+    <div class="section-label">Preferencias de juego</div>
+    <div class="card">
+
+      <div class="chips-setting">
+        <div class="chips-setting-label">Mano preferida</div>
+        <div class="chips-row">
+          <button class="chip active" onclick="selectChip(this,'mano')">Derecha</button>
+          <button class="chip" onclick="selectChip(this,'mano')">Izquierda</button>
+          <button class="chip" onclick="selectChip(this,'mano')">Ambas</button>
+        </div>
+      </div>
+
+      <div class="chips-setting">
+        <div class="chips-setting-label">Posición en pista</div>
+        <div class="chips-row">
+          <button class="chip active" onclick="selectChip(this,'posicion')">Drive</button>
+          <button class="chip" onclick="selectChip(this,'posicion')">Revés</button>
+          <button class="chip" onclick="selectChip(this,'posicion')">Ambos</button>
+        </div>
+      </div>
+
+      <div class="chips-setting">
+        <div class="chips-setting-label">Tipo de partido</div>
+        <div class="chips-row">
+          <button class="chip active" onclick="selectChip(this,'tipo')">Competitivo</button>
+          <button class="chip" onclick="selectChip(this,'tipo')">Amistoso</button>
+          <button class="chip" onclick="selectChip(this,'tipo')">Ambos</button>
+        </div>
+      </div>
+
+      <div class="chips-setting">
+        <div class="chips-setting-label">Género de partido</div>
+        <div class="chips-row">
+          <button class="chip active" onclick="selectChip(this,'genero')">Masculino</button>
+          <button class="chip" onclick="selectChip(this,'genero')">Femenino</button>
+          <button class="chip" onclick="selectChip(this,'genero')">Mixto</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- DISPONIBILIDAD -->
+  <div class="config-section" style="margin-top:1.25rem;">
+    <div class="section-label">Disponibilidad</div>
+    <div class="card">
+
+      <div class="chips-setting">
+        <div class="chips-setting-label">Franja horaria</div>
+        <div class="chips-row">
+          <button class="chip" onclick="selectChip(this,'franja')">Mañana</button>
+          <button class="chip active" onclick="selectChip(this,'franja')">Tarde</button>
+          <button class="chip" onclick="selectChip(this,'franja')">Noche</button>
+          <button class="chip" onclick="selectChip(this,'franja')">Todo el día</button>
+        </div>
+      </div>
+
+      <div class="chips-setting">
+        <div class="chips-setting-label">Días disponibles</div>
+        <div class="chips-row">
+          <button class="chip day" onclick="toggleChip(this)">Lun</button>
+          <button class="chip day active" onclick="toggleChip(this)">Mar</button>
+          <button class="chip day active" onclick="toggleChip(this)">Mié</button>
+          <button class="chip day active" onclick="toggleChip(this)">Jue</button>
+          <button class="chip day" onclick="toggleChip(this)">Vie</button>
+          <button class="chip day" onclick="toggleChip(this)">Sáb</button>
+          <button class="chip day" onclick="toggleChip(this)">Dom</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- CUENTA -->
+  <div class="config-section" style="margin-top:1.25rem;">
+    <div class="section-label">Cuenta</div>
+    <div class="card">
+
+      <div class="setting-row">
+        <div>
+          <div class="setting-label">Email</div>
+          <div class="setting-sub">martin.rodriguez@gmail.com</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:0.5rem;">
+          <span class="setting-value">Cambiar</span>
+          <svg class="chevron-right" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+      </div>
+
+      <div class="setting-row">
+        <div>
+          <div class="setting-label">Contraseña</div>
+          <div class="setting-sub">Última actualización hace 3 meses</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:0.5rem;">
+          <span class="setting-value">Cambiar</span>
+          <svg class="chevron-right" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+      </div>
+
+      <div class="setting-row" style="flex-direction:column;align-items:flex-start;gap:0;">
+        <div class="setting-label">Número de celular</div>
+        <input type="tel" class="setting-input" value="2284 00-0001" placeholder="Ej: 2284 00-0001">
+      </div>
+
+      <div class="setting-row">
+        <div>
+          <div class="setting-label">Notificaciones</div>
+          <div class="setting-sub">Partidos, invitaciones y recordatorios</div>
+        </div>
+        <label class="toggle-wrap">
+          <input type="checkbox" checked onchange="toggleNotif(this)">
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- MEMBRESÍA -->
+  <div class="config-section" style="margin-top:1.25rem;">
+    <div class="section-label">Membresía</div>
+    <div class="card">
+
+      <div class="setting-row">
+        <div>
+          <div class="setting-label">Plan actual</div>
+          <div style="margin-top:0.375rem;">
+            <span class="plan-badge plan-free">FREE</span>
+          </div>
+        </div>
+        <a href="premium.html" style="display:inline-flex;align-items:center;gap:0.375rem;padding:0.5rem 1rem;background:linear-gradient(135deg,#F9A825,#F57F17);border-radius:10px;font-size:0.8125rem;font-weight:700;color:white;text-decoration:none;flex-shrink:0;">
+          Ver Premium
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+        </a>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- CERRAR SESIÓN -->
+  <div class="config-section" style="margin-top:1.25rem;">
+    <button onclick="cerrarSesion()" class="btn-danger" style="border-color:#3498DB;color:#3498DB;">Cerrar sesión</button>
+  </div>
+
+  <!-- ZONA DE PELIGRO -->
+  <div class="config-section" style="margin-top:1.25rem;padding-bottom:3rem;">
+    <div class="section-label">Zona de peligro</div>
+    <div class="card" style="border-color:#FADBD8;">
+      <div class="setting-row">
+        <div>
+          <div class="setting-label" style="color:#E74C3C;">Eliminar mi cuenta</div>
+          <div class="setting-sub">Esta acción es irreversible</div>
+        </div>
+        <button onclick="document.getElementById('modal-eliminar').classList.add('open')" style="padding:0.4rem 0.875rem;background:#FADBD8;border:none;border-radius:8px;color:#E74C3C;font-size:0.8125rem;font-weight:700;cursor:pointer;font-family:inherit;flex-shrink:0;">Eliminar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: confirmar eliminación -->
+  <div id="modal-eliminar" class="modal-overlay" onclick="if(event.target===this)this.classList.remove('open')">
+    <div class="modal-box" onclick="event.stopPropagation()">
+      <div style="width:52px;height:52px;border-radius:50%;background:#FADBD8;display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#E74C3C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+      </div>
+      <div class="modal-title">¿Eliminar tu cuenta?</div>
+      <div class="modal-sub">Se eliminarán todos tus partidos, historial e Índice PadelYa. Esta acción es irreversible.</div>
+      <div class="modal-actions">
+        <button class="btn-cancel" onclick="document.getElementById('modal-eliminar').classList.remove('open')">Cancelar</button>
+        <button class="btn-confirm-danger" onclick="alert('Función no disponible en el prototipo')">Sí, eliminar</button>
+      </div>
+    </div>
+  </div>
+
+  <nav class="bottom-nav" role="navigation" aria-label="Navegación principal">
+    <a href="jugador-home.html" class="nav-item" aria-label="Inicio">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+        <polyline points="9 22 9 12 15 12 15 22"/>
+      </svg>
+      <span>Inicio</span>
+    </a>
+    <a href="jugador-buscar.html" class="nav-item" aria-label="Partidos">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+        <rect x="2" y="4" width="20" height="16" rx="2"/>
+        <line x1="12" y1="4" x2="12" y2="20"/>
+        <line x1="2" y1="12" x2="6" y2="12"/>
+        <line x1="18" y1="12" x2="22" y2="12"/>
+      </svg>
+      <span>Partidos</span>
+    </a>
+    <button class="nav-create" onclick="window.location.href='jugador-crear.html'" type="button" aria-label="Crear partido">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <line x1="12" y1="5" x2="12" y2="19"/>
+        <line x1="5" y1="12" x2="19" y2="12"/>
+      </svg>
+    </button>
+    <a href="profes.html" class="nav-item" aria-label="Entrenà">
+      <svg width="22" height="22" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+        <ellipse cx="50" cy="38" rx="26" ry="30"/>
+        <circle cx="41" cy="28" r="4" fill="currentColor" stroke="none"/>
+        <circle cx="50" cy="28" r="4" fill="currentColor" stroke="none"/>
+        <circle cx="59" cy="28" r="4" fill="currentColor" stroke="none"/>
+        <circle cx="41" cy="38" r="4" fill="currentColor" stroke="none"/>
+        <circle cx="50" cy="38" r="4" fill="currentColor" stroke="none"/>
+        <circle cx="59" cy="38" r="4" fill="currentColor" stroke="none"/>
+        <circle cx="41" cy="48" r="4" fill="currentColor" stroke="none"/>
+        <circle cx="50" cy="48" r="4" fill="currentColor" stroke="none"/>
+        <circle cx="59" cy="48" r="4" fill="currentColor" stroke="none"/>
+        <path d="M38 66 L50 68 L62 66 L58 68 L50 95 L42 68 Z"/>
+        <rect x="44" y="67" width="12" height="28" rx="6"/>
+      </svg>
+      <span>Entrenà</span>
+    </a>
+    <a href="jugador-perfil.html" class="nav-item active" aria-label="Perfil">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+        <circle cx="12" cy="8" r="4"/>
+        <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
+      </svg>
+      <span>Perfil</span>
+    </a>
+  </nav>
+
+  <script>
+    /* ── Demo data fallback ── */
+    (function() {
+      if (!sessionStorage.getItem('loggedIn')) {
+        sessionStorage.setItem('loggedIn', 'true');
+        sessionStorage.setItem('nombre', 'Martín Rodríguez');
+        sessionStorage.setItem('categoria', '5ª');
+        sessionStorage.setItem('estadoCategoria', 'orientativa');
+        sessionStorage.setItem('sexo', 'masculino');
+      }
+    })();
+    function cerrarSesion() {
+      sessionStorage.clear();
+      window.location.href = 'index.html';
+    }
+    function selectChip(chip, group) {
+      var parent = chip.closest('.chips-row');
+      parent.querySelectorAll('.chip').forEach(function(c) { c.classList.remove('active'); });
+      chip.classList.add('active');
+    }
+    function toggleChip(chip) {
+      chip.classList.toggle('active');
+    }
+    function toggleNotif(checkbox) {
+      var row = checkbox.closest('.setting-row');
+      var sub = row.querySelector('.setting-sub');
+      if (sub) sub.textContent = checkbox.checked ? 'Partidos, invitaciones y recordatorios' : 'Notificaciones desactivadas';
+    }
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PadelYa - Perfil del Profesor</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    /* ── Dark premium palette ── */
+    :root {
+      --bg: #071224;
+      --bg-2: #0A1630;
+      --bg-card: #0D1E3A;
+      --blue: #178BFF;
+      --blue-dim: rgba(23,139,255,0.12);
+      --text: #F5F7FA;
+      --text-sub: #A8B3C7;
+      --text-dim: #6B7A8F;
+      --green: #D6FF00;
+      --border: rgba(255,255,255,0.08);
+    }
+
+    /* ── Base ── */
+    * { scrollbar-width: none; }
+    body {
+      background: #071224;
+      color: #F5F7FA;
+      -webkit-font-smoothing: antialiased;
+      padding-bottom: 10rem;
+    }
+    body::-webkit-scrollbar { display: none; }
+
+    .page-content {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 0 1rem 2rem;
+      background: #071224;
+    }
+    main { background: #071224; }
+
+    /* ── Header ── */
+    .header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(7,18,36,0.97);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      padding: 0.85rem 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .header-title {
+      font-size: 0.9375rem;
+      font-weight: 700;
+      color: #F5F7FA;
+    }
+    .header-icon-btn {
+      width: 40px;
+      height: 40px;
+      border: none;
+      background: rgba(255,255,255,0.06);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      color: #A8B3C7;
+      transition: all 0.2s ease;
+      text-decoration: none;
+    }
+    .header-icon-btn:hover {
+      background: rgba(255,255,255,0.1);
+      color: #F5F7FA;
+    }
+
+    /* ── Badges ── */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      padding: 0.2rem 0.6rem;
+      border-radius: 99px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      white-space: nowrap;
+      transition: all 0.2s ease;
+    }
+    .badge-certified {
+      background: rgba(23,139,255,0.15);
+      color: #178BFF;
+      border: 1px solid rgba(23,139,255,0.3);
+    }
+    .badge-gold {
+      background: rgba(255,193,7,0.15);
+      color: #FFD700;
+      border: 1px solid rgba(255,193,7,0.3);
+      font-size: 0.65rem;
+    }
+    .badge-green {
+      background: rgba(37,211,102,0.15);
+      color: #25D366;
+      border: 1px solid rgba(37,211,102,0.3);
+    }
+
+    /* ── Professor hero ── */
+    .prof-hero {
+      background: linear-gradient(180deg, #0A1630 0%, #071224 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 1.75rem 1.25rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+    .prof-avatar {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #178BFF, #0D5DB5);
+      color: #F5F7FA;
+      font-size: 1.5rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 0.875rem;
+      box-shadow: 0 4px 24px rgba(23,139,255,0.35);
+    }
+    .prof-name {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: #F5F7FA;
+      margin: 0 0 0.2rem;
+    }
+    .prof-subtitle {
+      font-size: 0.8125rem;
+      color: #A8B3C7;
+      margin-bottom: 0.875rem;
+    }
+    .prof-badges {
+      display: flex;
+      gap: 0.4rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-bottom: 0.75rem;
+    }
+    .prof-especialidades {
+      display: flex;
+      gap: 0.4rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+    }
+    .esp-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: #A8B3C7;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    /* ── Sections ── */
+    .section { margin-top: 1.25rem; }
+    .section-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 0.75rem;
+    }
+    .section-head h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #F5F7FA;
+      margin: 0;
+    }
+
+    /* ── Stats ── */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.75rem;
+    }
+    .stat-card {
+      background: #0D1E3A;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 14px;
+      padding: 1rem;
+      text-align: center;
+      transition: all 0.2s ease;
+    }
+    .stat-number {
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: #F5F7FA;
+      line-height: 1;
+    }
+    .stat-label {
+      font-size: 0.7rem;
+      color: #A8B3C7;
+      font-weight: 600;
+      margin-top: 0.25rem;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+
+    /* ── Generic card ── */
+    .card {
+      background: #0D1E3A;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 16px;
+      transition: all 0.2s ease;
+    }
+
+    /* ── Bio ── */
+    .bio-text {
+      font-size: 0.875rem;
+      color: #A8B3C7;
+      line-height: 1.6;
+      padding: 1.125rem;
+    }
+
+    /* ── Chips ── */
+    .chip-display {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      padding: 1rem 1.125rem;
+    }
+    .chip-tag {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.3rem 0.75rem;
+      border-radius: 50px;
+      font-size: 0.775rem;
+      font-weight: 700;
+      background: rgba(23,139,255,0.12);
+      color: #178BFF;
+      border: 1px solid rgba(23,139,255,0.2);
+      transition: all 0.2s ease;
+    }
+
+    /* ── Availability ── */
+    .avail-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+    .avail-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.75rem 1.125rem;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .avail-row:last-child { border-bottom: none; }
+    .avail-day {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: #A8B3C7;
+      min-width: 90px;
+    }
+    .avail-slots {
+      display: flex;
+      gap: 0.375rem;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+    .avail-slot {
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 0.25rem 0.6rem;
+      border-radius: 8px;
+      background: rgba(255,255,255,0.06);
+      color: #A8B3C7;
+      border: 1px solid rgba(255,255,255,0.1);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .avail-slot:hover {
+      background: rgba(23,139,255,0.15);
+      border-color: #178BFF;
+      color: #178BFF;
+    }
+    .avail-slot.selected {
+      background: rgba(23,139,255,0.15);
+      color: #178BFF;
+      border-color: #178BFF;
+    }
+    .avail-na {
+      font-size: 0.775rem;
+      color: #6B7A8F;
+    }
+
+    /* ── Complejos ── */
+    .complejo-row {
+      display: flex;
+      align-items: center;
+      gap: 0.875rem;
+      padding: 0.875rem 1.125rem;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .complejo-row:last-child { border-bottom: none; }
+    .complejo-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      background: rgba(23,139,255,0.12);
+      color: #178BFF;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .complejo-name {
+      font-size: 0.875rem;
+      font-weight: 700;
+      color: #F5F7FA;
+    }
+    .complejo-address {
+      font-size: 0.75rem;
+      color: #A8B3C7;
+      margin-top: 1px;
+    }
+
+    /* ── Reviews ── */
+    .reviews-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    .review-card {
+      background: #0D1E3A;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 12px;
+      padding: 1rem;
+      transition: all 0.2s ease;
+    }
+    .review-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 0.5rem;
+    }
+    .review-author {
+      font-weight: 700;
+      font-size: 0.875rem;
+      color: #F5F7FA;
+    }
+    .review-stars {
+      color: #F39C12;
+      font-size: 0.875rem;
+    }
+    .review-text {
+      font-size: 0.8125rem;
+      color: #A8B3C7;
+      line-height: 1.55;
+      margin: 0;
+    }
+    .review-date {
+      font-size: 0.7rem;
+      color: #6B7A8F;
+      margin-top: 0.375rem;
+    }
+
+    /* ── Sticky CTA ── */
+    .sticky-cta {
+      position: fixed;
+      bottom: calc(64px + env(safe-area-inset-bottom));
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      max-width: 680px;
+      background: rgba(10,22,48,0.97);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-top: 1px solid rgba(255,255,255,0.08);
+      padding: 0.875rem 1.25rem;
+      display: flex;
+      gap: 0.75rem;
+      align-items: center;
+      z-index: 150;
+    }
+    .sticky-cta-info {
+      flex: 1;
+    }
+    .sticky-cta-price {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: #F5F7FA;
+      line-height: 1;
+    }
+    .sticky-cta-label {
+      font-size: 0.7rem;
+      color: #A8B3C7;
+      margin-top: 2px;
+    }
+    .btn-reservar {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.5rem;
+      background: #178BFF;
+      color: #F5F7FA;
+      border: none;
+      border-radius: 50px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+      box-shadow: 0 0 16px rgba(23,139,255,0.3);
+    }
+    .btn-reservar:hover {
+      background: #3d9dff;
+      box-shadow: 0 0 24px rgba(23,139,255,0.45);
+    }
+    .btn-msg {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 44px;
+      height: 44px;
+      border: 1.5px solid rgba(255,255,255,0.12);
+      border-radius: 10px;
+      background: rgba(255,255,255,0.06);
+      color: #A8B3C7;
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: all 0.2s ease;
+    }
+    .btn-msg:hover {
+      border-color: #178BFF;
+      background: rgba(23,139,255,0.12);
+      color: #178BFF;
+    }
+
+    /* ── Bottom nav ── */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      max-width: 680px;
+      background: rgba(7,18,36,0.97);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-top: 1px solid rgba(255,255,255,0.08);
+      display: flex;
+      align-items: center;
+      padding: 0.5rem 0 calc(0.5rem + env(safe-area-inset-bottom));
+      z-index: 100;
+    }
+    .nav-item {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.25rem;
+      padding: 0.375rem 0;
+      color: #6B7A8F;
+      text-decoration: none;
+      font-size: 0.6875rem;
+      font-weight: 600;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.2s ease;
+    }
+    .nav-item.active, .nav-item:hover { color: #178BFF; }
+    .nav-create {
+      background: #178BFF;
+      color: #F5F7FA !important;
+      border-radius: 50%;
+      width: 52px;
+      height: 52px;
+      padding: 0;
+      margin-top: -14px;
+      box-shadow: 0 4px 16px rgba(23,139,255,0.4);
+      flex: 0 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      border: none;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.2s ease;
+    }
+    .nav-create:hover { transform: scale(1.05); box-shadow: 0 4px 24px rgba(23,139,255,0.55); }
+    .nav-create span { display: none; }
+
+    /* ── Sheet overlay ── */
+    .sheet-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      z-index: 200;
+    }
+    .sheet-overlay.open { display: block; animation: fadeInOverlay 0.2s ease; }
+    @keyframes fadeInOverlay { from { opacity: 0; } to { opacity: 1; } }
+
+    /* ── Bottom sheet ── */
+    .bottom-sheet {
+      position: fixed;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%) translateY(100%);
+      width: 100%;
+      max-width: 680px;
+      background: #0A1630;
+      border-radius: 20px 20px 0 0;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      padding: 1rem 1.25rem calc(1.5rem + env(safe-area-inset-bottom));
+      z-index: 201;
+      transition: transform 0.3s cubic-bezier(0.32,0.72,0,1);
+    }
+    .bottom-sheet.open { transform: translateX(-50%) translateY(0); }
+    .sheet-handle {
+      width: 40px;
+      height: 4px;
+      background: rgba(255,255,255,0.15);
+      border-radius: 2px;
+      margin: 0 auto 1.25rem;
+    }
+    .sheet-title {
+      font-size: 1.0625rem;
+      font-weight: 800;
+      color: #F5F7FA;
+      margin-bottom: 1rem;
+    }
+    .sheet-option {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem;
+      border-radius: 12px;
+      text-decoration: none;
+      color: #F5F7FA;
+      border: 1.5px solid rgba(255,255,255,0.08);
+      margin-bottom: 0.75rem;
+      transition: all 0.2s ease;
+    }
+    .sheet-option:last-child { margin-bottom: 0; }
+    .sheet-option:active { background: rgba(255,255,255,0.05); }
+    .sheet-option-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: rgba(23,139,255,0.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      color: #178BFF;
+    }
+    .sheet-option-title { font-size: 0.9375rem; font-weight: 700; color: #F5F7FA; }
+    .sheet-option-sub { font-size: 0.8125rem; color: #A8B3C7; margin-top: 0.125rem; }
+
+    /* ── Misc overrides ── */
+    .btn-full-outline {
+      display: block;
+      width: 100%;
+      padding: 0.7rem 1rem;
+      background: transparent;
+      color: #178BFF;
+      border: 1px solid rgba(23,139,255,0.3);
+      border-radius: 50px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      text-align: center;
+      transition: all 0.2s ease;
+    }
+    .btn-full-outline:hover {
+      background: rgba(23,139,255,0.1);
+      border-color: #178BFF;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="header">
+    <a href="javascript:history.back()" class="header-icon-btn" aria-label="Volver">
+      <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+        <path d="M19 12H5M12 5l-7 7 7 7"/>
+      </svg>
+    </a>
+    <span class="header-title">Perfil del profesor</span>
+    <button class="header-icon-btn" aria-label="Compartir perfil" onclick="alert('Compartir perfil')">
+      <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+        <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
+        <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+      </svg>
+    </button>
+  </header>
+
+  <!-- HERO -->
+  <div class="prof-hero">
+    <div class="prof-avatar" aria-label="Avatar de Lucas Fernández">LF</div>
+    <h1 class="prof-name">Lucas Fernández</h1>
+    <p class="prof-subtitle">Profesor certificado · Olavarría</p>
+    <div class="prof-badges">
+      <span class="badge badge-certified">
+        <svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+        Certificado
+      </span>
+      <span class="badge badge-gold">
+        <svg width="10" height="10" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        Profe Fundador
+      </span>
+      <span class="badge" style="background:rgba(255,255,255,0.08);color:#F5F7FA;">⭐ 4.9 · 38 reseñas</span>
+    </div>
+    <div class="prof-especialidades">
+      <span class="esp-label">Especialidades:</span>
+      <span class="badge badge-certified">Adultos</span>
+      <span class="badge badge-certified">Menores</span>
+      <span class="badge badge-certified">Alto rendimiento</span>
+    </div>
+  </div>
+
+  <main class="page-content">
+
+    <!-- Stats -->
+    <div class="section">
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-number">12</div>
+          <div class="stat-label">Alumnos activos</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">47</div>
+          <div class="stat-label">Clases dadas</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number" style="font-size:1.4rem;">4.9</div>
+          <div class="stat-label">Calificación</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bio -->
+    <div class="section">
+      <div class="section-head">
+        <h3>Sobre Lucas</h3>
+      </div>
+      <div class="card">
+        <p class="bio-text">Profe de pádel con más de 8 años de experiencia en Olavarría. Me especializo en clases para adultos, menores y jugadores de alto rendimiento. Metodología enfocada en técnica y táctica real de juego. Disponible en Chingoland, Las Terrazas Pádel y Sport Arena Pádel.</p>
+      </div>
+    </div>
+
+    <!-- Categorías -->
+    <div class="section">
+      <div class="section-head">
+        <h3>Categorías que enseña</h3>
+      </div>
+      <div class="card">
+        <div class="chip-display">
+          <span class="chip-tag">Principiante</span>
+          <span class="chip-tag">7ª</span>
+          <span class="chip-tag">6ª</span>
+          <span class="chip-tag">5ª</span>
+          <span class="chip-tag">4ª</span>
+          <span class="chip-tag">3ª</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Disponibilidad -->
+    <div class="section">
+      <div class="section-head">
+        <h3>Disponibilidad</h3>
+        <span style="font-size:0.775rem;color:#A8B3C7;">Seleccioná un horario</span>
+      </div>
+      <div class="card">
+        <div class="avail-grid">
+          <div class="avail-row">
+            <span class="avail-day">Lunes</span>
+            <div class="avail-slots">
+              <button class="avail-slot" onclick="selectSlot(this)">09:00</button>
+              <button class="avail-slot" onclick="selectSlot(this)">11:00</button>
+              <button class="avail-slot" onclick="selectSlot(this)">18:00</button>
+            </div>
+          </div>
+          <div class="avail-row">
+            <span class="avail-day">Martes</span>
+            <div class="avail-slots">
+              <button class="avail-slot" onclick="selectSlot(this)">09:00</button>
+              <button class="avail-slot" onclick="selectSlot(this)">11:00</button>
+            </div>
+          </div>
+          <div class="avail-row">
+            <span class="avail-day">Miércoles</span>
+            <div class="avail-slots">
+              <button class="avail-slot" onclick="selectSlot(this)">18:00</button>
+              <button class="avail-slot" onclick="selectSlot(this)">20:00</button>
+            </div>
+          </div>
+          <div class="avail-row">
+            <span class="avail-day">Jueves</span>
+            <div class="avail-slots">
+              <button class="avail-slot" onclick="selectSlot(this)">09:00</button>
+              <button class="avail-slot" onclick="selectSlot(this)">11:00</button>
+              <button class="avail-slot" onclick="selectSlot(this)">18:00</button>
+            </div>
+          </div>
+          <div class="avail-row">
+            <span class="avail-day">Viernes</span>
+            <div class="avail-slots">
+              <button class="avail-slot" onclick="selectSlot(this)">09:00</button>
+              <button class="avail-slot" onclick="selectSlot(this)">20:00</button>
+            </div>
+          </div>
+          <div class="avail-row">
+            <span class="avail-day">Sábado</span>
+            <div class="avail-slots">
+              <button class="avail-slot" onclick="selectSlot(this)">10:00</button>
+            </div>
+          </div>
+          <div class="avail-row">
+            <span class="avail-day">Domingo</span>
+            <span class="avail-na">Sin disponibilidad</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Complejos -->
+    <div class="section">
+      <div class="section-head">
+        <h3>Da clases en</h3>
+      </div>
+      <div class="card">
+        <div class="complejo-row">
+          <div class="complejo-icon">
+            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          </div>
+          <div>
+            <div class="complejo-name">Chingoland</div>
+            <div class="complejo-address">Río Negro 4651 · Área 226</div>
+          </div>
+        </div>
+        <div class="complejo-row">
+          <div class="complejo-icon">
+            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          </div>
+          <div>
+            <div class="complejo-name">Las Terrazas Pádel</div>
+            <div class="complejo-address">Collinet 2760/2784</div>
+          </div>
+        </div>
+        <div class="complejo-row">
+          <div class="complejo-icon">
+            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          </div>
+          <div>
+            <div class="complejo-name">Sport Arena Pádel</div>
+            <div class="complejo-address">Las Heras 1350</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Reviews -->
+    <div class="section">
+      <div class="section-head">
+        <h3>Reseñas</h3>
+        <span style="font-size:0.8125rem;font-weight:600;color:#178BFF;">⭐ 4.9 · 38 reseñas</span>
+      </div>
+      <div class="reviews-list">
+
+        <div class="review-card">
+          <div class="review-header">
+            <span class="review-author">Valentina R.</span>
+            <span class="review-stars">★★★★★</span>
+          </div>
+          <p class="review-text">"Lucas es un profe increíble, muy paciente y explica muy bien. En 3 meses ya subí de categoría."</p>
+          <div class="review-date">Hace 2 semanas · 6ª categoría</div>
+        </div>
+
+        <div class="review-card">
+          <div class="review-header">
+            <span class="review-author">Jorge L.</span>
+            <span class="review-stars">★★★★★</span>
+          </div>
+          <p class="review-text">"Muy buen profe, se adapta al nivel de cada uno. Las clases grupales son un caño."</p>
+          <div class="review-date">Hace 1 mes · 5ª categoría</div>
+        </div>
+
+        <div class="review-card">
+          <div class="review-header">
+            <span class="review-author">Mariana G.</span>
+            <span class="review-stars">★★★★★</span>
+          </div>
+          <p class="review-text">"Lo recomiendo al 100%. Desde que empecé con él mejoré un montón. Muy dedicado y puntual."</p>
+          <div class="review-date">Hace 3 semanas · 6ª categoría</div>
+        </div>
+
+        <div class="review-card">
+          <div class="review-header">
+            <span class="review-author">Pedro S.</span>
+            <span class="review-stars">★★★★☆</span>
+          </div>
+          <p class="review-text">"Muy buen profe. A veces cambia el horario de último momento pero avisa con tiempo. El nivel de las clases es excelente."</p>
+          <div class="review-date">Hace 2 meses · 7ª categoría</div>
+        </div>
+
+        <button class="btn-full btn-full-outline" style="margin-top:0;" onclick="alert('Ver todas las reseñas')">
+          Ver las 38 reseñas →
+        </button>
+
+      </div>
+    </div>
+
+  </main>
+
+  <!-- STICKY CTA -->
+  <div class="sticky-cta">
+    <div class="sticky-cta-info">
+      <div class="sticky-cta-price">$8.000</div>
+      <div class="sticky-cta-label">por clase · 1 hora</div>
+    </div>
+    <a href="https://wa.me/5492284000001?text=Hola%20Lucas%2C%20te%20encontr%C3%A9%20en%20PadelYa%20y%20quiero%20consultar%20sobre%20clases." class="btn-msg" aria-label="Enviar mensaje por WhatsApp" target="_blank">
+      <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+      </svg>
+    </a>
+    <button class="btn-reservar" onclick="reservarClase()">
+      Reservar clase
+    </button>
+  </div>
+
+  <!-- BOTTOM NAV -->
+  <nav class="bottom-nav" role="navigation" aria-label="Navegación principal">
+    <a href="jugador-home.html" class="nav-item" aria-label="Inicio">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      <span>Inicio</span>
+    </a>
+    <a href="jugador-buscar.html" class="nav-item" aria-label="Buscar">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <span>Buscar</span>
+    </a>
+    <button class="nav-create" onclick="openCrearMenu()" type="button" aria-label="Crear">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      <span>Crear</span>
+    </button>
+    <a href="profes.html" class="nav-item active" aria-label="Mejorá">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+      <span>Mejorá</span>
+    </a>
+    <a href="jugador-perfil.html" class="nav-item" aria-label="Perfil">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      <span>Perfil</span>
+    </a>
+  </nav>
+
+  <!-- Sheet: Crear -->
+  <div id="sheet-overlay-crear" class="sheet-overlay" onclick="closeCrearMenu()"></div>
+  <div id="sheet-crear" class="bottom-sheet" role="dialog" aria-label="Crear">
+    <div class="sheet-handle"></div>
+    <div class="sheet-title">Crear</div>
+    <a href="jugador-crear.html" class="sheet-option">
+      <div class="sheet-option-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M3 9h18M9 21V9"/></svg>
+      </div>
+      <div>
+        <div class="sheet-option-title">Crear partido</div>
+        <div class="sheet-option-sub">Publicá un turno y encontrá jugadores</div>
+      </div>
+    </a>
+  </div>
+
+  <script>
+    /* ── Demo data fallback ── */
+    (function() {
+      if (!sessionStorage.getItem('loggedIn')) {
+        sessionStorage.setItem('loggedIn', 'true');
+        sessionStorage.setItem('nombre', 'Martín Rodríguez');
+        sessionStorage.setItem('categoria', '5ª');
+        sessionStorage.setItem('estadoCategoria', 'orientativa');
+        sessionStorage.setItem('sexo', 'masculino');
+      }
+    })();
+    function selectSlot(btn) {
+      const group = btn.closest('.avail-slots');
+      group.querySelectorAll('.avail-slot').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+    }
+
+    function reservarClase() {
+      const selected = document.querySelector('.avail-slot.selected');
+      if (!selected) {
+        alert('Primero seleccioná un horario disponible.');
+        return;
+      }
+      const day = selected.closest('.avail-row').querySelector('.avail-day').textContent;
+      const time = selected.textContent;
+      alert(`Clase reservada con Lucas Fernández\n${day} ${time} hs · $8.000`);
+    }
+
+    function openCrearMenu() {
+      document.getElementById('sheet-overlay-crear').classList.add('open');
+      document.getElementById('sheet-crear').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeCrearMenu() {
+      document.getElementById('sheet-overlay-crear').classList.remove('open');
+      document.getElementById('sheet-crear').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+  </script>
+
+</body>
+</html>

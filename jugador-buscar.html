@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PadelYa - Buscar partido</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #071224;
+      --bg-card:   #0C1A2E;
+      --bg-card2:  #0F2040;
+      --blue:      #178BFF;
+      --blue-dim:  rgba(23,139,255,0.12);
+      --blue-glow: rgba(23,139,255,0.35);
+      --text:      #F5F7FA;
+      --text-sub:  #A8B3C7;
+      --text-dim:  #5C6E87;
+      --border:    rgba(255,255,255,0.07);
+      --border-hi: rgba(255,255,255,0.13);
+      --green:     #D6FF00;
+      --green-dim: rgba(214,255,0,0.12);
+    }
+
+    html { background: var(--bg); }
+
+    body {
+      font-family: 'Geist', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      -webkit-font-smoothing: antialiased;
+      padding-bottom: 96px;
+      min-height: 100vh;
+    }
+
+    /* ── HEADER ── */
+    .header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(7,18,36,0.92);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .header-title {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .header-icon-btn {
+      width: 38px;
+      height: 38px;
+      border: 1px solid var(--border-hi);
+      background: rgba(255,255,255,0.05);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      color: var(--text-sub);
+      transition: background 0.15s, color 0.15s;
+      text-decoration: none;
+    }
+    .header-icon-btn:hover { background: var(--blue-dim); color: var(--blue); }
+
+    /* ── PAGE ── */
+    .page {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 16px 16px 0;
+    }
+
+    /* ── FILTER BOX ── */
+    .filter-box {
+      background: #0D1E3A;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 14px;
+      margin-bottom: 20px;
+      overflow: hidden;
+    }
+    .filter-toggle {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 16px;
+      cursor: pointer;
+      user-select: none;
+    }
+    .filter-toggle-icon { color: var(--text-dim); flex-shrink: 0; }
+    .filter-toggle-label {
+      flex: 1;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-sub);
+    }
+    .filter-arrow {
+      color: var(--text-dim);
+      transition: transform 0.25s;
+      flex-shrink: 0;
+    }
+    .filter-box.expanded .filter-arrow { transform: rotate(180deg); }
+
+    .filter-body {
+      display: none;
+      padding: 4px 16px 16px;
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+    .filter-box.expanded .filter-body { display: block; }
+
+    .filter-group { margin-top: 14px; }
+    .filter-group-label {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-dim);
+      margin-bottom: 8px;
+    }
+    .chips-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .fchip {
+      padding: 6px 14px;
+      border-radius: 20px;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.06);
+      color: var(--text-sub);
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.15s;
+      user-select: none;
+    }
+    .fchip:hover { border-color: rgba(23,139,255,0.3); color: var(--text); }
+    .fchip.active {
+      background: var(--blue);
+      border-color: var(--blue);
+      color: white;
+    }
+
+    .filter-actions {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-top: 16px;
+    }
+    .btn-apply {
+      flex: 1;
+      padding: 11px;
+      background: var(--blue);
+      color: white;
+      border: none;
+      border-radius: 50px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+      box-shadow: 0 0 16px var(--blue-glow);
+      transition: box-shadow 0.2s, transform 0.1s;
+    }
+    .btn-apply:hover { box-shadow: 0 0 24px var(--blue-glow); }
+    .btn-apply:active { transform: scale(0.98); }
+    .btn-clear {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-dim);
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-family: inherit;
+      white-space: nowrap;
+      transition: color 0.15s;
+      padding: 4px 0;
+    }
+    .btn-clear:hover { color: var(--text-sub); }
+
+    /* ── RESULTS HEADER ── */
+    .results-hdr {
+      margin-bottom: 12px;
+    }
+    .results-title {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--text);
+      letter-spacing: -0.3px;
+    }
+    .results-sub {
+      font-size: 12px;
+      color: var(--text-dim);
+      font-weight: 500;
+      margin-top: 2px;
+    }
+
+    /* ── MATCH CARD ── */
+    .match-card {
+      background: #0D1E3A;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 16px;
+      padding: 16px;
+      margin-bottom: 10px;
+      transition: border-color 0.2s;
+    }
+    .match-card:hover { border-color: rgba(23,139,255,0.2); }
+    .match-card.urgent { border-color: rgba(23,139,255,0.22); }
+
+    .card-row1 {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+    .match-club {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: -0.2px;
+    }
+    .match-time {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--blue);
+      white-space: nowrap;
+    }
+
+    .card-row2 {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
+    }
+    .tag {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 9px;
+      border-radius: 99px;
+      border: 1px solid rgba(255,255,255,0.1);
+      color: var(--text-sub);
+      background: rgba(255,255,255,0.05);
+    }
+    .tag-cat  { background: var(--blue-dim); color: var(--blue); border-color: rgba(23,139,255,0.2); }
+    .tag-comp { background: rgba(139,92,246,0.13); color: #A78BFA; border-color: rgba(139,92,246,0.2); }
+    .tag-cas  { background: rgba(16,185,129,0.1); color: #34D399; border-color: rgba(16,185,129,0.2); }
+
+    .card-row3 {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .players-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .pdot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--blue);
+      opacity: 0.85;
+      flex-shrink: 0;
+    }
+    .pdot-empty {
+      background: transparent;
+      border: 1.5px solid rgba(255,255,255,0.15);
+      opacity: 1;
+    }
+    .pdot-missing {
+      background: var(--green);
+      opacity: 1;
+    }
+    .players-count {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-sub);
+      margin-left: 4px;
+    }
+
+    .btn-sumarme {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--blue);
+      border: 1.5px solid rgba(23,139,255,0.4);
+      border-radius: 50px;
+      padding: 6px 16px;
+      background: var(--blue-dim);
+      cursor: pointer;
+      font-family: inherit;
+      white-space: nowrap;
+      transition: background 0.15s, border-color 0.15s, box-shadow 0.15s;
+    }
+    .btn-sumarme:hover {
+      background: rgba(23,139,255,0.2);
+      border-color: rgba(23,139,255,0.6);
+      box-shadow: 0 0 12px rgba(23,139,255,0.2);
+    }
+
+    /* ── EMPTY STATE ── */
+    .empty-state {
+      display: none;
+      text-align: center;
+      padding: 48px 24px;
+    }
+    .empty-state.visible { display: block; }
+    .empty-state p {
+      font-size: 15px;
+      color: var(--text-dim);
+      margin-bottom: 12px;
+      font-weight: 500;
+    }
+    .empty-state a {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--blue);
+      text-decoration: none;
+    }
+    .empty-state a:hover { text-decoration: underline; }
+
+    /* ── BOTTOM NAV ── */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      max-width: 680px;
+      background: rgba(7,18,36,0.97);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-top: 1px solid rgba(255,255,255,0.06);
+      display: flex;
+      align-items: center;
+      padding: 8px 0 20px;
+      z-index: 100;
+    }
+    .nav-item {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      padding: 4px 0;
+      color: #A8B3C7;
+      text-decoration: none;
+      font-size: 10px;
+      font-weight: 500;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-family: inherit;
+      transition: color 0.15s;
+    }
+    .nav-item.active { color: #178BFF; }
+    .nav-item.active svg { stroke: #178BFF; }
+    .nav-create {
+      flex: 0 0 auto;
+      width: 52px;
+      height: 52px;
+      background: #178BFF;
+      border-radius: 50%;
+      border: none;
+      cursor: pointer;
+      font-family: inherit;
+      color: white;
+      margin-top: -12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 20px rgba(23,139,255,0.5);
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+    .nav-create:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 28px rgba(23,139,255,0.7);
+    }
+    .nav-create:active { transform: scale(0.97); }
+    .logo-img { height: 36px; object-fit: contain; display: block; }
+
+    /* ── TAB SELECTOR ── */
+    .tab-selector {
+      display: flex;
+      margin-bottom: 16px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .tab-btn {
+      flex: 1;
+      background: none;
+      border: none;
+      border-bottom: 2px solid transparent;
+      padding: 10px 0;
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 600;
+      color: #A8B3C7;
+      cursor: pointer;
+      transition: color 0.15s, border-color 0.15s;
+      margin-bottom: -1px;
+    }
+    .tab-btn.active { color: #178BFF; border-bottom-color: #178BFF; }
+
+    /* ── MIS PARTIDOS ── */
+    .match-card-own {
+      background: rgba(23,139,255,0.08);
+      border: 1px solid rgba(23,139,255,0.3);
+      border-left: 3px solid #178BFF;
+      border-radius: 16px;
+      padding: 16px;
+      margin-bottom: 10px;
+      position: relative;
+    }
+    .badge-creado {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: #178BFF;
+      color: white;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      border-radius: 4px;
+      padding: 2px 6px;
+      text-transform: uppercase;
+    }
+    .own-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 10px;
+    }
+    .btn-editar {
+      font-size: 12px;
+      font-weight: 600;
+      color: #178BFF;
+      border: 1.5px solid rgba(23,139,255,0.5);
+      background: rgba(23,139,255,0.08);
+      border-radius: 50px;
+      padding: 5px 14px;
+      cursor: pointer;
+      font-family: inherit;
+      transition: background 0.15s;
+    }
+    .btn-editar:hover { background: rgba(23,139,255,0.18); }
+    .btn-cancelar {
+      font-size: 12px;
+      font-weight: 600;
+      color: #F87171;
+      border: 1.5px solid rgba(248,113,113,0.4);
+      background: rgba(248,113,113,0.07);
+      border-radius: 50px;
+      padding: 5px 14px;
+      cursor: pointer;
+      font-family: inherit;
+      transition: background 0.15s;
+    }
+    .btn-cancelar:hover { background: rgba(248,113,113,0.15); }
+  </style>
+</head>
+<body>
+
+  <!-- ════════ HEADER ════════ -->
+  <header class="header">
+    <a href="jugador-home.html" class="header-icon-btn" aria-label="Volver al inicio">
+      <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+        <path d="M19 12H5M12 5l-7 7 7 7"/>
+      </svg>
+    </a>
+    <img src="assets/logo-padelya.png" alt="PadelYa" style="height:40px;object-fit:contain;">
+    <div style="width:38px;"></div>
+  </header>
+
+  <!-- ════════ PAGE ════════ -->
+  <main class="page">
+
+    <!-- TAB SELECTOR -->
+    <div class="tab-selector">
+      <button class="tab-btn" id="tab-mis" onclick="switchTab('mis')">Mis partidos</button>
+      <button class="tab-btn active" id="tab-todos" onclick="switchTab('todos')">Todos los partidos</button>
+    </div>
+
+    <!-- MIS PARTIDOS SECTION -->
+    <div id="section-mis" style="display:none;">
+      <div class="results-hdr">
+        <div class="results-title">Mis partidos</div>
+        <div class="results-sub">Partidos que creaste vos</div>
+      </div>
+      <div id="mis-partidos-list"></div>
+      <div class="empty-state" id="mis-empty" style="display:none;">
+        <p>Todavía no creaste ningún partido.</p>
+        <a href="jugador-crear.html">Crear uno →</a>
+      </div>
+    </div>
+
+    <!-- TODOS LOS PARTIDOS -->
+    <div id="section-todos">
+
+    <!-- FILTER BOX -->
+    <div class="filter-box" id="filter-box">
+
+      <div class="filter-toggle" onclick="toggleFilterBox()">
+        <svg class="filter-toggle-icon" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+          <line x1="4" y1="6" x2="20" y2="6"/>
+          <line x1="8" y1="12" x2="16" y2="12"/>
+          <line x1="11" y1="18" x2="13" y2="18"/>
+        </svg>
+        <span class="filter-toggle-label">Filtrar partidos</span>
+        <svg class="filter-arrow" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+          <polyline points="6 9 12 15 18 9"/>
+        </svg>
+      </div>
+
+      <div class="filter-body">
+
+        <div class="filter-group">
+          <div class="filter-group-label">Categoría</div>
+          <div class="chips-row">
+            <button class="fchip active" data-group="cat" onclick="selectChip(this,'cat')">Todos</button>
+            <button class="fchip" data-group="cat" onclick="selectChip(this,'cat')">Principiante</button>
+            <button class="fchip" data-group="cat" onclick="selectChip(this,'cat')">7ª</button>
+            <button class="fchip" data-group="cat" onclick="selectChip(this,'cat')">6ª</button>
+            <button class="fchip" data-group="cat" onclick="selectChip(this,'cat')">5ª</button>
+            <button class="fchip" data-group="cat" onclick="selectChip(this,'cat')">4ª</button>
+            <button class="fchip" data-group="cat" onclick="selectChip(this,'cat')">3ª</button>
+          </div>
+        </div>
+
+        <div class="filter-group">
+          <div class="filter-group-label">Tipo</div>
+          <div class="chips-row">
+            <button class="fchip active" data-group="tipo" onclick="selectChip(this,'tipo')">Todos</button>
+            <button class="fchip" data-group="tipo" onclick="selectChip(this,'tipo')">Competitivo</button>
+            <button class="fchip" data-group="tipo" onclick="selectChip(this,'tipo')">Casual</button>
+          </div>
+        </div>
+
+        <div class="filter-group">
+          <div class="filter-group-label">Horario</div>
+          <div class="chips-row">
+            <button class="fchip active" data-group="horario" onclick="selectChip(this,'horario')">Cualquiera</button>
+            <button class="fchip" data-group="horario" onclick="selectChip(this,'horario')">Mañana</button>
+            <button class="fchip" data-group="horario" onclick="selectChip(this,'horario')">Tarde</button>
+            <button class="fchip" data-group="horario" onclick="selectChip(this,'horario')">Noche</button>
+          </div>
+        </div>
+
+        <div class="filter-group">
+          <div class="filter-group-label">Género</div>
+          <div class="chips-row">
+            <button class="fchip active" data-group="genero" onclick="selectChip(this,'genero')">Mixto</button>
+            <button class="fchip" data-group="genero" onclick="selectChip(this,'genero')">Masculino</button>
+            <button class="fchip" data-group="genero" onclick="selectChip(this,'genero')">Femenino</button>
+          </div>
+        </div>
+
+        <div class="filter-actions">
+          <button class="btn-apply" onclick="applyFilters()">Aplicar filtros</button>
+          <button class="btn-clear" onclick="clearFilters()">Limpiar</button>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- RESULTS HEADER -->
+    <div class="results-hdr">
+      <div class="results-title">Partidos disponibles</div>
+      <div class="results-sub">Olavarría · Ahora</div>
+    </div>
+
+    <!-- Card 1: Chingoland 20:00 · 5ª Masculino Competitivo · 3/4 -->
+    <div class="match-card urgent">
+      <div class="card-row1">
+        <span class="match-club">Chingoland</span>
+        <span class="match-time">20:00 hs</span>
+      </div>
+      <div class="card-row2">
+        <span class="tag tag-cat">5ª</span>
+        <span class="tag">Masculino</span>
+        <span class="tag tag-comp">Competitivo</span>
+      </div>
+      <div class="card-row3">
+        <div class="players-row">
+          <span class="pdot"></span>
+          <span class="pdot"></span>
+          <span class="pdot"></span>
+          <span class="pdot pdot-missing"></span>
+          <span class="players-count">3/4</span>
+        </div>
+        <button class="btn-sumarme" onclick="sumarse(this)">Sumarme</button>
+      </div>
+    </div>
+
+    <!-- Card 2: Serrano Pádel 21:00 · 5ª Masculino Casual · 2/4 -->
+    <div class="match-card urgent">
+      <div class="card-row1">
+        <span class="match-club">Serrano Pádel</span>
+        <span class="match-time">21:00 hs</span>
+      </div>
+      <div class="card-row2">
+        <span class="tag tag-cat">5ª</span>
+        <span class="tag">Masculino</span>
+        <span class="tag tag-cas">Casual</span>
+      </div>
+      <div class="card-row3">
+        <div class="players-row">
+          <span class="pdot"></span>
+          <span class="pdot"></span>
+          <span class="pdot pdot-empty"></span>
+          <span class="pdot pdot-missing"></span>
+          <span class="players-count">2/4</span>
+        </div>
+        <button class="btn-sumarme" onclick="sumarse(this)">Sumarme</button>
+      </div>
+    </div>
+
+    <!-- Card 3: Las Terrazas 19:30 · 4ª Femenino Casual · 1/4 -->
+    <div class="match-card">
+      <div class="card-row1">
+        <span class="match-club">Las Terrazas</span>
+        <span class="match-time">19:30 hs</span>
+      </div>
+      <div class="card-row2">
+        <span class="tag tag-cat">4ª</span>
+        <span class="tag">Femenino</span>
+        <span class="tag tag-cas">Casual</span>
+      </div>
+      <div class="card-row3">
+        <div class="players-row">
+          <span class="pdot"></span>
+          <span class="pdot pdot-empty"></span>
+          <span class="pdot pdot-empty"></span>
+          <span class="pdot pdot-missing"></span>
+          <span class="players-count">1/4</span>
+        </div>
+        <button class="btn-sumarme" onclick="sumarse(this)">Sumarme</button>
+      </div>
+    </div>
+
+    <!-- Card 4: Sport Arena 18:00 · 6ª Masculino Competitivo · 2/4 -->
+    <div class="match-card">
+      <div class="card-row1">
+        <span class="match-club">Sport Arena</span>
+        <span class="match-time">18:00 hs</span>
+      </div>
+      <div class="card-row2">
+        <span class="tag tag-cat">6ª</span>
+        <span class="tag">Masculino</span>
+        <span class="tag tag-comp">Competitivo</span>
+      </div>
+      <div class="card-row3">
+        <div class="players-row">
+          <span class="pdot"></span>
+          <span class="pdot"></span>
+          <span class="pdot pdot-empty"></span>
+          <span class="pdot pdot-missing"></span>
+          <span class="players-count">2/4</span>
+        </div>
+        <button class="btn-sumarme" onclick="sumarse(this)">Sumarme</button>
+      </div>
+    </div>
+
+    <!-- Card 5: Oasis Pádel 22:00 · 7ª Mixto Casual · 3/4 -->
+    <div class="match-card urgent">
+      <div class="card-row1">
+        <span class="match-club">Oasis Pádel</span>
+        <span class="match-time">22:00 hs</span>
+      </div>
+      <div class="card-row2">
+        <span class="tag tag-cat">7ª</span>
+        <span class="tag">Mixto</span>
+        <span class="tag tag-cas">Casual</span>
+      </div>
+      <div class="card-row3">
+        <div class="players-row">
+          <span class="pdot"></span>
+          <span class="pdot"></span>
+          <span class="pdot"></span>
+          <span class="pdot pdot-missing"></span>
+          <span class="players-count">3/4</span>
+        </div>
+        <button class="btn-sumarme" onclick="sumarse(this)">Sumarme</button>
+      </div>
+    </div>
+
+    <!-- EMPTY STATE (shown when no results match filters) -->
+    <div class="empty-state" id="empty-state">
+      <p>No hay partidos con esos filtros.</p>
+      <a href="jugador-crear.html">Crear uno →</a>
+    </div>
+
+    </div><!-- /section-todos -->
+
+  </main>
+
+  <!-- ════════ BOTTOM NAV ════════ -->
+  <nav class="bottom-nav" role="navigation" aria-label="Navegación principal">
+    <a href="jugador-home.html" class="nav-item" aria-label="Inicio">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+        <polyline points="9 22 9 12 15 12 15 22"/>
+      </svg>
+      <span>Inicio</span>
+    </a>
+    <a href="jugador-buscar.html" class="nav-item active" aria-label="Partidos">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+        <rect x="2" y="4" width="20" height="16" rx="2"/>
+        <line x1="12" y1="4" x2="12" y2="20"/>
+        <line x1="2" y1="12" x2="6" y2="12"/>
+        <line x1="18" y1="12" x2="22" y2="12"/>
+      </svg>
+      <span>Partidos</span>
+    </a>
+    <button class="nav-create" onclick="window.location.href='jugador-crear.html'" type="button" aria-label="Crear partido">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <line x1="12" y1="5" x2="12" y2="19"/>
+        <line x1="5" y1="12" x2="19" y2="12"/>
+      </svg>
+    </button>
+    <a href="profes.html" class="nav-item" aria-label="Entrenà">
+      <svg width="22" height="22" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+        <ellipse cx="50" cy="38" rx="26" ry="30"/>
+        <circle cx="41" cy="28" r="4" fill="currentColor" stroke="none"/>
+        <circle cx="50" cy="28" r="4" fill="currentColor" stroke="none"/>
+        <circle cx="59" cy="28" r="4" fill="currentColor" stroke="none"/>
+        <circle cx="41" cy="38" r="4" fill="currentColor" stroke="none"/>
+        <circle cx="50" cy="38" r="4" fill="currentColor" stroke="none"/>
+        <circle cx="59" cy="38" r="4" fill="currentColor" stroke="none"/>
+        <circle cx="41" cy="48" r="4" fill="currentColor" stroke="none"/>
+        <circle cx="50" cy="48" r="4" fill="currentColor" stroke="none"/>
+        <circle cx="59" cy="48" r="4" fill="currentColor" stroke="none"/>
+        <path d="M38 66 L50 68 L62 66 L58 68 L50 95 L42 68 Z"/>
+        <rect x="44" y="67" width="12" height="28" rx="6"/>
+      </svg>
+      <span>Entrenà</span>
+    </a>
+    <a href="jugador-perfil.html" class="nav-item" aria-label="Perfil">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+        <circle cx="12" cy="8" r="4"/>
+        <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
+      </svg>
+      <span>Perfil</span>
+    </a>
+  </nav>
+
+  <script>
+    /* ── Demo data fallback ── */
+    (function() {
+      if (!sessionStorage.getItem('loggedIn')) {
+        sessionStorage.setItem('loggedIn', 'true');
+        sessionStorage.setItem('nombre', 'Martín Rodríguez');
+        sessionStorage.setItem('categoria', '5ª');
+        sessionStorage.setItem('estadoCategoria', 'orientativa');
+        sessionStorage.setItem('sexo', 'masculino');
+      }
+    })();
+
+    /* ── Filter box toggle ── */
+    function toggleFilterBox() {
+      document.getElementById('filter-box').classList.toggle('expanded');
+    }
+
+    /* ── Single-select chip within group ── */
+    function selectChip(chip, group) {
+      document.querySelectorAll('.fchip[data-group="' + group + '"]').forEach(function(c) {
+        c.classList.remove('active');
+      });
+      chip.classList.add('active');
+    }
+
+    /* ── Apply filters: collapse box ── */
+    function applyFilters() {
+      document.getElementById('filter-box').classList.remove('expanded');
+    }
+
+    /* ── Clear filters: reset each group to first chip ── */
+    function clearFilters() {
+      ['cat', 'tipo', 'horario', 'genero'].forEach(function(group) {
+        var chips = document.querySelectorAll('.fchip[data-group="' + group + '"]');
+        chips.forEach(function(c) { c.classList.remove('active'); });
+        if (chips.length) chips[0].classList.add('active');
+      });
+    }
+
+    /* ── Tab switcher ── */
+    function switchTab(tab) {
+      var sectionMis   = document.getElementById('section-mis');
+      var sectionTodos = document.getElementById('section-todos');
+      var btnMis   = document.getElementById('tab-mis');
+      var btnTodos = document.getElementById('tab-todos');
+      if (tab === 'mis') {
+        sectionMis.style.display   = 'block';
+        sectionTodos.style.display = 'none';
+        btnMis.classList.add('active');
+        btnTodos.classList.remove('active');
+        renderMisPartidos();
+      } else {
+        sectionMis.style.display   = 'none';
+        sectionTodos.style.display = 'block';
+        btnMis.classList.remove('active');
+        btnTodos.classList.add('active');
+      }
+    }
+
+    /* ── Render mis partidos ── */
+    function renderMisPartidos() {
+      var list   = document.getElementById('mis-partidos-list');
+      var empty  = document.getElementById('mis-empty');
+      var stored = sessionStorage.getItem('misPartidos');
+      var partidos = stored ? JSON.parse(stored) : [];
+
+      if (partidos.length === 0) {
+        partidos = [
+          { club: 'Chingoland',   hora: '20:00hs', cat: '5ª', tipo: 'Masculino', mod: 'Competitivo', jugadores: 2, total: 4 },
+          { club: 'Las Terrazas', hora: '19:00hs', cat: '5ª', tipo: 'Masculino', mod: 'Casual',      jugadores: 1, total: 4 }
+        ];
+      }
+
+      list.innerHTML = '';
+
+      if (partidos.length === 0) {
+        empty.style.display = 'block';
+        return;
+      }
+      empty.style.display = 'none';
+
+      partidos.forEach(function(p, i) {
+        var dots = '';
+        for (var d = 0; d < p.total; d++) {
+          if (d < p.jugadores)         dots += '<span class="pdot"></span>';
+          else if (d === p.total - 1)  dots += '<span class="pdot pdot-missing"></span>';
+          else                         dots += '<span class="pdot pdot-empty"></span>';
+        }
+        var modClass = p.mod === 'Competitivo' ? 'tag-comp' : 'tag-cas';
+        list.innerHTML += '<div class="match-card-own" id="own-card-' + i + '">' +
+          '<span class="badge-creado">CREADO POR VOS</span>' +
+          '<div class="card-row1" style="padding-right:96px;">' +
+            '<span class="match-club">' + p.club + '</span>' +
+            '<span class="match-time">' + p.hora + '</span>' +
+          '</div>' +
+          '<div class="card-row2">' +
+            '<span class="tag tag-cat">' + p.cat + '</span>' +
+            '<span class="tag">' + p.tipo + '</span>' +
+            '<span class="tag ' + modClass + '">' + p.mod + '</span>' +
+          '</div>' +
+          '<div class="card-row3">' +
+            '<div class="players-row">' + dots + '<span class="players-count">' + p.jugadores + '/' + p.total + '</span></div>' +
+          '</div>' +
+          '<div class="own-actions">' +
+            '<button class="btn-editar">Editar</button>' +
+            '<button class="btn-cancelar" onclick="cancelarPartido(' + i + ')">Cancelar</button>' +
+          '</div>' +
+        '</div>';
+      });
+    }
+
+    /* ── Cancelar partido propio ── */
+    function cancelarPartido(idx) {
+      var stored   = sessionStorage.getItem('misPartidos');
+      var partidos = stored ? JSON.parse(stored) : [];
+      if (partidos.length > 0) {
+        partidos.splice(idx, 1);
+        sessionStorage.setItem('misPartidos', JSON.stringify(partidos));
+      }
+      renderMisPartidos();
+    }
+
+    /* ── Sumarse a partido ── */
+    var _sumarmeBtn = null;
+    function sumarse(btn) {
+      _sumarmeBtn = btn;
+      document.getElementById('sumarme-overlay').style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+    }
+    function cerrarModalSumarme(e) {
+      if (e && e.target !== document.getElementById('sumarme-overlay')) return;
+      document.getElementById('sumarme-overlay').style.display = 'none';
+      document.body.style.overflow = '';
+      _sumarmeBtn = null;
+    }
+    function confirmarSumarme() {
+      var jugados = parseInt(sessionStorage.getItem('partidosJugados') || '0');
+      var esPremium = sessionStorage.getItem('esPremium') === 'true';
+      if (!esPremium && jugados >= 3) {
+        document.getElementById('sumarme-overlay').style.display = 'none';
+        document.body.style.overflow = '';
+        window.location.href = 'premium.html';
+        return;
+      }
+      sessionStorage.setItem('partidosJugados', String(jugados + 1));
+      document.getElementById('sumarme-overlay').style.display = 'none';
+      document.body.style.overflow = '';
+      if (_sumarmeBtn) {
+        _sumarmeBtn.textContent = '¡Listo!';
+        _sumarmeBtn.style.background = 'rgba(16,185,129,0.2)';
+        _sumarmeBtn.style.color = '#34D399';
+        _sumarmeBtn.style.borderColor = 'rgba(16,185,129,0.4)';
+        _sumarmeBtn.onclick = null;
+        _sumarmeBtn = null;
+      }
+      var toast = document.getElementById('toast-sumarme');
+      toast.style.display = 'block';
+      setTimeout(function() { toast.style.display = 'none'; }, 3000);
+    }
+
+    /* ── Tab param from URL ── */
+    (function() {
+      var params = new URLSearchParams(window.location.search);
+      if (params.get('tab') === 'mis') switchTab('mis');
+    })();
+  </script>
+
+
+  <!-- MODAL SUMARME -->
+  <div id="sumarme-overlay" onclick="cerrarModalSumarme(event)" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:300;align-items:center;justify-content:center;">
+    <div style="background:#0F2040;border:1px solid rgba(255,255,255,0.13);border-radius:20px;padding:2rem 1.5rem;max-width:320px;width:calc(100% - 2rem);text-align:center;" onclick="event.stopPropagation()">
+      <div style="width:54px;height:54px;background:rgba(23,139,255,0.12);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;border:1px solid rgba(23,139,255,0.3);">
+        <svg width="24" height="24" fill="none" stroke="#178BFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      </div>
+      <div style="font-size:1rem;font-weight:800;color:#F5F7FA;margin-bottom:0.5rem;">¿Sumarte al partido?</div>
+      <p style="font-size:0.875rem;color:#A8B3C7;line-height:1.6;margin-bottom:1.25rem;">Te unirás a este partido. Los otros jugadores verán tu perfil y categoría.</p>
+      <button onclick="confirmarSumarme()" style="background:#178BFF;color:white;border:none;border-radius:10px;padding:0.65rem 1.5rem;font-size:0.9rem;font-weight:700;cursor:pointer;font-family:inherit;width:100%;margin-bottom:8px;">Confirmar</button>
+      <button onclick="cerrarModalSumarme()" style="background:none;border:none;color:#A8B3C7;font-size:0.875rem;cursor:pointer;font-family:inherit;width:100%;padding:6px;">Cancelar</button>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div id="toast-sumarme" style="display:none;position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:#059669;color:white;padding:10px 20px;border-radius:10px;font-size:0.875rem;font-weight:600;z-index:600;white-space:nowrap;box-shadow:0 4px 20px rgba(0,0,0,0.3);">¡Te sumaste! Nos vemos en la cancha.</div>
+
+</body>
+</html>

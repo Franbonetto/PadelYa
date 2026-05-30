@@ -1,0 +1,1428 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PadelYa - Mi perfil</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #071224;
+      --bg-card:   #0C1A2E;
+      --bg-card2:  #0F2040;
+      --blue:      #178BFF;
+      --blue-dim:  rgba(23,139,255,0.12);
+      --blue-glow: rgba(23,139,255,0.35);
+      --text:      #F5F7FA;
+      --text-sub:  #A8B3C7;
+      --text-dim:  #5C6E87;
+      --border:    rgba(255,255,255,0.07);
+      --border-hi: rgba(255,255,255,0.13);
+      --green:     #D6FF00;
+      --green-dim: rgba(214,255,0,0.12);
+    }
+
+    html { background: var(--bg); }
+
+    body {
+      font-family: 'Geist', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+      padding-bottom: 96px;
+    }
+
+    /* ── HEADER ── */
+    .app-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(7,18,36,0.92);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+    .header-inner {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 0 16px;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .header-icon-btn {
+      width: 38px;
+      height: 38px;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      color: var(--text-sub);
+      transition: background 0.15s;
+      flex-shrink: 0;
+      text-decoration: none;
+    }
+    .header-icon-btn:hover { background: rgba(255,255,255,0.06); }
+    .header-title {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: -0.2px;
+    }
+
+    /* ── MAIN WRAPPER ── */
+    .main {
+      max-width: 680px;
+      margin: 0 auto;
+    }
+
+    /* ── PROFILE TOP ── */
+    .profile-top {
+      background: var(--bg-card);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      padding: 28px 20px 20px;
+      border-bottom: 1px solid var(--border);
+    }
+    .avatar-circle {
+      width: 88px;
+      height: 88px;
+      border-radius: 50%;
+      background: var(--blue-dim);
+      border: 2px solid rgba(23,139,255,0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.75rem;
+      font-weight: 900;
+      color: var(--blue);
+      letter-spacing: 1px;
+    }
+    .profile-name {
+      font-size: 1.375rem;
+      font-weight: 800;
+      color: var(--text);
+      margin-top: 4px;
+      letter-spacing: -0.3px;
+    }
+    .badges-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .badge-founder {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: linear-gradient(135deg, #F9A825, #F57F17);
+      color: white;
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 0.2rem 0.7rem;
+      border-radius: 99px;
+      letter-spacing: 0.3px;
+    }
+    .badge-trust {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: rgba(214,255,0,0.15);
+      color: var(--green);
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 0.2rem 0.7rem;
+      border-radius: 99px;
+    }
+    .edit-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 18px;
+      border: 1.5px solid var(--border-hi);
+      border-radius: 99px;
+      font-size: 0.8125rem;
+      font-weight: 700;
+      color: var(--text-sub);
+      text-decoration: none;
+      margin-top: 4px;
+      font-family: inherit;
+      background: transparent;
+      cursor: pointer;
+      transition: border-color 0.15s, color 0.15s;
+    }
+    .edit-btn:hover {
+      border-color: rgba(255,255,255,0.25);
+      color: var(--text);
+    }
+
+    /* ── STATS BAR ── */
+    .stats-bar {
+      background: var(--bg-card);
+      text-align: center;
+      padding: 12px 20px;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.8125rem;
+      color: var(--text-sub);
+      font-weight: 600;
+      letter-spacing: 0.01em;
+    }
+
+    /* ── SECTION DIVIDER ── */
+    .section-divider {
+      height: 1px;
+      background: var(--border);
+      margin: 0;
+    }
+
+    /* ── PADDED SECTIONS ── */
+    .section-pad {
+      padding: 20px 20px 0;
+    }
+    .section-pad-last {
+      padding: 20px 20px 8px;
+    }
+
+    /* ── SECTION HEADINGS ── */
+    .section-heading {
+      font-size: 0.9375rem;
+      font-weight: 800;
+      color: var(--text);
+      margin-bottom: 14px;
+      letter-spacing: -0.2px;
+    }
+
+    /* ── ÍNDICE PADELYA CARD ── */
+    .indice-card {
+      background: linear-gradient(135deg, #0A1E3D, #0D2B5C);
+      border-radius: 16px;
+      padding: 20px 22px;
+      color: white;
+      border: 1px solid rgba(23,139,255,0.18);
+    }
+    .indice-eyebrow {
+      font-size: 0.6875rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      opacity: 0.7;
+      margin-bottom: 8px;
+    }
+    .indice-score-row {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+    .indice-score {
+      font-size: 2.5rem;
+      font-weight: 900;
+      line-height: 1;
+      letter-spacing: -1px;
+    }
+    .indice-next {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      opacity: 0.8;
+    }
+    .indice-progress-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+    .indice-progress-label {
+      font-size: 0.8125rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    .progress-track {
+      flex: 1;
+      height: 8px;
+      background: rgba(255,255,255,0.2);
+      border-radius: 99px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      width: 70%;
+      background: white;
+      border-radius: 99px;
+    }
+    .indice-hint {
+      font-size: 0.8125rem;
+      font-weight: 600;
+      opacity: 0.85;
+      margin-bottom: 6px;
+    }
+    .indice-desc {
+      font-size: 0.7rem;
+      opacity: 0.6;
+      line-height: 1.5;
+    }
+
+    /* ── ACOP CARD ── */
+    .acop-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 16px;
+    }
+    .chip-orientativa {
+      display: inline-block;
+      background: rgba(255,255,255,0.07);
+      color: var(--text-dim);
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.2rem 0.65rem;
+      border-radius: 99px;
+    }
+    .chip-pendiente {
+      display: inline-block;
+      background: rgba(251,191,36,0.15);
+      color: #FBB724;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.2rem 0.65rem;
+      border-radius: 99px;
+    }
+    .chip-verificada {
+      display: inline-block;
+      background: rgba(214,255,0,0.13);
+      color: var(--green);
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.2rem 0.65rem;
+      border-radius: 99px;
+    }
+    .acop-desc {
+      font-size: 0.75rem;
+      color: var(--text-dim);
+      margin: 10px 0 12px;
+      line-height: 1.5;
+    }
+    .acop-desc-pendiente {
+      font-size: 0.75rem;
+      color: #FBB724;
+      margin: 10px 0 0;
+      line-height: 1.5;
+    }
+    .acop-desc-verificada {
+      font-size: 0.75rem;
+      color: var(--green);
+      margin: 10px 0 0;
+      line-height: 1.5;
+    }
+    .btn-verify-acop {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 16px;
+      border: 1.5px solid rgba(23,139,255,0.5);
+      border-radius: 50px;
+      background: transparent;
+      color: var(--blue);
+      font-size: 0.8125rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      transition: background 0.15s, border-color 0.15s;
+    }
+    .btn-verify-acop:hover {
+      background: var(--blue-dim);
+      border-color: rgba(23,139,255,0.7);
+    }
+
+    /* ── INFO CARD ── */
+    .info-card {
+      background: var(--bg-card2);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 18px;
+    }
+    .info-card-title {
+      font-size: 0.875rem;
+      font-weight: 800;
+      color: var(--text);
+      margin-bottom: 12px;
+    }
+    .info-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin: 0;
+      padding: 0;
+    }
+    .info-list li {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      font-size: 0.8125rem;
+      color: var(--text-sub);
+    }
+    .info-delta-pos {
+      font-size: 0.75rem;
+      font-weight: 800;
+      color: var(--green);
+      white-space: nowrap;
+      min-width: 52px;
+    }
+    .info-delta-neg {
+      font-size: 0.75rem;
+      font-weight: 800;
+      color: #EF4444;
+      white-space: nowrap;
+      min-width: 52px;
+    }
+    .info-footer {
+      font-size: 0.75rem;
+      color: var(--text-dim);
+      margin-top: 14px;
+      line-height: 1.5;
+      padding-top: 12px;
+      border-top: 1px solid var(--border);
+    }
+
+    /* ── ACTIVITY CARD ── */
+    .activity-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 18px;
+    }
+    .activity-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .activity-row:last-of-type { border-bottom: none; }
+    .activity-icon-win {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: rgba(214,255,0,0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .activity-icon-loss {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: rgba(239,68,68,0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .activity-text {
+      flex: 1;
+      min-width: 0;
+    }
+    .activity-main {
+      font-size: 0.875rem;
+      color: var(--text);
+      font-weight: 600;
+    }
+    .activity-time {
+      font-size: 0.75rem;
+      color: var(--text-dim);
+      margin-left: 6px;
+    }
+    .activity-delta-pos {
+      font-size: 0.875rem;
+      font-weight: 800;
+      color: var(--green);
+      flex-shrink: 0;
+    }
+    .activity-delta-neg {
+      font-size: 0.875rem;
+      font-weight: 800;
+      color: #EF4444;
+      flex-shrink: 0;
+    }
+    .btn-ver-historial {
+      width: 100%;
+      margin-top: 14px;
+      text-align: center;
+      background: none;
+      border: none;
+      font-size: 0.8125rem;
+      font-weight: 700;
+      color: var(--blue);
+      cursor: pointer;
+      font-family: inherit;
+      padding: 4px 0;
+    }
+    .btn-ver-historial:hover { opacity: 0.8; }
+
+    /* ── REPUTATION CARD ── */
+    .rep-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 18px;
+    }
+    .rep-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      text-align: center;
+      margin-bottom: 14px;
+    }
+    .rep-number {
+      font-size: 1.5rem;
+      font-weight: 900;
+      color: var(--blue);
+    }
+    .rep-label {
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: var(--text-dim);
+      margin-top: 2px;
+    }
+    .rep-divider {
+      height: 1px;
+      background: var(--border);
+      margin-bottom: 12px;
+    }
+    .rep-mvp-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(251,191,36,0.12);
+      color: #FBB724;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 5px 12px;
+      border-radius: 99px;
+    }
+
+    /* ── ACHIEVEMENTS CARD ── */
+    .achievements-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 18px;
+    }
+    .achievements-count {
+      font-size: 0.8125rem;
+      font-weight: 600;
+      color: var(--text-dim);
+      margin-left: 4px;
+    }
+    .achievements-scroll {
+      display: flex;
+      gap: 16px;
+      overflow-x: auto;
+      padding-bottom: 6px;
+      scrollbar-width: none;
+    }
+    .achievements-scroll::-webkit-scrollbar { display: none; }
+    .achievement-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      flex-shrink: 0;
+      width: 64px;
+    }
+    .achievement-icon-unlocked {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .achievement-icon-locked {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.07);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .achievement-name {
+      font-size: 0.625rem;
+      font-weight: 700;
+      color: var(--text-sub);
+      text-align: center;
+      line-height: 1.2;
+    }
+    .achievement-name-locked {
+      font-size: 0.625rem;
+      font-weight: 700;
+      color: var(--text-dim);
+      text-align: center;
+      line-height: 1.2;
+    }
+
+    /* ── BOTTOM NAV ── */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      max-width: 680px;
+      background: rgba(7,18,36,0.97);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-top: 1px solid rgba(255,255,255,0.06);
+      display: flex;
+      align-items: center;
+      padding: 8px 0 20px;
+      z-index: 100;
+    }
+    .nav-item {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      padding: 4px 0;
+      color: #A8B3C7;
+      text-decoration: none;
+      font-size: 10px;
+      font-weight: 500;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-family: inherit;
+      transition: color 0.15s;
+    }
+    .nav-item.active { color: #178BFF; }
+    .nav-item.active svg { stroke: #178BFF; }
+    .nav-create {
+      flex: 0 0 auto;
+      width: 52px;
+      height: 52px;
+      background: #178BFF;
+      border-radius: 50%;
+      border: none;
+      cursor: pointer;
+      font-family: inherit;
+      color: white;
+      margin-top: -12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 20px rgba(23,139,255,0.5);
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+    .nav-create:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 28px rgba(23,139,255,0.7);
+    }
+    .nav-create:active { transform: scale(0.97); }
+
+    /* ── ACOP MODAL ── */
+    #acop-modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.7);
+      z-index: 500;
+      align-items: flex-end;
+      justify-content: center;
+    }
+    #acop-modal {
+      background: var(--bg-card2);
+      border-radius: 20px 20px 0 0;
+      padding: 24px 20px 32px;
+      width: 100%;
+      max-width: 480px;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+    .modal-handle {
+      width: 36px;
+      height: 4px;
+      background: var(--border-hi);
+      border-radius: 99px;
+      margin: 0 auto 20px;
+    }
+    .modal-title {
+      font-size: 1.125rem;
+      font-weight: 800;
+      color: var(--text);
+      margin: 0 0 4px;
+    }
+    .modal-desc {
+      font-size: 0.8125rem;
+      color: var(--text-sub);
+      margin: 0 0 20px;
+      line-height: 1.5;
+    }
+    .modal-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--text-sub);
+      display: block;
+      margin-bottom: 5px;
+    }
+    .modal-input {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 10px 12px;
+      border: 1.5px solid var(--border-hi);
+      border-radius: 8px;
+      font-size: 0.9375rem;
+      font-family: inherit;
+      color: var(--text);
+      background: var(--bg);
+      outline: none;
+      transition: border-color 0.15s;
+    }
+    .modal-input:focus { border-color: rgba(23,139,255,0.5); }
+    .modal-input::placeholder { color: var(--text-dim); }
+    .btn-modal-primary {
+      width: 100%;
+      padding: 12px;
+      background: var(--blue);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 0.9375rem;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+      transition: opacity 0.15s;
+    }
+    .btn-modal-primary:hover { opacity: 0.9; }
+    .btn-modal-secondary {
+      width: 100%;
+      padding: 10px;
+      background: none;
+      border: none;
+      font-size: 0.875rem;
+      color: var(--text-dim);
+      cursor: pointer;
+      margin-top: 8px;
+      font-family: inherit;
+    }
+    .btn-modal-secondary:hover { color: var(--text-sub); }
+    .acop-loading-spinner {
+      display: inline-block;
+      width: 36px;
+      height: 36px;
+      border: 3px solid rgba(255,255,255,0.1);
+      border-top-color: var(--blue);
+      border-radius: 50%;
+      animation: acop-spin 0.8s linear infinite;
+    }
+    @keyframes acop-spin { to { transform: rotate(360deg); } }
+
+    /* ── TOAST ── */
+    #acop-toast {
+      display: none;
+      position: fixed;
+      bottom: 90px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #059669;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 10px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      z-index: 600;
+      white-space: nowrap;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    }
+
+    /* ── CHIP SELECTION (pref chips) ── */
+    .chip {
+      padding: 6px 14px;
+      border-radius: 20px;
+      border: 1.5px solid var(--border-hi);
+      background: rgba(255,255,255,0.04);
+      color: var(--text-dim);
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s;
+      user-select: none;
+      font-family: inherit;
+    }
+    .chip:hover { border-color: rgba(23,139,255,0.4); color: var(--blue); }
+    .chip.selected {
+      background: var(--blue-dim);
+      border-color: rgba(23,139,255,0.5);
+      color: var(--blue);
+    }
+    .chips-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    /* ── cat chip in profile top ── */
+    #perfil-cat-chip {
+      background: var(--blue-dim);
+      color: var(--blue);
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.2rem 0.7rem;
+      border-radius: 99px;
+    }
+    .logo-img { height: 36px; object-fit: contain; display: block; }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="app-header">
+    <div class="header-inner">
+      <button class="header-icon-btn" onclick="history.back()" aria-label="Volver">
+        <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+          <path d="M19 12H5M12 5l-7 7 7 7"/>
+        </svg>
+      </button>
+      <img src="assets/logo-padelya.png" alt="PadelYa" style="height:40px;object-fit:contain;">
+      <a href="jugador-configuracion.html" class="header-icon-btn" aria-label="Configuración">
+        <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+          <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+        </svg>
+      </a>
+    </div>
+  </header>
+
+  <div class="main">
+
+    <!-- ── SECCIÓN 1: HEADER DEL PERFIL ── -->
+    <div class="profile-top">
+      <div id="perfil-avatar" class="avatar-circle">MR</div>
+      <h2 id="perfil-nombre" class="profile-name">Martín Rodríguez</h2>
+      <div class="badges-row">
+        <span id="perfil-cat-chip">5ª categoría</span>
+        <span class="badge-founder">
+          <svg width="10" height="10" fill="currentColor" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          Jugador Fundador
+        </span>
+        <span class="badge-trust">
+          <svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+          Confiable
+        </span>
+      </div>
+      <div id="perfil-sexo-chip" style="display:none;margin-top:6px;">
+        <span style="display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:50px;padding:4px 12px;font-size:12px;color:#A8B3C7;">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          <span id="perfil-sexo-texto"></span>
+        </span>
+      </div>
+
+      <a href="jugador-configuracion.html" class="edit-btn">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+        Editar perfil
+      </a>
+    </div>
+
+    <!-- ── SECCIÓN 2: STATS EN UNA LÍNEA ── -->
+    <div class="stats-bar">
+      340 pts&nbsp;&middot;&nbsp;47 partidos&nbsp;&middot;&nbsp;65% victorias
+    </div>
+
+    <!-- ── SECCIÓN 3: ÍNDICE PADELYA ── -->
+    <div class="section-pad" style="padding-top:20px;">
+      <div class="indice-card">
+        <div class="indice-eyebrow">Índice PadelYa</div>
+        <div class="indice-score-row">
+          <span class="indice-score">1.8</span>
+          <span class="indice-next">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            próximo nivel: 2.0
+          </span>
+        </div>
+        <div class="indice-progress-row">
+          <span class="indice-progress-label">1.8</span>
+          <div class="progress-track">
+            <div class="progress-fill"></div>
+          </div>
+          <span class="indice-progress-label">2.0</span>
+        </div>
+        <div class="indice-hint">Te faltan 0.2 para el próximo nivel</div>
+        <div class="indice-desc">Tu Índice PadelYa mejora según tu actividad y resultados dentro de la app. Es distinto a tu categoría declarada.</div>
+      </div>
+    </div>
+
+    <div id="seccion-acop" style="margin:12px 16px 0;padding:14px 16px;background:#0D1E3A;border:1px solid rgba(255,255,255,0.08);border-radius:14px;">
+
+      <div id="acop-estado-orientativa">
+        <div style="font-size:10px;font-weight:700;letter-spacing:1px;color:#A8B3C7;text-transform:uppercase;margin-bottom:6px;">Verificación ACOP</div>
+        <p style="font-size:12px;color:#A8B3C7;margin-bottom:10px;line-height:1.5;">Tu categoría es orientativa. Verificala con ACOP para mejorar el matchmaking.</p>
+        <button id="btn-abrir-acop"
+                style="width:100%;padding:10px 16px;background:transparent;border:1px solid #178BFF;color:#178BFF;border-radius:50px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;"
+                onclick="abrirVerificacionACOP()">
+          Verificar con ACOP
+        </button>
+      </div>
+
+      <div id="acop-form" style="display:none;">
+        <div style="font-size:10px;font-weight:700;letter-spacing:1px;color:#A8B3C7;text-transform:uppercase;margin-bottom:10px;">Verificación ACOP</div>
+        <p style="font-size:12px;color:#A8B3C7;margin-bottom:14px;line-height:1.5;">Ingresá tu apellido tal como figura en ACOP</p>
+        <input id="acop-apellido" type="text" placeholder="Apellido"
+               style="width:100%;padding:12px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:10px;color:#F5F7FA;font-size:14px;margin-bottom:10px;outline:none;font-family:inherit;box-sizing:border-box;">
+        <input id="acop-nombre" type="text" placeholder="Nombre (opcional)"
+               style="width:100%;padding:12px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:10px;color:#F5F7FA;font-size:14px;margin-bottom:14px;outline:none;font-family:inherit;box-sizing:border-box;">
+        <button onclick="buscarEnACOP()"
+                style="width:100%;padding:13px;background:#178BFF;border:none;border-radius:50px;color:white;font-size:14px;font-weight:700;cursor:pointer;margin-bottom:10px;font-family:inherit;">
+          Buscar en ACOP
+        </button>
+        <button onclick="cerrarVerificacionACOP()"
+                style="width:100%;padding:8px;background:transparent;border:none;color:#A8B3C7;font-size:13px;cursor:pointer;font-family:inherit;">
+          Cancelar
+        </button>
+        <div id="acop-resultado" style="margin-top:14px;"></div>
+      </div>
+
+      <div id="acop-verificada" style="display:none;">
+        <div style="font-size:10px;font-weight:700;letter-spacing:1px;color:#A8B3C7;text-transform:uppercase;margin-bottom:8px;">Verificación ACOP</div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span style="font-size:13px;color:#4ADE80;">&#10003; Categoría verificada con ACOP</span>
+        </div>
+      </div>
+
+    </div>
+    <!-- ── INFO CARD: Cómo funciona el Índice ── -->
+    <div class="section-pad" style="padding-top:12px;">
+      <div class="info-card">
+        <div class="info-card-title">¿Cómo funciona el Índice PadelYa?</div>
+        <ul class="info-list">
+          <li>
+            <span class="info-delta-pos">+0.10</span>
+            <span>Ganaste un partido</span>
+          </li>
+          <li>
+            <span class="info-delta-pos">+0.20</span>
+            <span>Ganaste contra un jugador con mayor índice</span>
+          </li>
+          <li>
+            <span class="info-delta-neg">-0.10</span>
+            <span>Perdiste un partido</span>
+          </li>
+          <li>
+            <span class="info-delta-neg">-0.20</span>
+            <span>No presentación (no-show)</span>
+          </li>
+          <li>
+            <span class="info-delta-neg">-0.05 a -0.15</span>
+            <span>Cancelación tardía según anticipación</span>
+          </li>
+        </ul>
+        <div class="info-footer">
+          El índice es independiente de tu categoría declarada. Refleja tu actividad real y nivel relativo frente a otros jugadores de la plataforma.
+        </div>
+      </div>
+    </div>
+
+    <!-- ── SECCIÓN 4: ACTIVIDAD RECIENTE ── -->
+    <div class="section-pad" style="padding-top:12px;">
+      <div class="activity-card">
+        <div class="section-heading">Actividad reciente</div>
+
+        <div class="activity-row">
+          <div class="activity-icon-win">
+            <svg width="14" height="14" fill="none" stroke="#D6FF00" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div class="activity-text">
+            <span class="activity-main">+0.10 &middot; Ganaste un partido</span>
+            <span class="activity-time">hace 2 días</span>
+          </div>
+          <span class="activity-delta-pos">+0.10</span>
+        </div>
+
+        <div class="activity-row">
+          <div class="activity-icon-win">
+            <svg width="14" height="14" fill="none" stroke="#D6FF00" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div class="activity-text">
+            <span class="activity-main">+0.20 &middot; Ganaste vs jugador con mayor índice</span>
+            <span class="activity-time">hace 5 días</span>
+          </div>
+          <span class="activity-delta-pos">+0.20</span>
+        </div>
+
+        <div class="activity-row">
+          <div class="activity-icon-loss">
+            <svg width="14" height="14" fill="none" stroke="#EF4444" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </div>
+          <div class="activity-text">
+            <span class="activity-main">-0.20 &middot; No presentación</span>
+            <span class="activity-time">hace 1 semana</span>
+          </div>
+          <span class="activity-delta-neg">-0.20</span>
+        </div>
+
+        <button onclick="alert('Historial completo del Índice PadelYa — próximamente')" class="btn-ver-historial">Ver historial completo &rarr;</button>
+      </div>
+    </div>
+
+    <!-- ── SECCIÓN 5: REPUTACIÓN Y BADGES ── -->
+    <div class="section-pad" style="padding-top:12px;">
+      <div class="rep-card">
+        <div class="section-heading">Reputación</div>
+        <div class="rep-grid">
+          <div>
+            <div class="rep-number">95%</div>
+            <div class="rep-label">Asistencia</div>
+          </div>
+          <div>
+            <div class="rep-number">18</div>
+            <div class="rep-label">Volverían a jugar</div>
+          </div>
+          <div>
+            <div class="rep-number">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 0 0 5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 1 0 5H18"/><path d="M4 22h16"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>
+            </div>
+            <div class="rep-label">Compañero confiable</div>
+          </div>
+        </div>
+        <div class="rep-divider"></div>
+        <span class="rep-mvp-badge">
+          <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+          MVP del partido &times; 3
+        </span>
+      </div>
+    </div>
+
+    <!-- ── SECCIÓN 6: LOGROS ── -->
+    <div class="section-pad" style="padding-top:12px;padding-bottom:8px;">
+      <div class="achievements-card">
+        <div class="section-heading">
+          Logros <span class="achievements-count">(4/12)</span>
+        </div>
+        <div class="achievements-scroll">
+
+          <!-- Desbloqueados -->
+          <div class="achievement-item">
+            <div class="achievement-icon-unlocked" style="background:linear-gradient(135deg,#178BFF,#0D5DB5);">
+              <svg width="24" height="24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+            </div>
+            <span class="achievement-name">Primer partido</span>
+          </div>
+
+          <div class="achievement-item">
+            <div class="achievement-icon-unlocked" style="background:linear-gradient(135deg,#F9A825,#F57F17);">
+              <svg width="24" height="24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            </div>
+            <span class="achievement-name">Jugador Fundador</span>
+          </div>
+
+          <div class="achievement-item">
+            <div class="achievement-icon-unlocked" style="background:linear-gradient(135deg,#178BFF,#0D5DB5);">
+              <svg width="24" height="24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M6 9H4.5a2.5 2.5 0 0 0 0 5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 1 0 5H18"/><path d="M4 22h16"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>
+            </div>
+            <span class="achievement-name">5 victorias</span>
+          </div>
+
+          <div class="achievement-item">
+            <div class="achievement-icon-unlocked" style="background:linear-gradient(135deg,#178BFF,#0D5DB5);">
+              <svg width="24" height="24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            </div>
+            <span class="achievement-name">10 partidos</span>
+          </div>
+
+          <!-- Bloqueados -->
+          <div class="achievement-item" style="opacity:0.4;">
+            <div class="achievement-icon-locked">
+              <svg width="20" height="20" fill="none" stroke="var(--text-dim)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            </div>
+            <span class="achievement-name-locked">25 partidos</span>
+          </div>
+
+          <div class="achievement-item" style="opacity:0.4;">
+            <div class="achievement-icon-locked">
+              <svg width="20" height="20" fill="none" stroke="var(--text-dim)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            </div>
+            <span class="achievement-name-locked">Nunca fallé</span>
+          </div>
+
+          <div class="achievement-item" style="opacity:0.4;">
+            <div class="achievement-icon-locked">
+              <svg width="20" height="20" fill="none" stroke="var(--text-dim)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            </div>
+            <span class="achievement-name-locked">Índice 2.0</span>
+          </div>
+
+          <div class="achievement-item" style="opacity:0.4;">
+            <div class="achievement-icon-locked">
+              <svg width="20" height="20" fill="none" stroke="var(--text-dim)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            </div>
+            <span class="achievement-name-locked">Racha de 5</span>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  <!-- CERRAR SESIÓN -->
+  <div style="padding:16px 20px 24px;">
+    <button onclick="cerrarSesion()" style="width:100%;padding:13px;background:none;border:1.5px solid rgba(239,68,68,0.35);border-radius:12px;color:#EF4444;font-size:0.875rem;font-weight:700;cursor:pointer;font-family:inherit;transition:background 0.15s;">
+      Cerrar sesión
+    </button>
+  </div>
+
+  </div><!-- /main -->
+
+  <!-- BOTTOM NAV -->
+  <nav class="bottom-nav" role="navigation" aria-label="Navegación principal">
+    <a href="jugador-home.html" class="nav-item" aria-label="Inicio">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+        <polyline points="9 22 9 12 15 12 15 22"/>
+      </svg>
+      <span>Inicio</span>
+    </a>
+    <a href="jugador-buscar.html" class="nav-item" aria-label="Partidos">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+        <rect x="2" y="4" width="20" height="16" rx="2"/>
+        <line x1="12" y1="4" x2="12" y2="20"/>
+        <line x1="2" y1="12" x2="6" y2="12"/>
+        <line x1="18" y1="12" x2="22" y2="12"/>
+      </svg>
+      <span>Partidos</span>
+    </a>
+    <button class="nav-create" onclick="window.location.href='jugador-crear.html'" type="button" aria-label="Crear partido">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <line x1="12" y1="5" x2="12" y2="19"/>
+        <line x1="5" y1="12" x2="19" y2="12"/>
+      </svg>
+    </button>
+    <a href="profes.html" class="nav-item" aria-label="Entrenà">
+      <svg width="22" height="22" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+        <ellipse cx="50" cy="38" rx="26" ry="30"/>
+        <circle cx="41" cy="28" r="4" fill="currentColor" stroke="none"/>
+        <circle cx="50" cy="28" r="4" fill="currentColor" stroke="none"/>
+        <circle cx="59" cy="28" r="4" fill="currentColor" stroke="none"/>
+        <circle cx="41" cy="38" r="4" fill="currentColor" stroke="none"/>
+        <circle cx="50" cy="38" r="4" fill="currentColor" stroke="none"/>
+        <circle cx="59" cy="38" r="4" fill="currentColor" stroke="none"/>
+        <circle cx="41" cy="48" r="4" fill="currentColor" stroke="none"/>
+        <circle cx="50" cy="48" r="4" fill="currentColor" stroke="none"/>
+        <circle cx="59" cy="48" r="4" fill="currentColor" stroke="none"/>
+        <path d="M38 66 L50 68 L62 66 L58 68 L50 95 L42 68 Z"/>
+        <rect x="44" y="67" width="12" height="28" rx="6"/>
+      </svg>
+      <span>Entrenà</span>
+    </a>
+    <a href="jugador-perfil.html" class="nav-item active" aria-label="Perfil">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+        <circle cx="12" cy="8" r="4"/>
+        <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
+      </svg>
+      <span>Perfil</span>
+    </a>
+  </nav>
+
+  <script>
+    /* ── Demo data fallback ── */
+    (function() {
+      if (!sessionStorage.getItem('loggedIn')) {
+        sessionStorage.setItem('loggedIn', 'true');
+        sessionStorage.setItem('nombre', 'Martín Rodríguez');
+        sessionStorage.setItem('categoria', '5ª');
+        sessionStorage.setItem('estadoCategoria', 'orientativa');
+        sessionStorage.setItem('sexo', 'masculino');
+      }
+    })();
+
+    /* ── Datos de sesión en perfil ── */
+    (function() {
+      var nombre = sessionStorage.getItem('nombre') || 'Jugador';
+      var cat = sessionStorage.getItem('categoria') || '7ª';
+      var estado = sessionStorage.getItem('estadoCategoria') || 'orientativa';
+      var acopVerificado = sessionStorage.getItem('acopVerificado') === 'true';
+
+      var avatarEl = document.getElementById('perfil-avatar');
+      if (avatarEl) {
+        var partes = nombre.trim().split(' ');
+        var iniciales = partes.length >= 2
+          ? partes[0][0] + partes[partes.length - 1][0]
+          : nombre.substring(0, 2);
+        avatarEl.textContent = iniciales.toUpperCase();
+      }
+      var nombreEl = document.getElementById('perfil-nombre');
+      if (nombreEl) nombreEl.textContent = nombre;
+
+      var sexo = sessionStorage.getItem('sexo') || '';
+      if (sexo) {
+        var sexoChip = document.getElementById('perfil-sexo-chip');
+        var sexoTexto = document.getElementById('perfil-sexo-texto');
+        if (sexoChip) sexoChip.style.display = 'inline-block';
+        if (sexoTexto) sexoTexto.textContent = sexo.charAt(0).toUpperCase() + sexo.slice(1);
+      }
+
+      var catChipEl = document.getElementById('perfil-cat-chip');
+      if (catChipEl) {
+        if (acopVerificado || estado === 'verificada') {
+          catChipEl.textContent = cat + ' · Verificada ACOP ✓';
+          catChipEl.style.background = 'rgba(214,255,0,0.13)';
+          catChipEl.style.color = 'var(--green)';
+        } else if (estado === 'pendiente') {
+          catChipEl.textContent = cat + ' · Pendiente';
+          catChipEl.style.background = 'rgba(251,191,36,0.15)';
+          catChipEl.style.color = '#FBB724';
+        } else {
+          catChipEl.textContent = cat + ' · Orientativa';
+        }
+      }
+      // Inicializar sección ACOP según sessionStorage
+      (function() {
+        if (sessionStorage.getItem('acopVerificado') === 'true') {
+          var sO = document.getElementById('acop-estado-orientativa');
+          var sF = document.getElementById('acop-form');
+          var sV = document.getElementById('acop-verificada');
+          if (sO) sO.style.display = 'none';
+          if (sF) sF.style.display = 'none';
+          if (sV) sV.style.display = 'block';
+        }
+      })();
+    })();
+
+    function abrirVerificacionACOP() {
+      document.getElementById('acop-estado-orientativa').style.display = 'none';
+      document.getElementById('acop-form').style.display = 'block';
+      document.getElementById('acop-resultado').innerHTML = '';
+      var nombre = sessionStorage.getItem('nombre') || '';
+      var partes = nombre.trim().split(' ');
+      var apellidoGuess = partes.length >= 2 ? partes[partes.length - 1] : '';
+      var nombreGuess = partes[0] || '';
+      document.getElementById('acop-apellido').value = apellidoGuess;
+      document.getElementById('acop-nombre').value = nombreGuess;
+    }
+
+    function cerrarVerificacionACOP() {
+      document.getElementById('acop-form').style.display = 'none';
+      document.getElementById('acop-estado-orientativa').style.display = 'block';
+    }
+
+    function buscarEnACOP() {
+      var apellido = (document.getElementById('acop-apellido').value || '').trim();
+      var nombre   = (document.getElementById('acop-nombre').value  || '').trim();
+      var resultadoDiv = document.getElementById('acop-resultado');
+
+      if (!apellido) {
+        resultadoDiv.innerHTML = '<p style="color:#F59E0B;font-size:13px;">Ingresá tu apellido para buscar.</p>';
+        return;
+      }
+
+      resultadoDiv.innerHTML = '<p style="color:#A8B3C7;font-size:13px;">Buscando...</p>';
+
+      setTimeout(function() {
+        var jugadores = window.JUGADORES_ACOP || [];
+        var apNorm = normalizarTexto(apellido);
+        var noNorm = normalizarTexto(nombre);
+        var encontrados = [];
+
+        for (var i = 0; i < jugadores.length; i++) {
+          var j = jugadores[i];
+          if (normalizarTexto(j.apellido) === apNorm) {
+            if (!noNorm) {
+              encontrados.push(j);
+            } else {
+              var palabras = noNorm.split(' ');
+              var jNomNorm = normalizarTexto(j.nombre);
+              var coincide = palabras.some(function(p) {
+                return p.length > 1 && jNomNorm.indexOf(p) !== -1;
+              });
+              if (coincide) encontrados.push(j);
+            }
+          }
+        }
+
+        // Fallback: solo apellido si no encontró con nombre
+        if (encontrados.length === 0 && noNorm) {
+          for (var ii = 0; ii < jugadores.length; ii++) {
+            if (normalizarTexto(jugadores[ii].apellido) === apNorm) encontrados.push(jugadores[ii]);
+          }
+        }
+
+        if (encontrados.length === 0) {
+          resultadoDiv.innerHTML =
+            '<p style="color:#F59E0B;font-size:13px;">No encontramos "' + apellido + '" en ACOP.<br>' +
+            '<span style="color:#A8B3C7;">Verificá que el apellido sea igual al de tu inscripción.</span></p>';
+          return;
+        }
+
+        if (encontrados.length === 1) {
+          var j = encontrados[0];
+          resultadoDiv.innerHTML =
+            '<div style="background:rgba(74,222,128,0.1);border:1px solid rgba(74,222,128,0.3);border-radius:10px;padding:12px;">' +
+            '<p style="color:#4ADE80;font-size:13px;font-weight:600;margin-bottom:6px;">✓ Jugador ACOP encontrado</p>' +
+            '<p style="color:#F5F7FA;font-size:14px;margin:0 0 2px;">' + j.apellido + ', ' + j.nombre + '</p>' +
+            '<p style="color:#A8B3C7;font-size:13px;margin:0 0 10px;">Categoría: ' + j.categoria + '</p>' +
+            '<button onclick="confirmarACOP(\'' + j.categoria + '\',\'' + j.genero + '\')" ' +
+            'style="width:100%;padding:11px;background:#4ADE80;border:none;border-radius:50px;color:#050816;font-weight:700;font-size:14px;cursor:pointer;font-family:inherit;">' +
+            'Confirmar verificación</button></div>';
+        } else {
+          var html = '<p style="color:#A8B3C7;font-size:13px;margin-bottom:8px;">Encontramos ' + encontrados.length + ' jugadores. Seleccioná el tuyo:</p>';
+          encontrados.forEach(function(j) {
+            html += '<div onclick="confirmarACOP(\'' + j.categoria + '\',\'' + j.genero + '\')" ' +
+              'style="padding:10px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:8px;margin-bottom:6px;cursor:pointer;">' +
+              '<p style="color:#F5F7FA;font-size:13px;margin:0;">' + j.apellido + ', ' + j.nombre + ' · <span style="color:#178BFF;">' + j.categoria + '</span></p></div>';
+          });
+          resultadoDiv.innerHTML = html;
+        }
+      }, 800);
+    }
+
+    function confirmarACOP(categoria, genero) {
+      sessionStorage.setItem('categoria', categoria);
+      sessionStorage.setItem('estadoCategoria', 'verificada');
+      sessionStorage.setItem('acopVerificado', 'true');
+
+      document.getElementById('acop-form').style.display = 'none';
+      document.getElementById('acop-estado-orientativa').style.display = 'none';
+      document.getElementById('acop-verificada').style.display = 'block';
+
+      var chipEl = document.getElementById('perfil-cat-chip');
+      if (chipEl) {
+        chipEl.textContent = categoria + ' · Verificada ACOP ✓';
+        chipEl.style.background = 'rgba(74,222,128,0.13)';
+        chipEl.style.color = '#4ADE80';
+      }
+    }
+
+        /* ── Base de datos ACOP ── */
+    window.JUGADORES_ACOP = (function() {
+      function e(ap, nom, cat, gen) { return { apellido: ap, nombre: nom, categoria: cat, genero: gen }; }
+      return [
+        e('ABDALA','MARIANGELES','7ª','F'),e('ALBIN','MONICA','7ª','F'),e('ALVARO','LUCIA','7ª','F'),e('BRAVO','ALDANA','7ª','F'),e('CARDILO','SILVIA GRACIELA','7ª','F'),e('CASTRO','LUZ','7ª','F'),e('COSCIA','VANESA','7ª','F'),e('FARRA','ESTEFANIA BELEN','7ª','F'),e('GAINZA','MARIA ELVIRA','7ª','F'),e('GOMEZ','MARIEL','7ª','F'),e('GONZALEZ','ZOE','7ª','F'),e('IACULLI','GERALDINE','7ª','F'),e('LOPEZ','GISELLE','7ª','F'),e('LUNA','CAMILA AGUSTINA','7ª','F'),e('MARTIN','ANABELLA','7ª','F'),e('MORAGA','IRIS','7ª','F'),e('NARDIN','MARISA','7ª','F'),e('NEGRO','BERENICE','7ª','F'),e('OLIVERA','CAROLINA','7ª','F'),e('PIZARRO','ROCIO','7ª','F'),e('RAMIREZ','MELISA','7ª','F'),e('RODRIGUEZ ROSSI','MARIA LAURA','7ª','F'),e('ROJAS','ELIANA','7ª','F'),e('ROLDAN','VANESA','7ª','F'),e('SCHMIDT','MARISOL','7ª','F'),e('SOBRON','PATRICIA','7ª','F'),e('TOLOSA','MACARENA','7ª','F'),e('VAZQUEZ','AGUSTINA','7ª','F'),e('VIZCAY','CARLA','7ª','F'),e('WAIMANN','PILAR','7ª','F'),e('ZULIANI','BELEN','7ª','F'),
+        e('ALBIN','GUADALUPE','5ª','F'),e('ALARCO','MARIANA','5ª','F'),e('ITURREGUI','ANA','5ª','F'),e('GAMONDI','PAOLA','5ª','F'),e('LONGHINI','CINTIA','5ª','F'),e('PONCE','KARINA','5ª','F'),e('ROJAS','AGUSTINA','5ª','F'),e('SCHWINDT','MARIELA','5ª','F'),e('YUNGBLUT','KARINA','5ª','F'),
+        e('ALLEN','ORIANA','4ª','F'),e('ANCEL','SILVINA','4ª','F'),e('BLOCK','KATIA','4ª','F'),e('PICCHI','LUCRECIA','4ª','F'),e('PIZZANO','VERONICA','4ª','F'),e('RICCOBENE','NATALIA','4ª','F'),e('SAK','JULIETA SOLEDAD','4ª','F'),e('WAGNER','MERCEDES EDITH','4ª','F'),
+        e('BATISTA','VALENTINA','3ª','F'),e('LONGHINI','MARIA','3ª','F'),e('RAFECA','YANELLA AGOSTINA','3ª','F'),e('RODRIGUEZ','JOSEFINA','3ª','F'),
+        e('ALLEN','REBECA','2ª','F'),e('DOS SANTOS','JAZMIN','2ª','F'),
+        e('ACUNA','CARLOS SEBASTIAN','7ª','M'),e('ALVAREZ','ANDRES','7ª','M'),e('GARCIA','JUAN ALBERTO','7ª','M'),e('GARCIA','DYLAN','7ª','M'),e('GOMEZ','EDGARDO LEONEL','7ª','M'),e('LOPEZ','MATIAS EZEQUIEL','7ª','M'),e('LUNA','OMAR','7ª','M'),e('NAVARRO','DAMIAN DARIO','7ª','M'),e('PONCE','GONZALO','7ª','M'),e('RAMOS','FEDERICO','7ª','M'),e('RODRIGUEZ','NICOLAS','7ª','M'),e('ROLDAN','FRANCISCO','7ª','M'),e('SANCHEZ','FEDERICO','7ª','M'),e('TELLO','ARIEL','7ª','M'),e('VILLARREAL','JUAN IGNACIO','7ª','M'),
+        e('ABDALA','MATEO','6ª','M'),e('ACOSTA','MARTIN','6ª','M'),e('GAMONDI','JOSE LUIS','6ª','M'),e('GONZALEZ','MARCOS','6ª','M'),e('HERNANDEZ','LEONARDO','6ª','M'),e('LOPEZ','CHRISTIAN','6ª','M'),e('MARTINEZ','FEDERICO','6ª','M'),e('RODRIGUEZ','FABIAN','6ª','M'),e('ROLDAN','NICOLAS','6ª','M'),e('SAEZ','CHRISTIAN JAVIER','6ª','M'),
+        e('ABDALA','SIMON','5ª','M'),e('GAMONDI','TOMAS','5ª','M'),e('GARCIA','ANGEL','5ª','M'),e('GONZALEZ','FRANCO','5ª','M'),e('RODRIGUEZ','ALEJANDRO','5ª','M'),e('RODRIGUEZ','CRISTIAN','5ª','M'),e('ROLDAN','DIEGO','5ª','M'),
+        e('AGUER','ALEX','4ª','M'),e('BIANCHI','AGUSTIN','4ª','M'),e('CORTES','GONZALO','4ª','M'),e('GONZALEZ','EUGENIO','4ª','M'),e('GONZALEZ','SEBASTIAN','4ª','M'),e('HERNANDEZ','ROGELIO','4ª','M'),e('SERANTES','NICOLAS','4ª','M'),e('STREMEL','NICOLAS','4ª','M'),
+        e('BARRAGAN','IAN','3ª','M'),e('BARRAGAN','MARTIN','3ª','M'),e('BLOCK','EZEQUIEL','3ª','M'),e('CORREA','ALVARO TOMAS','3ª','M'),e('FERNANDEZ','FRANCO','3ª','M'),e('LONGHINI','JUAN JOSE','3ª','M'),e('OLMEDO','BENJAMIN','3ª','M'),e('SUAREZ','MARTIN','3ª','M'),
+        e('ALESANDRI','GUSTAVO','2ª','M'),e('BRUNI','EZEQUIEL','2ª','M'),e('CIANCIO','PABLO','2ª','M'),e('GAINZA','DARDO','2ª','M'),e('HERNANDEZ','JOAQUIN','2ª','M'),e('ITURREGUI','NICOLAS','2ª','M'),e('ITURREGUI','RAMIRO','2ª','M'),e('LLORENTE','LUCIO','2ª','M'),e('MUSUMECI','MAXIMILIANO','2ª','M'),e('PINEDA','SANTIAGO','2ª','M'),e('SALIAS','SEBASTIAN','2ª','M'),
+        e('GAMONDI','TEO','1ª','M'),e('LASCIOLI','IGNACIO','1ª','M')
+      ];
+    })();
+
+    function normalizarTexto(str) {
+      if (!str) return '';
+      return str
+        .toUpperCase()
+        .trim()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .replace(/[^A-Z0-9\s]/g, '')
+        .replace(/\s+/g, ' ')
+        .trim();
+    }
+
+    function verificarACOP(apellido, nombre) {
+      console.log('Total jugadores ACOP:', window.JUGADORES_ACOP ? window.JUGADORES_ACOP.length : 'NO EXISTE');
+      if (!window.JUGADORES_ACOP) return { encontrado: false };
+
+      var apNorm = normalizarTexto(apellido);
+      var noNorm = nombre ? normalizarTexto(nombre) : '';
+      if (!apNorm) return { encontrado: false };
+
+      var resultados = [];
+
+      for (var i = 0; i < window.JUGADORES_ACOP.length; i++) {
+        var j = window.JUGADORES_ACOP[i];
+        var jApNorm = normalizarTexto(j.apellido);
+        var jNoNorm = normalizarTexto(j.nombre);
+
+        if (jApNorm === apNorm) {
+          if (noNorm) {
+            var palabrasNombre = noNorm.split(' ');
+            var coincideNombre = palabrasNombre.some(function(p) {
+              return p.length > 2 && jNoNorm.indexOf(p) !== -1;
+            });
+            if (coincideNombre) resultados.push(j);
+          } else {
+            resultados.push(j);
+          }
+        }
+      }
+
+      // Fallback: solo por apellido si no encontró con nombre
+      if (resultados.length === 0 && noNorm) {
+        for (var ii = 0; ii < window.JUGADORES_ACOP.length; ii++) {
+          var jj = window.JUGADORES_ACOP[ii];
+          if (normalizarTexto(jj.apellido) === apNorm) resultados.push(jj);
+        }
+      }
+
+      if (resultados.length === 0) return { encontrado: false };
+
+      var primero = resultados[0];
+      var cat = primero.categoria;
+      return {
+        encontrado: true,
+        categoria: cat,
+        genero: primero.genero,
+        nombre: primero.nombre,
+        apellido: primero.apellido,
+        estado: (cat === '1\u00aa' || cat === '2\u00aa') ? 'pendiente' : 'verificado',
+        multiples: resultados.length > 1,
+        todos: resultados
+      };
+    }
+
+    // ── Chip selection ──
+    document.querySelectorAll('.chips-row').forEach(function(row) {
+      var mode = row.getAttribute('data-mode') || 'single';
+      row.querySelectorAll('.chip').forEach(function(chip) {
+        chip.addEventListener('click', function() {
+          if (mode === 'single') {
+            row.querySelectorAll('.chip').forEach(function(c) { c.classList.remove('selected'); });
+            chip.classList.add('selected');
+          } else {
+            chip.classList.toggle('selected');
+          }
+        });
+      });
+    });
+
+    // ── Plan mode (demo toggle) ──
+    function applyPlanMode(isPremium) {
+      // placeholder para futura lógica de plan premium
+    }
+
+    function cerrarSesion() {
+      sessionStorage.clear();
+      window.location.href = 'index.html';
+    }
+
+    // ── Copy referral code ──
+    function copyReferral() {
+      var btn = event.currentTarget;
+      var orig = btn.textContent;
+      btn.textContent = '¡Copiado!';
+      btn.style.background = '#059669';
+      setTimeout(function() { btn.textContent = orig; btn.style.background = 'var(--blue)'; }, 2000);
+    }
+  </script>
+
+</body>
+</html>

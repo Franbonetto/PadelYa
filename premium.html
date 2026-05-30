@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PadelYa - Premium</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #071224;
+      --bg-2: #0A1630;
+      --bg-card: #0D1E3A;
+      --blue: #178BFF;
+      --blue-dim: rgba(23,139,255,0.12);
+      --blue-glow: rgba(23,139,255,0.4);
+      --text: #F5F7FA;
+      --text-sub: #A8B3C7;
+      --text-dim: #6B7A8F;
+      --green: #D6FF00;
+      --border: rgba(255,255,255,0.08);
+      --color-primary: #178BFF;
+    }
+
+    * { scrollbar-width: none; }
+
+    body {
+      background: #071224;
+      color: #F5F7FA;
+      -webkit-font-smoothing: antialiased;
+      padding-bottom: 80px;
+    }
+    body::-webkit-scrollbar { display: none; }
+
+    .page-content {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 0 1rem 2rem;
+    }
+
+    /* Header */
+    .header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(7,18,36,0.97);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      padding: 0.85rem 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: all 0.2s ease;
+    }
+    .header-title {
+      font-size: 1.0625rem;
+      font-weight: 700;
+      color: #F5F7FA;
+      transition: all 0.2s ease;
+    }
+    .header-icon-btn {
+      width: 40px;
+      height: 40px;
+      border: none;
+      background: rgba(255,255,255,0.06);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      color: #A8B3C7;
+      transition: all 0.2s ease;
+      text-decoration: none;
+    }
+    .header-icon-btn:hover { background: rgba(255,255,255,0.12); }
+
+    /* Hero banner */
+    .premium-hero {
+      background: linear-gradient(180deg, #0A1630 0%, #071224 100%);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      border-radius: 20px;
+      padding: 2rem 1.5rem;
+      text-align: center;
+      color: #F5F7FA;
+      margin-top: 1.25rem;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.2s ease;
+    }
+    .premium-hero::before {
+      content: '';
+      position: absolute;
+      top: -30px;
+      right: -30px;
+      width: 160px;
+      height: 160px;
+      background: rgba(23,139,255,0.06);
+      border-radius: 50%;
+    }
+    .premium-hero::after {
+      content: '';
+      position: absolute;
+      bottom: -50px;
+      left: -20px;
+      width: 200px;
+      height: 200px;
+      background: rgba(23,139,255,0.04);
+      border-radius: 50%;
+    }
+    .premium-hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.375rem;
+      background: rgba(214,255,0,0.12);
+      color: #D6FF00;
+      border: 1px solid rgba(214,255,0,0.25);
+      border-radius: 50px;
+      padding: 0.375rem 0.875rem;
+      font-size: 0.8rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      transition: all 0.2s ease;
+    }
+    .premium-hero h1 {
+      font-size: 1.75rem;
+      font-weight: 800;
+      margin-bottom: 0.5rem;
+      line-height: 1.2;
+      color: #F5F7FA;
+    }
+    @media (min-width: 480px) {
+      .premium-hero h1 { font-size: 2rem; }
+    }
+    .premium-hero p {
+      font-size: 0.9375rem;
+      color: #A8B3C7;
+      max-width: 380px;
+      margin: 0 auto 1.5rem;
+      line-height: 1.6;
+    }
+    .hero-price {
+      display: flex;
+      align-items: baseline;
+      justify-content: center;
+      gap: 0.375rem;
+      margin-bottom: 1.5rem;
+    }
+    .hero-price-amount {
+      font-size: 2.75rem;
+      font-weight: 800;
+      line-height: 1;
+      color: #F5F7FA;
+    }
+    .hero-price-period {
+      font-size: 1rem;
+      color: #A8B3C7;
+    }
+    .hero-price-original {
+      font-size: 1rem;
+      text-decoration: line-through;
+      color: #6B7A8F;
+    }
+    .hero-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: #178BFF;
+      color: #F5F7FA;
+      padding: 0.875rem 2rem;
+      border-radius: 50px;
+      font-size: 1rem;
+      font-weight: 600;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 0 20px rgba(23,139,255,0.4);
+      transition: all 0.2s ease;
+      font-family: inherit;
+    }
+    .hero-cta:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(23,139,255,0.5);
+    }
+    .hero-cta:active { transform: scale(0.98); }
+    .hero-guarantee {
+      font-size: 0.775rem;
+      color: #6B7A8F;
+      margin-top: 0.875rem;
+    }
+
+    /* Billing toggle */
+    .billing-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.875rem;
+      margin: 1.5rem 0 1rem;
+    }
+    .billing-toggle-label {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: #6B7A8F;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .billing-toggle-label.active { color: #178BFF; }
+    .toggle-switch {
+      position: relative;
+      width: 48px;
+      height: 26px;
+    }
+    .toggle-switch input { opacity: 0; width: 0; height: 0; }
+    .toggle-slider {
+      position: absolute;
+      inset: 0;
+      background: #178BFF;
+      border-radius: 26px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .toggle-slider::before {
+      content: '';
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      left: 3px;
+      top: 3px;
+      background: #F5F7FA;
+      border-radius: 50%;
+      transition: transform 0.2s ease;
+    }
+    .toggle-switch input:checked + .toggle-slider::before {
+      transform: translateX(22px);
+    }
+    .billing-discount {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.2rem 0.55rem;
+      background: rgba(214,255,0,0.12);
+      color: #D6FF00;
+      font-size: 0.7rem;
+      font-weight: 700;
+      border-radius: 20px;
+    }
+
+    /* Plan cards */
+    .plans-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+    @media (min-width: 500px) {
+      .plans-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+    .plan-card {
+      background: #0D1E3A;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 20px;
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      transition: all 0.2s ease;
+    }
+    .plan-card:hover { box-shadow: 0 4px 24px rgba(23,139,255,0.12); }
+    .plan-card.featured {
+      background: linear-gradient(180deg, #0D1E3A 0%, #112244 100%);
+      border: 1px solid #178BFF;
+      box-shadow: 0 0 24px rgba(23,139,255,0.2);
+      position: relative;
+    }
+    .plan-popular-badge {
+      position: absolute;
+      top: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #178BFF;
+      color: #F5F7FA;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 50px;
+      white-space: nowrap;
+    }
+    .plan-name {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #F5F7FA;
+      margin-bottom: 0.25rem;
+    }
+    .plan-desc {
+      font-size: 0.8rem;
+      color: #A8B3C7;
+      margin-bottom: 1rem;
+    }
+    .plan-price {
+      display: flex;
+      align-items: baseline;
+      gap: 0.25rem;
+      margin-bottom: 1.25rem;
+    }
+    .plan-price-amount {
+      font-size: 2rem;
+      font-weight: 800;
+      color: #F5F7FA;
+      line-height: 1;
+    }
+    .plan-price-period {
+      font-size: 0.8rem;
+      color: #A8B3C7;
+    }
+    .plan-features {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.625rem;
+      flex: 1;
+      margin-bottom: 1.25rem;
+    }
+    .plan-feature {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.625rem;
+      font-size: 0.8125rem;
+      color: #A8B3C7;
+      transition: all 0.2s ease;
+    }
+    .feature-check {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 1px;
+      transition: all 0.2s ease;
+    }
+    .feature-check.yes { background: rgba(23,139,255,0.15); color: #178BFF; }
+    .feature-check.no { background: rgba(255,255,255,0.06); color: #6B7A8F; }
+    .plan-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      padding: 0.75rem;
+      border-radius: 50px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      border: none;
+      transition: all 0.2s ease;
+      text-decoration: none;
+    }
+    .plan-btn-free {
+      background: rgba(255,255,255,0.06);
+      color: #6B7A8F;
+      border: 1px solid rgba(255,255,255,0.08);
+      cursor: default;
+    }
+    .plan-btn-premium {
+      background: #178BFF;
+      color: #F5F7FA;
+      border: none;
+      box-shadow: 0 0 16px rgba(23,139,255,0.3);
+    }
+    .plan-btn-premium:hover {
+      background: #3a9fff;
+      box-shadow: 0 0 24px rgba(23,139,255,0.5);
+    }
+    .plan-btn-outline {
+      background: transparent;
+      color: #178BFF;
+      border: 1px solid #178BFF;
+    }
+    .plan-btn-outline:hover {
+      background: rgba(23,139,255,0.1);
+    }
+    .plan-sale-note {
+      font-size: 0.8125rem;
+      color: #D6FF00;
+      background: rgba(214,255,0,0.08);
+      border-radius: 8px;
+      padding: 4px 10px;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 0.875rem;
+      margin-top: -0.5rem;
+    }
+    .plan-trial {
+      font-size: 0.75rem;
+      color: #6B7A8F;
+      text-align: center;
+      margin-top: 0.5rem;
+    }
+
+    /* Feature comparison table */
+    .comparison-table {
+      background: #0D1E3A;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 14px;
+      overflow: hidden;
+    }
+    .comparison-table table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .comparison-table th {
+      padding: 0.75rem 1rem;
+      text-align: left;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #6B7A8F;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      border-bottom: 2px solid rgba(255,255,255,0.08);
+      background: #0A1630;
+    }
+    .comparison-table th.premium-col {
+      background: rgba(23,139,255,0.1);
+      color: #178BFF;
+    }
+    .comparison-table td {
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      font-size: 0.8125rem;
+      color: #A8B3C7;
+    }
+    .comparison-table tr:last-child td { border-bottom: none; }
+    .comparison-table tr:hover td { background: rgba(23,139,255,0.04); }
+    .comparison-table td.center { text-align: center; }
+    .check-yes { color: #178BFF; font-size: 1rem; }
+    .check-no { color: #6B7A8F; font-size: 1rem; }
+
+    /* Testimonials */
+    .testimonial-card {
+      background: #0D1E3A;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 16px;
+      padding: 1.25rem;
+      transition: all 0.2s ease;
+    }
+    .testimonial-text {
+      font-size: 0.875rem;
+      color: #A8B3C7;
+      line-height: 1.7;
+      font-style: italic;
+      margin-bottom: 0.875rem;
+    }
+    .testimonial-author {
+      display: flex;
+      align-items: center;
+      gap: 0.625rem;
+    }
+    .t-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: rgba(23,139,255,0.15);
+      color: #178BFF;
+      font-size: 0.75rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .t-name { font-size: 0.875rem; font-weight: 700; color: #F5F7FA; }
+    .t-role { font-size: 0.75rem; color: #6B7A8F; }
+    .stars { color: #F39C12; font-size: 0.8rem; }
+
+    /* FAQ */
+    .faq-item {
+      background: #0D1E3A;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 12px;
+      overflow: hidden;
+      margin-bottom: 0.5rem;
+      transition: all 0.2s ease;
+    }
+    .faq-question {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 1.25rem;
+      cursor: pointer;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: #F5F7FA;
+      user-select: none;
+    }
+    .faq-question svg {
+      flex-shrink: 0;
+      transition: transform 0.2s ease;
+      color: #6B7A8F;
+    }
+    .faq-item.open .faq-question svg { transform: rotate(180deg); }
+    .faq-answer {
+      display: none;
+      padding: 0 1.25rem 1rem;
+      font-size: 0.8125rem;
+      color: #A8B3C7;
+      line-height: 1.7;
+    }
+    .faq-item.open .faq-answer { display: block; }
+
+    /* Section */
+    .section { margin-top: 1.75rem; }
+    .section-title {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: #F5F7FA;
+      margin-bottom: 0.375rem;
+    }
+    .section-subtitle {
+      font-size: 0.875rem;
+      color: #A8B3C7;
+      margin-bottom: 1.25rem;
+    }
+
+    h2 {
+      color: #F5F7FA;
+    }
+
+    /* Bottom sticky CTA */
+    .sticky-cta {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(10,22,48,0.97);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-top: 1px solid rgba(255,255,255,0.08);
+      padding: 0.875rem 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      z-index: 100;
+      box-shadow: 0 -4px 24px rgba(0,0,0,0.3);
+      transition: all 0.2s ease;
+    }
+    .sticky-cta-text {
+      flex: 1;
+    }
+    .sticky-cta-title {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: #F5F7FA;
+    }
+    .sticky-cta-sub {
+      font-size: 0.75rem;
+      color: #6B7A8F;
+    }
+    .sticky-cta-btn {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.65rem 1.25rem;
+      background: #178BFF;
+      color: #F5F7FA;
+      border: none;
+      border-radius: 50px;
+      font-size: 0.875rem;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+      box-shadow: 0 0 16px rgba(23,139,255,0.3);
+    }
+    .sticky-cta-btn:hover {
+      background: #3a9fff;
+      box-shadow: 0 0 24px rgba(23,139,255,0.5);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="header">
+    <a href="jugador-perfil.html" class="header-icon-btn" aria-label="Volver">
+      <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+        <path d="M19 12H5M12 5l-7 7 7 7"/>
+      </svg>
+    </a>
+    <span class="header-title">Premium</span>
+    <div style="width:40px;"></div>
+  </header>
+
+  <main class="page-content">
+
+    <!-- Hero -->
+    <div class="premium-hero" style="margin-top:1.25rem;">
+      <div class="premium-hero-badge">
+        <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        PadelYa Premium
+      </div>
+      <h1>Jugá más. Coordiná menos.</h1>
+      <p>Elegí cómo querés jugar</p>
+      <button class="hero-cta" onclick="scrollToPlans()">Ver planes</button>
+    </div>
+
+    <!-- Plan cards -->
+    <div class="plans-grid" id="plansSection" style="margin-top:1.5rem;">
+
+      <!-- Free -->
+      <div class="plan-card">
+        <div class="plan-name">Free</div>
+        <div class="plan-price">
+          <span class="plan-price-amount" style="font-size:1.75rem;">Gratis</span>
+        </div>
+        <ul class="plan-features">
+          <li class="plan-feature">
+            <div class="feature-check yes"><svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+            3 partidos por mes
+          </li>
+          <li class="plan-feature">
+            <div class="feature-check yes"><svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+            Crear y unirse a partidos
+          </li>
+          <li class="plan-feature">
+            <div class="feature-check yes"><svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+            Matchmaking completo
+          </li>
+          <li class="plan-feature">
+            <div class="feature-check yes"><svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+            Se renueva el 1ro de cada mes
+          </li>
+        </ul>
+        <button class="plan-btn plan-btn-free" disabled>Tu plan actual</button>
+      </div>
+
+      <!-- Pase individual -->
+      <div class="plan-card">
+        <div class="plan-name">Pase individual</div>
+        <div class="plan-price">
+          <span class="plan-price-amount">$999</span>
+          <span class="plan-price-period">por partido</span>
+        </div>
+        <ul class="plan-features">
+          <li class="plan-feature">
+            <div class="feature-check yes"><svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+            1 partido adicional
+          </li>
+          <li class="plan-feature">
+            <div class="feature-check yes"><svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+            Sin suscripción
+          </li>
+          <li class="plan-feature">
+            <div class="feature-check yes"><svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+            Ideal para jugar de vez en cuando
+          </li>
+        </ul>
+        <button class="plan-btn plan-btn-outline" onclick="alert('Comprar pase · Mercado Pago (próximamente)')">Comprar pase &middot; Mercado Pago</button>
+      </div>
+
+      <!-- Premium -->
+      <div class="plan-card featured">
+        <div class="plan-popular-badge">MÁS ELEGIDO</div>
+        <div class="plan-name">Premium</div>
+        <div class="plan-price">
+          <span class="plan-price-amount">$5.999</span>
+          <span class="plan-price-period">/mes</span>
+        </div>
+        <div class="plan-sale-note">Jugás ilimitado por lo que cuesta 6 pases</div>
+        <ul class="plan-features">
+          <li class="plan-feature">
+            <div class="feature-check yes"><svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+            Partidos ilimitados
+          </li>
+          <li class="plan-feature">
+            <div class="feature-check yes"><svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+            Alertas prioritarias de partidos
+          </li>
+          <li class="plan-feature">
+            <div class="feature-check yes"><svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+            Estad&iacute;sticas avanzadas
+          </li>
+          <li class="plan-feature">
+            <div class="feature-check yes"><svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+            Descuentos en sponsors
+          </li>
+          <li class="plan-feature">
+            <div class="feature-check yes"><svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+            Perfil destacado en b&uacute;squedas
+          </li>
+          <li class="plan-feature">
+            <div class="feature-check yes"><svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+            Foto de perfil personalizada
+          </li>
+          <li class="plan-feature">
+            <div class="feature-check yes"><svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+            Badge Premium visible
+          </li>
+        </ul>
+        <button class="plan-btn plan-btn-premium" onclick="alert('Probar 14 días gratis · Mercado Pago (próximamente)')">Probar 14 d&iacute;as gratis &middot; Mercado Pago</button>
+        <div class="plan-trial">14 días gratis · Sin tarjeta</div>
+      </div>
+
+    </div>
+
+    <!-- FAQ -->
+    <div class="section">
+      <div class="section-title">Preguntas frecuentes</div>
+
+      <div class="faq-item open" onclick="toggleFaq(this)">
+        <div class="faq-question">
+          ¿Puedo cancelar en cualquier momento?
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="faq-answer">Sí, podés cancelar tu suscripción en cualquier momento desde tu perfil. No hay cargos por cancelación y conservás el acceso Premium hasta el final del período facturado.</div>
+      </div>
+
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">
+          ¿Cómo funciona la prueba gratis de 14 días?
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="faq-answer">Los primeros 14 días son completamente gratis y no se requiere tarjeta de crédito. Si no cancelás antes de que terminen, se factura automáticamente $5.999/mes vía Mercado Pago.</div>
+      </div>
+
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">
+          ¿Qué pasa cuando llego al límite de 3 partidos?
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="faq-answer">Podés comprar un Pase individual por $999 para jugar un partido adicional sin necesitar Premium, o activar Premium para tener partidos ilimitados. El contador se resetea el 1ro de cada mes.</div>
+      </div>
+
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">
+          ¿Las estadísticas avanzadas se actualizan en tiempo real?
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="faq-answer">Sí, las estadísticas se actualizan automáticamente después de cada partido registrado. Podés ver tu evolución histórica, win rate por categoría y mucho más.</div>
+      </div>
+
+    </div>
+
+    <div style="height:1.5rem;"></div>
+
+  </main>
+
+  <!-- STICKY BOTTOM CTA -->
+  <div class="sticky-cta">
+    <div class="sticky-cta-text">
+      <div class="sticky-cta-title">Premium · $5.999/mes</div>
+      <div class="sticky-cta-sub">14 días gratis · Sin tarjeta</div>
+    </div>
+    <button class="sticky-cta-btn" onclick="alert('Probar 14 días gratis · Mercado Pago (próximamente)')">
+      Probar gratis
+    </button>
+  </div>
+
+  <script>
+    function scrollToPlans() {
+      document.getElementById('plansSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function toggleFaq(item) {
+      item.classList.toggle('open');
+    }
+
+  </script>
+
+</body>
+</html>

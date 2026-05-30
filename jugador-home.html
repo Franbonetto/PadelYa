@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PadelYa - Inicio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #071224;
+      --bg-card:   #0C1A2E;
+      --bg-card2:  #0F2040;
+      --blue:      #178BFF;
+      --blue-dim:  rgba(23,139,255,0.12);
+      --blue-glow: rgba(23,139,255,0.35);
+      --text:      #F5F7FA;
+      --text-sub:  #A8B3C7;
+      --text-dim:  #5C6E87;
+      --border:    rgba(255,255,255,0.07);
+      --border-hi: rgba(255,255,255,0.13);
+      --green:     #D6FF00;
+      --green-dim: rgba(214,255,0,0.12);
+    }
+
+    html { background: var(--bg); }
+
+    body {
+      font-family: 'Geist', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      -webkit-font-smoothing: antialiased;
+      padding-bottom: 96px;
+      min-height: 100vh;
+    }
+
+    /* ── HEADER ── */
+    .app-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(7,18,36,0.92);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+    .header-inner {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .header-name {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.2;
+      letter-spacing: -0.2px;
+    }
+    .header-sub {
+      font-size: 12px;
+      color: var(--text-sub);
+      margin-top: 2px;
+      font-weight: 500;
+    }
+    .bell-btn {
+      position: relative;
+      width: 38px;
+      height: 38px;
+      border: 1px solid var(--border-hi);
+      background: rgba(255,255,255,0.05);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--text-sub);
+      flex-shrink: 0;
+      transition: background 0.15s, border-color 0.15s;
+    }
+    .bell-btn:hover { background: rgba(255,255,255,0.09); border-color: var(--border-hi); }
+    .bell-dot {
+      position: absolute;
+      top: 6px;
+      right: 6px;
+      width: 7px;
+      height: 7px;
+      background: var(--blue);
+      border-radius: 50%;
+      border: 1.5px solid var(--bg);
+    }
+
+    /* ── MAIN ── */
+    .main {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 0 16px;
+    }
+
+    /* ── HERO CTA ── */
+    .hero {
+      margin: 16px 0 24px;
+      background: linear-gradient(140deg, #0D1F3C 0%, #0A1628 60%, #071020 100%);
+      border: 1px solid rgba(23,139,255,0.2);
+      border-radius: 22px;
+      padding: 28px 24px 24px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -60px;
+      right: -40px;
+      width: 200px;
+      height: 200px;
+      background: radial-gradient(circle, rgba(23,139,255,0.14) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-sub);
+      margin-bottom: 10px;
+    }
+    .pulse-dot {
+      width: 6px;
+      height: 6px;
+      background: var(--green);
+      border-radius: 50%;
+      flex-shrink: 0;
+      animation: blink 2s ease-in-out infinite;
+    }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.25} }
+
+    .hero-title {
+      font-size: 32px;
+      font-weight: 900;
+      color: var(--text);
+      line-height: 1.1;
+      letter-spacing: -0.8px;
+      margin-bottom: 8px;
+    }
+    .hero-sub {
+      font-size: 14px;
+      color: var(--text-sub);
+      line-height: 1.55;
+      margin-bottom: 22px;
+      max-width: 260px;
+    }
+    .hero-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 50px;
+      background: var(--blue);
+      color: #fff;
+      font-size: 15px;
+      font-weight: 700;
+      border-radius: 50px;
+      text-decoration: none;
+      letter-spacing: -0.1px;
+      border: none;
+      cursor: pointer;
+      font-family: inherit;
+      box-shadow: 0 0 28px var(--blue-glow), 0 4px 16px rgba(0,0,0,0.3);
+      transition: box-shadow 0.2s, transform 0.15s;
+    }
+    .hero-btn:active { transform: scale(0.98); box-shadow: 0 0 16px var(--blue-glow); }
+
+    /* ── SECTION ── */
+    .section { margin-top: 28px; }
+    .section-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 14px;
+    }
+    .section-title {
+      font-size: 17px;
+      font-weight: 800;
+      color: var(--text);
+      letter-spacing: -0.3px;
+    }
+    .section-link {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--blue);
+      text-decoration: none;
+    }
+    .section-sub {
+      font-size: 12px;
+      color: var(--text-dim);
+      font-weight: 500;
+      margin-top: 1px;
+    }
+
+    /* ── MATCH CARD ── */
+    .match-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 16px 18px;
+      margin-bottom: 10px;
+      transition: border-color 0.2s;
+    }
+    .match-card:hover { border-color: var(--border-hi); }
+
+    .match-card--urgent {
+      border-color: rgba(23,139,255,0.25);
+      background: linear-gradient(140deg, #0D1F3C, #0C1A2E);
+    }
+
+    .match-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+    .match-club {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: -0.2px;
+    }
+    .match-time {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--blue);
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .match-tags {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+    }
+    .tag {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 9px;
+      border-radius: 99px;
+      border: 1px solid var(--border-hi);
+      color: var(--text-sub);
+      background: rgba(255,255,255,0.04);
+    }
+    .tag--tipo {
+      color: var(--text-sub);
+    }
+
+    .match-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .players-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .player-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--blue);
+      opacity: 0.85;
+    }
+    .player-dot--empty {
+      background: transparent;
+      border: 1.5px solid var(--border-hi);
+    }
+    .player-dot--missing {
+      background: var(--green);
+      opacity: 1;
+    }
+    .players-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-sub);
+      margin-left: 4px;
+    }
+
+    .btn-sumarme {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--blue);
+      border: 1.5px solid rgba(23,139,255,0.4);
+      border-radius: 50px;
+      padding: 6px 16px;
+      background: var(--blue-dim);
+      cursor: pointer;
+      text-decoration: none;
+      font-family: inherit;
+      white-space: nowrap;
+      transition: background 0.15s, border-color 0.15s, box-shadow 0.15s;
+    }
+    .btn-sumarme:hover {
+      background: rgba(23,139,255,0.2);
+      border-color: rgba(23,139,255,0.6);
+      box-shadow: 0 0 12px rgba(23,139,255,0.2);
+    }
+
+    /* ── SEPARATOR ── */
+    .divider {
+      height: 1px;
+      background: var(--border);
+      margin: 28px 0;
+    }
+
+    /* ── PROFES ROW ── */
+    .profes-scroll {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      padding-bottom: 4px;
+    }
+    .profes-scroll::-webkit-scrollbar { display: none; }
+
+    .profe-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      background: #0D1E3A;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 14px;
+      padding: 16px 14px;
+      min-width: 158px;
+      flex-shrink: 0;
+      text-decoration: none;
+      text-align: center;
+      transition: border-color 0.2s;
+    }
+    .profe-card:hover { border-color: rgba(23,139,255,0.35); }
+    .profe-card-avatar {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: var(--blue-dim);
+      color: var(--blue);
+      font-size: 16px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1.5px solid rgba(23,139,255,0.3);
+      flex-shrink: 0;
+    }
+    .profe-card-name {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 2px;
+    }
+    .profe-card-spec {
+      font-size: 11px;
+      color: var(--text-dim);
+      font-weight: 500;
+      line-height: 1.4;
+    }
+    .btn-ver-perfil {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 5px 14px;
+      border: 1.5px solid rgba(23,139,255,0.4);
+      border-radius: 50px;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--blue);
+      background: var(--blue-dim);
+      font-family: inherit;
+      transition: background 0.15s, border-color 0.15s;
+    }
+    .profe-card:hover .btn-ver-perfil {
+      background: rgba(23,139,255,0.2);
+      border-color: rgba(23,139,255,0.7);
+    }
+    .profe-cta-link {
+      display: block;
+      margin-top: 14px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--blue);
+      text-decoration: none;
+      text-align: center;
+      padding: 10px;
+      border: 1px solid rgba(23,139,255,0.25);
+      border-radius: 10px;
+      background: rgba(23,139,255,0.06);
+      transition: background 0.15s;
+    }
+    .profe-cta-link:hover { background: rgba(23,139,255,0.14); }
+
+    /* ── SPONSOR ── */
+    .sponsor-line {
+      margin-top: 28px;
+      margin-bottom: 8px;
+      text-align: center;
+    }
+    .sponsor-link {
+      font-size: 12px;
+      color: var(--text-dim);
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .sponsor-link:hover { color: var(--text-sub); }
+
+    /* ── BOTTOM NAV ── */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      max-width: 680px;
+      background: rgba(7,18,36,0.97);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-top: 1px solid rgba(255,255,255,0.06);
+      display: flex;
+      align-items: center;
+      padding: 8px 0 20px;
+      z-index: 100;
+    }
+    .nav-item {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      padding: 4px 0;
+      color: #A8B3C7;
+      text-decoration: none;
+      font-size: 10px;
+      font-weight: 500;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-family: inherit;
+      transition: color 0.15s;
+    }
+    .nav-item.active { color: #178BFF; }
+    .nav-item.active svg { stroke: #178BFF; }
+    .nav-create {
+      flex: 0 0 auto;
+      width: 52px;
+      height: 52px;
+      background: #178BFF;
+      border-radius: 50%;
+      border: none;
+      cursor: pointer;
+      font-family: inherit;
+      color: white;
+      margin-top: -12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 20px rgba(23,139,255,0.5);
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+    .nav-create:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 28px rgba(23,139,255,0.7);
+    }
+    .nav-create:active { transform: scale(0.97); }
+
+    /* ── MODAL ── */
+    #prox-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      z-index: 300;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-box {
+      background: var(--bg-card2);
+      border: 1px solid var(--border-hi);
+      border-radius: 20px;
+      padding: 2rem 1.5rem;
+      max-width: 320px;
+      width: calc(100% - 2rem);
+      text-align: center;
+    }
+    .modal-icon {
+      width: 54px;
+      height: 54px;
+      background: var(--blue-dim);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1rem;
+      border: 1px solid rgba(23,139,255,0.3);
+    }
+    .modal-title { font-size: 1rem; font-weight: 800; color: var(--text); margin-bottom: 0.5rem; }
+    .modal-desc  { font-size: 0.875rem; color: var(--text-sub); line-height: 1.6; margin-bottom: 1.25rem; }
+    .modal-btn {
+      background: var(--blue);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      padding: 0.65rem 1.5rem;
+      font-size: 0.9rem;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+      width: 100%;
+    }
+    .logo-img { height: 36px; object-fit: contain; display: block; }
+  </style>
+</head>
+<body>
+
+  <!-- ════════════════════════════════════════
+       HEADER
+  ════════════════════════════════════════ -->
+  <header class="app-header">
+    <div class="header-inner">
+      <a href="jugador-home.html" style="display:block;"><img src="assets/logo-padelya.png" alt="PadelYa" style="height:40px;object-fit:contain;"></a>
+      <div>
+        <div class="header-name" id="home-header-name">Hola, Martín</div>
+        <div class="header-sub"  id="home-header-sub">7ª · Orientativa</div>
+      </div>
+      <button class="bell-btn" id="notif-btn" onclick="openNotifPanel()" aria-label="Notificaciones">
+        <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+          <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+          <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+        </svg>
+        <span class="bell-dot"></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ════════════════════════════════════════
+       MAIN
+  ════════════════════════════════════════ -->
+  <main class="main">
+
+    <!-- HERO -->
+    <div class="hero">
+      <div class="hero-eyebrow">
+        <span class="pulse-dot"></span>
+        3 partidos abiertos ahora
+      </div>
+      <h1 class="hero-title">¿Jugás hoy?</h1>
+      <p class="hero-sub">Encontramos jugadores de tu nivel automáticamente.</p>
+      <a href="jugador-buscar.html" class="hero-btn">Quiero jugar</a>
+    </div>
+
+    <!-- LES FALTA 1 -->
+    <section class="section">
+      <div class="section-header">
+        <div>
+          <div class="section-title">Les falta 1</div>
+          <div class="section-sub">Completá el partido</div>
+        </div>
+        <a href="jugador-buscar.html" class="section-link">Ver todos</a>
+      </div>
+
+      <!-- Card 1 -->
+      <div class="match-card match-card--urgent">
+        <div class="match-top">
+          <span class="match-club">Chingoland</span>
+          <span class="match-time">20:00 hs</span>
+        </div>
+        <div class="match-tags">
+          <span class="tag">5ª</span>
+          <span class="tag">Masculino</span>
+          <span class="tag tag--tipo">Competitivo</span>
+        </div>
+        <div class="match-bottom">
+          <div class="players-row">
+            <span class="player-dot"></span>
+            <span class="player-dot"></span>
+            <span class="player-dot"></span>
+            <span class="player-dot--missing player-dot"></span>
+            <span class="players-label">3 / 4</span>
+          </div>
+          <button class="btn-sumarme" onclick="abrirModalSumarme(this)">Sumarme</button>
+        </div>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="match-card match-card--urgent">
+        <div class="match-top">
+          <span class="match-club">Serrano Pádel</span>
+          <span class="match-time">21:00 hs</span>
+        </div>
+        <div class="match-tags">
+          <span class="tag">5ª</span>
+          <span class="tag">Masculino</span>
+          <span class="tag tag--tipo">Casual</span>
+        </div>
+        <div class="match-bottom">
+          <div class="players-row">
+            <span class="player-dot"></span>
+            <span class="player-dot"></span>
+            <span class="player-dot--empty player-dot"></span>
+            <span class="player-dot--missing player-dot"></span>
+            <span class="players-label">2 / 4</span>
+          </div>
+          <button class="btn-sumarme" onclick="abrirModalSumarme(this)">Sumarme</button>
+        </div>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="match-card match-card--urgent">
+        <div class="match-top">
+          <span class="match-club">Padel Time</span>
+          <span class="match-time">19:30 hs</span>
+        </div>
+        <div class="match-tags">
+          <span class="tag">4ª</span>
+          <span class="tag">Masculino</span>
+          <span class="tag tag--tipo">Intermedio</span>
+        </div>
+        <div class="match-bottom">
+          <div class="players-row">
+            <span class="player-dot"></span>
+            <span class="player-dot--empty player-dot"></span>
+            <span class="player-dot--empty player-dot"></span>
+            <span class="player-dot--missing player-dot"></span>
+            <span class="players-label">1 / 4</span>
+          </div>
+          <button class="btn-sumarme" onclick="abrirModalSumarme(this)">Sumarme</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- PARA VOS -->
+    <section class="section">
+      <div class="section-header">
+        <div>
+          <div class="section-title">Para vos</div>
+          <div class="section-sub">Según tu categoría y horario</div>
+        </div>
+        <a href="jugador-buscar.html" class="section-link">Ver más</a>
+      </div>
+
+      <div class="match-card">
+        <div class="match-top">
+          <span class="match-club">Las Terrazas</span>
+          <span class="match-time">19:00 hs</span>
+        </div>
+        <div class="match-tags">
+          <span class="tag">6ª</span>
+          <span class="tag">Mixto</span>
+          <span class="tag tag--tipo">Amistoso</span>
+        </div>
+        <div class="match-bottom">
+          <div class="players-row">
+            <span class="player-dot"></span>
+            <span class="player-dot"></span>
+            <span class="player-dot--empty player-dot"></span>
+            <span class="player-dot--empty player-dot"></span>
+            <span class="players-label">2 / 4</span>
+          </div>
+          <button class="btn-sumarme" onclick="abrirModalSumarme(this)">Sumarme</button>
+        </div>
+      </div>
+
+      <div class="match-card">
+        <div class="match-top">
+          <span class="match-club">Oasis Pádel</span>
+          <span class="match-time">20:30 hs</span>
+        </div>
+        <div class="match-tags">
+          <span class="tag">5ª</span>
+          <span class="tag">Masculino</span>
+          <span class="tag tag--tipo">Competitivo</span>
+        </div>
+        <div class="match-bottom">
+          <div class="players-row">
+            <span class="player-dot"></span>
+            <span class="player-dot--empty player-dot"></span>
+            <span class="player-dot--empty player-dot"></span>
+            <span class="player-dot--empty player-dot"></span>
+            <span class="players-label">1 / 4</span>
+          </div>
+          <button class="btn-sumarme" onclick="abrirModalSumarme(this)">Sumarme</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- MEJORÁ -->
+    <section class="section">
+      <div class="section-header">
+        <div>
+          <div class="section-title">Mejorá tu juego</div>
+          <div class="section-sub">Profesores en Olavarría</div>
+        </div>
+        <a href="profes.html" class="section-link">Ver todos</a>
+      </div>
+      <div class="profes-scroll">
+        <a href="profesor-perfil-publico.html" class="profe-card">
+          <div class="profe-card-avatar">LF</div>
+          <div>
+            <div class="profe-card-name">Lucas F.</div>
+            <div class="profe-card-spec">Adultos · Menores</div>
+          </div>
+          <span class="btn-ver-perfil">Ver perfil</span>
+        </a>
+        <a href="profesor-perfil-publico.html" class="profe-card">
+          <div class="profe-card-avatar">CM</div>
+          <div>
+            <div class="profe-card-name">Carolina M.</div>
+            <div class="profe-card-spec">Menores · Alto rendimiento</div>
+          </div>
+          <span class="btn-ver-perfil">Ver perfil</span>
+        </a>
+      </div>
+      <a href="auth.html?tab=registro&rol=profesor" class="profe-cta-link">
+        ¿Sos profe? Registrate como profesor →
+      </a>
+    </section>
+
+    <!-- SPONSOR -->
+    <div class="sponsor-line">
+      <a href="#" class="sponsor-link">15% OFF en Kongo Sports &rarr;</a>
+    </div>
+
+  </main>
+
+  <!-- ════════════════════════════════════════
+       BOTTOM NAV
+  ════════════════════════════════════════ -->
+  <nav class="bottom-nav" role="navigation" aria-label="Navegación principal">
+    <a href="jugador-home.html" class="nav-item active" aria-label="Inicio">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+        <polyline points="9 22 9 12 15 12 15 22"/>
+      </svg>
+      <span>Inicio</span>
+    </a>
+    <a href="jugador-buscar.html" class="nav-item" aria-label="Partidos">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+        <rect x="2" y="4" width="20" height="16" rx="2"/>
+        <line x1="12" y1="4" x2="12" y2="20"/>
+        <line x1="2" y1="12" x2="6" y2="12"/>
+        <line x1="18" y1="12" x2="22" y2="12"/>
+      </svg>
+      <span>Partidos</span>
+    </a>
+    <button class="nav-create" onclick="window.location.href='jugador-crear.html'" type="button" aria-label="Crear partido">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <line x1="12" y1="5" x2="12" y2="19"/>
+        <line x1="5" y1="12" x2="19" y2="12"/>
+      </svg>
+    </button>
+    <a href="profes.html" class="nav-item" aria-label="Entrenà">
+      <svg width="22" height="22" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+        <ellipse cx="50" cy="38" rx="26" ry="30"/>
+        <circle cx="41" cy="28" r="4" fill="currentColor" stroke="none"/>
+        <circle cx="50" cy="28" r="4" fill="currentColor" stroke="none"/>
+        <circle cx="59" cy="28" r="4" fill="currentColor" stroke="none"/>
+        <circle cx="41" cy="38" r="4" fill="currentColor" stroke="none"/>
+        <circle cx="50" cy="38" r="4" fill="currentColor" stroke="none"/>
+        <circle cx="59" cy="38" r="4" fill="currentColor" stroke="none"/>
+        <circle cx="41" cy="48" r="4" fill="currentColor" stroke="none"/>
+        <circle cx="50" cy="48" r="4" fill="currentColor" stroke="none"/>
+        <circle cx="59" cy="48" r="4" fill="currentColor" stroke="none"/>
+        <path d="M38 66 L50 68 L62 66 L58 68 L50 95 L42 68 Z"/>
+        <rect x="44" y="67" width="12" height="28" rx="6"/>
+      </svg>
+      <span>Entrenà</span>
+    </a>
+    <a href="jugador-perfil.html" class="nav-item" aria-label="Perfil">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+        <circle cx="12" cy="8" r="4"/>
+        <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
+      </svg>
+      <span>Perfil</span>
+    </a>
+  </nav>
+
+  <!-- MODAL SUMARME -->
+  <div id="sumarme-overlay" onclick="cerrarModalSumarme(event)" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:300;align-items:center;justify-content:center;">
+    <div class="modal-box" onclick="event.stopPropagation()">
+      <div class="modal-icon">
+        <svg width="24" height="24" fill="none" stroke="#178BFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      </div>
+      <div class="modal-title">¿Sumarte al partido?</div>
+      <p class="modal-desc">Te unirás a este partido. Los otros jugadores verán tu perfil y categoría.</p>
+      <button class="modal-btn" onclick="confirmarSumarme()">Confirmar</button>
+      <button onclick="cerrarModalSumarme()" style="background:none;border:none;color:var(--text-sub);font-size:0.875rem;cursor:pointer;font-family:inherit;margin-top:10px;width:100%;padding:8px;">Cancelar</button>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div id="toast-sumarme" style="display:none;position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:#059669;color:white;padding:10px 20px;border-radius:10px;font-size:0.875rem;font-weight:600;z-index:600;white-space:nowrap;box-shadow:0 4px 20px rgba(0,0,0,0.3);">¡Te sumaste! Nos vemos en la cancha.</div>
+
+  <!-- PANEL NOTIFICACIONES -->
+  <div id="notif-overlay" onclick="closeNotifPanel(event)" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:300;align-items:flex-start;justify-content:flex-end;">
+    <div id="notif-panel" onclick="event.stopPropagation()" style="background:#0C1A2E;width:300px;max-width:calc(100vw - 32px);height:100%;padding:20px 16px;overflow-y:auto;border-left:1px solid rgba(255,255,255,0.08);">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
+        <div style="font-size:16px;font-weight:800;color:#F5F7FA;">Notificaciones</div>
+        <button onclick="closeNotifPanel()" style="background:none;border:none;color:#A8B3C7;cursor:pointer;font-size:22px;padding:4px;line-height:1;">&times;</button>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <div style="padding:12px;background:#0D1E3A;border:1px solid rgba(23,139,255,0.2);border-left:3px solid #178BFF;border-radius:10px;">
+          <div style="font-size:13px;font-weight:600;color:#F5F7FA;margin-bottom:4px;">¡Te sumaron a un partido!</div>
+          <div style="font-size:12px;color:#A8B3C7;">Chingoland · 20:00 hs · 5ª categoría</div>
+          <div style="font-size:11px;color:#5C6E87;margin-top:4px;">hace 2 horas</div>
+        </div>
+        <div style="padding:12px;background:#0D1E3A;border:1px solid rgba(255,255,255,0.06);border-radius:10px;">
+          <div style="font-size:13px;font-weight:600;color:#F5F7FA;margin-bottom:4px;">Partido completado</div>
+          <div style="font-size:12px;color:#A8B3C7;">Serrano Pádel · Mañana 19:00 hs</div>
+          <div style="font-size:11px;color:#5C6E87;margin-top:4px;">hace 5 horas</div>
+        </div>
+        <div style="padding:12px;background:#0D1E3A;border:1px solid rgba(255,255,255,0.06);border-radius:10px;">
+          <div style="font-size:13px;font-weight:600;color:#F5F7FA;margin-bottom:4px;">Recordatorio: partido mañana</div>
+          <div style="font-size:12px;color:#A8B3C7;">Las Terrazas · 18:30 hs · Llevá pelota</div>
+          <div style="font-size:11px;color:#5C6E87;margin-top:4px;">ayer</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /* ── Demo data fallback ── */
+    (function() {
+      if (!sessionStorage.getItem('loggedIn')) {
+        sessionStorage.setItem('loggedIn', 'true');
+        sessionStorage.setItem('nombre', 'Martín Rodríguez');
+        sessionStorage.setItem('categoria', '5ª');
+        sessionStorage.setItem('estadoCategoria', 'orientativa');
+        sessionStorage.setItem('sexo', 'masculino');
+      }
+    })();
+
+    /* ── Header dinámico ── */
+    (function() {
+      var nombre = sessionStorage.getItem('nombre') || 'Jugador';
+      var primerNombre = nombre.trim().split(' ')[0];
+      var cat = sessionStorage.getItem('categoria') || '7ª';
+      var estado = sessionStorage.getItem('estadoCategoria') || 'orientativa';
+      var acopVerificado = sessionStorage.getItem('acopVerificado') === 'true';
+      var nameEl = document.getElementById('home-header-name');
+      if (nameEl) nameEl.textContent = 'Hola, ' + primerNombre;
+      var subEl = document.getElementById('home-header-sub');
+      if (subEl) {
+        if (acopVerificado || estado === 'verificada') {
+          subEl.textContent = cat + ' · ✓';
+          subEl.style.color = '#D6FF00';
+        } else if (estado === 'pendiente') {
+          subEl.textContent = 'Verificación pendiente';
+          subEl.style.color = '#F59E0B';
+        } else {
+          subEl.textContent = cat + ' · Orientativa';
+        }
+      }
+    })();
+
+    /* ── Sumarme modal ── */
+    var _sumarmeBtn = null;
+    function abrirModalSumarme(btn) {
+      _sumarmeBtn = btn;
+      document.getElementById('sumarme-overlay').style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+    }
+    function cerrarModalSumarme(e) {
+      if (e && e.target !== document.getElementById('sumarme-overlay')) return;
+      document.getElementById('sumarme-overlay').style.display = 'none';
+      document.body.style.overflow = '';
+      _sumarmeBtn = null;
+    }
+    function confirmarSumarme() {
+      document.getElementById('sumarme-overlay').style.display = 'none';
+      document.body.style.overflow = '';
+      if (_sumarmeBtn) {
+        _sumarmeBtn.textContent = '¡Listo!';
+        _sumarmeBtn.style.background = 'rgba(16,185,129,0.2)';
+        _sumarmeBtn.style.color = '#34D399';
+        _sumarmeBtn.style.borderColor = 'rgba(16,185,129,0.4)';
+        _sumarmeBtn.onclick = null;
+        _sumarmeBtn = null;
+      }
+      var toast = document.getElementById('toast-sumarme');
+      toast.style.display = 'block';
+      setTimeout(function() { toast.style.display = 'none'; }, 3000);
+    }
+
+    /* ── Notif panel ── */
+    function openNotifPanel() {
+      document.getElementById('notif-overlay').style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+    }
+    function closeNotifPanel(e) {
+      if (e && e.target !== document.getElementById('notif-overlay')) return;
+      document.getElementById('notif-overlay').style.display = 'none';
+      document.body.style.overflow = '';
+    }
+  </script>
+
+</body>
+</html>
