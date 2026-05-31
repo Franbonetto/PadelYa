@@ -294,6 +294,10 @@
       margin-left: 4px;
     }
 
+    .avatar-row { display: flex; gap: 5px; margin-top: 10px; }
+    .av { width: 28px; height: 28px; border-radius: 50%; background: #178BFF; color: #fff; font-size: 10px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .av.av-empty { background: transparent; border: 1.5px dashed rgba(255,255,255,0.3); }
+
     .btn-sumarme {
       display: inline-flex;
       align-items: center;
@@ -530,6 +534,9 @@
       width: 100%;
     }
     .logo-img { height: 36px; object-fit: contain; display: block; }
+    .match-date { font-size: 11px; color: #A8B3C7; font-weight: 500; margin-bottom: 6px; }
+    .sp-dot { width: 7px; height: 7px; border-radius: 50%; background: rgba(255,255,255,0.2); transition: background 0.3s; flex-shrink: 0; }
+    .sp-dot.sp-dot-active { background: #178BFF; }
   </style>
 </head>
 <body>
@@ -539,18 +546,28 @@
   ════════════════════════════════════════ -->
   <header class="app-header">
     <div class="header-inner">
-      <a href="jugador-home.html" style="display:block;"><img src="logo-padelya.png" alt="PadelYa" style="height:40px;object-fit:contain;"></a>
+      <a href="jugador-home.html" style="display:block;"><img src="assets/logo-padelya.png" alt="PadelYa" style="height:36px;width:auto;object-fit:contain;display:block;"></a>
       <div>
         <div class="header-name" id="home-header-name">Hola, Martín</div>
         <div class="header-sub"  id="home-header-sub">7ª · Orientativa</div>
       </div>
-      <button class="bell-btn" id="notif-btn" onclick="openNotifPanel()" aria-label="Notificaciones">
-        <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
-          <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
-          <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
-        </svg>
-        <span class="bell-dot"></span>
-      </button>
+      <div style="display:flex;gap:8px;align-items:center;">
+        <a href="jugador-amigos.html" style="width:38px;height:38px;border:1px solid rgba(255,255,255,0.13);background:rgba(255,255,255,0.05);border-radius:50%;display:flex;align-items:center;justify-content:center;color:#A8B3C7;flex-shrink:0;transition:background 0.15s;text-decoration:none;" aria-label="Amigos">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+            <circle cx="9" cy="7" r="3"/>
+            <path d="M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/>
+            <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+            <path d="M21 21v-2a4 4 0 0 0-3-3.87"/>
+          </svg>
+        </a>
+        <button class="bell-btn" id="notif-btn" onclick="openNotifPanel()" aria-label="Notificaciones">
+          <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+            <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+          </svg>
+          <span class="bell-dot"></span>
+        </button>
+      </div>
     </div>
   </header>
 
@@ -570,7 +587,51 @@
       <a href="jugador-buscar.html" class="hero-btn">Quiero jugar</a>
     </div>
 
-    <!-- LES FALTA 1 -->
+
+    <!-- SPONSOR DESTACADO -->
+    <div style="margin: 0 16px 20px;">
+      <div id="sponsor-card" style="background:#0D1E3A;border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:16px;">
+        <div style="font-size:10px;color:#A8B3C7;letter-spacing:1px;font-weight:600;text-transform:uppercase;margin-bottom:10px;">SPONSOR</div>
+        <div id="sponsor-name" style="font-size:17px;font-weight:800;color:#F5F7FA;margin-bottom:4px;transition:opacity 0.4s;"></div>
+        <div id="sponsor-tagline" style="font-size:13px;color:#A8B3C7;margin-bottom:14px;line-height:1.5;transition:opacity 0.4s;"></div>
+        <div style="display:flex;align-items:center;justify-content:space-between;">
+          <button style="font-size:12px;font-weight:700;color:#178BFF;border:1.5px solid rgba(23,139,255,0.4);border-radius:99px;padding:5px 16px;background:rgba(23,139,255,0.08);cursor:pointer;font-family:inherit;">Ver más</button>
+          <div style="display:flex;gap:6px;align-items:center;">
+            <div class="sp-dot sp-dot-active"></div>
+            <div class="sp-dot"></div>
+            <div class="sp-dot"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TUS AMIGOS -->
+    <section style="margin-bottom:20px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+        <div style="font-size:15px;font-weight:800;color:#F5F7FA;letter-spacing:-0.2px;">Tus amigos</div>
+        <a href="jugador-amigos.html" style="font-size:12px;font-weight:600;color:#178BFF;text-decoration:none;">Ver todos</a>
+      </div>
+      <div style="display:flex;gap:14px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:4px;">
+        <a href="jugador-amigos.html" style="display:flex;flex-direction:column;align-items:center;gap:5px;text-decoration:none;flex-shrink:0;">
+          <div style="width:44px;height:44px;border-radius:50%;background:#178BFF;color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;">MR</div>
+          <span style="font-size:10px;color:#A8B3C7;font-weight:500;max-width:44px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:center;">Martín</span>
+        </a>
+        <a href="jugador-amigos.html" style="display:flex;flex-direction:column;align-items:center;gap:5px;text-decoration:none;flex-shrink:0;">
+          <div style="width:44px;height:44px;border-radius:50%;background:#7C3AED;color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;">AG</div>
+          <span style="font-size:10px;color:#A8B3C7;font-weight:500;max-width:44px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:center;">Ana</span>
+        </a>
+        <a href="jugador-amigos.html" style="display:flex;flex-direction:column;align-items:center;gap:5px;text-decoration:none;flex-shrink:0;">
+          <div style="width:44px;height:44px;border-radius:50%;background:#0F766E;color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;">RS</div>
+          <span style="font-size:10px;color:#A8B3C7;font-weight:500;max-width:44px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:center;">Roberto</span>
+        </a>
+        <a href="jugador-amigos.html" style="display:flex;flex-direction:column;align-items:center;gap:5px;text-decoration:none;flex-shrink:0;">
+          <div style="width:44px;height:44px;border-radius:50%;border:1.5px dashed rgba(255,255,255,0.25);color:#5C6E87;font-size:22px;display:flex;align-items:center;justify-content:center;line-height:1;">+</div>
+          <span style="font-size:10px;color:#5C6E87;font-weight:500;text-align:center;">Agregar</span>
+        </a>
+      </div>
+    </section>
+
+        <!-- LES FALTA 1 -->
     <section class="section">
       <div class="section-header">
         <div>
@@ -580,8 +641,35 @@
         <a href="jugador-buscar.html" class="section-link">Ver todos</a>
       </div>
 
+      <!-- PARTIDO DESTACADO -->
+      <div class="match-card match-card--urgent" style="border-color:rgba(23,139,255,0.4);background:rgba(23,139,255,0.06);margin-bottom:10px;">
+        <div style="font-size:10px;color:#178BFF;font-weight:700;letter-spacing:0.5px;margin-bottom:8px;">⭐ Partido destacado · Drive Deportes</div>
+        <div class="match-date">Hoy · 21:00hs</div>
+        <div class="match-top">
+          <span class="match-club">Runa Pádel</span>
+          <span class="match-time">21:00 hs</span>
+        </div>
+        <div class="match-tags">
+          <span class="tag">5ª</span>
+          <span class="tag">Masculino</span>
+          <span class="tag tag--tipo">Competitivo</span>
+        </div>
+        <div class="match-bottom">
+          <div class="players-row">
+            <span class="player-dot"></span>
+            <span class="player-dot"></span>
+            <span class="player-dot--empty player-dot"></span>
+            <span class="player-dot--missing player-dot"></span>
+            <span class="players-label">2 / 4</span>
+          </div>
+          <button class="btn-sumarme" onclick="abrirModalSumarme(this)">Sumarme</button>
+        </div>
+        <div class="avatar-row"><div class="av">DR</div><div class="av">SP</div><div class="av av-empty"></div><div class="av av-empty"></div></div>
+      </div>
+
       <!-- Card 1 -->
       <div class="match-card match-card--urgent">
+        <div class="match-date">Hoy · 20:00hs</div>
         <div class="match-top">
           <span class="match-club">Chingoland</span>
           <span class="match-time">20:00 hs</span>
@@ -601,10 +689,12 @@
           </div>
           <button class="btn-sumarme" onclick="abrirModalSumarme(this)">Sumarme</button>
         </div>
+        <div class="avatar-row"><div class="av">JR</div><div class="av">MM</div><div class="av">PA</div><div class="av av-empty"></div></div>
       </div>
 
       <!-- Card 2 -->
       <div class="match-card match-card--urgent">
+        <div class="match-date">Hoy · 21:00hs</div>
         <div class="match-top">
           <span class="match-club">Serrano Pádel</span>
           <span class="match-time">21:00 hs</span>
@@ -624,10 +714,12 @@
           </div>
           <button class="btn-sumarme" onclick="abrirModalSumarme(this)">Sumarme</button>
         </div>
+        <div class="avatar-row"><div class="av">CS</div><div class="av">BL</div><div class="av av-empty"></div><div class="av av-empty"></div></div>
       </div>
 
       <!-- Card 3 -->
       <div class="match-card match-card--urgent">
+        <div class="match-date">Mañana · 19:30hs</div>
         <div class="match-top">
           <span class="match-club">Padel Time</span>
           <span class="match-time">19:30 hs</span>
@@ -647,61 +739,7 @@
           </div>
           <button class="btn-sumarme" onclick="abrirModalSumarme(this)">Sumarme</button>
         </div>
-      </div>
-    </section>
-
-    <!-- PARA VOS -->
-    <section class="section">
-      <div class="section-header">
-        <div>
-          <div class="section-title">Para vos</div>
-          <div class="section-sub">Según tu categoría y horario</div>
-        </div>
-        <a href="jugador-buscar.html" class="section-link">Ver más</a>
-      </div>
-
-      <div class="match-card">
-        <div class="match-top">
-          <span class="match-club">Las Terrazas</span>
-          <span class="match-time">19:00 hs</span>
-        </div>
-        <div class="match-tags">
-          <span class="tag">6ª</span>
-          <span class="tag">Mixto</span>
-          <span class="tag tag--tipo">Amistoso</span>
-        </div>
-        <div class="match-bottom">
-          <div class="players-row">
-            <span class="player-dot"></span>
-            <span class="player-dot"></span>
-            <span class="player-dot--empty player-dot"></span>
-            <span class="player-dot--empty player-dot"></span>
-            <span class="players-label">2 / 4</span>
-          </div>
-          <button class="btn-sumarme" onclick="abrirModalSumarme(this)">Sumarme</button>
-        </div>
-      </div>
-
-      <div class="match-card">
-        <div class="match-top">
-          <span class="match-club">Oasis Pádel</span>
-          <span class="match-time">20:30 hs</span>
-        </div>
-        <div class="match-tags">
-          <span class="tag">5ª</span>
-          <span class="tag">Masculino</span>
-          <span class="tag tag--tipo">Competitivo</span>
-        </div>
-        <div class="match-bottom">
-          <div class="players-row">
-            <span class="player-dot"></span>
-            <span class="player-dot--empty player-dot"></span>
-            <span class="player-dot--empty player-dot"></span>
-            <span class="player-dot--empty player-dot"></span>
-            <span class="players-label">1 / 4</span>
-          </div>
-          <button class="btn-sumarme" onclick="abrirModalSumarme(this)">Sumarme</button>
-        </div>
+        <div class="avatar-row"><div class="av">RG</div><div class="av av-empty"></div><div class="av av-empty"></div><div class="av av-empty"></div></div>
       </div>
     </section>
 
@@ -796,6 +834,31 @@
     </a>
   </nav>
 
+  <!-- MATCHMAKING PANEL -->
+  <div id="matchmaking-overlay" onclick="cerrarMatchmaking(event)" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.65);z-index:350;align-items:center;justify-content:center;">
+    <div onclick="event.stopPropagation()" style="background:#0C1A2E;border:1px solid rgba(255,255,255,0.13);border-radius:20px;padding:1.5rem;max-width:340px;width:calc(100% - 2rem);position:relative;">
+      <button onclick="cerrarMatchmaking()" style="position:absolute;top:10px;right:12px;background:none;border:none;color:#A8B3C7;font-size:22px;cursor:pointer;line-height:1;padding:4px;">&times;</button>
+      <div style="font-size:1rem;font-weight:800;color:#F5F7FA;margin-bottom:1.25rem;">Tu lugar en el partido</div>
+      <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:14px;margin-bottom:1rem;">
+        <div style="font-size:12px;font-weight:600;color:#A8B3C7;margin-bottom:6px;">Partidos gratis este mes</div>
+        <div id="mm-counter-text" style="font-size:22px;font-weight:800;color:#178BFF;margin-bottom:10px;"></div>
+        <div style="background:rgba(255,255,255,0.08);border-radius:99px;height:6px;overflow:hidden;">
+          <div id="mm-progress-bar" style="height:100%;border-radius:99px;background:#178BFF;transition:width 0.4s;width:0%;"></div>
+        </div>
+      </div>
+      <div id="mm-available" style="display:none;">
+        <button onclick="usarPartidoGratis()" style="width:100%;background:#059669;color:white;border:none;border-radius:10px;padding:0.75rem;font-size:0.9rem;font-weight:700;cursor:pointer;font-family:inherit;margin-bottom:0.5rem;">Usar partido gratis</button>
+        <div id="mm-remaining-text" style="text-align:center;font-size:12px;color:#A8B3C7;margin-bottom:0.75rem;"></div>
+      </div>
+      <div id="mm-no-free" style="display:none;">
+        <a href="premium.html" style="display:block;background:#178BFF;color:white;border:none;border-radius:10px;padding:0.75rem;font-size:0.9rem;font-weight:700;text-align:center;text-decoration:none;margin-bottom:0.5rem;">Ver Premium desde $5.999/mes</a>
+        <a href="premium.html" style="display:block;background:none;color:#178BFF;border:1.5px solid rgba(23,139,255,0.4);border-radius:10px;padding:0.65rem;font-size:0.9rem;font-weight:700;text-align:center;text-decoration:none;margin-bottom:0.75rem;">Comprar pase · $999</a>
+      </div>
+      <p style="font-size:11px;color:#5C6E87;text-align:center;line-height:1.6;">Por lanzamiento tenés 3 partidos gratis por mes.<br>Los partidos se renuevan el 1ro de cada mes.</p>
+      <div style="font-size:12px;color:#A8B3C7;background:rgba(255,255,255,0.03);border-radius:8px;padding:10px 12px;margin-top:0.75rem;line-height:1.6;">💡 El valor de la cancha se abona directamente en el complejo al llegar.</div>
+    </div>
+  </div>
+
   <!-- MODAL SUMARME -->
   <div id="sumarme-overlay" onclick="cerrarModalSumarme(event)" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:300;align-items:center;justify-content:center;">
     <div class="modal-box" onclick="event.stopPropagation()">
@@ -804,13 +867,14 @@
       </div>
       <div class="modal-title">¿Sumarte al partido?</div>
       <p class="modal-desc">Te unirás a este partido. Los otros jugadores verán tu perfil y categoría.</p>
+      <div style="display:flex;align-items:flex-start;gap:8px;background:rgba(255,255,255,0.04);border-radius:8px;padding:10px 12px;border-left:3px solid rgba(168,179,199,0.3);margin-bottom:1rem;"><svg style="flex-shrink:0;margin-top:1px;" width="14" height="14" fill="none" stroke="#A8B3C7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg><span style="font-size:12px;color:#A8B3C7;line-height:1.5;">El valor de la cancha se abona directamente en el complejo.</span></div>
       <button class="modal-btn" onclick="confirmarSumarme()">Confirmar</button>
       <button onclick="cerrarModalSumarme()" style="background:none;border:none;color:var(--text-sub);font-size:0.875rem;cursor:pointer;font-family:inherit;margin-top:10px;width:100%;padding:8px;">Cancelar</button>
     </div>
   </div>
 
   <!-- TOAST -->
-  <div id="toast-sumarme" style="display:none;position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:#059669;color:white;padding:10px 20px;border-radius:10px;font-size:0.875rem;font-weight:600;z-index:600;white-space:nowrap;box-shadow:0 4px 20px rgba(0,0,0,0.3);">¡Te sumaste! Nos vemos en la cancha.</div>
+  <div id="toast-sumarme" style="display:none;position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:#059669;color:white;padding:10px 20px;border-radius:10px;font-size:0.875rem;font-weight:600;z-index:600;white-space:nowrap;box-shadow:0 4px 20px rgba(0,0,0,0.3);">¡Te sumaste! Nos vemos en la cancha. 🎾</div>
 
   <!-- PANEL NOTIFICACIONES -->
   <div id="notif-overlay" onclick="closeNotifPanel(event)" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:300;align-items:flex-start;justify-content:flex-end;">
@@ -878,8 +942,7 @@
     var _sumarmeBtn = null;
     function abrirModalSumarme(btn) {
       _sumarmeBtn = btn;
-      document.getElementById('sumarme-overlay').style.display = 'flex';
-      document.body.style.overflow = 'hidden';
+      abrirMatchmaking();
     }
     function cerrarModalSumarme(e) {
       if (e && e.target !== document.getElementById('sumarme-overlay')) return;
@@ -913,6 +976,76 @@
       document.getElementById('notif-overlay').style.display = 'none';
       document.body.style.overflow = '';
     }
+
+
+    /* ── Matchmaking panel ── */
+    function abrirMatchmaking() {
+      var jugados = parseInt(sessionStorage.getItem('partidosJugados') || '0');
+      var esPremium = sessionStorage.getItem('esPremium') === 'true';
+      var disponibles = esPremium ? 99 : Math.max(0, 3 - jugados);
+      var pct = esPremium ? 100 : (disponibles / 3) * 100;
+      document.getElementById('mm-counter-text').textContent = esPremium ? 'Premium · ilimitado' : disponibles + ' de 3 disponibles';
+      document.getElementById('mm-progress-bar').style.width = pct + '%';
+      if (esPremium || disponibles > 0) {
+        document.getElementById('mm-available').style.display = 'block';
+        document.getElementById('mm-no-free').style.display = 'none';
+        var txt = esPremium ? 'Premium activo · partidos ilimitados' : 'Te quedan ' + disponibles + ' partido' + (disponibles !== 1 ? 's' : '') + ' gratis este mes';
+        document.getElementById('mm-remaining-text').textContent = txt;
+      } else {
+        document.getElementById('mm-available').style.display = 'none';
+        document.getElementById('mm-no-free').style.display = 'block';
+      }
+      document.getElementById('matchmaking-overlay').style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+    }
+    function cerrarMatchmaking(e) {
+      if (e && e.target !== document.getElementById('matchmaking-overlay')) return;
+      document.getElementById('matchmaking-overlay').style.display = 'none';
+      document.body.style.overflow = '';
+      _sumarmeBtn = null;
+    }
+    function usarPartidoGratis() {
+      var jugados = parseInt(sessionStorage.getItem('partidosJugados') || '0');
+      sessionStorage.setItem('partidosJugados', String(jugados + 1));
+      document.getElementById('matchmaking-overlay').style.display = 'none';
+      document.body.style.overflow = '';
+      if (_sumarmeBtn) {
+        _sumarmeBtn.textContent = '¡Listo!';
+        _sumarmeBtn.style.background = 'rgba(16,185,129,0.2)';
+        _sumarmeBtn.style.color = '#34D399';
+        _sumarmeBtn.style.borderColor = 'rgba(16,185,129,0.4)';
+        _sumarmeBtn.onclick = null;
+        _sumarmeBtn = null;
+      }
+      var toast = document.getElementById('toast-sumarme');
+      toast.style.display = 'block';
+      setTimeout(function() { toast.style.display = 'none'; }, 3000);
+    }
+    /* ── Sponsor rotation ── */
+    (function() {
+      var sponsors = [
+        { nombre: 'Drive Deportes', tagline: 'Jugá mejor. Nosotros te equipamos.' },
+        { nombre: 'Bebidas Moe', tagline: 'Para el tercer tiempo, ya sabés dónde encontrarnos.' },
+        { nombre: 'Kinesio Activa', tagline: 'Menos dolor. Más pádel.' }
+      ];
+      var current = 0;
+      var nameEl   = document.getElementById('sponsor-name');
+      var tagEl    = document.getElementById('sponsor-tagline');
+      var dotEls   = document.querySelectorAll('.sp-dot');
+      function showSponsor(idx) {
+        nameEl.style.opacity = '0';
+        tagEl.style.opacity  = '0';
+        setTimeout(function() {
+          nameEl.textContent = sponsors[idx].nombre;
+          tagEl.textContent  = sponsors[idx].tagline;
+          nameEl.style.opacity = '1';
+          tagEl.style.opacity  = '1';
+        }, 200);
+        dotEls.forEach(function(d, i) { d.classList.toggle('sp-dot-active', i === idx); });
+      }
+      showSponsor(0);
+      setInterval(function() { current = (current + 1) % sponsors.length; showSponsor(current); }, 4000);
+    })();
   </script>
 
 </body>

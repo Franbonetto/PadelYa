@@ -654,7 +654,7 @@
             Ideal para jugar de vez en cuando
           </li>
         </ul>
-        <button class="plan-btn plan-btn-outline" onclick="alert('Comprar pase · Mercado Pago (próximamente)')">Comprar pase &middot; Mercado Pago</button>
+        <button class="plan-btn plan-btn-outline" onclick="openCheckout()">Comprar pase &middot; Mercado Pago</button>
       </div>
 
       <!-- Premium -->
@@ -764,7 +764,54 @@
       item.classList.toggle('open');
     }
 
+    function openCheckout() {
+      var m = document.getElementById('checkout-modal');
+      m.style.display = 'flex';
+    }
+    function closeCheckout() {
+      var m = document.getElementById('checkout-modal');
+      m.style.display = 'none';
+    }
+    (function() {
+      var expInput = document.getElementById('checkout-exp');
+      if (!expInput) return;
+      expInput.addEventListener('input', function(e) {
+        var v = e.target.value.replace(/\D/g, '');
+        if (v.length >= 2) v = v.substring(0, 2) + '/' + v.substring(2, 4);
+        e.target.value = v;
+      });
+    })();
+
   </script>
 
+
+  <!-- CHECKOUT MODAL -->
+  <div id="checkout-modal" onclick="if(event.target===this)closeCheckout()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:500;align-items:center;justify-content:center;padding:1rem;">
+    <div onclick="event.stopPropagation()" style="background:#0C1A2E;border:1px solid rgba(255,255,255,0.12);border-radius:20px;padding:1.5rem;max-width:360px;width:100%;position:relative;">
+      <button onclick="closeCheckout()" style="position:absolute;top:12px;right:14px;background:none;border:none;color:#A8B3C7;font-size:22px;cursor:pointer;line-height:1;">&times;</button>
+      <div style="font-size:1rem;font-weight:800;color:#F5F7FA;margin-bottom:3px;">Comprar Pase individual</div>
+      <div style="font-size:13px;color:#A8B3C7;margin-bottom:1.25rem;">1 partido adicional · $999</div>
+      <div style="margin-bottom:0.875rem;">
+        <label style="display:block;font-size:12px;font-weight:600;color:#A8B3C7;margin-bottom:6px;">Titular de la tarjeta</label>
+        <input type="text" placeholder="Nombre como figura en la tarjeta" autocomplete="cc-name" style="width:100%;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.12);border-radius:10px;padding:12px;font-size:14px;color:#F5F7FA;outline:none;font-family:inherit;box-sizing:border-box;">
+      </div>
+      <div style="margin-bottom:0.875rem;">
+        <label style="display:block;font-size:12px;font-weight:600;color:#A8B3C7;margin-bottom:6px;">Número de tarjeta</label>
+        <input type="text" id="checkout-card-num" placeholder="0000 0000 0000 0000" maxlength="19" autocomplete="cc-number" style="width:100%;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.12);border-radius:10px;padding:12px;font-size:14px;color:#F5F7FA;outline:none;font-family:inherit;box-sizing:border-box;">
+      </div>
+      <div style="display:flex;gap:0.75rem;margin-bottom:1.25rem;">
+        <div style="flex:1;">
+          <label style="display:block;font-size:12px;font-weight:600;color:#A8B3C7;margin-bottom:6px;">Vencimiento</label>
+          <input type="text" id="checkout-exp" placeholder="MM/AA" maxlength="5" autocomplete="cc-exp" style="width:100%;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.12);border-radius:10px;padding:12px;font-size:14px;color:#F5F7FA;outline:none;font-family:inherit;box-sizing:border-box;">
+        </div>
+        <div style="flex:1;">
+          <label style="display:block;font-size:12px;font-weight:600;color:#A8B3C7;margin-bottom:6px;">CVV</label>
+          <input type="text" placeholder="123" maxlength="4" autocomplete="cc-csc" style="width:100%;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.12);border-radius:10px;padding:12px;font-size:14px;color:#F5F7FA;outline:none;font-family:inherit;box-sizing:border-box;">
+        </div>
+      </div>
+      <button onclick="alert('Pago en proceso... (prototipo)')" style="width:100%;background:#178BFF;color:white;border:none;border-radius:50px;padding:0.875rem;font-size:0.9375rem;font-weight:700;cursor:pointer;font-family:inherit;">Pagar $999 · Pase individual</button>
+      <p style="font-size:11px;color:#5C6E87;text-align:center;margin-top:0.75rem;">Pago seguro vía Mercado Pago</p>
+    </div>
+  </div>
 </body>
 </html>

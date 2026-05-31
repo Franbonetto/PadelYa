@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PadelYa - Amigos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #071224;
+      --bg-card:   #0C1A2E;
+      --bg-card2:  #0F2040;
+      --blue:      #178BFF;
+      --blue-dim:  rgba(23,139,255,0.12);
+      --blue-glow: rgba(23,139,255,0.35);
+      --text:      #F5F7FA;
+      --text-sub:  #A8B3C7;
+      --text-dim:  #5C6E87;
+      --border:    rgba(255,255,255,0.07);
+      --border-hi: rgba(255,255,255,0.13);
+      --green:     #D6FF00;
+    }
+
+    html { background: var(--bg); }
+
+    body {
+      font-family: 'Geist', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      -webkit-font-smoothing: antialiased;
+      padding-bottom: 96px;
+      min-height: 100vh;
+    }
+
+    /* ── HEADER ── */
+    .app-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(7,18,36,0.92);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+    .header-inner {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .header-title {
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--text);
+      letter-spacing: -0.4px;
+    }
+    .btn-add-friend {
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 22px;
+      line-height: 1;
+      font-family: inherit;
+      background: rgba(23,139,255,0.12);
+      border: 1.5px solid rgba(23,139,255,0.35);
+      border-radius: 50%;
+      color: #178BFF;
+      transition: background 0.15s;
+    }
+    .btn-add-friend:hover { background: rgba(23,139,255,0.22); }
+
+    /* ── MAIN ── */
+    .main { max-width: 680px; margin: 0 auto; }
+
+    /* ── TABS ── */
+    .tabs {
+      display: flex;
+      border-bottom: 1px solid var(--border);
+      background: rgba(7,18,36,0.97);
+      position: sticky;
+      top: 57px;
+      z-index: 90;
+    }
+    .tab-btn {
+      flex: 1;
+      padding: 13px 8px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-sub);
+      background: none;
+      border: none;
+      border-bottom: 2px solid transparent;
+      cursor: pointer;
+      font-family: inherit;
+      transition: color 0.15s, border-color 0.15s;
+    }
+    .tab-btn.active {
+      color: var(--blue);
+      border-bottom-color: var(--blue);
+    }
+    .tab-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 16px;
+      height: 16px;
+      background: var(--blue);
+      color: white;
+      font-size: 9px;
+      font-weight: 700;
+      border-radius: 99px;
+      margin-left: 5px;
+      vertical-align: middle;
+    }
+
+    /* ── TAB PANELS ── */
+    .tab-panel { display: none; padding: 16px; }
+    .tab-panel.active { display: block; }
+
+    /* ── FRIEND CARD ── */
+    .friend-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 14px 16px;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      transition: border-color 0.2s;
+    }
+    .friend-card:hover { border-color: var(--border-hi); }
+
+    .friend-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--blue);
+      color: white;
+      font-size: 14px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      cursor: pointer;
+      transition: opacity 0.15s;
+      user-select: none;
+    }
+    .friend-avatar:hover { opacity: 0.82; }
+
+    .friend-info { flex: 1; min-width: 0; }
+    .friend-name {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 2px;
+    }
+    .friend-cat { font-size: 12px; color: var(--text-sub); font-weight: 500; }
+
+    .friend-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+    .btn-invite {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--blue);
+      border: 1.5px solid rgba(23,139,255,0.35);
+      border-radius: 99px;
+      padding: 5px 12px;
+      background: var(--blue-dim);
+      cursor: pointer;
+      font-family: inherit;
+      white-space: nowrap;
+      transition: background 0.15s;
+    }
+    .btn-invite:hover { background: rgba(23,139,255,0.2); }
+
+    .btn-ver-perfil-small {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-sub);
+      border: 1px solid var(--border-hi);
+      border-radius: 99px;
+      padding: 4px 12px;
+      background: rgba(255,255,255,0.04);
+      cursor: pointer;
+      font-family: inherit;
+      text-align: center;
+      text-decoration: none;
+      white-space: nowrap;
+      display: block;
+    }
+
+    /* ── SOLICITUD CARD ── */
+    .solicitud-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 14px 16px;
+      margin-bottom: 10px;
+      transition: opacity 0.3s;
+    }
+    .solicitud-top {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    .solicitud-msg { font-size: 12px; color: var(--text-sub); margin-top: 3px; }
+    .solicitud-btns { display: flex; gap: 8px; }
+
+    .btn-aceptar {
+      flex: 1;
+      padding: 9px;
+      background: rgba(5,150,105,0.15);
+      color: #34D399;
+      border: 1.5px solid rgba(5,150,105,0.35);
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+      transition: background 0.15s;
+    }
+    .btn-aceptar:hover { background: rgba(5,150,105,0.28); }
+
+    .btn-rechazar {
+      flex: 1;
+      padding: 9px;
+      background: rgba(255,255,255,0.04);
+      color: var(--text-sub);
+      border: 1.5px solid var(--border-hi);
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+      transition: background 0.15s;
+    }
+    .btn-rechazar:hover { background: rgba(255,255,255,0.09); }
+
+    /* ── SEARCH ── */
+    .search-wrap { position: relative; margin-bottom: 16px; }
+    .search-input {
+      width: 100%;
+      background: var(--bg-card);
+      border: 1px solid var(--border-hi);
+      border-radius: 12px;
+      padding: 11px 14px 11px 42px;
+      font-size: 14px;
+      color: var(--text);
+      font-family: inherit;
+      outline: none;
+      transition: border-color 0.15s;
+    }
+    .search-input:focus { border-color: rgba(23,139,255,0.5); }
+    .search-input::placeholder { color: var(--text-dim); }
+    .search-icon {
+      position: absolute;
+      left: 13px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-dim);
+      pointer-events: none;
+    }
+
+    .result-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 12px 14px;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .btn-agregar {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--blue);
+      border: 1.5px solid rgba(23,139,255,0.35);
+      border-radius: 99px;
+      padding: 6px 14px;
+      background: var(--blue-dim);
+      cursor: pointer;
+      font-family: inherit;
+      flex-shrink: 0;
+      transition: background 0.15s;
+    }
+    .btn-agregar:hover { background: rgba(23,139,255,0.2); }
+    .btn-agregar.sent {
+      color: #34D399;
+      border-color: rgba(52,211,153,0.4);
+      background: rgba(52,211,153,0.1);
+      cursor: default;
+    }
+
+    /* ── BOTTOM NAV ── */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      max-width: 680px;
+      background: rgba(7,18,36,0.97);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-top: 1px solid rgba(255,255,255,0.06);
+      display: flex;
+      align-items: center;
+      padding: 8px 0 20px;
+      z-index: 100;
+    }
+    .nav-item {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      padding: 4px 0;
+      color: #A8B3C7;
+      text-decoration: none;
+      font-size: 10px;
+      font-weight: 500;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-family: inherit;
+      transition: color 0.15s;
+    }
+    .nav-item.active { color: #178BFF; }
+    .nav-item.active svg { stroke: #178BFF; }
+    .nav-create {
+      flex: 0 0 auto;
+      width: 52px;
+      height: 52px;
+      background: #178BFF;
+      border-radius: 50%;
+      border: none;
+      cursor: pointer;
+      font-family: inherit;
+      color: white;
+      margin-top: -12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 20px rgba(23,139,255,0.5);
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+    .nav-create:hover { transform: scale(1.05); box-shadow: 0 0 28px rgba(23,139,255,0.7); }
+    .nav-create:active { transform: scale(0.97); }
+
+    /* ── MESSAGE OPTIONS ── */
+    .msg-option {
+      width: 100%;
+      padding: 12px 14px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border-hi);
+      border-radius: 12px;
+      color: var(--text);
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      font-family: inherit;
+      text-align: left;
+      transition: background 0.15s, border-color 0.15s;
+    }
+    .msg-option:hover { background: rgba(23,139,255,0.1); border-color: rgba(23,139,255,0.3); }
+
+    .partido-option {
+      width: 100%;
+      padding: 12px 14px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border-hi);
+      border-radius: 12px;
+      cursor: pointer;
+      font-family: inherit;
+      text-align: left;
+      transition: background 0.15s, border-color 0.15s;
+    }
+    .partido-option:hover { background: rgba(23,139,255,0.1); border-color: rgba(23,139,255,0.3); }
+  </style>
+</head>
+<body>
+
+  <!-- ════════════════════════════════════════
+       HEADER
+  ════════════════════════════════════════ -->
+  <header class="app-header">
+    <div class="header-inner">
+      <div class="header-title">Amigos</div>
+      <button class="btn-add-friend" onclick="switchTab('buscar')" aria-label="Agregar amigo">+</button>
+    </div>
+  </header>
+
+  <!-- ════════════════════════════════════════
+       MAIN
+  ════════════════════════════════════════ -->
+  <main class="main">
+
+    <!-- TABS -->
+    <div class="tabs">
+      <button class="tab-btn active" id="tab-mis" onclick="switchTab('mis')">Mis amigos</button>
+      <button class="tab-btn" id="tab-solicitudes" onclick="switchTab('solicitudes')">Solicitudes <span class="tab-badge" id="badge-solicitudes">1</span></button>
+      <button class="tab-btn" id="tab-buscar" onclick="switchTab('buscar')">Buscar</button>
+    </div>
+
+    <!-- ── TAB: MIS AMIGOS ── -->
+    <div class="tab-panel active" id="panel-mis">
+
+      <!-- Amigo 1 -->
+      <div class="friend-card">
+        <div class="friend-avatar" onclick="abrirMensajes('Martín Rodríguez')" title="Enviar mensaje rápido">MR</div>
+        <div class="friend-info">
+          <div class="friend-name">Martín Rodríguez</div>
+          <div class="friend-cat">5ª categoría</div>
+        </div>
+        <div class="friend-actions">
+          <button class="btn-invite" onclick="abrirInvitar('Martín Rodríguez')">Invitar a partido</button>
+          <a href="jugador-perfil.html" class="btn-ver-perfil-small">Ver perfil</a>
+        </div>
+      </div>
+
+      <!-- Amigo 2 -->
+      <div class="friend-card">
+        <div class="friend-avatar" onclick="abrirMensajes('Ana González')" title="Enviar mensaje rápido" style="background:#7C3AED;">AG</div>
+        <div class="friend-info">
+          <div class="friend-name">Ana González</div>
+          <div class="friend-cat">4ª categoría</div>
+        </div>
+        <div class="friend-actions">
+          <button class="btn-invite" onclick="abrirInvitar('Ana González')">Invitar a partido</button>
+          <a href="jugador-perfil.html" class="btn-ver-perfil-small">Ver perfil</a>
+        </div>
+      </div>
+
+      <!-- Amigo 3 -->
+      <div class="friend-card">
+        <div class="friend-avatar" onclick="abrirMensajes('Roberto Sosa')" title="Enviar mensaje rápido" style="background:#0F766E;">RS</div>
+        <div class="friend-info">
+          <div class="friend-name">Roberto Sosa</div>
+          <div class="friend-cat">4ª categoría</div>
+        </div>
+        <div class="friend-actions">
+          <button class="btn-invite" onclick="abrirInvitar('Roberto Sosa')">Invitar a partido</button>
+          <a href="jugador-perfil.html" class="btn-ver-perfil-small">Ver perfil</a>
+        </div>
+      </div>
+
+      <div style="text-align:center;margin-top:20px;">
+        <button onclick="switchTab('buscar')" style="font-size:13px;font-weight:600;color:#178BFF;background:none;border:none;cursor:pointer;font-family:inherit;padding:8px;">+ Agregar más amigos</button>
+      </div>
+
+    </div>
+
+    <!-- ── TAB: SOLICITUDES ── -->
+    <div class="tab-panel" id="panel-solicitudes">
+
+      <div class="solicitud-card" id="solicitud-lp">
+        <div class="solicitud-top">
+          <div class="friend-avatar" style="background:#BE185D;cursor:default;">LP</div>
+          <div class="friend-info">
+            <div class="friend-name">Laura Pérez</div>
+            <div class="friend-cat">5ª categoría</div>
+            <div class="solicitud-msg">Quiere ser tu amiga en PadelYa</div>
+          </div>
+        </div>
+        <div class="solicitud-btns">
+          <button class="btn-aceptar" onclick="aceptarSolicitud('solicitud-lp', 'Laura Pérez')">Aceptar</button>
+          <button class="btn-rechazar" onclick="rechazarSolicitud('solicitud-lp')">Rechazar</button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ── TAB: BUSCAR ── -->
+    <div class="tab-panel" id="panel-buscar">
+
+      <div class="search-wrap">
+        <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <circle cx="11" cy="11" r="8"/>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        </svg>
+        <input type="text" class="search-input" id="search-jugadores"
+          placeholder="Buscar jugadores..."
+          oninput="buscarJugadores(this.value)"
+          autocomplete="off">
+      </div>
+
+      <div id="search-results"></div>
+
+      <div id="search-placeholder" style="text-align:center;padding:40px 16px;color:var(--text-dim);">
+        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" style="margin:0 auto 14px;display:block;opacity:0.35;">
+          <circle cx="11" cy="11" r="8"/>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        </svg>
+        <div style="font-size:14px;font-weight:700;color:var(--text-sub);margin-bottom:6px;">Buscá jugadores</div>
+        <div style="font-size:12px;line-height:1.6;">Escribí un nombre o iniciales para encontrar<br>jugadores de PadelYa.</div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- ════════════════════════════════════════
+       BOTTOM NAV
+  ════════════════════════════════════════ -->
+  <nav class="bottom-nav" role="navigation" aria-label="Navegación principal">
+    <a href="jugador-home.html" class="nav-item" aria-label="Inicio">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+        <polyline points="9 22 9 12 15 12 15 22"/>
+      </svg>
+      <span>Inicio</span>
+    </a>
+    <a href="jugador-buscar.html" class="nav-item" aria-label="Partidos">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+        <rect x="2" y="4" width="20" height="16" rx="2"/>
+        <line x1="12" y1="4" x2="12" y2="20"/>
+        <line x1="2" y1="12" x2="6" y2="12"/>
+        <line x1="18" y1="12" x2="22" y2="12"/>
+      </svg>
+      <span>Partidos</span>
+    </a>
+    <button class="nav-create" onclick="window.location.href='jugador-crear.html'" type="button" aria-label="Crear partido">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <line x1="12" y1="5" x2="12" y2="19"/>
+        <line x1="5" y1="12" x2="19" y2="12"/>
+      </svg>
+    </button>
+    <a href="profes.html" class="nav-item" aria-label="Entrenà">
+      <svg width="22" height="22" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+        <ellipse cx="50" cy="38" rx="26" ry="30"/>
+        <circle cx="41" cy="28" r="4" fill="currentColor" stroke="none"/>
+        <circle cx="50" cy="28" r="4" fill="currentColor" stroke="none"/>
+        <circle cx="59" cy="28" r="4" fill="currentColor" stroke="none"/>
+        <circle cx="41" cy="38" r="4" fill="currentColor" stroke="none"/>
+        <circle cx="50" cy="38" r="4" fill="currentColor" stroke="none"/>
+        <circle cx="59" cy="38" r="4" fill="currentColor" stroke="none"/>
+        <circle cx="41" cy="48" r="4" fill="currentColor" stroke="none"/>
+        <circle cx="50" cy="48" r="4" fill="currentColor" stroke="none"/>
+        <circle cx="59" cy="48" r="4" fill="currentColor" stroke="none"/>
+        <path d="M38 66 L50 68 L62 66 L58 68 L50 95 L42 68 Z"/>
+        <rect x="44" y="67" width="12" height="28" rx="6"/>
+      </svg>
+      <span>Entrenà</span>
+    </a>
+    <a href="jugador-perfil.html" class="nav-item" aria-label="Perfil">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+        <circle cx="12" cy="8" r="4"/>
+        <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
+      </svg>
+      <span>Perfil</span>
+    </a>
+  </nav>
+
+  <!-- ════════════════════════════════════════
+       MODAL: MENSAJES RÁPIDOS
+  ════════════════════════════════════════ -->
+  <div id="mensajes-overlay" onclick="if(event.target===this)cerrarMensajes()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.65);z-index:400;align-items:flex-end;justify-content:center;">
+    <div onclick="event.stopPropagation()" style="background:#0C1A2E;border:1px solid rgba(255,255,255,0.13);border-radius:20px 20px 0 0;padding:1.25rem 1rem 2rem;width:100%;max-width:680px;">
+      <div style="width:36px;height:4px;background:rgba(255,255,255,0.15);border-radius:99px;margin:0 auto 1.25rem;"></div>
+      <div style="font-size:15px;font-weight:700;color:var(--text);margin-bottom:1rem;padding:0 4px;" id="mensajes-titulo">Mensaje rápido</div>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <button class="msg-option" onclick="enviarMensaje(this)">Buen partido el de hoy 👏</button>
+        <button class="msg-option" onclick="enviarMensaje(this)">¿Jugamos nuevamente?</button>
+        <button class="msg-option" onclick="enviarMensaje(this)">Gracias por sumarte.</button>
+        <button class="msg-option" onclick="enviarMensaje(this)">Nos vemos en la cancha.</button>
+        <button class="msg-option" onclick="enviarMensaje(this)">Partido durísimo 💪</button>
+      </div>
+      <button onclick="cerrarMensajes()" style="width:100%;margin-top:12px;padding:10px;background:rgba(255,255,255,0.05);border:1px solid var(--border-hi);border-radius:10px;color:var(--text-sub);font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;">Cancelar</button>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════
+       MODAL: INVITAR A PARTIDO
+  ════════════════════════════════════════ -->
+  <div id="invitar-overlay" onclick="if(event.target===this)cerrarInvitar()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.65);z-index:400;align-items:center;justify-content:center;">
+    <div onclick="event.stopPropagation()" style="background:#0C1A2E;border:1px solid rgba(255,255,255,0.13);border-radius:20px;padding:1.5rem;max-width:340px;width:calc(100% - 2rem);">
+      <div style="font-size:1rem;font-weight:800;color:var(--text);margin-bottom:4px;" id="invitar-titulo">Invitar a partido</div>
+      <div style="font-size:13px;color:var(--text-sub);margin-bottom:1.25rem;" id="invitar-sub">Seleccioná un partido</div>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <button class="partido-option" onclick="invitarAPartido('Chingoland')">
+          <div style="font-size:13px;font-weight:700;color:var(--text);">Chingoland</div>
+          <div style="font-size:11px;color:var(--text-sub);margin-top:2px;">Hoy · 20:00hs · 5ª</div>
+        </button>
+        <button class="partido-option" onclick="invitarAPartido('Serrano Pádel')">
+          <div style="font-size:13px;font-weight:700;color:var(--text);">Serrano Pádel</div>
+          <div style="font-size:11px;color:var(--text-sub);margin-top:2px;">Hoy · 21:00hs · 5ª</div>
+        </button>
+        <button class="partido-option" onclick="invitarAPartido('Padel Time')">
+          <div style="font-size:13px;font-weight:700;color:var(--text);">Padel Time</div>
+          <div style="font-size:11px;color:var(--text-sub);margin-top:2px;">Mañana · 19:30hs · 4ª</div>
+        </button>
+      </div>
+      <button onclick="cerrarInvitar()" style="width:100%;margin-top:12px;padding:10px;background:none;border:1px solid var(--border-hi);border-radius:10px;color:var(--text-sub);font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;">Cancelar</button>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div id="toast-amigos" style="display:none;position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:#059669;color:white;padding:10px 22px;border-radius:10px;font-size:0.875rem;font-weight:600;z-index:600;white-space:nowrap;box-shadow:0 4px 20px rgba(0,0,0,0.3);"></div>
+
+  <script>
+    var JUGADORES_DB = [
+      { iniciales: 'CM', nombre: 'Carlos Mendez',    cat: '3ª', color: '#D97706' },
+      { iniciales: 'VS', nombre: 'Valentina Sosa',   cat: '6ª', color: '#7C3AED' },
+      { iniciales: 'FP', nombre: 'Federico Paz',     cat: '5ª', color: '#0F766E' },
+      { iniciales: 'ML', nombre: 'Mariana López',    cat: '4ª', color: '#BE185D' },
+      { iniciales: 'JV', nombre: 'Juan Vidal',       cat: '5ª', color: '#178BFF' },
+      { iniciales: 'CG', nombre: 'Claudia García',   cat: '7ª', color: '#059669' }
+    ];
+
+    /* ── Tabs ── */
+    function switchTab(tab) {
+      document.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
+      document.querySelectorAll('.tab-panel').forEach(function(p) { p.classList.remove('active'); });
+      document.getElementById('tab-' + tab).classList.add('active');
+      document.getElementById('panel-' + tab).classList.add('active');
+      if (tab === 'buscar') {
+        setTimeout(function() {
+          var inp = document.getElementById('search-jugadores');
+          if (inp) inp.focus();
+        }, 120);
+      }
+    }
+
+    /* ── Mensajes rápidos ── */
+    var _mensajesDestino = '';
+    function abrirMensajes(nombre) {
+      _mensajesDestino = nombre;
+      document.getElementById('mensajes-titulo').textContent = 'Mensaje a ' + nombre.split(' ')[0];
+      document.getElementById('mensajes-overlay').style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+    }
+    function cerrarMensajes() {
+      document.getElementById('mensajes-overlay').style.display = 'none';
+      document.body.style.overflow = '';
+    }
+    function enviarMensaje() {
+      cerrarMensajes();
+      showToast('Mensaje enviado a ' + _mensajesDestino.split(' ')[0] + ' ✓');
+    }
+
+    /* ── Invitar a partido ── */
+    var _invitarDestino = '';
+    function abrirInvitar(nombre) {
+      _invitarDestino = nombre;
+      document.getElementById('invitar-titulo').textContent = 'Invitar a ' + nombre.split(' ')[0];
+      document.getElementById('invitar-sub').textContent = 'Elegí un partido para ' + nombre.split(' ')[0];
+      document.getElementById('invitar-overlay').style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+    }
+    function cerrarInvitar() {
+      document.getElementById('invitar-overlay').style.display = 'none';
+      document.body.style.overflow = '';
+    }
+    function invitarAPartido(partido) {
+      cerrarInvitar();
+      showToast('Invitación enviada a ' + _invitarDestino.split(' ')[0] + ' ✓');
+    }
+
+    /* ── Solicitudes ── */
+    function aceptarSolicitud(id, nombre) {
+      var card = document.getElementById(id);
+      if (!card) return;
+      card.style.opacity = '0';
+      setTimeout(function() { card.remove(); checkEmptySolicitudes(); }, 300);
+      showToast(nombre.split(' ')[0] + ' agregado como amigo ✓');
+    }
+    function rechazarSolicitud(id) {
+      var card = document.getElementById(id);
+      if (!card) return;
+      card.style.opacity = '0';
+      setTimeout(function() { card.remove(); checkEmptySolicitudes(); }, 300);
+    }
+    function checkEmptySolicitudes() {
+      var panel = document.getElementById('panel-solicitudes');
+      if (!panel.querySelector('.solicitud-card')) {
+        panel.innerHTML = '<div style="text-align:center;padding:48px 16px;"><div style="font-size:14px;font-weight:700;color:var(--text-sub);margin-bottom:6px;">Sin solicitudes pendientes</div><div style="font-size:12px;color:var(--text-dim);line-height:1.6;">Cuando alguien te mande una solicitud aparecerá acá.</div></div>';
+        var badge = document.getElementById('badge-solicitudes');
+        if (badge) badge.remove();
+      }
+    }
+
+    /* ── Buscar jugadores ── */
+    var _searchTimer;
+    function buscarJugadores(q) {
+      clearTimeout(_searchTimer);
+      var resultsEl = document.getElementById('search-results');
+      var placeholder = document.getElementById('search-placeholder');
+      if (!q.trim()) {
+        resultsEl.innerHTML = '';
+        placeholder.style.display = 'block';
+        return;
+      }
+      placeholder.style.display = 'none';
+      _searchTimer = setTimeout(function() {
+        var q2 = q.toLowerCase();
+        var matches = JUGADORES_DB.filter(function(j) {
+          return j.nombre.toLowerCase().indexOf(q2) >= 0 || j.iniciales.toLowerCase().indexOf(q2) >= 0;
+        });
+        if (!matches.length) {
+          resultsEl.innerHTML = '<div style="text-align:center;padding:32px 16px;font-size:13px;color:var(--text-dim);">No encontramos jugadores con ese nombre.</div>';
+          return;
+        }
+        resultsEl.innerHTML = matches.map(function(j, i) {
+          return '<div class="result-card">' +
+            '<div style="width:40px;height:40px;border-radius:50%;background:' + j.color + ';color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;">' + j.iniciales + '</div>' +
+            '<div style="flex:1;min-width:0;"><div style="font-size:14px;font-weight:700;color:var(--text);">' + j.nombre + '</div><div style="font-size:12px;color:var(--text-sub);">' + j.cat + ' categoría</div></div>' +
+            '<button class="btn-agregar" id="btn-sr-' + i + '" onclick="solicitarAmistad(this,\'' + j.nombre.replace(/'/g, "\\'") + '\')">Agregar</button>' +
+            '</div>';
+        }).join('');
+      }, 200);
+    }
+
+    function solicitarAmistad(btn, nombre) {
+      btn.textContent = 'Enviado';
+      btn.classList.add('sent');
+      btn.disabled = true;
+      showToast('Solicitud enviada a ' + nombre.split(' ')[0] + ' ✓');
+    }
+
+    /* ── Toast ── */
+    function showToast(msg) {
+      var t = document.getElementById('toast-amigos');
+      t.textContent = msg;
+      t.style.display = 'block';
+      clearTimeout(t._timer);
+      t._timer = setTimeout(function() { t.style.display = 'none'; }, 2800);
+    }
+  </script>
+
+</body>
+</html>

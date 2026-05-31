@@ -562,7 +562,7 @@
 
     <!-- Logo -->
     <a href="index.html" class="logo">
-      <img src="logo-padelya.png" alt="PadelYa" style="height:40px;object-fit:contain;">
+      <img src="assets/logo-padelya.png" alt="PadelYa" style="height:52px;width:auto;object-fit:contain;display:block;">
     </a>
 
     <!-- Tabs -->
@@ -606,6 +606,11 @@
           <path fill="#FBBC05" d="M24 48c6.2 0 11.4-2 15.2-5.5l-7.6-5.9c-2.1 1.4-4.7 2.2-7.6 2.2-6.1 0-11.3-3.6-13.1-8.7l-7.9 6.1C6.9 43 14.8 48 24 48z"/>
         </svg>
         Continuar con Google
+      </button>
+
+      <button type="button" class="btn-outline" onclick="loginAs('jugador')" style="margin-top:0.625rem;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+        Continuar con Apple
       </button>
 
       <p class="auth-bottom-link">
@@ -908,6 +913,22 @@
             <label for="p-bio2">Bio corta</label>
             <textarea id="p-bio2" rows="3" placeholder="Contá brevemente tu experiencia..." maxlength="200" oninput="updateCount(this,'p-bio2-count')"></textarea>
             <div class="textarea-count"><span id="p-bio2-count">0</span> / 200</div>
+          </div>
+          <div class="form-group">
+            <label for="p-cursos">Cursos realizados</label>
+            <textarea id="p-cursos" rows="3" placeholder="Ej: Curso de entrenador nivel 1 - APF 2023" maxlength="400"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="p-certif">Certificaciones</label>
+            <textarea id="p-certif" rows="3" placeholder="Ej: Certificado Federación Argentina de Pádel" maxlength="400"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="p-foto">Foto de perfil profesional <span style="font-size:0.75rem;color:var(--color-gray);font-weight:400;">(opcional)</span></label>
+            <input type="file" id="p-foto" accept="image/*"
+              style="width:100%;padding:10px;border:1px solid rgba(255,255,255,0.1);border-radius:10px;background:rgba(255,255,255,0.04);color:#A8B3C7;font-size:13px;cursor:pointer;box-sizing:border-box;">
+          </div>
+          <div style="background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.2);border-radius:10px;padding:12px;margin-bottom:1rem;">
+            <p style="font-size:13px;color:#F59E0B;line-height:1.5;">&#9888; Si tu perfil no es aprobado, no se realizar&#225; ning&#250;n cobro.</p>
           </div>
           <button type="button" class="btn-primary" onclick="goToProfesorStep3()">Continuar</button>
 
@@ -1352,7 +1373,20 @@
     function handleRegister(e, role) {
       e.preventDefault();
       if (role === 'jugador') {
-        loginAs('jugador');
+        sessionStorage.setItem('loggedIn', 'true');
+        sessionStorage.setItem('rol', 'jugador');
+        var nombre = (document.getElementById('j-nombre-completo') && document.getElementById('j-nombre-completo').value.trim()) || sessionStorage.getItem('nombre') || 'Jugador';
+        sessionStorage.setItem('nombre', nombre);
+        var catEl = document.querySelector('#chips-reg-cat .reg-cat-chip.selected');
+        if (catEl) sessionStorage.setItem('categoria', catEl.textContent.trim());
+        sessionStorage.setItem('estadoCategoria', 'orientativa');
+        if (!sessionStorage.getItem('mesActual')) {
+          sessionStorage.setItem('partidosJugados', '0');
+          sessionStorage.setItem('mesActual', String(new Date().getMonth()));
+          sessionStorage.setItem('sexo', _sexoSeleccionado || 'masculino');
+          sessionStorage.setItem('esPremium', 'false');
+        }
+        window.location.href = 'jugador-home.html';
       } else {
         alert('¡Solicitud enviada! Te avisamos por email cuando sea aprobado (1-2 días hábiles).');
       }

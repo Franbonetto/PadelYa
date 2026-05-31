@@ -800,7 +800,7 @@
           <path d="M19 12H5M12 5l-7 7 7 7"/>
         </svg>
       </button>
-      <img src="logo-padelya.png" alt="PadelYa" style="height:40px;object-fit:contain;">
+      <img src="assets/logo-padelya.png" alt="PadelYa" style="height:36px;width:auto;object-fit:contain;display:block;">
       <a href="jugador-configuracion.html" class="header-icon-btn" aria-label="Configuración">
         <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
           <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
@@ -843,6 +843,34 @@
     <!-- ── SECCIÓN 2: STATS EN UNA LÍNEA ── -->
     <div class="stats-bar">
       340 pts&nbsp;&middot;&nbsp;47 partidos&nbsp;&middot;&nbsp;65% victorias
+    </div>
+
+    <!-- ── PREMIUM CARD ── -->
+    <div style="margin:12px 16px 0;">
+      <div id="premium-card-free" style="background:linear-gradient(135deg,#0D1E3A,#112244);border:1px solid rgba(23,139,255,0.3);border-radius:14px;padding:16px;">
+        <div style="font-size:10px;color:#178BFF;font-weight:700;letter-spacing:1px;margin-bottom:8px;">PREMIUM</div>
+        <div style="font-size:16px;font-weight:800;color:#F5F7FA;margin-bottom:3px;">Jugás ilimitado</div>
+        <div style="font-size:12px;color:#A8B3C7;margin-bottom:14px;">Por lo que cuesta 6 pases · $5.999/mes</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px 0;background:rgba(255,255,255,0.04);border-radius:10px;padding:10px 12px;margin-bottom:14px;">
+          <div style="font-size:11px;font-weight:600;color:#A8B3C7;margin-bottom:5px;">Gratis</div>
+          <div style="font-size:11px;font-weight:600;color:#178BFF;margin-bottom:5px;">Premium</div>
+          <div style="font-size:12px;color:#F5F7FA;padding:2px 0;">3 partidos/mes</div>
+          <div style="font-size:12px;color:#F5F7FA;padding:2px 0;">Ilimitado</div>
+          <div style="font-size:12px;color:#3A4A5C;padding:2px 0;">—</div>
+          <div style="font-size:12px;color:#F5F7FA;padding:2px 0;">Perfil destacado</div>
+          <div style="font-size:12px;color:#3A4A5C;padding:2px 0;">—</div>
+          <div style="font-size:12px;color:#F5F7FA;padding:2px 0;">Alertas prioritarias</div>
+          <div style="font-size:12px;color:#3A4A5C;padding:2px 0;">—</div>
+          <div style="font-size:12px;color:#F5F7FA;padding:2px 0;">Descuentos sponsors</div>
+        </div>
+        <a href="premium.html" style="display:block;background:#178BFF;color:white;border-radius:50px;padding:13px;font-size:0.9rem;font-weight:700;text-align:center;text-decoration:none;font-family:inherit;">Probar 14 días gratis</a>
+      </div>
+      <div id="premium-card-active" style="display:none;background:linear-gradient(135deg,#0D1E3A,#112244);border:1px solid rgba(23,139,255,0.3);border-radius:14px;padding:16px;">
+        <div style="display:inline-flex;align-items:center;gap:6px;background:rgba(16,185,129,0.15);border:1px solid rgba(16,185,129,0.3);border-radius:99px;padding:4px 12px;margin-bottom:10px;">
+          <span style="font-size:10px;font-weight:700;color:#34D399;letter-spacing:0.5px;">&#10003; PREMIUM ACTIVO</span>
+        </div>
+        <div style="font-size:13px;color:#A8B3C7;">Próxima renovación: 01/07/2026</div>
+      </div>
     </div>
 
     <!-- ── SECCIÓN 3: ÍNDICE PADELYA ── -->
@@ -1406,7 +1434,10 @@
 
     // ── Plan mode (demo toggle) ──
     function applyPlanMode(isPremium) {
-      // placeholder para futura lógica de plan premium
+      var cardFree   = document.getElementById('premium-card-free');
+      var cardActive = document.getElementById('premium-card-active');
+      if (cardFree)   cardFree.style.display   = isPremium ? 'none'  : 'block';
+      if (cardActive) cardActive.style.display = isPremium ? 'block' : 'none';
     }
 
     function cerrarSesion() {

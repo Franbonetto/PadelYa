@@ -254,6 +254,25 @@
     }
     .info-note svg { flex-shrink: 0; margin-top: 1px; }
 
+    /* ── Fecha/Hora inputs ── */
+    .date-time-row { display: flex; gap: 0.75rem; }
+    .date-time-field { flex: 1; }
+    .date-time-field label { display: block; font-size: 0.78rem; font-weight: 600; color: var(--text-sub); margin-bottom: 0.375rem; }
+    .date-time-field input[type="date"] {
+      width: 100%;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border-hi);
+      border-radius: 10px;
+      padding: 0.625rem 0.75rem;
+      font-size: 0.9rem;
+      font-family: inherit;
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.2s;
+      color-scheme: dark;
+    }
+    .date-time-field input:focus { border-color: var(--blue); }
+
     /* ── Cat adjacency error ── */
     .cat-error {
       font-size: 0.75rem;
@@ -633,7 +652,7 @@
         </svg>
         Volver
       </a>
-      <img src="logo-padelya.png" alt="PadelYa" style="height:40px;object-fit:contain;">
+      <img src="assets/logo-padelya.png" alt="PadelYa" style="height:36px;width:auto;object-fit:contain;display:block;">
       <span class="step-counter" id="step-counter">Paso 1 de 2</span>
     </div>
     <!-- Step progress indicator -->
@@ -654,6 +673,15 @@
            STEP 1: Datos del partido
            ====================================================== -->
       <div class="step-panel active" id="step-1">
+
+        <!-- Fecha -->
+        <div class="form-block">
+          <p class="form-section-title">Fecha</p>
+          <div class="date-time-field">
+            <label for="input-fecha">Fecha del partido</label>
+            <input type="date" id="input-fecha" required>
+          </div>
+        </div>
 
         <!-- Categoría -->
         <div class="form-block">
@@ -894,6 +922,7 @@
           <div class="crear-disponible-desc">
             Tu partido se publicar&aacute; y el matchmaking buscar&aacute; jugadores autom&aacute;ticamente.
           </div>
+          <div style="display:flex;align-items:flex-start;gap:8px;background:rgba(255,255,255,0.04);border-radius:8px;padding:10px 12px;border-left:3px solid rgba(168,179,199,0.3);margin-bottom:1rem;"><svg style="flex-shrink:0;margin-top:1px;" width="14" height="14" fill="none" stroke="#A8B3C7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg><span style="font-size:12px;color:#A8B3C7;line-height:1.5;">El valor de la cancha se abona directamente en el complejo.</span></div>
           <button class="btn-primary" onclick="publicarPartido()">Publicar partido</button>
         </div>
 
@@ -1218,6 +1247,8 @@
 
     function validateStep1() {
       const errors = [];
+      const fechaEl = document.getElementById('input-fecha');
+      if (!fechaEl || !fechaEl.value) errors.push('Seleccioná una fecha.');
       const cats = document.querySelectorAll('.chip.active[data-group="categoria"]');
       if (cats.length === 0) errors.push('Seleccioná al menos una categoría.');
       if (!getChipVal('tipo')) errors.push('Seleccioná el tipo de partido.');
@@ -1255,9 +1286,18 @@
       const slot      = document.querySelector('.chip.active[data-group="slot"]');
       const slotText  = slot ? slot.textContent.trim() : '20:00 hs';
 
-      const days = ['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
-      const d = new Date(); d.setDate(d.getDate() + 2);
-      const dayLabel = days[d.getDay()] + ' ' + d.getDate() + '/' + (d.getMonth() + 1);
+      const DIAS_ES = ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
+      const MESES_ES = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+      const fechaInput = document.getElementById('input-fecha');
+      let dayLabel;
+      if (fechaInput && fechaInput.value) {
+        const parts = fechaInput.value.split('-');
+        const dd = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
+        dayLabel = DIAS_ES[dd.getDay()] + ' ' + dd.getDate() + ' de ' + MESES_ES[dd.getMonth()];
+      } else {
+        const d = new Date(); d.setDate(d.getDate() + 2);
+        dayLabel = DIAS_ES[d.getDay()] + ' ' + d.getDate() + ' de ' + MESES_ES[d.getMonth()];
+      }
       const turnoStr = dayLabel + ' · ' + slotText;
 
       // Step 2 summary
@@ -1303,7 +1343,9 @@
       var slot      = document.querySelector('.chip.active[data-group="slot"]');
       var slotText  = slot ? slot.textContent.trim() : '20:00 hs';
 
-      var nuevoPartido = { club: court.name, hora: slotText, cat: cat, tipo: tipo, mod: mod, jugadores: 1, total: 4 };
+      var fechaInpEl = document.getElementById('input-fecha');
+      var fechaGuardar = fechaInpEl ? fechaInpEl.value : '';
+      var nuevoPartido = { club: court.name, hora: slotText, fecha: fechaGuardar, cat: cat, tipo: tipo, mod: mod, jugadores: 1, total: 4 };
       var stored   = sessionStorage.getItem('misPartidos');
       var partidos = stored ? JSON.parse(stored) : [];
       partidos.unshift(nuevoPartido);
