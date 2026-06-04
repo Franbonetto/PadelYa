@@ -817,7 +817,7 @@
       <div id="perfil-avatar" class="avatar-circle">MR</div>
       <h2 id="perfil-nombre" class="profile-name">Martín Rodríguez</h2>
       <div class="badges-row">
-        <span id="perfil-cat-chip">5ª categoría</span>
+        <span id="perfil-cat-chip">5ta categoría</span>
         <span class="badge-founder">
           <svg width="10" height="10" fill="currentColor" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
           Jugador Fundador
@@ -1171,7 +1171,7 @@
       if (!sessionStorage.getItem('loggedIn')) {
         sessionStorage.setItem('loggedIn', 'true');
         sessionStorage.setItem('nombre', 'Martín Rodríguez');
-        sessionStorage.setItem('categoria', '5ª');
+        sessionStorage.setItem('categoria', '5ta');
         sessionStorage.setItem('estadoCategoria', 'orientativa');
         sessionStorage.setItem('sexo', 'masculino');
       }
@@ -1180,7 +1180,7 @@
     /* ── Datos de sesión en perfil ── */
     (function() {
       var nombre = sessionStorage.getItem('nombre') || 'Jugador';
-      var cat = sessionStorage.getItem('categoria') || '7ª';
+      var cat = sessionStorage.getItem('categoria') || '7ma';
       var estado = sessionStorage.getItem('estadoCategoria') || 'orientativa';
       var acopVerificado = sessionStorage.getItem('acopVerificado') === 'true';
 
@@ -1338,18 +1338,18 @@
     window.JUGADORES_ACOP = (function() {
       function e(ap, nom, cat, gen) { return { apellido: ap, nombre: nom, categoria: cat, genero: gen }; }
       return [
-        e('ABDALA','MARIANGELES','7ª','F'),e('ALBIN','MONICA','7ª','F'),e('ALVARO','LUCIA','7ª','F'),e('BRAVO','ALDANA','7ª','F'),e('CARDILO','SILVIA GRACIELA','7ª','F'),e('CASTRO','LUZ','7ª','F'),e('COSCIA','VANESA','7ª','F'),e('FARRA','ESTEFANIA BELEN','7ª','F'),e('GAINZA','MARIA ELVIRA','7ª','F'),e('GOMEZ','MARIEL','7ª','F'),e('GONZALEZ','ZOE','7ª','F'),e('IACULLI','GERALDINE','7ª','F'),e('LOPEZ','GISELLE','7ª','F'),e('LUNA','CAMILA AGUSTINA','7ª','F'),e('MARTIN','ANABELLA','7ª','F'),e('MORAGA','IRIS','7ª','F'),e('NARDIN','MARISA','7ª','F'),e('NEGRO','BERENICE','7ª','F'),e('OLIVERA','CAROLINA','7ª','F'),e('PIZARRO','ROCIO','7ª','F'),e('RAMIREZ','MELISA','7ª','F'),e('RODRIGUEZ ROSSI','MARIA LAURA','7ª','F'),e('ROJAS','ELIANA','7ª','F'),e('ROLDAN','VANESA','7ª','F'),e('SCHMIDT','MARISOL','7ª','F'),e('SOBRON','PATRICIA','7ª','F'),e('TOLOSA','MACARENA','7ª','F'),e('VAZQUEZ','AGUSTINA','7ª','F'),e('VIZCAY','CARLA','7ª','F'),e('WAIMANN','PILAR','7ª','F'),e('ZULIANI','BELEN','7ª','F'),
-        e('ALBIN','GUADALUPE','5ª','F'),e('ALARCO','MARIANA','5ª','F'),e('ITURREGUI','ANA','5ª','F'),e('GAMONDI','PAOLA','5ª','F'),e('LONGHINI','CINTIA','5ª','F'),e('PONCE','KARINA','5ª','F'),e('ROJAS','AGUSTINA','5ª','F'),e('SCHWINDT','MARIELA','5ª','F'),e('YUNGBLUT','KARINA','5ª','F'),
-        e('ALLEN','ORIANA','4ª','F'),e('ANCEL','SILVINA','4ª','F'),e('BLOCK','KATIA','4ª','F'),e('PICCHI','LUCRECIA','4ª','F'),e('PIZZANO','VERONICA','4ª','F'),e('RICCOBENE','NATALIA','4ª','F'),e('SAK','JULIETA SOLEDAD','4ª','F'),e('WAGNER','MERCEDES EDITH','4ª','F'),
-        e('BATISTA','VALENTINA','3ª','F'),e('LONGHINI','MARIA','3ª','F'),e('RAFECA','YANELLA AGOSTINA','3ª','F'),e('RODRIGUEZ','JOSEFINA','3ª','F'),
-        e('ALLEN','REBECA','2ª','F'),e('DOS SANTOS','JAZMIN','2ª','F'),
-        e('ACUNA','CARLOS SEBASTIAN','7ª','M'),e('ALVAREZ','ANDRES','7ª','M'),e('GARCIA','JUAN ALBERTO','7ª','M'),e('GARCIA','DYLAN','7ª','M'),e('GOMEZ','EDGARDO LEONEL','7ª','M'),e('LOPEZ','MATIAS EZEQUIEL','7ª','M'),e('LUNA','OMAR','7ª','M'),e('NAVARRO','DAMIAN DARIO','7ª','M'),e('PONCE','GONZALO','7ª','M'),e('RAMOS','FEDERICO','7ª','M'),e('RODRIGUEZ','NICOLAS','7ª','M'),e('ROLDAN','FRANCISCO','7ª','M'),e('SANCHEZ','FEDERICO','7ª','M'),e('TELLO','ARIEL','7ª','M'),e('VILLARREAL','JUAN IGNACIO','7ª','M'),
-        e('ABDALA','MATEO','6ª','M'),e('ACOSTA','MARTIN','6ª','M'),e('GAMONDI','JOSE LUIS','6ª','M'),e('GONZALEZ','MARCOS','6ª','M'),e('HERNANDEZ','LEONARDO','6ª','M'),e('LOPEZ','CHRISTIAN','6ª','M'),e('MARTINEZ','FEDERICO','6ª','M'),e('RODRIGUEZ','FABIAN','6ª','M'),e('ROLDAN','NICOLAS','6ª','M'),e('SAEZ','CHRISTIAN JAVIER','6ª','M'),
-        e('ABDALA','SIMON','5ª','M'),e('GAMONDI','TOMAS','5ª','M'),e('GARCIA','ANGEL','5ª','M'),e('GONZALEZ','FRANCO','5ª','M'),e('RODRIGUEZ','ALEJANDRO','5ª','M'),e('RODRIGUEZ','CRISTIAN','5ª','M'),e('ROLDAN','DIEGO','5ª','M'),
-        e('AGUER','ALEX','4ª','M'),e('BIANCHI','AGUSTIN','4ª','M'),e('CORTES','GONZALO','4ª','M'),e('GONZALEZ','EUGENIO','4ª','M'),e('GONZALEZ','SEBASTIAN','4ª','M'),e('HERNANDEZ','ROGELIO','4ª','M'),e('SERANTES','NICOLAS','4ª','M'),e('STREMEL','NICOLAS','4ª','M'),
-        e('BARRAGAN','IAN','3ª','M'),e('BARRAGAN','MARTIN','3ª','M'),e('BLOCK','EZEQUIEL','3ª','M'),e('CORREA','ALVARO TOMAS','3ª','M'),e('FERNANDEZ','FRANCO','3ª','M'),e('LONGHINI','JUAN JOSE','3ª','M'),e('OLMEDO','BENJAMIN','3ª','M'),e('SUAREZ','MARTIN','3ª','M'),
-        e('ALESANDRI','GUSTAVO','2ª','M'),e('BRUNI','EZEQUIEL','2ª','M'),e('CIANCIO','PABLO','2ª','M'),e('GAINZA','DARDO','2ª','M'),e('HERNANDEZ','JOAQUIN','2ª','M'),e('ITURREGUI','NICOLAS','2ª','M'),e('ITURREGUI','RAMIRO','2ª','M'),e('LLORENTE','LUCIO','2ª','M'),e('MUSUMECI','MAXIMILIANO','2ª','M'),e('PINEDA','SANTIAGO','2ª','M'),e('SALIAS','SEBASTIAN','2ª','M'),
-        e('GAMONDI','TEO','1ª','M'),e('LASCIOLI','IGNACIO','1ª','M')
+        e('ABDALA','MARIANGELES','7ma','F'),e('ALBIN','MONICA','7ma','F'),e('ALVARO','LUCIA','7ma','F'),e('BRAVO','ALDANA','7ma','F'),e('CARDILO','SILVIA GRACIELA','7ma','F'),e('CASTRO','LUZ','7ma','F'),e('COSCIA','VANESA','7ma','F'),e('FARRA','ESTEFANIA BELEN','7ma','F'),e('GAINZA','MARIA ELVIRA','7ma','F'),e('GOMEZ','MARIEL','7ma','F'),e('GONZALEZ','ZOE','7ma','F'),e('IACULLI','GERALDINE','7ma','F'),e('LOPEZ','GISELLE','7ma','F'),e('LUNA','CAMILA AGUSTINA','7ma','F'),e('MARTIN','ANABELLA','7ma','F'),e('MORAGA','IRIS','7ma','F'),e('NARDIN','MARISA','7ma','F'),e('NEGRO','BERENICE','7ma','F'),e('OLIVERA','CAROLINA','7ma','F'),e('PIZARRO','ROCIO','7ma','F'),e('RAMIREZ','MELISA','7ma','F'),e('RODRIGUEZ ROSSI','MARIA LAURA','7ma','F'),e('ROJAS','ELIANA','7ma','F'),e('ROLDAN','VANESA','7ma','F'),e('SCHMIDT','MARISOL','7ma','F'),e('SOBRON','PATRICIA','7ma','F'),e('TOLOSA','MACARENA','7ma','F'),e('VAZQUEZ','AGUSTINA','7ma','F'),e('VIZCAY','CARLA','7ma','F'),e('WAIMANN','PILAR','7ma','F'),e('ZULIANI','BELEN','7ma','F'),
+        e('ALBIN','GUADALUPE','5ta','F'),e('ALARCO','MARIANA','5ta','F'),e('ITURREGUI','ANA','5ta','F'),e('GAMONDI','PAOLA','5ta','F'),e('LONGHINI','CINTIA','5ta','F'),e('PONCE','KARINA','5ta','F'),e('ROJAS','AGUSTINA','5ta','F'),e('SCHWINDT','MARIELA','5ta','F'),e('YUNGBLUT','KARINA','5ta','F'),
+        e('ALLEN','ORIANA','4ta','F'),e('ANCEL','SILVINA','4ta','F'),e('BLOCK','KATIA','4ta','F'),e('PICCHI','LUCRECIA','4ta','F'),e('PIZZANO','VERONICA','4ta','F'),e('RICCOBENE','NATALIA','4ta','F'),e('SAK','JULIETA SOLEDAD','4ta','F'),e('WAGNER','MERCEDES EDITH','4ta','F'),
+        e('BATISTA','VALENTINA','3ra','F'),e('LONGHINI','MARIA','3ra','F'),e('RAFECA','YANELLA AGOSTINA','3ra','F'),e('RODRIGUEZ','JOSEFINA','3ra','F'),
+        e('ALLEN','REBECA','2da','F'),e('DOS SANTOS','JAZMIN','2da','F'),
+        e('ACUNA','CARLOS SEBASTIAN','7ma','M'),e('ALVAREZ','ANDRES','7ma','M'),e('GARCIA','JUAN ALBERTO','7ma','M'),e('GARCIA','DYLAN','7ma','M'),e('GOMEZ','EDGARDO LEONEL','7ma','M'),e('LOPEZ','MATIAS EZEQUIEL','7ma','M'),e('LUNA','OMAR','7ma','M'),e('NAVARRO','DAMIAN DARIO','7ma','M'),e('PONCE','GONZALO','7ma','M'),e('RAMOS','FEDERICO','7ma','M'),e('RODRIGUEZ','NICOLAS','7ma','M'),e('ROLDAN','FRANCISCO','7ma','M'),e('SANCHEZ','FEDERICO','7ma','M'),e('TELLO','ARIEL','7ma','M'),e('VILLARREAL','JUAN IGNACIO','7ma','M'),
+        e('ABDALA','MATEO','6ta','M'),e('ACOSTA','MARTIN','6ta','M'),e('GAMONDI','JOSE LUIS','6ta','M'),e('GONZALEZ','MARCOS','6ta','M'),e('HERNANDEZ','LEONARDO','6ta','M'),e('LOPEZ','CHRISTIAN','6ta','M'),e('MARTINEZ','FEDERICO','6ta','M'),e('RODRIGUEZ','FABIAN','6ta','M'),e('ROLDAN','NICOLAS','6ta','M'),e('SAEZ','CHRISTIAN JAVIER','6ta','M'),
+        e('ABDALA','SIMON','5ta','M'),e('GAMONDI','TOMAS','5ta','M'),e('GARCIA','ANGEL','5ta','M'),e('GONZALEZ','FRANCO','5ta','M'),e('RODRIGUEZ','ALEJANDRO','5ta','M'),e('RODRIGUEZ','CRISTIAN','5ta','M'),e('ROLDAN','DIEGO','5ta','M'),
+        e('AGUER','ALEX','4ta','M'),e('BIANCHI','AGUSTIN','4ta','M'),e('CORTES','GONZALO','4ta','M'),e('GONZALEZ','EUGENIO','4ta','M'),e('GONZALEZ','SEBASTIAN','4ta','M'),e('HERNANDEZ','ROGELIO','4ta','M'),e('SERANTES','NICOLAS','4ta','M'),e('STREMEL','NICOLAS','4ta','M'),
+        e('BARRAGAN','IAN','3ra','M'),e('BARRAGAN','MARTIN','3ra','M'),e('BLOCK','EZEQUIEL','3ra','M'),e('CORREA','ALVARO TOMAS','3ra','M'),e('FERNANDEZ','FRANCO','3ra','M'),e('LONGHINI','JUAN JOSE','3ra','M'),e('OLMEDO','BENJAMIN','3ra','M'),e('SUAREZ','MARTIN','3ra','M'),
+        e('ALESANDRI','GUSTAVO','2da','M'),e('BRUNI','EZEQUIEL','2da','M'),e('CIANCIO','PABLO','2da','M'),e('GAINZA','DARDO','2da','M'),e('HERNANDEZ','JOAQUIN','2da','M'),e('ITURREGUI','NICOLAS','2da','M'),e('ITURREGUI','RAMIRO','2da','M'),e('LLORENTE','LUCIO','2da','M'),e('MUSUMECI','MAXIMILIANO','2da','M'),e('PINEDA','SANTIAGO','2da','M'),e('SALIAS','SEBASTIAN','2da','M'),
+        e('GAMONDI','TEO','1ra','M'),e('LASCIOLI','IGNACIO','1ra','M')
       ];
     })();
 

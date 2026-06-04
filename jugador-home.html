@@ -431,6 +431,21 @@
     .sponsor-link:hover { color: var(--text-sub); }
 
     /* ── BOTTOM NAV ── */
+
+    /* ── PARTIDO CARD (dinámico) ── */
+    .partido-card {
+      background: var(--bg-card);
+      border: 1px solid rgba(23,139,255,0.2);
+      border-radius: 16px;
+      padding: 16px 18px;
+      margin-bottom: 10px;
+    }
+    .partido-card button {
+      font-family: inherit;
+      transition: background 0.15s, color 0.15s;
+    }
+    .partido-card button:active { opacity: 0.8; }
+
     .bottom-nav {
       position: fixed;
       bottom: 0;
@@ -549,7 +564,7 @@
       <a href="jugador-home.html" style="display:block;"><img src="logo-padelya.png" alt="PadelYa" style="height:36px;width:auto;object-fit:contain;display:block;"></a>
       <div>
         <div class="header-name" id="home-header-name">Hola, Martín</div>
-        <div class="header-sub"  id="home-header-sub">7ª · Orientativa</div>
+        <div class="header-sub"  id="home-header-sub">7ma B</div>
       </div>
       <div style="display:flex;gap:8px;align-items:center;">
         <a href="jugador-amigos.html" style="width:38px;height:38px;border:1px solid rgba(255,255,255,0.13);background:rgba(255,255,255,0.05);border-radius:50%;display:flex;align-items:center;justify-content:center;color:#A8B3C7;flex-shrink:0;transition:background 0.15s;text-decoration:none;" aria-label="Amigos">
@@ -580,7 +595,7 @@
     <div class="hero">
       <div class="hero-eyebrow">
         <span class="pulse-dot"></span>
-        3 partidos abiertos ahora
+        <span id="hero-contador">3 partidos abiertos ahora</span>
       </div>
       <h1 class="hero-title">¿Jugás hoy?</h1>
       <p class="hero-sub">Encontramos jugadores de tu nivel automáticamente.</p>
@@ -589,7 +604,7 @@
 
 
     <!-- SPONSOR DESTACADO -->
-    <div style="margin: 0 16px 20px;">
+    <div style="margin-bottom:20px;">
       <div id="sponsor-card" style="background:#0D1E3A;border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:16px;">
         <div style="font-size:10px;color:#A8B3C7;letter-spacing:1px;font-weight:600;text-transform:uppercase;margin-bottom:10px;">SPONSOR</div>
         <div id="sponsor-name" style="font-size:17px;font-weight:800;color:#F5F7FA;margin-bottom:4px;transition:opacity 0.4s;"></div>
@@ -604,6 +619,19 @@
         </div>
       </div>
     </div>
+
+    <!-- LES FALTA 1 / PARTIDOS DINÁMICOS -->
+    <section id="seccion-partidos" class="section">
+      <div class="section-header">
+        <div>
+          <div id="titulo-partidos" class="section-title">Les falta 1</div>
+          <div id="subtitulo-partidos" class="section-sub">Completá el partido</div>
+        </div>
+        <a href="jugador-buscar.html" class="section-link">Ver todos</a>
+      </div>
+      <div id="lista-partidos"></div>
+      <div id="estado-vacio-partidos" style="display:none;justify-content:center;"></div>
+    </section>
 
     <!-- TUS AMIGOS -->
     <section style="margin-bottom:20px;">
@@ -628,118 +656,6 @@
           <div style="width:44px;height:44px;border-radius:50%;border:1.5px dashed rgba(255,255,255,0.25);color:#5C6E87;font-size:22px;display:flex;align-items:center;justify-content:center;line-height:1;">+</div>
           <span style="font-size:10px;color:#5C6E87;font-weight:500;text-align:center;">Agregar</span>
         </a>
-      </div>
-    </section>
-
-        <!-- LES FALTA 1 -->
-    <section class="section">
-      <div class="section-header">
-        <div>
-          <div class="section-title">Les falta 1</div>
-          <div class="section-sub">Completá el partido</div>
-        </div>
-        <a href="jugador-buscar.html" class="section-link">Ver todos</a>
-      </div>
-
-      <!-- PARTIDO DESTACADO -->
-      <div class="match-card match-card--urgent" style="border-color:rgba(23,139,255,0.4);background:rgba(23,139,255,0.06);margin-bottom:10px;">
-        <div style="font-size:10px;color:#178BFF;font-weight:700;letter-spacing:0.5px;margin-bottom:8px;">⭐ Partido destacado · Drive Deportes</div>
-        <div class="match-date">Hoy · 21:00hs</div>
-        <div class="match-top">
-          <span class="match-club">Runa Pádel</span>
-          <span class="match-time">21:00 hs</span>
-        </div>
-        <div class="match-tags">
-          <span class="tag">5ª</span>
-          <span class="tag">Masculino</span>
-          <span class="tag tag--tipo">Competitivo</span>
-        </div>
-        <div class="match-bottom">
-          <div class="players-row">
-            <span class="player-dot"></span>
-            <span class="player-dot"></span>
-            <span class="player-dot--empty player-dot"></span>
-            <span class="player-dot--missing player-dot"></span>
-            <span class="players-label">2 / 4</span>
-          </div>
-          <button class="btn-sumarme" onclick="abrirModalSumarme(this)">Sumarme</button>
-        </div>
-        <div class="avatar-row"><div class="av">DR</div><div class="av">SP</div><div class="av av-empty"></div><div class="av av-empty"></div></div>
-      </div>
-
-      <!-- Card 1 -->
-      <div class="match-card match-card--urgent">
-        <div class="match-date">Hoy · 20:00hs</div>
-        <div class="match-top">
-          <span class="match-club">Chingoland</span>
-          <span class="match-time">20:00 hs</span>
-        </div>
-        <div class="match-tags">
-          <span class="tag">5ª</span>
-          <span class="tag">Masculino</span>
-          <span class="tag tag--tipo">Competitivo</span>
-        </div>
-        <div class="match-bottom">
-          <div class="players-row">
-            <span class="player-dot"></span>
-            <span class="player-dot"></span>
-            <span class="player-dot"></span>
-            <span class="player-dot--missing player-dot"></span>
-            <span class="players-label">3 / 4</span>
-          </div>
-          <button class="btn-sumarme" onclick="abrirModalSumarme(this)">Sumarme</button>
-        </div>
-        <div class="avatar-row"><div class="av">JR</div><div class="av">MM</div><div class="av">PA</div><div class="av av-empty"></div></div>
-      </div>
-
-      <!-- Card 2 -->
-      <div class="match-card match-card--urgent">
-        <div class="match-date">Hoy · 21:00hs</div>
-        <div class="match-top">
-          <span class="match-club">Serrano Pádel</span>
-          <span class="match-time">21:00 hs</span>
-        </div>
-        <div class="match-tags">
-          <span class="tag">5ª</span>
-          <span class="tag">Masculino</span>
-          <span class="tag tag--tipo">Casual</span>
-        </div>
-        <div class="match-bottom">
-          <div class="players-row">
-            <span class="player-dot"></span>
-            <span class="player-dot"></span>
-            <span class="player-dot--empty player-dot"></span>
-            <span class="player-dot--missing player-dot"></span>
-            <span class="players-label">2 / 4</span>
-          </div>
-          <button class="btn-sumarme" onclick="abrirModalSumarme(this)">Sumarme</button>
-        </div>
-        <div class="avatar-row"><div class="av">CS</div><div class="av">BL</div><div class="av av-empty"></div><div class="av av-empty"></div></div>
-      </div>
-
-      <!-- Card 3 -->
-      <div class="match-card match-card--urgent">
-        <div class="match-date">Mañana · 19:30hs</div>
-        <div class="match-top">
-          <span class="match-club">Padel Time</span>
-          <span class="match-time">19:30 hs</span>
-        </div>
-        <div class="match-tags">
-          <span class="tag">4ª</span>
-          <span class="tag">Masculino</span>
-          <span class="tag tag--tipo">Intermedio</span>
-        </div>
-        <div class="match-bottom">
-          <div class="players-row">
-            <span class="player-dot"></span>
-            <span class="player-dot--empty player-dot"></span>
-            <span class="player-dot--empty player-dot"></span>
-            <span class="player-dot--missing player-dot"></span>
-            <span class="players-label">1 / 4</span>
-          </div>
-          <button class="btn-sumarme" onclick="abrirModalSumarme(this)">Sumarme</button>
-        </div>
-        <div class="avatar-row"><div class="av">RG</div><div class="av av-empty"></div><div class="av av-empty"></div><div class="av av-empty"></div></div>
       </div>
     </section>
 
@@ -886,7 +802,7 @@
       <div style="display:flex;flex-direction:column;gap:10px;">
         <div style="padding:12px;background:#0D1E3A;border:1px solid rgba(23,139,255,0.2);border-left:3px solid #178BFF;border-radius:10px;">
           <div style="font-size:13px;font-weight:600;color:#F5F7FA;margin-bottom:4px;">¡Te sumaron a un partido!</div>
-          <div style="font-size:12px;color:#A8B3C7;">Chingoland · 20:00 hs · 5ª categoría</div>
+          <div style="font-size:12px;color:#A8B3C7;">Chingoland · 20:00 hs · 5ta categoría</div>
           <div style="font-size:11px;color:#5C6E87;margin-top:4px;">hace 2 horas</div>
         </div>
         <div style="padding:12px;background:#0D1E3A;border:1px solid rgba(255,255,255,0.06);border-radius:10px;">
@@ -909,7 +825,7 @@
       if (!sessionStorage.getItem('loggedIn')) {
         sessionStorage.setItem('loggedIn', 'true');
         sessionStorage.setItem('nombre', 'Martín Rodríguez');
-        sessionStorage.setItem('categoria', '5ª');
+        sessionStorage.setItem('categoria', '5ta');
         sessionStorage.setItem('estadoCategoria', 'orientativa');
         sessionStorage.setItem('sexo', 'masculino');
       }
@@ -919,7 +835,7 @@
     (function() {
       var nombre = sessionStorage.getItem('nombre') || 'Jugador';
       var primerNombre = nombre.trim().split(' ')[0];
-      var cat = sessionStorage.getItem('categoria') || '7ª';
+      var cat = sessionStorage.getItem('categoria') || '7ma';
       var estado = sessionStorage.getItem('estadoCategoria') || 'orientativa';
       var acopVerificado = sessionStorage.getItem('acopVerificado') === 'true';
       var nameEl = document.getElementById('home-header-name');
@@ -927,13 +843,12 @@
       var subEl = document.getElementById('home-header-sub');
       if (subEl) {
         if (acopVerificado || estado === 'verificada') {
-          subEl.textContent = cat + ' · ✓';
-          subEl.style.color = '#D6FF00';
+          subEl.innerHTML = cat + ' <span style="color:#4ADE80;font-weight:600;">· Verificada ✓</span>';
         } else if (estado === 'pendiente') {
           subEl.textContent = 'Verificación pendiente';
           subEl.style.color = '#F59E0B';
         } else {
-          subEl.textContent = cat + ' · Orientativa';
+          subEl.textContent = cat;
         }
       }
     })();
@@ -979,7 +894,7 @@
 
 
     /* ── Matchmaking panel ── */
-    function abrirMatchmaking() {
+    function abrirMatchmaking(id) {
       var jugados = parseInt(sessionStorage.getItem('partidosJugados') || '0');
       var esPremium = sessionStorage.getItem('esPremium') === 'true';
       var disponibles = esPremium ? 99 : Math.max(0, 3 - jugados);
@@ -1021,8 +936,148 @@
       toast.style.display = 'block';
       setTimeout(function() { toast.style.display = 'none'; }, 3000);
     }
+
+    /* ── Escenario y partidos simulados ── */
+    var ESCENARIO = 'conPartidos';
+    var PARTIDOS = [
+      { id:1, complejo:'Chingoland',        fecha:'Hoy',    categoria:'5ta', genero:'Masculino', tipo:'Competitivo', jugadores:3, total:4 },
+      { id:2, complejo:'Serrano Pádel',     fecha:'Hoy',    categoria:'5ta', genero:'Masculino', tipo:'Casual',      jugadores:2, total:4 },
+      { id:3, complejo:'Padel Time',        fecha:'Mañana', categoria:'4ta', genero:'Masculino', tipo:'Casual',      jugadores:1, total:4 },
+      { id:4, complejo:'Las Terrazas Pádel',fecha:'Mañana', categoria:'6ta', genero:'Femenino',  tipo:'Competitivo', jugadores:2, total:4 }
+    ];
+
+    /* ── Hero dinámico ── */
+    function actualizarHero() {
+      var n = PARTIDOS.length;
+      var texto;
+      if (n === 0) {
+        texto = 'Hay jugadores buscando partido';
+      } else if (n === 1) {
+        texto = '1 partido abierto ahora';
+      } else {
+        texto = n + ' partidos abiertos ahora';
+      }
+      var el = document.getElementById('hero-contador');
+      if (el) el.textContent = texto;
+    }
+
+    /* ── Ordenar por prioridad temporal (hoy > mañana > resto) ── */
+    function ordenarPartidos(partidos) {
+      return partidos.slice().sort(function(a, b) {
+        var prioA = a.fecha === 'Hoy' ? 0 : a.fecha === 'Mañana' ? 1 : 2;
+        var prioB = b.fecha === 'Hoy' ? 0 : b.fecha === 'Mañana' ? 1 : 2;
+        if (prioA !== prioB) return prioA - prioB;
+        return b.jugadores - a.jugadores;
+      });
+    }
+
+    /* ── Render cards ── */
+    function renderizarCards(partidos) {
+      var lista = document.getElementById('lista-partidos');
+      lista.innerHTML = '';
+      partidos.forEach(function(p) {
+        var pct = (p.jugadores / p.total) * 100;
+        var badgeHtml = '';
+        if (p.fecha === 'Hoy') {
+          badgeHtml = '<span style="font-size:9px;font-weight:700;padding:2px 7px;border-radius:50px;background:rgba(214,255,0,0.12);color:#D6FF00;border:1px solid rgba(214,255,0,0.3);white-space:nowrap;">HOY</span>';
+        } else if (p.fecha === 'Mañana') {
+          badgeHtml = '<span style="font-size:9px;font-weight:700;padding:2px 7px;border-radius:50px;background:rgba(23,139,255,0.12);color:#178BFF;border:1px solid rgba(23,139,255,0.3);white-space:nowrap;">MAÑANA</span>';
+        }
+        var card = document.createElement('div');
+        card.className = 'partido-card';
+        card.innerHTML =
+          '<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px;">' +
+            '<div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">' +
+              '<span style="font-size:15px;font-weight:700;color:#F5F7FA;">' + p.complejo + '</span>' +
+              badgeHtml +
+            '</div>' +
+            '<span style="font-size:11px;color:#A8B3C7;flex-shrink:0;margin-left:8px;">' + p.fecha + '</span>' +
+          '</div>' +
+          '<div style="display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap;">' +
+            '<span style="font-size:11px;color:#A8B3C7;background:rgba(255,255,255,0.06);padding:3px 8px;border-radius:50px;">' + p.categoria + '</span>' +
+            '<span style="font-size:11px;color:#A8B3C7;background:rgba(255,255,255,0.06);padding:3px 8px;border-radius:50px;">' + p.genero + '</span>' +
+            '<span style="font-size:11px;color:#A8B3C7;background:rgba(255,255,255,0.06);padding:3px 8px;border-radius:50px;">' + p.tipo + '</span>' +
+          '</div>' +
+          '<div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">' +
+            '<div style="flex:1;height:4px;background:rgba(255,255,255,0.08);border-radius:2px;">' +
+              '<div style="width:' + pct + '%;height:100%;background:#178BFF;border-radius:2px;"></div>' +
+            '</div>' +
+            '<span style="font-size:12px;color:#178BFF;font-weight:600;">' + p.jugadores + '/' + p.total + '</span>' +
+          '</div>' +
+          '<button onclick="abrirMatchmaking(' + p.id + ')" ' +
+            'style="width:100%;padding:10px;background:transparent;border:1px solid #178BFF;color:#178BFF;border-radius:50px;font-size:13px;font-weight:600;cursor:pointer;">Sumarme</button>';
+        lista.appendChild(card);
+      });
+    }
+
+    /* ── Renderizar sección de partidos ── */
+    function renderizarPartidos() {
+      var miCategoria = sessionStorage.getItem('categoria') || '5ta';
+      var CATEGORIAS = ['1ra','2da','3ra','4ta','5ta','6ta','7ma','7ma B'];
+      var miIdx = CATEGORIAS.indexOf(miCategoria);
+
+      var misPartidos = PARTIDOS.filter(function(p) {
+        var pIdx = CATEGORIAS.indexOf(p.categoria);
+        return Math.abs(pIdx - miIdx) <= 1;
+      });
+      misPartidos.sort(function(a, b) { return b.jugadores - a.jugadores; });
+
+      var faltaUno = PARTIDOS.filter(function(p) {
+        return p.jugadores === p.total - 1;
+      });
+      faltaUno.sort(function(a, b) { return b.jugadores - a.jugadores; });
+
+      var titulo   = document.getElementById('titulo-partidos');
+      var subtitulo = document.getElementById('subtitulo-partidos');
+      var lista    = document.getElementById('lista-partidos');
+      var vacio    = document.getElementById('estado-vacio-partidos');
+
+      if (faltaUno.length > 0) {
+        titulo.textContent    = 'Les falta 1';
+        subtitulo.textContent = 'Completá el partido';
+        vacio.style.display   = 'none';
+        lista.style.display   = 'block';
+        renderizarCards(ordenarPartidos(faltaUno));
+        return;
+      }
+
+      if (misPartidos.length > 0) {
+        titulo.textContent    = 'Partidos abiertos';
+        subtitulo.textContent = 'Hay jugadores esperando completar su partido.';
+        vacio.style.display   = 'none';
+        lista.style.display   = 'block';
+        renderizarCards(ordenarPartidos(misPartidos));
+        return;
+      }
+
+      if (PARTIDOS.length > 0) {
+        lista.style.display  = 'none';
+        vacio.style.display  = 'flex';
+        vacio.innerHTML =
+          '<div style="text-align:center;padding:32px 16px;">' +
+          '<div style="font-size:32px;margin-bottom:12px;">🎾</div>' +
+          '<p style="color:#F5F7FA;font-size:16px;font-weight:600;margin-bottom:8px;">No hay partidos para tu categoría</p>' +
+          '<p style="color:#A8B3C7;font-size:13px;margin-bottom:20px;">Creá uno y encontrá jugadores.</p>' +
+          '<button onclick="window.location.href=\'jugador-crear.html\'" ' +
+          'style="background:#178BFF;color:white;border:none;border-radius:50px;padding:12px 28px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;">Crear partido</button>' +
+          '</div>';
+        return;
+      }
+
+      lista.style.display  = 'none';
+      vacio.style.display  = 'flex';
+      vacio.innerHTML =
+        '<div style="text-align:center;padding:32px 16px;">' +
+        '<div style="font-size:32px;margin-bottom:12px;">🎾</div>' +
+        '<p style="color:#F5F7FA;font-size:16px;font-weight:600;margin-bottom:8px;">Todavía no hay partidos abiertos.</p>' +
+        '<p style="color:#A8B3C7;font-size:13px;margin-bottom:20px;">Sé el primero en crear uno.</p>' +
+        '<button onclick="window.location.href=\'jugador-crear.html\'" ' +
+        'style="background:#178BFF;color:white;border:none;border-radius:50px;padding:12px 28px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;">Crear partido</button>' +
+        '</div>';
+    }
+
     /* ── Sponsor rotation ── */
-    (function() {
+    function renderizarSponsor() {
       var sponsors = [
         { nombre: 'Drive Deportes', tagline: 'Jugá mejor. Nosotros te equipamos.' },
         { nombre: 'Bebidas Moe', tagline: 'Para el tercer tiempo, ya sabés dónde encontrarnos.' },
@@ -1045,7 +1100,12 @@
       }
       showSponsor(0);
       setInterval(function() { current = (current + 1) % sponsors.length; showSponsor(current); }, 4000);
-    })();
+    }
+
+    /* ── Inicializar ── */
+    actualizarHero();
+    renderizarSponsor();
+    renderizarPartidos();
   </script>
 
 </body>
