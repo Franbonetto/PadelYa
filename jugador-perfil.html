@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es-AR">
 <head>
   <meta charset="UTF-8" />
@@ -600,7 +600,7 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 3px;
+      gap: 4px;
       padding: 4px 0;
       color: #A8B3C7;
       text-decoration: none;
@@ -800,8 +800,9 @@
           <path d="M19 12H5M12 5l-7 7 7 7"/>
         </svg>
       </button>
-      <img src="logo-padelya.png" alt="PadelYa" style="height:36px;width:auto;object-fit:contain;display:block;">
-      <a href="jugador-configuracion.html" class="header-icon-btn" aria-label="Configuración">
+      <span id="header-amigo-title" style="display:none;font-size:17px;font-weight:700;color:var(--text);"></span>
+      <img id="header-logo" src="logo-padelya.png" alt="PadelYa" style="height:36px;width:auto;object-fit:contain;display:block;">
+      <a id="header-config-btn" href="jugador-configuracion.html" class="header-icon-btn" aria-label="Configuración">
         <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
           <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
           <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
@@ -818,13 +819,13 @@
       <h2 id="perfil-nombre" class="profile-name">Martín Rodríguez</h2>
       <div class="badges-row">
         <span id="perfil-cat-chip">5ta categoría</span>
-        <span class="badge-founder">
-          <svg width="10" height="10" fill="currentColor" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-          Jugador Fundador
-        </span>
         <span class="badge-trust">
           <svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
           Confiable
+        </span>
+        <span class="badge-founder" style="font-size:10px;padding:2px 8px;opacity:0.7;">
+          <svg width="10" height="10" fill="currentColor" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          Jugador Fundador
         </span>
       </div>
       <div id="perfil-sexo-chip" style="display:none;margin-top:6px;">
@@ -833,20 +834,128 @@
           <span id="perfil-sexo-texto"></span>
         </span>
       </div>
-
-      <a href="jugador-configuracion.html" class="edit-btn">
+      <a id="perfil-edit-btn" href="jugador-configuracion.html" class="edit-btn">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
         Editar perfil
       </a>
     </div>
 
-    <!-- ── SECCIÓN 2: STATS EN UNA LÍNEA ── -->
-    <div class="stats-bar">
-      340 pts&nbsp;&middot;&nbsp;47 partidos&nbsp;&middot;&nbsp;65% victorias
+    <!-- ── SECCIÓN 2: STATS SIMPLIFICADAS ── -->
+    <div class="stats-bar" style="display:grid;grid-template-columns:1fr 1fr;text-align:center;padding:14px 20px;">
+      <div>
+        <div style="font-size:1.25rem;font-weight:900;color:var(--text);">47</div>
+        <div style="font-size:0.75rem;color:var(--text-sub);font-weight:600;margin-top:2px;">Partidos jugados</div>
+      </div>
+      <div>
+        <div style="font-size:1.25rem;font-weight:900;color:var(--text);">65%</div>
+        <div style="font-size:0.75rem;color:var(--text-sub);font-weight:600;margin-top:2px;">Victorias</div>
+      </div>
     </div>
 
-    <!-- ── PREMIUM CARD ── -->
-    <div style="margin:12px 16px 0;">
+    <!-- ── SECCIÓN 3: ÍNDICE PADELYA (NO TOCAR) ── -->
+    <div class="section-pad" style="padding-top:20px;">
+      <div class="indice-card">
+        <div class="indice-eyebrow">Índice PadelYa</div>
+        <div class="indice-score-row">
+          <span class="indice-score">1.8</span>
+          <span class="indice-next">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            próximo nivel: 2.0
+          </span>
+        </div>
+        <div class="indice-progress-row">
+          <span class="indice-progress-label">1.8</span>
+          <div class="progress-track">
+            <div class="progress-fill"></div>
+          </div>
+          <span class="indice-progress-label">2.0</span>
+        </div>
+        <div class="indice-hint">Te faltan 0.2 para el próximo nivel</div>
+        <div class="indice-desc">Tu Índice PadelYa mejora según tu actividad y resultados dentro de la app. Es distinto a tu categoría declarada.</div>
+      </div>
+    </div>
+
+    <!-- ── EXPLICACIÓN COMPACTA DEL ÍNDICE ── -->
+    <div style="background:#0A1630;border-radius:10px;padding:12px 14px;margin:10px 20px 0;">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
+        <div style="font-size:12px;"><span style="color:#4ADE80;font-weight:700;">+0.10</span> <span style="color:#A8B3C7;">Ganaste</span></div>
+        <div style="font-size:12px;"><span style="color:#4ADE80;font-weight:700;">+0.20</span> <span style="color:#A8B3C7;">Rival superior</span></div>
+        <div style="font-size:12px;"><span style="color:#EF4444;font-weight:700;">-0.10</span> <span style="color:#A8B3C7;">Perdiste</span></div>
+        <div style="font-size:12px;"><span style="color:#EF4444;font-weight:700;">-0.20</span> <span style="color:#A8B3C7;">No presentación</span></div>
+      </div>
+    </div>
+
+    <!-- ── SECCIÓN 4: ESTADO DE CUENTA ── -->
+    <div style="background:#0D1E3A;border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:16px;margin:12px 16px 0;">
+      <p style="font-size:12px;color:#A8B3C7;letter-spacing:0.5px;text-transform:uppercase;margin-bottom:12px;">Estado de cuenta</p>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span style="color:#4ADE80;font-size:14px;">✓</span>
+          <span style="font-size:14px;color:#F5F7FA;">Email verificado</span>
+        </div>
+        <div id="estado-celular" style="display:flex;align-items:center;gap:8px;">
+          <span style="color:#4ADE80;font-size:14px;">✓</span>
+          <span style="font-size:14px;color:#F5F7FA;">Celular verificado</span>
+        </div>
+        <div id="estado-acop" style="display:flex;align-items:center;gap:8px;">
+          <span style="color:#A8B3C7;font-size:14px;">○</span>
+          <span style="font-size:14px;color:#A8B3C7;">ACOP pendiente</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── SECCIÓN 5: REPUTACIÓN ── -->
+    <div class="section-pad" style="padding-top:12px;">
+      <div class="rep-card">
+        <div class="section-heading">Reputación</div>
+        <div class="rep-grid">
+          <div>
+            <div class="rep-number">95%</div>
+            <div class="rep-label">Asistencia</div>
+          </div>
+          <div>
+            <div class="rep-number">18</div>
+            <div class="rep-label">Volverían a jugar</div>
+          </div>
+          <div>
+            <div class="rep-number">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 0 0 5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 1 0 5H18"/><path d="M4 22h16"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>
+            </div>
+            <div class="rep-label">Compañero confiable</div>
+          </div>
+        </div>
+        <div class="rep-divider"></div>
+        <span class="rep-mvp-badge">
+          <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+          MVP del partido &times; 3
+        </span>
+      </div>
+    </div>
+
+    <!-- ── SECCIÓN 6: AMIGOS ── -->
+    <div style="background:#0D1E3A;border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:16px;margin:12px 16px 0;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+        <p style="font-size:15px;font-weight:700;color:#F5F7FA;">Amigos <span style="color:#A8B3C7;font-weight:400;font-size:13px;">(3)</span></p>
+        <a href="jugador-amigos.html" style="font-size:12px;color:#178BFF;text-decoration:none;">Ver todos →</a>
+      </div>
+      <div style="display:flex;gap:10px;">
+        <div style="text-align:center;">
+          <div style="width:40px;height:40px;border-radius:50%;background:#178BFF;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:white;margin:0 auto 4px;">MR</div>
+          <p style="font-size:10px;color:#A8B3C7;">Martín</p>
+        </div>
+        <div style="text-align:center;">
+          <div style="width:40px;height:40px;border-radius:50%;background:#7C3AED;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:white;margin:0 auto 4px;">AG</div>
+          <p style="font-size:10px;color:#A8B3C7;">Ana</p>
+        </div>
+        <div style="text-align:center;">
+          <div style="width:40px;height:40px;border-radius:50%;background:#0F766E;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:white;margin:0 auto 4px;">RS</div>
+          <p style="font-size:10px;color:#A8B3C7;">Roberto</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── SECCIÓN 7: PREMIUM ── -->
+    <div id="premium-section" style="margin:12px 16px 0;">
       <div id="premium-card-free" style="background:linear-gradient(135deg,#0D1E3A,#112244);border:1px solid rgba(23,139,255,0.3);border-radius:14px;padding:16px;">
         <div style="font-size:10px;color:#178BFF;font-weight:700;letter-spacing:1px;margin-bottom:8px;">PREMIUM</div>
         <div style="font-size:16px;font-weight:800;color:#F5F7FA;margin-bottom:3px;">Jugás ilimitado</div>
@@ -873,34 +982,12 @@
       </div>
     </div>
 
-    <!-- ── SECCIÓN 3: ÍNDICE PADELYA ── -->
-    <div class="section-pad" style="padding-top:20px;">
-      <div class="indice-card">
-        <div class="indice-eyebrow">Índice PadelYa</div>
-        <div class="indice-score-row">
-          <span class="indice-score">1.8</span>
-          <span class="indice-next">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-            próximo nivel: 2.0
-          </span>
-        </div>
-        <div class="indice-progress-row">
-          <span class="indice-progress-label">1.8</span>
-          <div class="progress-track">
-            <div class="progress-fill"></div>
-          </div>
-          <span class="indice-progress-label">2.0</span>
-        </div>
-        <div class="indice-hint">Te faltan 0.2 para el próximo nivel</div>
-        <div class="indice-desc">Tu Índice PadelYa mejora según tu actividad y resultados dentro de la app. Es distinto a tu categoría declarada.</div>
-      </div>
-    </div>
-
+    <!-- ── SECCIÓN 8: VERIFICACIÓN ACOP ── -->
     <div id="seccion-acop" style="margin:12px 16px 0;padding:14px 16px;background:#0D1E3A;border:1px solid rgba(255,255,255,0.08);border-radius:14px;">
 
       <div id="acop-estado-orientativa">
         <div style="font-size:10px;font-weight:700;letter-spacing:1px;color:#A8B3C7;text-transform:uppercase;margin-bottom:6px;">Verificación ACOP</div>
-        <p style="font-size:12px;color:#A8B3C7;margin-bottom:10px;line-height:1.5;">Tu categoría es orientativa. Verificala con ACOP para mejorar el matchmaking.</p>
+        <p style="font-size:12px;color:#A8B3C7;margin-bottom:10px;line-height:1.5;">Verificá tu categoría con ACOP para mejorar el matchmaking.</p>
         <button id="btn-abrir-acop"
                 style="width:100%;padding:10px 16px;background:transparent;border:1px solid #178BFF;color:#178BFF;border-radius:50px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;"
                 onclick="abrirVerificacionACOP()">
@@ -934,109 +1021,8 @@
       </div>
 
     </div>
-    <!-- ── INFO CARD: Cómo funciona el Índice ── -->
-    <div class="section-pad" style="padding-top:12px;">
-      <div class="info-card">
-        <div class="info-card-title">¿Cómo funciona el Índice PadelYa?</div>
-        <ul class="info-list">
-          <li>
-            <span class="info-delta-pos">+0.10</span>
-            <span>Ganaste un partido</span>
-          </li>
-          <li>
-            <span class="info-delta-pos">+0.20</span>
-            <span>Ganaste contra un jugador con mayor índice</span>
-          </li>
-          <li>
-            <span class="info-delta-neg">-0.10</span>
-            <span>Perdiste un partido</span>
-          </li>
-          <li>
-            <span class="info-delta-neg">-0.20</span>
-            <span>No presentación (no-show)</span>
-          </li>
-          <li>
-            <span class="info-delta-neg">-0.05 a -0.15</span>
-            <span>Cancelación tardía según anticipación</span>
-          </li>
-        </ul>
-        <div class="info-footer">
-          El índice es independiente de tu categoría declarada. Refleja tu actividad real y nivel relativo frente a otros jugadores de la plataforma.
-        </div>
-      </div>
-    </div>
 
-    <!-- ── SECCIÓN 4: ACTIVIDAD RECIENTE ── -->
-    <div class="section-pad" style="padding-top:12px;">
-      <div class="activity-card">
-        <div class="section-heading">Actividad reciente</div>
-
-        <div class="activity-row">
-          <div class="activity-icon-win">
-            <svg width="14" height="14" fill="none" stroke="#D6FF00" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
-          </div>
-          <div class="activity-text">
-            <span class="activity-main">+0.10 &middot; Ganaste un partido</span>
-            <span class="activity-time">hace 2 días</span>
-          </div>
-          <span class="activity-delta-pos">+0.10</span>
-        </div>
-
-        <div class="activity-row">
-          <div class="activity-icon-win">
-            <svg width="14" height="14" fill="none" stroke="#D6FF00" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
-          </div>
-          <div class="activity-text">
-            <span class="activity-main">+0.20 &middot; Ganaste vs jugador con mayor índice</span>
-            <span class="activity-time">hace 5 días</span>
-          </div>
-          <span class="activity-delta-pos">+0.20</span>
-        </div>
-
-        <div class="activity-row">
-          <div class="activity-icon-loss">
-            <svg width="14" height="14" fill="none" stroke="#EF4444" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-          </div>
-          <div class="activity-text">
-            <span class="activity-main">-0.20 &middot; No presentación</span>
-            <span class="activity-time">hace 1 semana</span>
-          </div>
-          <span class="activity-delta-neg">-0.20</span>
-        </div>
-
-        <button onclick="alert('Historial completo del Índice PadelYa — próximamente')" class="btn-ver-historial">Ver historial completo &rarr;</button>
-      </div>
-    </div>
-
-    <!-- ── SECCIÓN 5: REPUTACIÓN Y BADGES ── -->
-    <div class="section-pad" style="padding-top:12px;">
-      <div class="rep-card">
-        <div class="section-heading">Reputación</div>
-        <div class="rep-grid">
-          <div>
-            <div class="rep-number">95%</div>
-            <div class="rep-label">Asistencia</div>
-          </div>
-          <div>
-            <div class="rep-number">18</div>
-            <div class="rep-label">Volverían a jugar</div>
-          </div>
-          <div>
-            <div class="rep-number">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 0 0 5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 1 0 5H18"/><path d="M4 22h16"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>
-            </div>
-            <div class="rep-label">Compañero confiable</div>
-          </div>
-        </div>
-        <div class="rep-divider"></div>
-        <span class="rep-mvp-badge">
-          <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
-          MVP del partido &times; 3
-        </span>
-      </div>
-    </div>
-
-    <!-- ── SECCIÓN 6: LOGROS ── -->
+    <!-- ── SECCIÓN 9: LOGROS ── -->
     <div class="section-pad" style="padding-top:12px;padding-bottom:8px;">
       <div class="achievements-card">
         <div class="section-heading">
@@ -1107,7 +1093,7 @@
     </div>
 
   <!-- CERRAR SESIÓN -->
-  <div style="padding:16px 20px 24px;">
+  <div id="cerrar-sesion-section" style="padding:16px 20px 24px;">
     <button onclick="cerrarSesion()" style="width:100%;padding:13px;background:none;border:1.5px solid rgba(239,68,68,0.35);border-radius:12px;color:#EF4444;font-size:0.875rem;font-weight:700;cursor:pointer;font-family:inherit;transition:background 0.15s;">
       Cerrar sesión
     </button>
@@ -1118,16 +1104,15 @@
   <!-- BOTTOM NAV -->
   <nav class="bottom-nav" role="navigation" aria-label="Navegación principal">
     <a href="jugador-home.html" class="nav-item" aria-label="Inicio">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
-        <polyline points="9 22 9 12 15 12 15 22"/>
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M3 12L12 3L21 12V21H15V15H9V21H3V12Z"/>
       </svg>
       <span>Inicio</span>
     </a>
     <a href="jugador-buscar.html" class="nav-item" aria-label="Partidos">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
-        <rect x="2" y="4" width="20" height="16" rx="2"/>
-        <line x1="12" y1="4" x2="12" y2="20"/>
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="2" y="5" width="20" height="14" rx="2"/>
+        <line x1="12" y1="5" x2="12" y2="19"/>
         <line x1="2" y1="12" x2="6" y2="12"/>
         <line x1="18" y1="12" x2="22" y2="12"/>
       </svg>
@@ -1139,33 +1124,78 @@
         <line x1="5" y1="12" x2="19" y2="12"/>
       </svg>
     </button>
-    <a href="profes.html" class="nav-item" aria-label="Entrenà">
-      <svg width="22" height="22" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
-        <ellipse cx="50" cy="38" rx="26" ry="30"/>
-        <circle cx="41" cy="28" r="4" fill="currentColor" stroke="none"/>
-        <circle cx="50" cy="28" r="4" fill="currentColor" stroke="none"/>
-        <circle cx="59" cy="28" r="4" fill="currentColor" stroke="none"/>
-        <circle cx="41" cy="38" r="4" fill="currentColor" stroke="none"/>
-        <circle cx="50" cy="38" r="4" fill="currentColor" stroke="none"/>
-        <circle cx="59" cy="38" r="4" fill="currentColor" stroke="none"/>
-        <circle cx="41" cy="48" r="4" fill="currentColor" stroke="none"/>
-        <circle cx="50" cy="48" r="4" fill="currentColor" stroke="none"/>
-        <circle cx="59" cy="48" r="4" fill="currentColor" stroke="none"/>
-        <path d="M38 66 L50 68 L62 66 L58 68 L50 95 L42 68 Z"/>
-        <rect x="44" y="67" width="12" height="28" rx="6"/>
+    <a href="profes.html" class="nav-item" aria-label="Clases">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <ellipse cx="12" cy="8" rx="5" ry="6"/>
+        <path d="M10 14L9 16H15L14 14"/>
+        <rect x="10.5" y="16" width="3" height="6" rx="1.5"/>
       </svg>
-      <span>Entrenà</span>
+      <span>Clases</span>
     </a>
     <a href="jugador-perfil.html" class="nav-item active" aria-label="Perfil">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
         <circle cx="12" cy="8" r="4"/>
-        <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
+        <path d="M4 20C4 17 7.6 14 12 14C16.4 14 20 17 20 20"/>
       </svg>
       <span>Perfil</span>
     </a>
   </nav>
 
   <script>
+    /* ── Modo amigo: leer params de URL ── */
+    (function() {
+      var params = new URLSearchParams(window.location.search);
+      var esAmigo = params.get('amigo');
+      var nombreAmigo = params.get('nombre');
+      var categoriaAmigo = params.get('categoria');
+      if (esAmigo !== 'true') return;
+
+      // Datos del amigo
+      var avatarEl = document.getElementById('perfil-avatar');
+      var nombreEl = document.getElementById('perfil-nombre');
+      var catChipEl = document.getElementById('perfil-cat-chip');
+      if (nombreAmigo && nombreEl) nombreEl.textContent = nombreAmigo;
+      if (categoriaAmigo && catChipEl) catChipEl.textContent = categoriaAmigo + ' categoría';
+      if (avatarEl && nombreAmigo) {
+        var partes = nombreAmigo.trim().split(' ');
+        avatarEl.textContent = (partes.length >= 2
+          ? partes[0][0] + partes[partes.length - 1][0]
+          : nombreAmigo.substring(0, 2)).toUpperCase();
+      }
+
+      // Header: ocultar logo, mostrar nombre, ocultar config
+      var logo = document.getElementById('header-logo');
+      var titleEl = document.getElementById('header-amigo-title');
+      var configBtn = document.getElementById('header-config-btn');
+      if (logo) logo.style.display = 'none';
+      if (titleEl) { titleEl.style.display = 'block'; titleEl.textContent = nombreAmigo || 'Perfil'; }
+      if (configBtn) configBtn.style.display = 'none';
+
+      // Ocultar secciones propias
+      var seccionAcop = document.getElementById('seccion-acop');
+      if (seccionAcop) seccionAcop.style.display = 'none';
+      var premiumSection = document.getElementById('premium-section');
+      if (premiumSection) premiumSection.style.display = 'none';
+      var cerrarSection = document.getElementById('cerrar-sesion-section');
+      if (cerrarSection) cerrarSection.style.display = 'none';
+      var editBtn = document.getElementById('perfil-edit-btn');
+      if (editBtn) editBtn.style.display = 'none';
+      var sexoChip = document.getElementById('perfil-sexo-chip');
+      if (sexoChip) sexoChip.style.display = 'none';
+
+      // Botón volver + Invitar a partido
+      var backBtn = document.querySelector('.header-icon-btn[onclick="history.back()"]');
+      if (backBtn) backBtn.setAttribute('onclick', "window.location.href='jugador-amigos.html'");
+      var profileTop = document.querySelector('.profile-top');
+      if (profileTop) {
+        var invBtn = document.createElement('button');
+        invBtn.textContent = 'Invitar a partido';
+        invBtn.style.cssText = 'margin-top:6px;padding:9px 22px;background:var(--blue);color:white;border:none;border-radius:50px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;';
+        invBtn.onclick = function() { alert('Invitación enviada a ' + (nombreAmigo ? nombreAmigo.split(' ')[0] : 'amigo') + ' ✓'); };
+        profileTop.appendChild(invBtn);
+      }
+    })();
+
     /* ── Demo data fallback ── */
     (function() {
       if (!sessionStorage.getItem('loggedIn')) {
@@ -1206,17 +1236,26 @@
       var catChipEl = document.getElementById('perfil-cat-chip');
       if (catChipEl) {
         if (acopVerificado || estado === 'verificada') {
-          catChipEl.textContent = cat + ' · Verificada ACOP ✓';
-          catChipEl.style.background = 'rgba(214,255,0,0.13)';
-          catChipEl.style.color = 'var(--green)';
+          catChipEl.textContent = '✓ ' + cat + ' verificada';
+          catChipEl.style.background = 'rgba(74,222,128,0.13)';
+          catChipEl.style.color = '#4ADE80';
         } else if (estado === 'pendiente') {
           catChipEl.textContent = cat + ' · Pendiente';
           catChipEl.style.background = 'rgba(251,191,36,0.15)';
           catChipEl.style.color = '#FBB724';
         } else {
-          catChipEl.textContent = cat + ' · Orientativa';
+          catChipEl.textContent = cat;
         }
       }
+      // Estado de cuenta: actualizar ACOP según sesión
+      (function() {
+        var estadoAcopEl = document.getElementById('estado-acop');
+        if (estadoAcopEl && sessionStorage.getItem('acopVerificado') === 'true') {
+          estadoAcopEl.innerHTML =
+            '<span style="color:#4ADE80;font-size:14px;">✓</span>' +
+            '<span style="font-size:14px;color:#F5F7FA;">ACOP verificado</span>';
+        }
+      })();
       // Inicializar sección ACOP según sessionStorage
       (function() {
         if (sessionStorage.getItem('acopVerificado') === 'true') {
@@ -1328,9 +1367,15 @@
 
       var chipEl = document.getElementById('perfil-cat-chip');
       if (chipEl) {
-        chipEl.textContent = categoria + ' · Verificada ACOP ✓';
+        chipEl.textContent = '✓ ' + categoria + ' verificada';
         chipEl.style.background = 'rgba(74,222,128,0.13)';
         chipEl.style.color = '#4ADE80';
+      }
+      var estadoAcopEl = document.getElementById('estado-acop');
+      if (estadoAcopEl) {
+        estadoAcopEl.innerHTML =
+          '<span style="color:#4ADE80;font-size:14px;">✓</span>' +
+          '<span style="font-size:14px;color:#F5F7FA;">ACOP verificado</span>';
       }
     }
 

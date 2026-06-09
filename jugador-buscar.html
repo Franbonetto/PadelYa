@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es-AR">
 <head>
   <meta charset="UTF-8" />
@@ -354,7 +354,7 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 3px;
+      gap: 4px;
       padding: 4px 0;
       color: #A8B3C7;
       text-decoration: none;
@@ -785,16 +785,15 @@
   <!-- ════════ BOTTOM NAV ════════ -->
   <nav class="bottom-nav" role="navigation" aria-label="Navegación principal">
     <a href="jugador-home.html" class="nav-item" aria-label="Inicio">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
-        <polyline points="9 22 9 12 15 12 15 22"/>
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M3 12L12 3L21 12V21H15V15H9V21H3V12Z"/>
       </svg>
       <span>Inicio</span>
     </a>
     <a href="jugador-buscar.html" class="nav-item active" aria-label="Partidos">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
-        <rect x="2" y="4" width="20" height="16" rx="2"/>
-        <line x1="12" y1="4" x2="12" y2="20"/>
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="2" y="5" width="20" height="14" rx="2"/>
+        <line x1="12" y1="5" x2="12" y2="19"/>
         <line x1="2" y1="12" x2="6" y2="12"/>
         <line x1="18" y1="12" x2="22" y2="12"/>
       </svg>
@@ -806,27 +805,18 @@
         <line x1="5" y1="12" x2="19" y2="12"/>
       </svg>
     </button>
-    <a href="profes.html" class="nav-item" aria-label="Entrenà">
-      <svg width="22" height="22" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
-        <ellipse cx="50" cy="38" rx="26" ry="30"/>
-        <circle cx="41" cy="28" r="4" fill="currentColor" stroke="none"/>
-        <circle cx="50" cy="28" r="4" fill="currentColor" stroke="none"/>
-        <circle cx="59" cy="28" r="4" fill="currentColor" stroke="none"/>
-        <circle cx="41" cy="38" r="4" fill="currentColor" stroke="none"/>
-        <circle cx="50" cy="38" r="4" fill="currentColor" stroke="none"/>
-        <circle cx="59" cy="38" r="4" fill="currentColor" stroke="none"/>
-        <circle cx="41" cy="48" r="4" fill="currentColor" stroke="none"/>
-        <circle cx="50" cy="48" r="4" fill="currentColor" stroke="none"/>
-        <circle cx="59" cy="48" r="4" fill="currentColor" stroke="none"/>
-        <path d="M38 66 L50 68 L62 66 L58 68 L50 95 L42 68 Z"/>
-        <rect x="44" y="67" width="12" height="28" rx="6"/>
+    <a href="profes.html" class="nav-item" aria-label="Clases">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <ellipse cx="12" cy="8" rx="5" ry="6"/>
+        <path d="M10 14L9 16H15L14 14"/>
+        <rect x="10.5" y="16" width="3" height="6" rx="1.5"/>
       </svg>
-      <span>Entrenà</span>
+      <span>Clases</span>
     </a>
     <a href="jugador-perfil.html" class="nav-item" aria-label="Perfil">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
         <circle cx="12" cy="8" r="4"/>
-        <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
+        <path d="M4 20C4 17 7.6 14 12 14C16.4 14 20 17 20 20"/>
       </svg>
       <span>Perfil</span>
     </a>
@@ -932,6 +922,17 @@
       }
     }
 
+    /* ── Toast genérico ── */
+    function showToast(msg, type) {
+      var t = document.getElementById('toast-sumarme');
+      if (!t) return;
+      t.textContent = msg;
+      t.style.background = type === 'error' ? '#EF4444' : type === 'warning' ? '#F59E0B' : '#059669';
+      t.style.display = 'block';
+      clearTimeout(t._tid);
+      t._tid = setTimeout(function() { t.style.display = 'none'; }, 3000);
+    }
+
     /* ── Limpiar filtros ── */
     function limpiarFiltros() {
       clearFilters();
@@ -950,119 +951,202 @@
 
       if (partidos.length === 0) {
         partidos = [
-          { club: 'Chingoland',         hora: '20:00 hs', fecha: getRelDate(0), cat: '5ta', tipo: 'Masculino', mod: 'Competitivo', jugadores: 2, total: 4 },
-          { club: 'Las Terrazas Pádel', hora: '19:00 hs', fecha: getRelDate(1), cat: '5ta', tipo: 'Masculino', mod: 'Casual',       jugadores: 1, total: 4 }
+          { id: 1, club: 'Chingoland',         hora: '20:00 hs', fecha: getRelDate(0), cat: '5ta', tipo: 'Masculino', mod: 'Competitivo', jugadores: 2, total: 4 },
+          { id: 2, club: 'Las Terrazas Pádel', hora: '19:00 hs', fecha: getRelDate(1), cat: '5ta', tipo: 'Masculino', mod: 'Casual',       jugadores: 1, total: 4 }
         ];
+        sessionStorage.setItem('misPartidos', JSON.stringify(partidos));
       }
+
+      /* Asegurar que cada partido tenga id */
+      var dirty = false;
+      partidos.forEach(function(p) {
+        if (!p.id) { p.id = Date.now() + Math.random(); dirty = true; }
+      });
+      if (dirty) sessionStorage.setItem('misPartidos', JSON.stringify(partidos));
 
       var userName = sessionStorage.getItem('nombre') || 'Jugador';
       var initials = userName.trim().split(' ').map(function(w){ return w[0] || ''; }).join('').substring(0, 2).toUpperCase() || 'YO';
 
-      function buildCardHtml(p, i) {
+      function buildOrgCard(p) {
         var pct = Math.round((p.jugadores / p.total) * 100);
         var avHtml = '';
         for (var d = 0; d < p.total; d++) {
-          if (d === 0) {
-            avHtml += '<div class="av" style="font-size:10px;">' + initials + '</div>';
-          } else if (d < p.jugadores) {
-            avHtml += '<div class="av" style="background:#0F766E;">??</div>';
-          } else {
-            avHtml += '<div class="av av-empty"></div>';
-          }
+          if (d === 0) avHtml += '<div class="av" style="font-size:10px;">' + initials + '</div>';
+          else if (d < p.jugadores) avHtml += '<div class="av" style="background:#0F766E;">??</div>';
+          else avHtml += '<div class="av av-empty"></div>';
         }
-        var fechaLabel   = p.fecha ? formatFechaOwn(p.fecha) : '';
-        var horaLabel    = p.hora  ? p.hora : '';
+        var fechaLabel = p.fecha ? formatFechaOwn(p.fecha) : '';
+        var horaLabel  = p.hora  ? p.hora : '';
         var fechaDisplay = fechaLabel ? (horaLabel ? fechaLabel + ' · ' + horaLabel : fechaLabel) : horaLabel;
-        var acciones = p.jugadores <= 1
-          ? '<button class="btn-editar">Editar</button><button class="btn-cancelar" onclick="mostrarModalCancelar(' + i + ')">Cancelar partido</button>'
-          : '<button class="btn-abandonar" onclick="mostrarModalAbandonar(' + i + ')">Abandonar partido</button>';
-        return '<div class="match-card-own" id="own-card-' + i + '">' +
+        return '<div class="match-card-own">' +
           '<span class="badge-creado">CREADO POR VOS</span>' +
           '<div class="own-club-name">' + p.club + '</div>' +
           (fechaDisplay ? '<div class="own-fecha">' + fechaDisplay + '</div>' : '') +
           '<div class="own-cat-line">' + p.cat + ' · ' + p.tipo + ' · ' + p.mod + '</div>' +
           '<div class="own-avatars-row">' + avHtml + '<span class="own-count">' + p.jugadores + '/' + p.total + '</span></div>' +
           '<div class="own-progress-wrap"><div class="own-progress-bar" style="width:' + pct + '%;"></div></div>' +
-          '<div class="own-actions">' + acciones + '</div>' +
-          '</div>';
+          '<div class="own-actions">' +
+            '<button class="btn-editar" onclick="editarPartido(' + p.id + ')">Editar</button>' +
+            '<button class="btn-cancelar" onclick="cancelarPartido(' + p.id + ')">Cancelar partido</button>' +
+          '</div></div>';
       }
 
-      /* Sección A: Organizados por vos (todos los que NO tienen sumado:true) */
-      var organizados = partidos.filter(function(p) { return !p.sumado; });
+      function buildSumadoCard(p) {
+        var pct = Math.round((p.jugadores / p.total) * 100);
+        var avHtml = '';
+        for (var d = 0; d < p.total; d++) {
+          if (d < p.jugadores) avHtml += '<div class="av" style="background:#0F766E;">??</div>';
+          else avHtml += '<div class="av av-empty"></div>';
+        }
+        return '<div class="match-card-own" style="border-left-color:#F59E0B;">' +
+          '<span class="badge-creado" style="background:#F59E0B;">ME SUMÉ</span>' +
+          '<div class="own-club-name">' + p.complejo + '</div>' +
+          '<div class="own-fecha">' + p.fecha + '</div>' +
+          '<div class="own-cat-line">' + p.categoria + ' · ' + p.genero + ' · ' + p.tipo + '</div>' +
+          '<div class="own-avatars-row">' + avHtml + '<span class="own-count">' + p.jugadores + '/' + p.total + '</span></div>' +
+          '<div class="own-progress-wrap"><div class="own-progress-bar" style="width:' + pct + '%;background:#F59E0B;"></div></div>' +
+          '<div class="own-actions">' +
+            '<button class="btn-abandonar" onclick="abandonarPartidoUnido(' + p.id + ')">Abandonar partido</button>' +
+          '</div></div>';
+      }
+
+      /* Sección A: Organizados por vos */
       organizadosList.innerHTML = '';
-      if (organizados.length === 0) {
+      if (partidos.length === 0) {
         organizadosEmpty.style.display = 'block';
       } else {
         organizadosEmpty.style.display = 'none';
-        organizados.forEach(function(p, i) {
-          organizadosList.innerHTML += buildCardHtml(p, partidos.indexOf(p));
-        });
+        partidos.forEach(function(p) { organizadosList.innerHTML += buildOrgCard(p); });
       }
 
-      /* Sección B: Te sumaste a */
-      var sumados = partidos.filter(function(p) { return p.sumado === true; });
+      /* Sección B: Te sumaste a — lee de partidosUnidos */
+      var unidos = JSON.parse(sessionStorage.getItem('partidosUnidos') || '[]');
       sumadosList.innerHTML = '';
-      if (sumados.length === 0) {
+      if (unidos.length === 0) {
         sumadosEmpty.style.display = 'block';
       } else {
         sumadosEmpty.style.display = 'none';
-        sumados.forEach(function(p) {
-          sumadosList.innerHTML += buildCardHtml(p, partidos.indexOf(p));
-        });
+        unidos.forEach(function(p) { sumadosList.innerHTML += buildSumadoCard(p); });
       }
     }
+    var renderizarMisPartidos = renderMisPartidos;
+    var renderizarPartidosUnidos = renderMisPartidos;
 
 
-    /* ── Gestión partidos propios ── */
-    var _cancelarIdx = -1;
-    var _abandonarIdx = -1;
-    function mostrarModalCancelar(idx) {
-      _cancelarIdx = idx;
-      document.getElementById('cancelar-overlay').style.display = 'flex';
-      document.body.style.overflow = 'hidden';
+    /* ── Editar partido ── */
+    function editarPartido(id) {
+      var mis = JSON.parse(sessionStorage.getItem('misPartidos') || '[]');
+      var partido = mis.find(function(p) { return p.id == id; });
+      if (!partido) return;
+      var modal = document.createElement('div');
+      modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:1000;display:flex;align-items:center;justify-content:center;padding:24px;';
+      modal.innerHTML =
+        '<div style="background:#0D1E3A;border:1px solid rgba(255,255,255,0.1);border-radius:20px;padding:24px;width:100%;max-width:340px;" onclick="event.stopPropagation()">' +
+        '<h3 style="color:#F5F7FA;font-size:17px;font-weight:700;margin-bottom:16px;">Editar partido</h3>' +
+        '<label style="color:#A8B3C7;font-size:13px;display:block;margin-bottom:6px;">Complejo</label>' +
+        '<select id="edit-complejo" style="width:100%;padding:11px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:10px;color:#F5F7FA;font-size:14px;margin-bottom:14px;">' +
+        '<option value="' + partido.club + '">' + partido.club + '</option>' +
+        '<option>Chingoland</option><option>Las Terrazas Pádel</option>' +
+        '<option>Sport Arena Pádel</option><option>Serrano Pádel</option>' +
+        '<option>Padel Time</option><option>El Triunfo</option>' +
+        '</select>' +
+        '<label style="color:#A8B3C7;font-size:13px;display:block;margin-bottom:6px;">Fecha</label>' +
+        '<input type="date" id="edit-fecha" value="' + (partido.fechaISO || '') + '" style="width:100%;padding:11px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:10px;color:#F5F7FA;font-size:14px;margin-bottom:20px;">' +
+        '<button onclick="guardarEdicion(' + id + ')" style="width:100%;padding:13px;background:#178BFF;border:none;border-radius:50px;color:white;font-size:14px;font-weight:700;cursor:pointer;margin-bottom:10px;">Guardar cambios</button>' +
+        '<button onclick="this.closest(\'div[style*=\\\"inset\\\"]\').remove()" style="width:100%;padding:13px;background:transparent;border:1px solid rgba(255,255,255,0.15);border-radius:50px;color:#A8B3C7;font-size:14px;cursor:pointer;">Cancelar</button>' +
+        '</div>';
+      document.body.appendChild(modal);
     }
-    function cerrarCancelar() {
-      document.getElementById('cancelar-overlay').style.display = 'none';
-      document.body.style.overflow = '';
-      _cancelarIdx = -1;
-    }
-    function confirmarCancelar() {
-      if (_cancelarIdx < 0) return;
-      var stored = sessionStorage.getItem('misPartidos');
-      var partidos = stored ? JSON.parse(stored) : [];
-      partidos.splice(_cancelarIdx, 1);
-      sessionStorage.setItem('misPartidos', JSON.stringify(partidos));
-      cerrarCancelar();
-      renderMisPartidos();
-    }
-    function mostrarModalAbandonar(idx) {
-      _abandonarIdx = idx;
-      document.getElementById('abandonar-overlay').style.display = 'flex';
-      document.body.style.overflow = 'hidden';
-    }
-    function cerrarAbandonar() {
-      document.getElementById('abandonar-overlay').style.display = 'none';
-      document.body.style.overflow = '';
-      _abandonarIdx = -1;
-    }
-    function confirmarAbandonar() {
-      if (_abandonarIdx < 0) return;
-      var stored = sessionStorage.getItem('misPartidos');
-      var partidos = stored ? JSON.parse(stored) : [];
-      partidos.splice(_abandonarIdx, 1);
-      sessionStorage.setItem('misPartidos', JSON.stringify(partidos));
-      cerrarAbandonar();
-      renderMisPartidos();
-    }
-    /* ── Cancelar partido propio ── */
-    function cancelarPartido(idx) {
-      var stored   = sessionStorage.getItem('misPartidos');
-      var partidos = stored ? JSON.parse(stored) : [];
-      if (partidos.length > 0) {
-        partidos.splice(idx, 1);
-        sessionStorage.setItem('misPartidos', JSON.stringify(partidos));
+    function guardarEdicion(id) {
+      var mis = JSON.parse(sessionStorage.getItem('misPartidos') || '[]');
+      var idx = mis.findIndex(function(p) { return p.id == id; });
+      if (idx !== -1) {
+        var nuevoComplejo = document.getElementById('edit-complejo').value;
+        var nuevaFecha    = document.getElementById('edit-fecha').value;
+        if (nuevoComplejo) mis[idx].club = nuevoComplejo;
+        if (nuevaFecha) {
+          mis[idx].fechaISO = nuevaFecha;
+          var parts = nuevaFecha.split('-');
+          var d = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
+          var hoy = new Date(); hoy.setHours(0,0,0,0);
+          var man = new Date(hoy); man.setDate(man.getDate() + 1);
+          d.setHours(0,0,0,0);
+          mis[idx].fecha = d.getTime() === hoy.getTime() ? getRelDate(0) :
+                           d.getTime() === man.getTime() ? getRelDate(1) : nuevaFecha;
+        }
+        sessionStorage.setItem('misPartidos', JSON.stringify(mis));
       }
-      renderMisPartidos();
+      document.querySelector('div[style*="inset:0"]').remove();
+      showToast('Partido actualizado.', 'success');
+      setTimeout(renderMisPartidos, 500);
+    }
+    /* ── Modal global reutilizable ── */
+    function abrirModal(titulo, texto, btnTexto, btnColor, onConfirmar, btnCancelarTexto) {
+      document.getElementById('modal-titulo').textContent = titulo;
+      document.getElementById('modal-texto').textContent = texto;
+      var btnConf = document.getElementById('modal-btn-confirmar');
+      btnConf.textContent = btnTexto;
+      btnConf.style.background = btnColor || '#178BFF';
+      btnConf.onclick = function() {
+        cerrarModal();
+        if (onConfirmar) onConfirmar();
+      };
+      document.getElementById('modal-btn-cancelar').textContent = btnCancelarTexto || 'Cancelar';
+      document.getElementById('modal-global').style.display = 'flex';
+    }
+    function cerrarModal() {
+      var modal = document.getElementById('modal-global');
+      if (modal) modal.style.display = 'none';
+    }
+
+    /* ── Modales de confirmación ── */
+    function cancelarPartido(id) {
+      abrirModal(
+        '¿Cancelás el partido?',
+        'Los jugadores serán notificados de la cancelación.',
+        'Sí, cancelar partido',
+        '#EF4444',
+        function() {
+          var mis = JSON.parse(sessionStorage.getItem('misPartidos') || '[]');
+          mis = mis.filter(function(p) { return p.id !== id; });
+          sessionStorage.setItem('misPartidos', JSON.stringify(mis));
+          showToast('Partido cancelado.', 'error');
+          setTimeout(function() { renderizarMisPartidos(); }, 400);
+        },
+        'No, mantener'
+      );
+    }
+    function abandonarPartidoPropio(id) {
+      abrirModal(
+        '¿Abandonás el partido?',
+        'El primer jugador que se sumó pasará a ser el nuevo organizador.',
+        'Sí, abandonar',
+        '#EF4444',
+        function() {
+          var mis = JSON.parse(sessionStorage.getItem('misPartidos') || '[]');
+          mis = mis.filter(function(p) { return p.id !== id; });
+          sessionStorage.setItem('misPartidos', JSON.stringify(mis));
+          showToast('Abandonaste el partido.', 'warning');
+          setTimeout(function() { renderizarMisPartidos(); }, 400);
+        },
+        'Quedarme'
+      );
+    }
+    function abandonarPartidoUnido(id) {
+      abrirModal(
+        '¿Abandonás el partido?',
+        'Si abandonás, tu lugar puede ser ocupado por otro jugador.',
+        'Sí, abandonar',
+        '#EF4444',
+        function() {
+          var unidos = JSON.parse(sessionStorage.getItem('partidosUnidos') || '[]');
+          unidos = unidos.filter(function(p) { return p.id !== id; });
+          sessionStorage.setItem('partidosUnidos', JSON.stringify(unidos));
+          showToast('Abandonaste el partido.', 'warning');
+          setTimeout(function() { renderizarPartidosUnidos(); }, 400);
+        },
+        'Quedarme'
+      );
     }
 
     /* ── Sumarse a partido ── */
@@ -1191,6 +1275,40 @@
     function usarPartidoGratis() {
       var jugados = parseInt(sessionStorage.getItem('partidosJugados') || '0');
       sessionStorage.setItem('partidosJugados', String(jugados + 1));
+
+      /* Guardar en partidosUnidos */
+      if (_sumarmeBtn) {
+        var card = _sumarmeBtn.closest('.match-card');
+        if (card) {
+          var clubEl   = card.querySelector('.match-club');
+          var fechaEl  = card.querySelector('.match-date');
+          var catEl    = card.querySelector('.tag-cat');
+          var tags     = card.querySelectorAll('.tag');
+          var genero = '', tipo = '';
+          tags.forEach(function(t) {
+            if (!t.classList.contains('tag-cat') && !t.classList.contains('tag-comp') && !t.classList.contains('tag-cas') && !genero) genero = t.textContent.trim();
+            if (t.classList.contains('tag-comp')) tipo = 'Competitivo';
+            if (t.classList.contains('tag-cas'))  tipo = 'Casual';
+          });
+          var countEl = card.querySelector('span[style*="color:#178BFF"]');
+          var jugNum = 0, totNum = 4;
+          if (countEl) { var pts = countEl.textContent.split('/'); jugNum = parseInt(pts[0]) || 0; totNum = parseInt(pts[1]) || 4; }
+          var unidos = JSON.parse(sessionStorage.getItem('partidosUnidos') || '[]');
+          unidos.push({
+            id: Date.now(),
+            complejo:   clubEl  ? clubEl.textContent.trim()  : '',
+            fecha:      fechaEl ? fechaEl.textContent.trim()  : '',
+            categoria:  catEl   ? catEl.textContent.trim()    : '',
+            genero:     genero,
+            tipo:       tipo,
+            jugadores:  jugNum + 1,
+            total:      totNum,
+            organizador: 'Otro jugador'
+          });
+          sessionStorage.setItem('partidosUnidos', JSON.stringify(unidos));
+        }
+      }
+
       document.getElementById('matchmaking-overlay').style.display = 'none';
       document.body.style.overflow = '';
       if (_sumarmeBtn) {
@@ -1205,19 +1323,23 @@
       toast.style.display = 'block';
       setTimeout(function() { toast.style.display = 'none'; }, 3000);
     }
-    /* ── Category dimming ── */
+    /* ── Category priority: in-range first, out-range after separator ── */
     (function() {
       var ORDEN = ['1ra','2da','3ra','4ta','5ta','6ta','7ma','7ma B'];
       var miCat = sessionStorage.getItem('categoria') || '5ta';
       var myIdx = ORDEN.indexOf(miCat);
-      var visibleCount = 0;
-      document.querySelectorAll('.match-card').forEach(function(card) {
+
+      var container   = document.getElementById('section-todos');
+      var insertBefore = document.getElementById('empty-sin-partidos');
+      var cards = Array.prototype.slice.call(container.querySelectorAll('.match-card'));
+
+      var inRange = [], outRange = [];
+      cards.forEach(function(card) {
         var tagEl = card.querySelector('.tag-cat');
-        if (!tagEl) { visibleCount++; return; }
-        var cardCat = tagEl.textContent.trim();
-        var cardIdx = ORDEN.indexOf(cardCat);
+        if (!tagEl) { inRange.push(card); return; }
+        var cardIdx = ORDEN.indexOf(tagEl.textContent.trim());
         if (myIdx === -1 || cardIdx === -1 || Math.abs(myIdx - cardIdx) <= 1) {
-          visibleCount++;
+          inRange.push(card);
         } else {
           card.style.opacity = '0.45';
           var badge = document.createElement('span');
@@ -1233,34 +1355,27 @@
             btn.style.cursor = 'not-allowed';
             btn.onclick = null;
           }
+          outRange.push(card);
         }
       });
-      actualizarContador(visibleCount);
+
+      /* Reordenar en DOM */
+      cards.forEach(function(c) { c.parentNode && c.parentNode.removeChild(c); });
+      inRange.forEach(function(c) { container.insertBefore(c, insertBefore); });
+      if (inRange.length > 0 && outRange.length > 0) {
+        var sep = document.createElement('div');
+        sep.style.cssText = 'font-size:11px;color:#A8B3C7;padding:8px 16px;letter-spacing:0.5px;';
+        sep.textContent = 'FUERA DE TU CATEGORÍA';
+        container.insertBefore(sep, insertBefore);
+      }
+      outRange.forEach(function(c) { container.insertBefore(c, insertBefore); });
+
+      actualizarContador(inRange.length);
     })();
   </script>
 
 
   <!-- MODAL SUMARME -->
-  <!-- CANCELAR PARTIDO MODAL -->
-  <div id="cancelar-overlay" onclick="event.target===this&&cerrarCancelar()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.65);z-index:400;align-items:center;justify-content:center;">
-    <div onclick="event.stopPropagation()" style="background:#0F2040;border:1px solid rgba(255,255,255,0.13);border-radius:20px;padding:1.5rem;max-width:320px;width:calc(100% - 2rem);text-align:center;">
-      <div style="font-size:1rem;font-weight:800;color:#F5F7FA;margin-bottom:0.75rem;">¿Cancelás este partido?</div>
-      <p style="font-size:0.875rem;color:#A8B3C7;margin-bottom:1.25rem;line-height:1.6;">Los jugadores serán notificados.</p>
-      <button onclick="confirmarCancelar()" style="width:100%;background:rgba(239,68,68,0.12);color:#F87171;border:1.5px solid rgba(239,68,68,0.35);border-radius:10px;padding:0.7rem;font-size:0.9rem;font-weight:700;cursor:pointer;font-family:inherit;margin-bottom:0.5rem;">Sí, cancelar</button>
-      <button onclick="cerrarCancelar()" style="width:100%;background:none;color:#A8B3C7;border:none;font-size:0.875rem;cursor:pointer;font-family:inherit;padding:8px;">No, mantener</button>
-    </div>
-  </div>
-
-  <!-- ABANDONAR PARTIDO MODAL -->
-  <div id="abandonar-overlay" onclick="event.target===this&&cerrarAbandonar()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.65);z-index:400;align-items:center;justify-content:center;">
-    <div onclick="event.stopPropagation()" style="background:#0F2040;border:1px solid rgba(255,255,255,0.13);border-radius:20px;padding:1.5rem;max-width:320px;width:calc(100% - 2rem);text-align:center;">
-      <div style="font-size:1rem;font-weight:800;color:#F5F7FA;margin-bottom:0.75rem;">¿Abandonar este partido?</div>
-      <p style="font-size:0.875rem;color:#A8B3C7;margin-bottom:1.25rem;line-height:1.6;">Si abandonás, el siguiente jugador pasa a ser el organizador.</p>
-      <button onclick="confirmarAbandonar()" style="width:100%;background:#178BFF;color:white;border:none;border-radius:10px;padding:0.7rem;font-size:0.9rem;font-weight:700;cursor:pointer;font-family:inherit;margin-bottom:0.5rem;">Sí, abandonar</button>
-      <button onclick="cerrarAbandonar()" style="width:100%;background:none;color:#A8B3C7;border:none;font-size:0.875rem;cursor:pointer;font-family:inherit;padding:8px;">Quedarme</button>
-    </div>
-  </div>
-
   <!-- MATCHMAKING PANEL -->
   <div id="matchmaking-overlay" onclick="cerrarMatchmaking(event)" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.65);z-index:350;align-items:center;justify-content:center;">
     <div onclick="event.stopPropagation()" style="background:#0C1A2E;border:1px solid rgba(255,255,255,0.13);border-radius:20px;padding:1.5rem;max-width:340px;width:calc(100% - 2rem);position:relative;">
@@ -1332,6 +1447,16 @@
         <button onclick="confirmarCodigoVerif()" style="width:100%;background:#178BFF;color:white;border:none;border-radius:10px;padding:14px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;margin-top:0.5rem;">Verificar</button>
         <button onclick="document.getElementById('verif-step-2').style.display='none';document.getElementById('verif-step-1').style.display='block';" style="width:100%;background:none;border:none;color:#A8B3C7;font-size:0.875rem;cursor:pointer;font-family:inherit;padding:10px;margin-top:4px;">Cambiar número</button>
       </div>
+    </div>
+  </div>
+
+  <!-- Modal global reutilizable -->
+  <div id="modal-global" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:9999;align-items:center;justify-content:center;padding:24px;">
+    <div style="background:#0D1E3A;border:1px solid rgba(255,255,255,0.1);border-radius:20px;padding:24px;width:100%;max-width:340px;">
+      <h3 id="modal-titulo" style="color:#F5F7FA;font-size:17px;font-weight:700;margin-bottom:10px;"></h3>
+      <p id="modal-texto" style="color:#A8B3C7;font-size:14px;margin-bottom:20px;"></p>
+      <button id="modal-btn-confirmar" style="width:100%;padding:13px;border:none;border-radius:50px;color:white;font-size:14px;font-weight:700;cursor:pointer;margin-bottom:10px;"></button>
+      <button onclick="cerrarModal()" id="modal-btn-cancelar" style="width:100%;padding:13px;background:transparent;border:1px solid rgba(255,255,255,0.15);border-radius:50px;color:#A8B3C7;font-size:14px;cursor:pointer;">Cancelar</button>
     </div>
   </div>
 

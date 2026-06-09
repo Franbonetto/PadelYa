@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es-AR">
 <head>
   <meta charset="UTF-8" />
@@ -467,7 +467,7 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 3px;
+      gap: 4px;
       padding: 4px 0;
       color: #A8B3C7;
       text-decoration: none;
@@ -548,7 +548,7 @@
       font-family: inherit;
       width: 100%;
     }
-    .logo-img { height: 36px; object-fit: contain; display: block; }
+    .logo-img { height: 40px; width: auto; object-fit: contain; display: block; }
     .match-date { font-size: 11px; color: #A8B3C7; font-weight: 500; margin-bottom: 6px; }
     .sp-dot { width: 7px; height: 7px; border-radius: 50%; background: rgba(255,255,255,0.2); transition: background 0.3s; flex-shrink: 0; }
     .sp-dot.sp-dot-active { background: #178BFF; }
@@ -561,7 +561,7 @@
   ════════════════════════════════════════ -->
   <header class="app-header">
     <div class="header-inner">
-      <a href="jugador-home.html" style="display:block;"><img src="logo-padelya.png" alt="PadelYa" style="height:36px;width:auto;object-fit:contain;display:block;"></a>
+      <a href="jugador-home.html" style="display:flex;align-items:center;"><img src="logo-padelya.png" alt="PadelYa" style="height:40px;width:auto;object-fit:contain;display:block;"></a>
       <div>
         <div class="header-name" id="home-header-name">Hola, Martín</div>
         <div class="header-sub"  id="home-header-sub">7ma B</div>
@@ -610,7 +610,7 @@
         <div id="sponsor-name" style="font-size:17px;font-weight:800;color:#F5F7FA;margin-bottom:4px;transition:opacity 0.4s;"></div>
         <div id="sponsor-tagline" style="font-size:13px;color:#A8B3C7;margin-bottom:14px;line-height:1.5;transition:opacity 0.4s;"></div>
         <div style="display:flex;align-items:center;justify-content:space-between;">
-          <button style="font-size:12px;font-weight:700;color:#178BFF;border:1.5px solid rgba(23,139,255,0.4);border-radius:99px;padding:5px 16px;background:rgba(23,139,255,0.08);cursor:pointer;font-family:inherit;">Ver más</button>
+          <button id="btn-ver-mas" style="font-size:12px;font-weight:700;color:#178BFF;border:1.5px solid rgba(23,139,255,0.4);border-radius:99px;padding:5px 16px;background:rgba(23,139,255,0.08);cursor:pointer;font-family:inherit;">Ver más</button>
           <div style="display:flex;gap:6px;align-items:center;">
             <div class="sp-dot sp-dot-active"></div>
             <div class="sp-dot"></div>
@@ -621,42 +621,16 @@
     </div>
 
     <!-- LES FALTA 1 / PARTIDOS DINÁMICOS -->
-    <section id="seccion-partidos" class="section">
+    <section id="seccion-partidos" class="section" style="margin-top:8px;border-top:1px solid rgba(255,255,255,0.07);padding-top:20px;">
       <div class="section-header">
         <div>
-          <div id="titulo-partidos" class="section-title">Les falta 1</div>
+          <div id="titulo-partidos" class="section-title" style="font-size:20px;font-weight:800;">Les falta 1</div>
           <div id="subtitulo-partidos" class="section-sub">Completá el partido</div>
         </div>
         <a href="jugador-buscar.html" class="section-link">Ver todos</a>
       </div>
       <div id="lista-partidos"></div>
       <div id="estado-vacio-partidos" style="display:none;justify-content:center;"></div>
-    </section>
-
-    <!-- TUS AMIGOS -->
-    <section style="margin-bottom:20px;">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
-        <div style="font-size:15px;font-weight:800;color:#F5F7FA;letter-spacing:-0.2px;">Tus amigos</div>
-        <a href="jugador-amigos.html" style="font-size:12px;font-weight:600;color:#178BFF;text-decoration:none;">Ver todos</a>
-      </div>
-      <div style="display:flex;gap:14px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:4px;">
-        <a href="jugador-amigos.html" style="display:flex;flex-direction:column;align-items:center;gap:5px;text-decoration:none;flex-shrink:0;">
-          <div style="width:44px;height:44px;border-radius:50%;background:#178BFF;color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;">MR</div>
-          <span style="font-size:10px;color:#A8B3C7;font-weight:500;max-width:44px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:center;">Martín</span>
-        </a>
-        <a href="jugador-amigos.html" style="display:flex;flex-direction:column;align-items:center;gap:5px;text-decoration:none;flex-shrink:0;">
-          <div style="width:44px;height:44px;border-radius:50%;background:#7C3AED;color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;">AG</div>
-          <span style="font-size:10px;color:#A8B3C7;font-weight:500;max-width:44px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:center;">Ana</span>
-        </a>
-        <a href="jugador-amigos.html" style="display:flex;flex-direction:column;align-items:center;gap:5px;text-decoration:none;flex-shrink:0;">
-          <div style="width:44px;height:44px;border-radius:50%;background:#0F766E;color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;">RS</div>
-          <span style="font-size:10px;color:#A8B3C7;font-weight:500;max-width:44px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:center;">Roberto</span>
-        </a>
-        <a href="jugador-amigos.html" style="display:flex;flex-direction:column;align-items:center;gap:5px;text-decoration:none;flex-shrink:0;">
-          <div style="width:44px;height:44px;border-radius:50%;border:1.5px dashed rgba(255,255,255,0.25);color:#5C6E87;font-size:22px;display:flex;align-items:center;justify-content:center;line-height:1;">+</div>
-          <span style="font-size:10px;color:#5C6E87;font-weight:500;text-align:center;">Agregar</span>
-        </a>
-      </div>
     </section>
 
     <!-- MEJORÁ -->
@@ -691,10 +665,6 @@
       </a>
     </section>
 
-    <!-- SPONSOR -->
-    <div class="sponsor-line">
-      <a href="#" class="sponsor-link">15% OFF en Kongo Sports &rarr;</a>
-    </div>
 
   </main>
 
@@ -703,16 +673,15 @@
   ════════════════════════════════════════ -->
   <nav class="bottom-nav" role="navigation" aria-label="Navegación principal">
     <a href="jugador-home.html" class="nav-item active" aria-label="Inicio">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
-        <polyline points="9 22 9 12 15 12 15 22"/>
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M3 12L12 3L21 12V21H15V15H9V21H3V12Z"/>
       </svg>
       <span>Inicio</span>
     </a>
     <a href="jugador-buscar.html" class="nav-item" aria-label="Partidos">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
-        <rect x="2" y="4" width="20" height="16" rx="2"/>
-        <line x1="12" y1="4" x2="12" y2="20"/>
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="2" y="5" width="20" height="14" rx="2"/>
+        <line x1="12" y1="5" x2="12" y2="19"/>
         <line x1="2" y1="12" x2="6" y2="12"/>
         <line x1="18" y1="12" x2="22" y2="12"/>
       </svg>
@@ -724,27 +693,18 @@
         <line x1="5" y1="12" x2="19" y2="12"/>
       </svg>
     </button>
-    <a href="profes.html" class="nav-item" aria-label="Entrenà">
-      <svg width="22" height="22" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
-        <ellipse cx="50" cy="38" rx="26" ry="30"/>
-        <circle cx="41" cy="28" r="4" fill="currentColor" stroke="none"/>
-        <circle cx="50" cy="28" r="4" fill="currentColor" stroke="none"/>
-        <circle cx="59" cy="28" r="4" fill="currentColor" stroke="none"/>
-        <circle cx="41" cy="38" r="4" fill="currentColor" stroke="none"/>
-        <circle cx="50" cy="38" r="4" fill="currentColor" stroke="none"/>
-        <circle cx="59" cy="38" r="4" fill="currentColor" stroke="none"/>
-        <circle cx="41" cy="48" r="4" fill="currentColor" stroke="none"/>
-        <circle cx="50" cy="48" r="4" fill="currentColor" stroke="none"/>
-        <circle cx="59" cy="48" r="4" fill="currentColor" stroke="none"/>
-        <path d="M38 66 L50 68 L62 66 L58 68 L50 95 L42 68 Z"/>
-        <rect x="44" y="67" width="12" height="28" rx="6"/>
+    <a href="profes.html" class="nav-item" aria-label="Clases">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <ellipse cx="12" cy="8" rx="5" ry="6"/>
+        <path d="M10 14L9 16H15L14 14"/>
+        <rect x="10.5" y="16" width="3" height="6" rx="1.5"/>
       </svg>
-      <span>Entrenà</span>
+      <span>Clases</span>
     </a>
     <a href="jugador-perfil.html" class="nav-item" aria-label="Perfil">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
         <circle cx="12" cy="8" r="4"/>
-        <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
+        <path d="M4 20C4 17 7.6 14 12 14C16.4 14 20 17 20 20"/>
       </svg>
       <span>Perfil</span>
     </a>
@@ -1077,29 +1037,94 @@
     }
 
     /* ── Sponsor rotation ── */
+    var SPONSORS = [
+      {
+        nombre: 'Drive Deportes',
+        frase: 'Jugá mejor. Nosotros te equipamos.',
+        direccion: 'Necochea, Olavarría',
+        telefono: '(02284) 48-4810',
+        horario: 'Lun a Vie: 9-12:30 hs y 17-20 hs · Sáb: 9-13 hs · Dom: Cerrado'
+      },
+      {
+        nombre: 'Bebidas Moe',
+        frase: 'Para el tercer tiempo, ya sabés dónde encontrarnos.',
+        direccion: 'San Martín 1820, Olavarría',
+        telefono: '(02284) 41-0602',
+        horario: 'Consultá disponibilidad'
+      },
+      {
+        nombre: 'Kinesio Activa',
+        frase: 'Menos dolor. Más pádel.',
+        direccion: 'San Martín 1932, Olavarría',
+        telefono: '',
+        horario: 'Lun a Vie · 8 a 20 hs'
+      }
+    ];
+
+    function verMasSponsor(idx) {
+      var s = SPONSORS[idx];
+      var panelId = 'sponsor-detalle';
+      var existente = document.getElementById(panelId);
+      if (existente) { existente.remove(); return; }
+
+      var panel = document.createElement('div');
+      panel.id = panelId;
+      panel.style.cssText = 'background:#0A1630;border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:14px 16px;margin:8px 16px 0;';
+
+      var contenido =
+        '<div style="display:flex;align-items:flex-start;gap:8px;margin-bottom:8px;">' +
+        '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#A8B3C7" stroke-width="2" style="margin-top:2px;flex-shrink:0;"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>' +
+        '<span style="font-size:13px;color:#F5F7FA;">' + s.direccion + '</span>' +
+        '</div>';
+
+      if (s.telefono) {
+        contenido +=
+          '<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">' +
+          '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#A8B3C7" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>' +
+          '<span style="font-size:13px;color:#A8B3C7;">' + s.telefono + '</span>' +
+          '</div>';
+      }
+
+      contenido +=
+        '<div style="display:flex;align-items:flex-start;gap:8px;">' +
+        '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#A8B3C7" stroke-width="2" style="margin-top:2px;flex-shrink:0;"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>' +
+        '<span style="font-size:13px;color:#A8B3C7;line-height:1.5;">' + s.horario + '</span>' +
+        '</div>';
+
+      panel.innerHTML = contenido;
+
+      var sponsorCard = document.getElementById('sponsor-card');
+      if (sponsorCard && sponsorCard.parentNode) {
+        sponsorCard.parentNode.insertBefore(panel, sponsorCard.nextSibling);
+      }
+    }
+
     function renderizarSponsor() {
-      var sponsors = [
-        { nombre: 'Drive Deportes', tagline: 'Jugá mejor. Nosotros te equipamos.' },
-        { nombre: 'Bebidas Moe', tagline: 'Para el tercer tiempo, ya sabés dónde encontrarnos.' },
-        { nombre: 'Kinesio Activa', tagline: 'Menos dolor. Más pádel.' }
-      ];
-      var current = 0;
-      var nameEl   = document.getElementById('sponsor-name');
-      var tagEl    = document.getElementById('sponsor-tagline');
-      var dotEls   = document.querySelectorAll('.sp-dot');
+      var sponsorActual = 0;
+      var nameEl = document.getElementById('sponsor-name');
+      var tagEl  = document.getElementById('sponsor-tagline');
+      var dotEls = document.querySelectorAll('.sp-dot');
       function showSponsor(idx) {
+        sponsorActual = idx;
         nameEl.style.opacity = '0';
         tagEl.style.opacity  = '0';
         setTimeout(function() {
-          nameEl.textContent = sponsors[idx].nombre;
-          tagEl.textContent  = sponsors[idx].tagline;
+          nameEl.textContent = SPONSORS[idx].nombre;
+          tagEl.textContent  = SPONSORS[idx].frase;
           nameEl.style.opacity = '1';
           tagEl.style.opacity  = '1';
+          var btn = document.getElementById('btn-ver-mas');
+          if (btn) btn.setAttribute('onclick', 'verMasSponsor(' + sponsorActual + ')');
         }, 200);
         dotEls.forEach(function(d, i) { d.classList.toggle('sp-dot-active', i === idx); });
       }
       showSponsor(0);
-      setInterval(function() { current = (current + 1) % sponsors.length; showSponsor(current); }, 4000);
+      setInterval(function() {
+        var detalle = document.getElementById('sponsor-detalle');
+        if (detalle) detalle.remove();
+        sponsorActual = (sponsorActual + 1) % SPONSORS.length;
+        showSponsor(sponsorActual);
+      }, 4000);
     }
 
     /* ── Inicializar ── */
