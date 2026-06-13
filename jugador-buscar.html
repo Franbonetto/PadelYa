@@ -3,6 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#050816">
+  <link rel="preload" href="logo-padelya.png" as="image">
   <title>PadelYa - Buscar partido</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -529,6 +531,15 @@
 </head>
 <body>
 
+  <div id="banner-offline" style="display:none;
+    position:fixed;top:0;left:0;right:0;
+    background:#EF4444;color:white;
+    text-align:center;padding:8px;
+    font-size:13px;font-weight:600;
+    z-index:9999;">
+    Sin conexión · Algunas funciones no están disponibles
+  </div>
+
   <!-- ════════ HEADER ════════ -->
   <header class="header">
     <a href="jugador-home.html" class="header-icon-btn" aria-label="Volver al inicio">
@@ -807,9 +818,10 @@
     </button>
     <a href="profes.html" class="nav-item" aria-label="Clases">
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-        <ellipse cx="12" cy="8" rx="5" ry="6"/>
-        <path d="M10 14L9 16H15L14 14"/>
-        <rect x="10.5" y="16" width="3" height="6" rx="1.5"/>
+        <path d="M15.5 3.5C18.5 4.5 20 7 19 10C18 13 15 14.5 12.5 13.5L7 19C6.2 19.8 5 19.8 4.2 19C3.4 18.2 3.4 17 4.2 16.2L9.5 10.5C8.5 8 10 5 13 4C13.8 3.7 14.7 3.5 15.5 3.5Z"/>
+        <circle cx="13" cy="8" r="0.6" fill="currentColor" stroke="none"/>
+        <circle cx="15" cy="9.5" r="0.6" fill="currentColor" stroke="none"/>
+        <circle cx="11.5" cy="10" r="0.6" fill="currentColor" stroke="none"/>
       </svg>
       <span>Clases</span>
     </a>
@@ -823,16 +835,45 @@
   </nav>
 
   <script>
-    /* ── Demo data fallback ── */
+    /* ── Verificar sesión ── */
     (function() {
-      if (!sessionStorage.getItem('loggedIn')) {
-        sessionStorage.setItem('loggedIn', 'true');
-        sessionStorage.setItem('nombre', 'Martín Rodríguez');
-        sessionStorage.setItem('categoria', '5ta');
-        sessionStorage.setItem('estadoCategoria', 'orientativa');
-        sessionStorage.setItem('sexo', 'masculino');
+      var loggedIn = localStorage.getItem('loggedIn');
+      var rol = localStorage.getItem('rol');
+
+      if (!loggedIn || rol !== 'jugador') {
+        window.location.href = 'index.html';
+        return;
       }
+
+      var defaults = {
+        nombre: 'Jugador',
+        apellido: '',
+        categoria: '5ta',
+        estadoCategoria: 'orientativa',
+        sexo: 'masculino',
+        partidosJugados: '0',
+        esPremium: 'false',
+        acopVerificado: 'false',
+        telefonoVerificado: 'false'
+      };
+
+      Object.keys(defaults).forEach(function(key) {
+        if (!localStorage.getItem(key)) {
+          localStorage.setItem(key, defaults[key]);
+        }
+      });
     })();
+
+    /* ── Estado de red ── */
+    window.addEventListener('online', function() {
+      document.getElementById('banner-offline').style.display = 'none';
+    });
+    window.addEventListener('offline', function() {
+      document.getElementById('banner-offline').style.display = 'block';
+    });
+    if (!navigator.onLine) {
+      document.getElementById('banner-offline').style.display = 'block';
+    }
 
     /* ── Filter box toggle ── */
     function toggleFilterBox() {
@@ -946,7 +987,7 @@
       var sumadosList      = document.getElementById('sumados-list');
       var sumadosEmpty     = document.getElementById('sumados-empty');
 
-      var stored = sessionStorage.getItem('misPartidos');
+      var stored = localStorage.getItem('misPartidos');
       var partidos = stored ? JSON.parse(stored) : [];
 
       if (partidos.length === 0) {
@@ -954,7 +995,7 @@
           { id: 1, club: 'Chingoland',         hora: '20:00 hs', fecha: getRelDate(0), cat: '5ta', tipo: 'Masculino', mod: 'Competitivo', jugadores: 2, total: 4 },
           { id: 2, club: 'Las Terrazas Pádel', hora: '19:00 hs', fecha: getRelDate(1), cat: '5ta', tipo: 'Masculino', mod: 'Casual',       jugadores: 1, total: 4 }
         ];
-        sessionStorage.setItem('misPartidos', JSON.stringify(partidos));
+        localStorage.setItem('misPartidos', JSON.stringify(partidos));
       }
 
       /* Asegurar que cada partido tenga id */
@@ -962,9 +1003,9 @@
       partidos.forEach(function(p) {
         if (!p.id) { p.id = Date.now() + Math.random(); dirty = true; }
       });
-      if (dirty) sessionStorage.setItem('misPartidos', JSON.stringify(partidos));
+      if (dirty) localStorage.setItem('misPartidos', JSON.stringify(partidos));
 
-      var userName = sessionStorage.getItem('nombre') || 'Jugador';
+      var userName = localStorage.getItem('nombre') || 'Jugador';
       var initials = userName.trim().split(' ').map(function(w){ return w[0] || ''; }).join('').substring(0, 2).toUpperCase() || 'YO';
 
       function buildOrgCard(p) {
@@ -1020,7 +1061,7 @@
       }
 
       /* Sección B: Te sumaste a — lee de partidosUnidos */
-      var unidos = JSON.parse(sessionStorage.getItem('partidosUnidos') || '[]');
+      var unidos = JSON.parse(localStorage.getItem('partidosUnidos') || '[]');
       sumadosList.innerHTML = '';
       if (unidos.length === 0) {
         sumadosEmpty.style.display = 'block';
@@ -1035,7 +1076,7 @@
 
     /* ── Editar partido ── */
     function editarPartido(id) {
-      var mis = JSON.parse(sessionStorage.getItem('misPartidos') || '[]');
+      var mis = JSON.parse(localStorage.getItem('misPartidos') || '[]');
       var partido = mis.find(function(p) { return p.id == id; });
       if (!partido) return;
       var modal = document.createElement('div');
@@ -1058,7 +1099,7 @@
       document.body.appendChild(modal);
     }
     function guardarEdicion(id) {
-      var mis = JSON.parse(sessionStorage.getItem('misPartidos') || '[]');
+      var mis = JSON.parse(localStorage.getItem('misPartidos') || '[]');
       var idx = mis.findIndex(function(p) { return p.id == id; });
       if (idx !== -1) {
         var nuevoComplejo = document.getElementById('edit-complejo').value;
@@ -1074,7 +1115,7 @@
           mis[idx].fecha = d.getTime() === hoy.getTime() ? getRelDate(0) :
                            d.getTime() === man.getTime() ? getRelDate(1) : nuevaFecha;
         }
-        sessionStorage.setItem('misPartidos', JSON.stringify(mis));
+        localStorage.setItem('misPartidos', JSON.stringify(mis));
       }
       document.querySelector('div[style*="inset:0"]').remove();
       showToast('Partido actualizado.', 'success');
@@ -1107,9 +1148,9 @@
         'Sí, cancelar partido',
         '#EF4444',
         function() {
-          var mis = JSON.parse(sessionStorage.getItem('misPartidos') || '[]');
+          var mis = JSON.parse(localStorage.getItem('misPartidos') || '[]');
           mis = mis.filter(function(p) { return p.id !== id; });
-          sessionStorage.setItem('misPartidos', JSON.stringify(mis));
+          localStorage.setItem('misPartidos', JSON.stringify(mis));
           showToast('Partido cancelado.', 'error');
           setTimeout(function() { renderizarMisPartidos(); }, 400);
         },
@@ -1123,9 +1164,9 @@
         'Sí, abandonar',
         '#EF4444',
         function() {
-          var mis = JSON.parse(sessionStorage.getItem('misPartidos') || '[]');
+          var mis = JSON.parse(localStorage.getItem('misPartidos') || '[]');
           mis = mis.filter(function(p) { return p.id !== id; });
-          sessionStorage.setItem('misPartidos', JSON.stringify(mis));
+          localStorage.setItem('misPartidos', JSON.stringify(mis));
           showToast('Abandonaste el partido.', 'warning');
           setTimeout(function() { renderizarMisPartidos(); }, 400);
         },
@@ -1139,9 +1180,9 @@
         'Sí, abandonar',
         '#EF4444',
         function() {
-          var unidos = JSON.parse(sessionStorage.getItem('partidosUnidos') || '[]');
+          var unidos = JSON.parse(localStorage.getItem('partidosUnidos') || '[]');
           unidos = unidos.filter(function(p) { return p.id !== id; });
-          sessionStorage.setItem('partidosUnidos', JSON.stringify(unidos));
+          localStorage.setItem('partidosUnidos', JSON.stringify(unidos));
           showToast('Abandonaste el partido.', 'warning');
           setTimeout(function() { renderizarPartidosUnidos(); }, 400);
         },
@@ -1162,15 +1203,15 @@
       _sumarmeBtn = null;
     }
     function confirmarSumarme() {
-      var jugados = parseInt(sessionStorage.getItem('partidosJugados') || '0');
-      var esPremium = sessionStorage.getItem('esPremium') === 'true';
+      var jugados = parseInt(localStorage.getItem('partidosJugados') || '0');
+      var esPremium = localStorage.getItem('esPremium') === 'true';
       if (!esPremium && jugados >= 3) {
         document.getElementById('sumarme-overlay').style.display = 'none';
         document.body.style.overflow = '';
         window.location.href = 'premium.html';
         return;
       }
-      sessionStorage.setItem('partidosJugados', String(jugados + 1));
+      localStorage.setItem('partidosJugados', String(jugados + 1));
       document.getElementById('sumarme-overlay').style.display = 'none';
       document.body.style.overflow = '';
       if (_sumarmeBtn) {
@@ -1191,7 +1232,7 @@
     var _afterVerif = null;
 
     function checkTelefono(callback) {
-      if (sessionStorage.getItem('telefonoVerificado') === 'true') {
+      if (localStorage.getItem('telefonoVerificado') === 'true') {
         callback();
         return;
       }
@@ -1200,7 +1241,7 @@
       overlay.style.display = 'flex';
       document.getElementById('verif-step-1').style.display = 'block';
       document.getElementById('verif-step-2').style.display = 'none';
-      document.getElementById('verif-tel').value = sessionStorage.getItem('telefono') || '';
+      document.getElementById('verif-tel').value = localStorage.getItem('telefono') || '';
       document.getElementById('verif-code').value = '';
       document.getElementById('verif-err-tel').style.display = 'none';
       document.getElementById('verif-err-code').style.display = 'none';
@@ -1220,7 +1261,7 @@
         document.getElementById('verif-err-tel').style.display = 'block';
         return;
       }
-      sessionStorage.setItem('telefono', tel);
+      localStorage.setItem('telefono', tel);
       document.getElementById('verif-step-1').style.display = 'none';
       document.getElementById('verif-step-2').style.display = 'block';
     }
@@ -1231,7 +1272,7 @@
         document.getElementById('verif-err-code').style.display = 'block';
         return;
       }
-      sessionStorage.setItem('telefonoVerificado', 'true');
+      localStorage.setItem('telefonoVerificado', 'true');
       document.getElementById('verif-overlay').style.display = 'none';
       document.body.style.overflow = '';
       var cb = _afterVerif;
@@ -1248,8 +1289,8 @@
 
     /* ── Matchmaking panel ── */
     function abrirMatchmaking() {
-      var jugados = parseInt(sessionStorage.getItem('partidosJugados') || '0');
-      var esPremium = sessionStorage.getItem('esPremium') === 'true';
+      var jugados = parseInt(localStorage.getItem('partidosJugados') || '0');
+      var esPremium = localStorage.getItem('esPremium') === 'true';
       var disponibles = esPremium ? 99 : Math.max(0, 3 - jugados);
       var pct = esPremium ? 100 : (disponibles / 3) * 100;
       document.getElementById('mm-counter-text').textContent = esPremium ? 'Premium · ilimitado' : disponibles + ' de 3 disponibles';
@@ -1273,8 +1314,8 @@
       _sumarmeBtn = null;
     }
     function usarPartidoGratis() {
-      var jugados = parseInt(sessionStorage.getItem('partidosJugados') || '0');
-      sessionStorage.setItem('partidosJugados', String(jugados + 1));
+      var jugados = parseInt(localStorage.getItem('partidosJugados') || '0');
+      localStorage.setItem('partidosJugados', String(jugados + 1));
 
       /* Guardar en partidosUnidos */
       if (_sumarmeBtn) {
@@ -1293,7 +1334,7 @@
           var countEl = card.querySelector('span[style*="color:#178BFF"]');
           var jugNum = 0, totNum = 4;
           if (countEl) { var pts = countEl.textContent.split('/'); jugNum = parseInt(pts[0]) || 0; totNum = parseInt(pts[1]) || 4; }
-          var unidos = JSON.parse(sessionStorage.getItem('partidosUnidos') || '[]');
+          var unidos = JSON.parse(localStorage.getItem('partidosUnidos') || '[]');
           unidos.push({
             id: Date.now(),
             complejo:   clubEl  ? clubEl.textContent.trim()  : '',
@@ -1305,7 +1346,7 @@
             total:      totNum,
             organizador: 'Otro jugador'
           });
-          sessionStorage.setItem('partidosUnidos', JSON.stringify(unidos));
+          localStorage.setItem('partidosUnidos', JSON.stringify(unidos));
         }
       }
 
@@ -1326,7 +1367,7 @@
     /* ── Category priority: in-range first, out-range after separator ── */
     (function() {
       var ORDEN = ['1ra','2da','3ra','4ta','5ta','6ta','7ma','7ma B'];
-      var miCat = sessionStorage.getItem('categoria') || '5ta';
+      var miCat = localStorage.getItem('categoria') || '5ta';
       var myIdx = ORDEN.indexOf(miCat);
 
       var container   = document.getElementById('section-todos');

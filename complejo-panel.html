@@ -3,767 +3,267 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PadelYa - Panel del Complejo</title>
-  <link rel="stylesheet" href="style.css" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <title>PadelYa - Panel Operativo</title>
   <style>
-    :root {
-      --bg: #071224;
-      --bg-2: #0A1630;
-      --bg-card: #0D1E3A;
-      --blue: #178BFF;
-      --blue-dim: rgba(23,139,255,0.12);
-      --text: #F5F7FA;
-      --text-sub: #A8B3C7;
-      --text-dim: #6B7A8F;
-      --green: #D6FF00;
-      --border: rgba(255,255,255,0.08);
-      --color-primary: #178BFF;
-    }
-
-    * { scrollbar-width: none; }
-    body::-webkit-scrollbar { display: none; }
+    * { box-sizing: border-box; }
 
     body {
-      background: #071224;
-      color: #F5F7FA;
-      -webkit-font-smoothing: antialiased;
-      padding-bottom: 2rem;
-    }
-    .page-content {
-      max-width: 800px;
-      margin: 0 auto;
-      padding: 0 1rem 2rem;
-    }
-
-    /* Header */
-    .header {
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      background: rgba(7,18,36,0.97);
-      backdrop-filter: blur(20px);
-      border-bottom: 1px solid rgba(255,255,255,0.06);
-      padding: 0.85rem 1.25rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    .header-left {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-    }
-    .complex-icon {
-      width: 44px;
-      height: 44px;
-      border-radius: 12px;
-      background: linear-gradient(135deg, #178BFF, #0D5DB5);
-      color: #F5F7FA;
-      font-size: 1rem;
-      font-weight: 700;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-    }
-    .header-info strong {
-      display: block;
-      font-size: 0.9375rem;
-      font-weight: 700;
-      color: #F5F7FA;
-    }
-    .header-info .meta {
-      font-size: 0.75rem;
-      color: #A8B3C7;
-    }
-    .header-icon-btn {
-      width: 40px;
-      height: 40px;
-      border: none;
-      background: rgba(255,255,255,0.06);
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 50%;
-      color: #A8B3C7;
-      transition: all 0.2s ease;
-      text-decoration: none;
-    }
-    .header-icon-btn:hover { background: rgba(255,255,255,0.12); color: #F5F7FA; }
-
-    /* Badge */
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      padding: 0.2rem 0.6rem;
-      border-radius: 99px;
-      font-size: 0.7rem;
-      font-weight: 700;
-      transition: all 0.2s ease;
-    }
-    .badge-partner {
-      background: rgba(23,139,255,0.15);
-      color: #178BFF;
-      border: 1px solid rgba(23,139,255,0.3);
-    }
-    .badge-green {
-      background: rgba(214,255,0,0.1);
-      color: #D6FF00;
-      border: 1px solid rgba(214,255,0,0.2);
-    }
-    .badge-gray { background: rgba(255,255,255,0.06); color: #A8B3C7; }
-    .badge-orange { background: rgba(255,165,0,0.12); color: #FFA500; }
-    .badge-red { background: rgba(255,100,100,0.12); color: #FF6464; }
-
-    /* Section */
-    .section { margin-top: 1.5rem; }
-    .section-head {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 0.875rem;
-    }
-    .section-head h3 {
-      font-size: 1rem;
-      font-weight: 700;
-      color: #F5F7FA;
       margin: 0;
-    }
-    .section-head a {
-      font-size: 0.8125rem;
-      font-weight: 600;
-      color: #178BFF;
-      text-decoration: none;
-      transition: all 0.2s ease;
-    }
-    .section-head a:hover { color: #F5F7FA; }
-
-    /* Stats */
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 0.75rem;
-    }
-    @media (min-width: 480px) {
-      .stats-grid { grid-template-columns: repeat(4, 1fr); }
-    }
-    .stat-card {
-      background: #0D1E3A;
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 14px;
-      padding: 1rem;
-      text-align: center;
-      transition: all 0.2s ease;
-    }
-    .stat-card:hover { border-color: rgba(23,139,255,0.3); }
-    .stat-number {
-      font-size: 1.6rem;
-      font-weight: 800;
-      color: #F5F7FA;
-      line-height: 1;
-    }
-    .stat-label {
-      font-size: 0.72rem;
-      color: #A8B3C7;
-      font-weight: 600;
-      margin-top: 0.25rem;
-      text-transform: uppercase;
-      letter-spacing: 0.03em;
+      background: #F8FAFC;
+      color: #111827;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      font-size: 15px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
     }
 
-    /* Revenue banner */
-    .revenue-card {
-      background: linear-gradient(135deg, #0D1E3A, #112244);
-      border: 1px solid rgba(23,139,255,0.2);
-      border-radius: 16px;
-      padding: 1.5rem;
-    }
-    .revenue-label {
-      font-size: 0.8rem;
-      color: #A8B3C7;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      font-weight: 600;
-    }
-    .revenue-amount {
-      font-size: 2.25rem;
-      font-weight: 800;
-      color: #F5F7FA;
-      line-height: 1.15;
-      margin: 0.25rem 0;
-    }
-    .revenue-sub {
-      font-size: 0.8rem;
-      color: #D6FF00;
-    }
-    .revenue-row {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 0.75rem;
-      margin-top: 1.25rem;
-    }
-    .revenue-item {
-      background: rgba(255,255,255,0.06);
-      border-radius: 10px;
-      padding: 0.75rem;
-      text-align: center;
-      border: 1px solid rgba(255,255,255,0.08);
-    }
-    .revenue-item-value {
-      font-size: 1.1rem;
-      font-weight: 800;
-      color: #F5F7FA;
-    }
-    .revenue-item-label {
-      font-size: 0.7rem;
-      color: #A8B3C7;
-      margin-top: 2px;
-    }
-
-    /* Tabs */
-    .tabs {
-      display: flex;
-      gap: 0;
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 50px;
-      padding: 3px;
-      margin-bottom: 1rem;
-    }
-    .tab-btn {
-      flex: 1;
-      padding: 0.5rem 0.5rem;
-      background: transparent;
-      border: none;
-      border-radius: 50px;
-      font-size: 0.8125rem;
-      font-weight: 600;
-      color: #A8B3C7;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      font-family: inherit;
-    }
-    .tab-btn.active {
-      background: #178BFF;
-      color: #F5F7FA;
-    }
-    .tab-btn:not(.active):hover { color: #F5F7FA; background: rgba(255,255,255,0.06); }
-
-    /* Courts grid */
-    .courts-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 0.75rem;
-    }
-    @media (min-width: 600px) {
-      .courts-grid { grid-template-columns: repeat(3, 1fr); }
-    }
-    .court-card {
-      background: #0D1E3A;
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 14px;
-      padding: 1rem;
-      transition: all 0.2s ease;
-    }
-    .court-card:hover { box-shadow: 0 4px 24px rgba(23,139,255,0.12); border-color: rgba(23,139,255,0.2); }
-    .court-card.occupied { border-color: rgba(23,139,255,0.3); }
-    .court-card.maintenance { border-color: rgba(243,156,18,0.3); }
-
-    .court-header {
+    /* HEADER */
+    .panel-header {
+      background: #FFFFFF;
+      border-bottom: 1px solid #E5E7EB;
+      padding: 12px 20px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 0.75rem;
+      gap: 12px;
+      flex-wrap: wrap;
     }
-    .court-name {
-      font-size: 0.9375rem;
+    .panel-header-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .panel-header-left img { display: block; height: 36px; }
+    .panel-header-left .subtitle {
+      font-size: 13px;
+      color: #6B7280;
+    }
+    .panel-header-center {
+      font-size: 18px;
+      font-weight: 700;
+      color: #111827;
+      text-align: center;
+      flex: 1;
+    }
+    .panel-header-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .panel-header-right .complejo-nombre {
+      font-size: 14px;
       font-weight: 600;
-      color: #F5F7FA;
+      color: #111827;
     }
-    .court-status {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
+    .indicador-conexion {
+      font-size: 12px;
+      font-weight: 600;
+      padding: 4px 12px;
+      border-radius: 50px;
+      border: 1px solid;
+      white-space: nowrap;
     }
-    .court-status.free { background: #27AE60; }
-    .court-status.occupied { background: #178BFF; }
-    .court-status.maintenance { background: #F39C12; }
+    .btn-logout {
+      background: transparent;
+      border: 1.5px solid #E5E7EB;
+      color: #6B7280;
+      border-radius: 8px;
+      padding: 6px 12px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.15s;
+    }
+    .btn-logout:hover { background: #F3F4F6; color: #111827; }
 
-    .court-info {
-      font-size: 0.775rem;
-      color: #A8B3C7;
-      margin-bottom: 0.75rem;
-      line-height: 1.5;
+    /* SELECTOR DE FECHA */
+    .date-selector {
+      background: #FFFFFF;
+      border-bottom: 1px solid #E5E7EB;
+      padding: 10px 20px;
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
     }
-    .court-info strong { color: #F5F7FA; }
+    .date-btn {
+      border: none;
+      border-radius: 8px;
+      padding: 6px 14px;
+      font-size: 13px;
+      font-weight: 600;
+      background: #F3F4F6;
+      color: #374151;
+      cursor: pointer;
+      font-family: inherit;
+      white-space: nowrap;
+      transition: all 0.15s;
+    }
+    .date-btn .dia-label {
+      display: block;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      opacity: 0.75;
+    }
+    .date-btn.active {
+      background: #2563EB;
+      color: #FFFFFF;
+    }
+    .date-btn:not(.active):hover { background: #E5E7EB; }
 
-    .court-slots {
+    /* LEYENDA */
+    .leyenda-bar {
+      background: #FFFFFF;
+      border-bottom: 1px solid #E5E7EB;
+      padding: 8px 20px;
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .leyenda-item {
+      font-size: 12px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    /* GRILLA PRINCIPAL */
+    .panel-main {
+      padding: 16px 20px;
       display: flex;
       flex-direction: column;
-      gap: 0.3rem;
+      gap: 16px;
     }
-    .court-slot {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      font-size: 0.75rem;
-      padding: 0.3rem 0.5rem;
-      border-radius: 8px;
-      transition: all 0.2s ease;
-    }
-    .court-slot.libre {
-      background: rgba(214,255,0,0.08);
-      color: #D6FF00;
-    }
-    .court-slot.en-armado {
-      background: rgba(255,165,0,0.1);
-      color: #FFA500;
-    }
-    .court-slot.casi-completo {
-      background: rgba(255,100,100,0.1);
-      color: #FF6464;
-    }
-    .court-slot.confirmado {
-      background: rgba(23,139,255,0.12);
-      color: #178BFF;
-    }
-    .court-slot.bloqueado {
-      background: rgba(255,255,255,0.04);
-      color: #6B7A8F;
-      border: 1px solid rgba(255,255,255,0.06);
-    }
-
-    /* Bookings list */
-    .bookings-list {
-      background: #0D1E3A;
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 14px;
+    .cancha-card {
+      background: #FFFFFF;
+      border: 1px solid #E5E7EB;
+      border-radius: 12px;
       overflow: hidden;
     }
-    .booking-row {
+    .cancha-header {
+      background: #F8FAFC;
+      border-bottom: 1px solid #E5E7EB;
+      padding: 12px 16px;
       display: flex;
       align-items: center;
-      gap: 0.875rem;
-      padding: 0.875rem 1rem;
-      border-bottom: 1px solid rgba(255,255,255,0.06);
-      transition: all 0.2s ease;
+      gap: 12px;
+      flex-wrap: wrap;
     }
-    .booking-row:last-child { border-bottom: none; }
-    .booking-row:hover { background: rgba(23,139,255,0.06); }
-    .booking-time-block {
-      min-width: 72px;
-      text-align: center;
-    }
-    .booking-time {
-      font-size: 0.875rem;
+    .cancha-header h2 {
+      font-size: 16px;
       font-weight: 700;
-      color: #178BFF;
+      color: #111827;
+      margin: 0;
     }
-    .booking-date {
-      font-size: 0.7rem;
-      color: #A8B3C7;
-    }
-    .booking-info { flex: 1; }
-    .booking-court {
-      font-size: 0.875rem;
+    .cancha-superficie {
+      font-size: 12px;
+      background: #EEF2FF;
+      color: #4338CA;
+      padding: 2px 8px;
+      border-radius: 50px;
       font-weight: 600;
-      color: #F5F7FA;
     }
-    .booking-player {
-      font-size: 0.775rem;
-      color: #A8B3C7;
-      margin-top: 1px;
-    }
-    .booking-amount {
-      font-size: 0.875rem;
-      font-weight: 700;
-      color: #D6FF00;
+    .cancha-estado-general {
+      font-size: 12px;
+      color: #6B7280;
+      margin-left: auto;
+      font-weight: 600;
     }
 
-    /* Action buttons */
-    .btn-full {
+    /* BLOQUES DE TURNO */
+    .turno-bloque {
       display: flex;
       align-items: center;
-      justify-content: center;
-      gap: 0.5rem;
-      width: 100%;
-      padding: 0.75rem;
-      background: #178BFF;
-      color: #F5F7FA;
-      border: none;
-      border-radius: 50px;
-      font-size: 0.9rem;
-      font-weight: 700;
+      padding: 10px 16px;
+      border-bottom: 1px solid #F3F4F6;
+      gap: 12px;
+      min-height: 52px;
       cursor: pointer;
-      font-family: inherit;
-      text-decoration: none;
-      transition: all 0.2s ease;
-      margin-top: 0.75rem;
-      box-shadow: 0 0 14px rgba(23,139,255,0.3);
+      transition: background 0.15s;
     }
-    .btn-full:hover {
-      background: #3A9FFF;
-      box-shadow: 0 0 20px rgba(23,139,255,0.5);
-    }
-    .btn-full-outline {
-      background: transparent;
-      color: #F5F7FA;
-      border: 1px solid rgba(255,255,255,0.15);
-      box-shadow: none;
-    }
-    .btn-full-outline:hover {
-      background: rgba(255,255,255,0.06);
-      border-color: rgba(255,255,255,0.25);
-      box-shadow: none;
-    }
-    .btn-xs {
-      display: inline-flex;
-      align-items: center;
-      padding: 0.3rem 0.7rem;
-      border-radius: 50px;
-      font-size: 0.75rem;
+    .turno-bloque:last-child { border-bottom: none; }
+    .turno-bloque:hover { background: #F8FAFC; }
+    .turno-hora {
+      font-size: 15px;
       font-weight: 700;
+      color: #111827;
+      min-width: 60px;
+    }
+    .turno-indicador {
+      width: 8px;
+      height: 36px;
+      border-radius: 4px;
+      flex-shrink: 0;
+    }
+    .turno-info { flex: 1; min-width: 0; }
+    .turno-titulo {
+      font-size: 14px;
+      font-weight: 600;
+      color: #111827;
+      margin: 0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .turno-badge {
+      border-radius: 50px;
+      padding: 3px 10px;
+      font-size: 11px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    .turno-accion {
+      color: #9CA3AF;
+      font-size: 18px;
+      padding: 4px 8px;
       cursor: pointer;
-      font-family: inherit;
-      border: none;
-      transition: all 0.2s ease;
+      border-radius: 6px;
+      transition: background 0.15s;
     }
-    .btn-xs-primary {
-      background: #178BFF;
-      color: #F5F7FA;
-      box-shadow: 0 0 10px rgba(23,139,255,0.3);
-    }
-    .btn-xs-primary:hover { background: #3A9FFF; }
-
-    /* Inputs / forms */
-    input, select, textarea {
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.1);
-      color: #F5F7FA;
-      border-radius: 10px;
-      transition: all 0.2s ease;
-    }
-    input:focus, select:focus, textarea:focus {
-      border-color: #178BFF;
-      outline: none;
-    }
-    label { color: #A8B3C7; }
+    .turno-accion:hover { background: #F3F4F6; }
   </style>
 </head>
 <body>
 
   <!-- HEADER -->
-  <header class="header">
-    <div class="header-left">
-      <div class="complex-icon" aria-label="Icono del complejo">CL</div>
-      <div class="header-info">
-        <strong>Chingoland</strong>
-        <span class="meta">Panel de gestión</span>
-      </div>
+  <header class="panel-header">
+    <div class="panel-header-left">
+      <img src="assets/logo-padelya.png" alt="PadelYa" />
+      <span class="subtitle">Panel Operativo</span>
     </div>
-    <a href="index.html" class="header-icon-btn" aria-label="Volver al inicio">
-      <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
-        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>
-      </svg>
-    </a>
+    <div class="panel-header-center" id="fecha-hoy"></div>
+    <div class="panel-header-right">
+      <div id="modo-toggle" style="display:flex;background:#F3F4F6;border-radius:8px;padding:3px;gap:2px;">
+        <button id="btn-modo-simple" onclick="cambiarModoPanel('simple')" style="border:none;border-radius:6px;padding:6px 12px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;">Modo simple</button>
+        <button id="btn-modo-completo" onclick="cambiarModoPanel('completo')" style="border:none;border-radius:6px;padding:6px 12px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;">Modo completo</button>
+      </div>
+      <button onclick="abrirBloqueoMasivo()" style="background:#1F2937;color:white;border:none;border-radius:8px;padding:8px 16px;font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px;">🔒 Bloquear horarios</button>
+      <span id="indicador-conexion" class="indicador-conexion" style="background:#DCFCE7;color:#16A34A;border-color:#86EFAC;">● Online</span>
+      <span class="complejo-nombre">Chingoland</span>
+      <button class="btn-logout" onclick="cerrarSesion()">Cerrar sesión</button>
+    </div>
   </header>
 
-  <main class="page-content">
+  <!-- SELECTOR DE FECHA -->
+  <div class="date-selector" id="date-selector"></div>
 
-    <!-- Partner badge -->
-    <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-top:1rem;">
-      <span class="badge badge-partner">Partner verificado</span>
-      <span class="badge badge-green">4 canchas activas</span>
-      <span class="badge" style="background:rgba(255,255,255,0.06);color:#A8B3C7;">Río Negro 4651 · Área 226</span>
-    </div>
+  <!-- RESUMEN DEL DIA -->
+  <div id="resumen-dia" style="background:#fff;border-bottom:1px solid #E5E7EB;padding:12px 20px;display:flex;align-items:center;gap:0;flex-wrap:wrap;"></div>
 
-    <!-- Stats -->
-    <div class="section">
-      <div class="stats-grid">
-        <div class="stat-card">
-          <div class="stat-number">3</div>
-          <div class="stat-label">Canchas ocupadas hoy</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-number">8</div>
-          <div class="stat-label">Reservas hoy</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-number">47</div>
-          <div class="stat-label">Reservas esta semana</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-number">92%</div>
-          <div class="stat-label">Ocupación</div>
-        </div>
-      </div>
-    </div>
+  <!-- LEYENDA -->
+  <div class="leyenda-bar">
+    <span class="leyenda-item" style="color:#16A34A;">● Libre</span>
+    <span class="leyenda-item" style="color:#1F2937;">● Ocupado</span>
+    <span class="leyenda-item" style="color:#D97706;">● PadelYa</span>
+    <span class="leyenda-item" style="color:#F59E0B;">⚠ Falta 1</span>
+    <span class="leyenda-item" style="color:#2563EB;">● Completo</span>
+    <span class="leyenda-item" style="color:#DC2626;">● Cancelado</span>
+    <span class="leyenda-item" style="color:#9CA3AF;">● Finalizado</span>
+  </div>
 
-    <!-- Revenue -->
-    <div class="section">
-      <div class="revenue-card">
-        <div class="revenue-label">Ingresos este mes</div>
-        <div class="revenue-amount">$342,000</div>
-        <div class="revenue-sub">+18% respecto al mes anterior</div>
-        <div class="revenue-row">
-          <div class="revenue-item">
-            <div class="revenue-item-value">$284,000</div>
-            <div class="revenue-item-label">Cobrado</div>
-          </div>
-          <div class="revenue-item">
-            <div class="revenue-item-value">$58,000</div>
-            <div class="revenue-item-label">Pendiente</div>
-          </div>
-          <div class="revenue-item">
-            <div class="revenue-item-value">$12,400</div>
-            <div class="revenue-item-label">Comisión PadelYa</div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Courts status -->
-    <div class="section">
-      <div class="section-head">
-        <h3>Estado de canchas — Hoy</h3>
-        <a href="#" onclick="alert('Gestionar canchas'); return false;">Gestionar →</a>
-      </div>
-
-      <div class="tabs">
-        <button class="tab-btn active" onclick="setTab(this)">Hoy</button>
-        <button class="tab-btn" onclick="setTab(this)">Mañana</button>
-        <button class="tab-btn" onclick="setTab(this)">Esta semana</button>
-      </div>
-
-      <!-- Leyenda de estados -->
-      <div style="background:#0D1E3A;border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:1rem 1.25rem;margin-bottom:1rem;">
-        <div style="font-size:0.8125rem;font-weight:700;color:#F5F7FA;margin-bottom:0.75rem;">Estados de turnos</div>
-        <div style="display:flex;flex-direction:column;gap:0.5rem;">
-          <div style="display:flex;align-items:center;gap:0.75rem;">
-            <div style="width:14px;height:14px;border-radius:3px;background:rgba(214,255,0,0.08);border:1px solid rgba(214,255,0,0.2);flex-shrink:0;"></div>
-            <span style="font-size:0.8rem;color:#A8B3C7;">Libre — podés vender el turno normalmente</span>
-          </div>
-          <div style="display:flex;align-items:center;gap:0.75rem;">
-            <div style="width:14px;height:14px;border-radius:3px;background:rgba(255,165,0,0.1);border:1px solid rgba(255,165,0,0.3);flex-shrink:0;"></div>
-            <span style="font-size:0.8rem;color:#A8B3C7;">En armado — jugadores juntándose, turno SIN bloquear</span>
-          </div>
-          <div style="display:flex;align-items:center;gap:0.75rem;">
-            <div style="width:14px;height:14px;border-radius:3px;background:rgba(255,100,100,0.1);border:1px solid rgba(255,100,100,0.3);flex-shrink:0;"></div>
-            <span style="font-size:0.8rem;color:#A8B3C7;">Falta 1 — 3 de 4 jugadores confirmados</span>
-          </div>
-          <div style="display:flex;align-items:center;gap:0.75rem;">
-            <div style="width:14px;height:14px;border-radius:3px;background:rgba(23,139,255,0.12);border:1px solid rgba(23,139,255,0.3);flex-shrink:0;"></div>
-            <span style="font-size:0.8rem;color:#A8B3C7;">Confirmado — 4/4 jugadores, turno reservado</span>
-          </div>
-          <div style="display:flex;align-items:center;gap:0.75rem;">
-            <div style="width:14px;height:14px;border-radius:3px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);flex-shrink:0;"></div>
-            <span style="font-size:0.8rem;color:#6B7A8F;">Bloqueado por el complejo</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Info sistema PadelYa -->
-      <div style="background:rgba(23,139,255,0.06);border:1px solid rgba(23,139,255,0.15);border-radius:14px;padding:1.125rem;margin-bottom:1.25rem;">
-        <div style="font-weight:700;font-size:0.875rem;color:#F5F7FA;margin-bottom:0.625rem;display:flex;align-items:center;gap:0.5rem;">
-          <svg width="16" height="16" fill="none" stroke="#178BFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
-          Cómo funciona PadelYa con tu complejo
-        </div>
-        <div style="font-size:0.8rem;color:#A8B3C7;line-height:1.65;display:flex;flex-direction:column;gap:0.375rem;">
-          <div style="display:flex;gap:0.5rem;">
-            <svg width="14" height="14" fill="none" stroke="#178BFF" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" style="flex-shrink:0;margin-top:1px;"><polyline points="20 6 9 17 4 12"/></svg>
-            Los turnos "en armado" <strong style="color:#F5F7FA;">no están bloqueados</strong>. Podés seguir vendiéndolos normalmente.
-          </div>
-          <div style="display:flex;gap:0.5rem;">
-            <svg width="14" height="14" fill="none" stroke="#178BFF" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" style="flex-shrink:0;margin-top:1px;"><polyline points="20 6 9 17 4 12"/></svg>
-            La reserva real ocurre solo cuando hay <strong style="color:#F5F7FA;">4 de 4 jugadores confirmados</strong>.
-          </div>
-          <div style="display:flex;gap:0.5rem;">
-            <svg width="14" height="14" fill="none" stroke="#178BFF" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" style="flex-shrink:0;margin-top:1px;"><polyline points="20 6 9 17 4 12"/></svg>
-            Recibís jugadores nuevos automáticamente sin hacer nada.
-          </div>
-          <div style="display:flex;gap:0.5rem;">
-            <svg width="14" height="14" fill="none" stroke="#178BFF" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" style="flex-shrink:0;margin-top:1px;"><polyline points="20 6 9 17 4 12"/></svg>
-            Gratis para tu complejo.
-          </div>
-        </div>
-      </div>
-
-      <div class="courts-grid">
-
-        <!-- Court 1 -->
-        <div class="court-card occupied">
-          <div class="court-header">
-            <span class="court-name">Cancha 1</span>
-            <span class="court-status occupied" title="Ocupada"></span>
-          </div>
-          <div class="court-info">
-            <strong>Techada · Cristal</strong><br/>
-            Precio: $12,000/hs
-          </div>
-          <div class="court-slots">
-            <div class="court-slot confirmado">09:00 – Confirmado 4/4</div>
-            <div class="court-slot en-armado">11:00 – En armado 2/4</div>
-            <div class="court-slot libre">14:00 – Libre</div>
-            <div class="court-slot casi-completo">18:00 – Falta 1 (3/4)</div>
-            <div class="court-slot en-armado">20:00 – En armado 1/4</div>
-          </div>
-        </div>
-
-        <!-- Court 2 -->
-        <div class="court-card occupied">
-          <div class="court-header">
-            <span class="court-name">Cancha 2</span>
-            <span class="court-status occupied" title="Ocupada"></span>
-          </div>
-          <div class="court-info">
-            <strong>Techada · Cristal</strong><br/>
-            Precio: $12,000/hs
-          </div>
-          <div class="court-slots">
-            <div class="court-slot libre">09:00 – Libre</div>
-            <div class="court-slot confirmado">11:00 – Confirmado 4/4</div>
-            <div class="court-slot en-armado">14:00 – En armado 2/4</div>
-            <div class="court-slot libre">18:00 – Libre</div>
-            <div class="court-slot casi-completo">20:00 – Falta 1 (3/4)</div>
-          </div>
-        </div>
-
-        <!-- Court 3 -->
-        <div class="court-card">
-          <div class="court-header">
-            <span class="court-name">Cancha 3</span>
-            <span class="court-status free" title="Libre"></span>
-          </div>
-          <div class="court-info">
-            <strong>Abierta · Cemento</strong><br/>
-            Precio: $9,000/hs
-          </div>
-          <div class="court-slots">
-            <div class="court-slot libre">09:00 – Libre</div>
-            <div class="court-slot libre">11:00 – Libre</div>
-            <div class="court-slot libre">14:00 – Libre</div>
-            <div class="court-slot confirmado">18:00 – Confirmado 4/4</div>
-            <div class="court-slot libre">20:00 – Libre</div>
-          </div>
-        </div>
-
-        <!-- Court 4 -->
-        <div class="court-card maintenance">
-          <div class="court-header">
-            <span class="court-name">Cancha 4</span>
-            <span class="court-status maintenance" title="Mantenimiento"></span>
-          </div>
-          <div class="court-info">
-            <strong>Abierta · Cemento</strong><br/>
-            Precio: $9,000/hs
-          </div>
-          <div class="court-slots">
-            <div class="court-slot bloqueado">09:00 – Bloqueado</div>
-            <div class="court-slot bloqueado">11:00 – Bloqueado</div>
-            <div class="court-slot bloqueado">14:00 – Bloqueado</div>
-            <div class="court-slot libre">18:00 – Libre</div>
-            <div class="court-slot libre">20:00 – Libre</div>
-          </div>
-        </div>
-
-      </div>
-
-      <button class="btn-full btn-full-outline" onclick="alert('Bloquear horario')">
-        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-        Bloquear horario
-      </button>
-    </div>
-
-    <!-- Upcoming bookings -->
-    <div class="section">
-      <div class="section-head">
-        <h3>Próximas reservas</h3>
-        <a href="#">Ver todas →</a>
-      </div>
-
-      <div class="bookings-list">
-
-        <div class="booking-row">
-          <div class="booking-time-block">
-            <div class="booking-time">20:00 hs</div>
-            <div class="booking-date">Hoy</div>
-          </div>
-          <div class="booking-info">
-            <div class="booking-court">Cancha 1</div>
-            <div class="booking-player">Martín Rodríguez · 5ta Categoría · 4 jugadores</div>
-          </div>
-          <div class="booking-amount">$12,000</div>
-        </div>
-
-        <div class="booking-row">
-          <div class="booking-time-block">
-            <div class="booking-time">09:00 hs</div>
-            <div class="booking-date">Mañana</div>
-          </div>
-          <div class="booking-info">
-            <div class="booking-court">Cancha 2</div>
-            <div class="booking-player">Carlos Mendez · 3ra Categoría · 4 jugadores</div>
-          </div>
-          <div class="booking-amount">$12,000</div>
-        </div>
-
-        <div class="booking-row">
-          <div class="booking-time-block">
-            <div class="booking-time">11:00 hs</div>
-            <div class="booking-date">Mañana</div>
-          </div>
-          <div class="booking-info">
-            <div class="booking-court">Cancha 1</div>
-            <div class="booking-player">Lucas Fernández · Clase de entrenamiento · 3 alumnos</div>
-          </div>
-          <div class="booking-amount">$12,000</div>
-        </div>
-
-        <div class="booking-row">
-          <div class="booking-time-block">
-            <div class="booking-time">18:00 hs</div>
-            <div class="booking-date">Jue 21</div>
-          </div>
-          <div class="booking-info">
-            <div class="booking-court">Cancha 3</div>
-            <div class="booking-player">Ana González · 4ta Categoría · 4 jugadores</div>
-          </div>
-          <div class="booking-amount">$9,000</div>
-        </div>
-
-      </div>
-    </div>
-
-    <!-- Quick actions -->
-    <div class="section">
-      <div class="section-head">
-        <h3>Acciones rápidas</h3>
-      </div>
-      <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:0.75rem;">
-        <button class="btn-full" style="margin-top:0;" onclick="alert('Agregar cancha')">
-          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-          Agregar cancha
-        </button>
-        <button class="btn-full btn-full-outline" style="margin-top:0;" onclick="alert('Ver reportes')">
-          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
-          Ver reportes
-        </button>
-        <button class="btn-full btn-full-outline" style="margin-top:0;" onclick="alert('Configurar precios')">
-          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-          Configurar precios
-        </button>
-        <button class="btn-full btn-full-outline" style="margin-top:0;" onclick="alert('Editar perfil del complejo')">
-          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-          Editar perfil
-        </button>
-      </div>
-    </div>
-
-  </main>
+  <!-- GRILLA PRINCIPAL -->
+  <main class="panel-main" id="grilla-canchas"></main>
 
   <script>
     (function() {
@@ -771,10 +271,1343 @@
       if (!rol || (rol !== 'complejo' && rol !== 'admin')) window.location.href = 'auth.html';
     })();
 
-    function setTab(btn) {
-      btn.closest('.tabs').querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
-      btn.classList.add('active');
+    function cerrarSesion() {
+      sessionStorage.clear();
+      window.location.href = 'index.html';
     }
+
+    /* ================================================
+       PADELYA - CAPA DE DATOS
+       Separación clara entre datos simulados y backend real
+       ================================================ */
+
+    /* ------ CONFIGURACIÓN ------ */
+    var CONFIG = {
+      COMPLEJO_ID: 'chingoland',
+      COMPLEJO_NOMBRE: 'Chingoland',
+      OFFLINE_THRESHOLD_MS: 3 * 60 * 1000,  // 3 minutos
+      HEARTBEAT_INTERVAL_MS: 60 * 1000,     // 60 segundos
+      VERSION: '1.0.0-simulado'
+    };
+
+    /* ------ ESTRUCTURA ESPERADA PARA FIREBASE (referencia futura) ------
+      /complejos/{complejoId}/
+        estado: 'online' | 'offline'
+        lastSeen: timestamp
+        canchas: {
+          cancha1: {
+            nombre: string
+            superficie: string
+            turnos: {
+              '08:00': {
+                estado: 'libre'|'ocupado'|'padelya1'|'padelya2'|'padelya3'|'padelya4'|'cancelado'|'finalizado'
+                partidoId: string | null
+                jugadores: number
+                updatedAt: timestamp
+              }
+            }
+          }
+        }
+      /partidos/{partidoId}/
+        complejoId: string
+        canchaId: string
+        hora: string
+        fecha: string
+        jugadores: number
+        total: 4
+        estado: string
+        creadoAt: timestamp
+        updatedAt: timestamp
+    ---------------------------------------------------------------------- */
+
+    /* ------ FECHA SELECCIONADA EN EL PANEL ------ */
+    var FECHA_SELECCIONADA = new Date().toISOString().split('T')[0];
+
+    /* ------ MODO DE VISTA DEL PANEL ------ */
+    var MODO_PANEL = sessionStorage.getItem('modoPanel') || 'simple';
+
+    /* ------ ESTADO LOCAL (simula Firebase Realtime) ------ */
+    var DB_LOCAL = {
+      complejo: {
+        id: CONFIG.COMPLEJO_ID,
+        nombre: CONFIG.COMPLEJO_NOMBRE,
+        estado: 'online',
+        lastSeen: Date.now()
+      },
+      canchas: {
+        'cancha1': {
+          nombre: 'Cancha 1', superficie: 'Cristal',
+          turnos: {
+            '08:00': { estado: 'finalizado', jugadores: 0, partidoId: null },
+            '09:30': { estado: 'finalizado', jugadores: 0, partidoId: null },
+            '11:00': { estado: 'libre',      jugadores: 0, partidoId: null },
+            '12:30': { estado: 'libre',      jugadores: 0, partidoId: null },
+            '14:00': { estado: 'ocupado',    jugadores: 0, partidoId: null },
+            '15:30': { estado: 'ocupado',    jugadores: 0, partidoId: null },
+            '17:00': { estado: 'padelya3',   jugadores: 3, partidoId: 'p001' },
+            '18:30': { estado: 'padelya4',   jugadores: 4, partidoId: 'p002' },
+            '20:00': { estado: 'padelya1',   jugadores: 1, partidoId: 'p003' },
+            '21:30': { estado: 'libre',      jugadores: 0, partidoId: null }
+          }
+        },
+        'cancha2': {
+          nombre: 'Cancha 2', superficie: 'Muro',
+          turnos: {
+            '08:00': { estado: 'finalizado', jugadores: 0, partidoId: null },
+            '09:30': { estado: 'libre',      jugadores: 0, partidoId: null },
+            '11:00': { estado: 'ocupado',    jugadores: 0, partidoId: null },
+            '12:30': { estado: 'libre',      jugadores: 0, partidoId: null },
+            '14:00': { estado: 'libre',      jugadores: 0, partidoId: null },
+            '15:30': { estado: 'padelya2',   jugadores: 2, partidoId: 'p004' },
+            '17:00': { estado: 'libre',      jugadores: 0, partidoId: null },
+            '18:30': { estado: 'cancelado',  jugadores: 0, partidoId: null },
+            '20:00': { estado: 'ocupado',    jugadores: 0, partidoId: null },
+            '21:30': { estado: 'libre',      jugadores: 0, partidoId: null }
+          }
+        },
+        'cancha3': {
+          nombre: 'Cancha 3', superficie: 'Cristal',
+          turnos: {
+            '08:00': { estado: 'libre',      jugadores: 0, partidoId: null },
+            '09:30': { estado: 'padelya4',   jugadores: 4, partidoId: 'p005' },
+            '11:00': { estado: 'libre',      jugadores: 0, partidoId: null },
+            '12:30': { estado: 'ocupado',    jugadores: 0, partidoId: null },
+            '14:00': { estado: 'ocupado',    jugadores: 0, partidoId: null },
+            '15:30': { estado: 'ocupado',    jugadores: 0, partidoId: null },
+            '17:00': { estado: 'libre',      jugadores: 0, partidoId: null },
+            '18:30': { estado: 'padelya3',   jugadores: 3, partidoId: 'p006' },
+            '20:00': { estado: 'libre',      jugadores: 0, partidoId: null },
+            '21:30': { estado: 'ocupado',    jugadores: 0, partidoId: null }
+          }
+        },
+        'cancha4': {
+          nombre: 'Cancha 4', superficie: 'Muro',
+          turnos: {
+            '08:00': { estado: 'libre',      jugadores: 0, partidoId: null },
+            '09:30': { estado: 'libre',      jugadores: 0, partidoId: null },
+            '11:00': { estado: 'ocupado',    jugadores: 0, partidoId: null },
+            '12:30': { estado: 'libre',      jugadores: 0, partidoId: null },
+            '14:00': { estado: 'padelya2',   jugadores: 2, partidoId: 'p007' },
+            '15:30': { estado: 'libre',      jugadores: 0, partidoId: null },
+            '17:00': { estado: 'padelya4',   jugadores: 4, partidoId: 'p008' },
+            '18:30': { estado: 'libre',      jugadores: 0, partidoId: null },
+            '20:00': { estado: 'padelya1',   jugadores: 1, partidoId: 'p009' },
+            '21:30': { estado: 'libre',      jugadores: 0, partidoId: null }
+          }
+        }
+      }
+    };
+
+    /* ------ DATOS POR FECHA ------
+       En producción: consultar Firebase con la fecha seleccionada.
+       Hoy: simula variaciones de ocupación por día. */
+    function obtenerDatosPorFecha(fecha) {
+      var hoy = new Date().toISOString().split('T')[0];
+      var manana = new Date(Date.now() + 86400000).toISOString().split('T')[0];
+      var pasado = new Date(Date.now() + 172800000).toISOString().split('T')[0];
+
+      var base = {
+        'cancha1': {
+          nombre: 'Cancha 1', superficie: 'Cristal',
+          turnos: {
+            '08:00': { estado: 'libre', jugadores: 0, partidoId: null },
+            '09:30': { estado: 'libre', jugadores: 0, partidoId: null },
+            '11:00': { estado: 'libre', jugadores: 0, partidoId: null },
+            '12:30': { estado: 'libre', jugadores: 0, partidoId: null },
+            '14:00': { estado: 'libre', jugadores: 0, partidoId: null },
+            '15:30': { estado: 'libre', jugadores: 0, partidoId: null },
+            '17:00': { estado: 'libre', jugadores: 0, partidoId: null },
+            '18:30': { estado: 'libre', jugadores: 0, partidoId: null },
+            '20:00': { estado: 'libre', jugadores: 0, partidoId: null },
+            '21:30': { estado: 'libre', jugadores: 0, partidoId: null }
+          }
+        },
+        'cancha2': {
+          nombre: 'Cancha 2', superficie: 'Muro',
+          turnos: {
+            '08:00': { estado: 'libre', jugadores: 0, partidoId: null },
+            '09:30': { estado: 'libre', jugadores: 0, partidoId: null },
+            '11:00': { estado: 'libre', jugadores: 0, partidoId: null },
+            '12:30': { estado: 'libre', jugadores: 0, partidoId: null },
+            '14:00': { estado: 'libre', jugadores: 0, partidoId: null },
+            '15:30': { estado: 'libre', jugadores: 0, partidoId: null },
+            '17:00': { estado: 'libre', jugadores: 0, partidoId: null },
+            '18:30': { estado: 'libre', jugadores: 0, partidoId: null },
+            '20:00': { estado: 'libre', jugadores: 0, partidoId: null },
+            '21:30': { estado: 'libre', jugadores: 0, partidoId: null }
+          }
+        },
+        'cancha3': {
+          nombre: 'Cancha 3', superficie: 'Cristal',
+          turnos: {
+            '08:00': { estado: 'libre', jugadores: 0, partidoId: null },
+            '09:30': { estado: 'libre', jugadores: 0, partidoId: null },
+            '11:00': { estado: 'libre', jugadores: 0, partidoId: null },
+            '12:30': { estado: 'libre', jugadores: 0, partidoId: null },
+            '14:00': { estado: 'libre', jugadores: 0, partidoId: null },
+            '15:30': { estado: 'libre', jugadores: 0, partidoId: null },
+            '17:00': { estado: 'libre', jugadores: 0, partidoId: null },
+            '18:30': { estado: 'libre', jugadores: 0, partidoId: null },
+            '20:00': { estado: 'libre', jugadores: 0, partidoId: null },
+            '21:30': { estado: 'libre', jugadores: 0, partidoId: null }
+          }
+        },
+        'cancha4': {
+          nombre: 'Cancha 4', superficie: 'Muro',
+          turnos: {
+            '08:00': { estado: 'libre', jugadores: 0, partidoId: null },
+            '09:30': { estado: 'libre', jugadores: 0, partidoId: null },
+            '11:00': { estado: 'libre', jugadores: 0, partidoId: null },
+            '12:30': { estado: 'libre', jugadores: 0, partidoId: null },
+            '14:00': { estado: 'libre', jugadores: 0, partidoId: null },
+            '15:30': { estado: 'libre', jugadores: 0, partidoId: null },
+            '17:00': { estado: 'libre', jugadores: 0, partidoId: null },
+            '18:30': { estado: 'libre', jugadores: 0, partidoId: null },
+            '20:00': { estado: 'libre', jugadores: 0, partidoId: null },
+            '21:30': { estado: 'libre', jugadores: 0, partidoId: null }
+          }
+        }
+      };
+
+      if (fecha === hoy) {
+        base.cancha1.turnos['08:00'].estado = 'finalizado';
+        base.cancha1.turnos['09:30'].estado = 'finalizado';
+        base.cancha1.turnos['14:00'].estado = 'ocupado';
+        base.cancha1.turnos['15:30'].estado = 'ocupado';
+        base.cancha1.turnos['17:00'].estado = 'padelya3';
+        base.cancha1.turnos['17:00'].jugadores = 3;
+        base.cancha1.turnos['18:30'].estado = 'padelya4';
+        base.cancha1.turnos['18:30'].jugadores = 4;
+        base.cancha1.turnos['20:00'].estado = 'padelya1';
+        base.cancha1.turnos['20:00'].jugadores = 1;
+
+        base.cancha2.turnos['08:00'].estado = 'finalizado';
+        base.cancha2.turnos['11:00'].estado = 'ocupado';
+        base.cancha2.turnos['15:30'].estado = 'padelya2';
+        base.cancha2.turnos['15:30'].jugadores = 2;
+        base.cancha2.turnos['18:30'].estado = 'cancelado';
+        base.cancha2.turnos['20:00'].estado = 'ocupado';
+
+        base.cancha3.turnos['08:00'].estado = 'libre';
+        base.cancha3.turnos['09:30'].estado = 'padelya4';
+        base.cancha3.turnos['09:30'].jugadores = 4;
+        base.cancha3.turnos['12:30'].estado = 'ocupado';
+        base.cancha3.turnos['14:00'].estado = 'ocupado';
+        base.cancha3.turnos['15:30'].estado = 'ocupado';
+        base.cancha3.turnos['18:30'].estado = 'padelya3';
+        base.cancha3.turnos['18:30'].jugadores = 3;
+        base.cancha3.turnos['21:30'].estado = 'ocupado';
+
+        base.cancha4.turnos['11:00'].estado = 'ocupado';
+        base.cancha4.turnos['14:00'].estado = 'padelya2';
+        base.cancha4.turnos['14:00'].jugadores = 2;
+        base.cancha4.turnos['17:00'].estado = 'padelya4';
+        base.cancha4.turnos['17:00'].jugadores = 4;
+        base.cancha4.turnos['20:00'].estado = 'padelya1';
+        base.cancha4.turnos['20:00'].jugadores = 1;
+      }
+
+      if (fecha === manana) {
+        base.cancha1.turnos['11:00'].estado = 'padelya1';
+        base.cancha1.turnos['11:00'].jugadores = 1;
+        base.cancha1.turnos['17:00'].estado = 'ocupado';
+        base.cancha1.turnos['20:00'].estado = 'padelya2';
+        base.cancha1.turnos['20:00'].jugadores = 2;
+
+        base.cancha2.turnos['09:30'].estado = 'padelya3';
+        base.cancha2.turnos['09:30'].jugadores = 3;
+        base.cancha2.turnos['15:30'].estado = 'ocupado';
+        base.cancha2.turnos['18:30'].estado = 'padelya1';
+        base.cancha2.turnos['18:30'].jugadores = 1;
+
+        base.cancha3.turnos['14:00'].estado = 'ocupado';
+        base.cancha3.turnos['20:00'].estado = 'padelya2';
+        base.cancha3.turnos['20:00'].jugadores = 2;
+
+        base.cancha4.turnos['09:30'].estado = 'padelya4';
+        base.cancha4.turnos['09:30'].jugadores = 4;
+        base.cancha4.turnos['17:00'].estado = 'ocupado';
+      }
+
+      if (fecha === pasado) {
+        base.cancha1.turnos['20:00'].estado = 'padelya1';
+        base.cancha1.turnos['20:00'].jugadores = 1;
+        base.cancha2.turnos['18:30'].estado = 'ocupado';
+        base.cancha3.turnos['21:30'].estado = 'padelya2';
+        base.cancha3.turnos['21:30'].jugadores = 2;
+      }
+
+      return base;
+    }
+
+    var ESTADOS = {
+      'libre':      { label: 'Libre',          color: '#16A34A', bg: '#DCFCE7', bar: '#16A34A' },
+      'ocupado':    { label: 'Ocupado',        color: '#FFFFFF', bg: '#1F2937', bar: '#1F2937' },
+      'padelya1':   { label: 'PadelYa 1/4',    color: '#D97706', bg: '#FEF3C7', bar: '#D97706' },
+      'padelya2':   { label: 'PadelYa 2/4',    color: '#D97706', bg: '#FEF3C7', bar: '#D97706' },
+      'padelya3':   { label: '⚠ Falta 1 · 3/4', color: '#B45309', bg: '#FDE68A', bar: '#F59E0B' },
+      'padelya4':   { label: 'Completo 4/4',   color: '#1D4ED8', bg: '#DBEAFE', bar: '#2563EB' },
+      'cancelado':  { label: 'Cancelado',      color: '#DC2626', bg: '#FEE2E2', bar: '#DC2626' },
+      'finalizado': { label: 'Finalizado',     color: '#6B7280', bg: '#F3F4F6', bar: '#9CA3AF' }
+    };
+
+    var DIAS = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
+    var DIAS_ABR = ['DOM', 'LUN', 'MAR', 'MIÉ', 'JUE', 'VIE', 'SÁB'];
+    var MESES = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
+
+    function escapeHtml(str) {
+      return String(str).replace(/[&<>"']/g, function(c) {
+        return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+      });
+    }
+
+    /* ================================================
+       CAPA DE ACCESO A DATOS
+       Estas funciones se conectarán a Firebase en producción.
+       Hoy escriben/leen de DB_LOCAL + sessionStorage.
+       ================================================ */
+
+    /* --- HEARTBEAT: actualiza lastSeen cada 60s --- */
+    function iniciarHeartbeat() {
+      actualizarLastSeen();
+      setInterval(function() {
+        actualizarLastSeen();
+      }, CONFIG.HEARTBEAT_INTERVAL_MS);
+    }
+
+    function actualizarLastSeen() {
+      DB_LOCAL.complejo.lastSeen = Date.now();
+      DB_LOCAL.complejo.estado = 'online';
+      /* FIREBASE: db.ref('complejos/' + CONFIG.COMPLEJO_ID).update({
+           estado: 'online', lastSeen: firebase.database.ServerValue.TIMESTAMP
+         }); */
+      sessionStorage.setItem('complejo_lastSeen_' + CONFIG.COMPLEJO_ID, Date.now());
+      sessionStorage.setItem('complejo_estado_' + CONFIG.COMPLEJO_ID, 'online');
+      actualizarIndicadorConexion(true);
+    }
+
+    /* --- VERIFICAR si complejo está online --- */
+    function complejoEstaOnline(complejoId) {
+      /* FIREBASE: leer lastSeen del complejo y comparar */
+      var lastSeen = parseInt(
+        sessionStorage.getItem('complejo_lastSeen_' + (complejoId || CONFIG.COMPLEJO_ID)) || '0'
+      );
+      if (!lastSeen) return false;
+      return (Date.now() - lastSeen) < CONFIG.OFFLINE_THRESHOLD_MS;
+    }
+
+    /* --- ACTUALIZAR estado de un turno --- */
+    function actualizarTurno(canchaId, hora, nuevoEstado, jugadores, partidoId) {
+      /* FIREBASE: db.ref('complejos/COMPLEJO_ID/canchas/CANCHA/turnos/HORA').set({
+           estado: nuevoEstado, jugadores: jugadores || 0,
+           partidoId: partidoId || null, updatedAt: ServerValue.TIMESTAMP
+         }); */
+      if (DB_LOCAL.canchas[canchaId] && DB_LOCAL.canchas[canchaId].turnos[hora]) {
+        DB_LOCAL.canchas[canchaId].turnos[hora].estado = nuevoEstado;
+        DB_LOCAL.canchas[canchaId].turnos[hora].jugadores = jugadores || 0;
+        DB_LOCAL.canchas[canchaId].turnos[hora].partidoId = partidoId || null;
+      }
+      // Sincronizar con sessionStorage para app jugador
+      var clave = 'turno_' + CONFIG.COMPLEJO_ID + '_' + canchaId + '_' + hora.replace(':', '');
+      sessionStorage.setItem(clave, nuevoEstado);
+    }
+
+    /* --- LEER estado de un turno --- */
+    function leerEstadoTurno(complejoId, canchaId, hora) {
+      /* FIREBASE: await db.ref('complejos/COMPLEJO_ID/canchas/CANCHA/turnos/HORA').once('value') */
+      var clave = 'turno_' + complejoId + '_' + canchaId + '_' + hora.replace(':', '');
+      return sessionStorage.getItem(clave) || 'libre';
+    }
+
+    /* --- CREAR PARTIDO desde jugador --- */
+    function crearPartidoEnComplejo(complejoId, canchaId, hora, partidoId) {
+      /* FIREBASE: transaction para verificar disponibilidad y crear partido */
+      var clave = 'turno_' + complejoId + '_' + canchaId + '_' + hora.replace(':', '');
+      var estadoActual = sessionStorage.getItem(clave);
+      if (estadoActual && estadoActual !== 'libre') return false;
+      sessionStorage.setItem(clave, 'padelya1');
+      return true;
+    }
+
+    /* --- ACTUALIZAR jugadores de un partido --- */
+    function actualizarJugadoresPartido(complejoId, canchaId, hora, cantidad) {
+      /* FIREBASE: transaction en partidos/{id}/jugadores */
+      var clave = 'turno_' + complejoId + '_' + canchaId + '_' + hora.replace(':', '');
+      var estado = cantidad === 1 ? 'padelya1' :
+                   cantidad === 2 ? 'padelya2' :
+                   cantidad === 3 ? 'padelya3' : 'padelya4';
+      sessionStorage.setItem(clave, estado);
+    }
+
+    /* ================================================
+       INDICADOR DE CONEXIÓN DEL COMPLEJO
+       ================================================ */
+
+    function actualizarIndicadorConexion(online) {
+      var indicador = document.getElementById('indicador-conexion');
+      if (!indicador) return;
+      if (online) {
+        indicador.style.background = '#DCFCE7';
+        indicador.style.color = '#16A34A';
+        indicador.style.borderColor = '#86EFAC';
+        indicador.innerHTML = '● Online';
+      } else {
+        indicador.style.background = '#FEE2E2';
+        indicador.style.color = '#DC2626';
+        indicador.style.borderColor = '#FCA5A5';
+        indicador.innerHTML = '● Sin conexión';
+      }
+    }
+
+    /* ================================================
+       VERIFICACIÓN PERIÓDICA DE CONEXIÓN
+       Simula lo que Firebase haría con onDisconnect
+       ================================================ */
+    setInterval(function() {
+      var online = complejoEstaOnline();
+      actualizarIndicadorConexion(online);
+      if (!online) {
+        DB_LOCAL.complejo.estado = 'offline';
+        sessionStorage.setItem('complejo_estado_' + CONFIG.COMPLEJO_ID, 'offline');
+        mostrarBannerOffline();
+      } else {
+        ocultarBannerOffline();
+      }
+    }, 10000);
+
+    function mostrarBannerOffline() {
+      var banner = document.getElementById('banner-offline');
+      if (!banner) {
+        banner = document.createElement('div');
+        banner.id = 'banner-offline';
+        banner.style.cssText = 'position:fixed;top:0;left:0;right:0;z-index:99999;' +
+          'background:#DC2626;color:white;text-align:center;padding:10px;' +
+          'font-size:14px;font-weight:600;';
+        banner.textContent = '⚠ Sin conexión · Las acciones están pausadas temporalmente';
+        document.body.prepend(banner);
+        document.body.style.paddingTop = '42px';
+      }
+    }
+
+    function ocultarBannerOffline() {
+      var banner = document.getElementById('banner-offline');
+      if (banner) {
+        banner.remove();
+        document.body.style.paddingTop = '0';
+      }
+    }
+
+    /* ================================================
+       SELECTOR DE FECHA
+       ================================================ */
+
+    function renderFechaHoy() {
+      var d = new Date(FECHA_SELECCIONADA + 'T00:00:00');
+      var hoy = new Date().toISOString().split('T')[0];
+      var manana = new Date(Date.now() + 86400000).toISOString().split('T')[0];
+      var prefijo = FECHA_SELECCIONADA === hoy ? 'Hoy · ' :
+        FECHA_SELECCIONADA === manana ? 'Mañana · ' : '';
+      document.getElementById('fecha-hoy').textContent =
+        prefijo + DIAS[d.getDay()] + ' ' + d.getDate() + ' de ' + MESES[d.getMonth()];
+    }
+
+    function renderSelectorFechas() {
+      var contenedor = document.getElementById('date-selector');
+      contenedor.innerHTML = '';
+      var hoy = new Date();
+      for (var i = 0; i < 7; i++) {
+        var d = new Date(hoy);
+        d.setDate(hoy.getDate() + i);
+        var fechaISO = d.toISOString().split('T')[0];
+        var btn = document.createElement('button');
+        btn.className = 'date-btn' + (fechaISO === FECHA_SELECCIONADA ? ' active' : '');
+        btn.setAttribute('data-fecha', fechaISO);
+        btn.innerHTML = '<span class="dia-label">' + (i === 0 ? 'HOY' : DIAS_ABR[d.getDay()]) + '</span>' + d.getDate();
+        btn.onclick = (function(f) {
+          return function() { cambiarFecha(f); };
+        })(fechaISO);
+        contenedor.appendChild(btn);
+      }
+    }
+
+    /* ================================================
+       MODO SIMPLE / MODO COMPLETO
+       ================================================ */
+
+    function cambiarModoPanel(modo) {
+      MODO_PANEL = modo;
+      sessionStorage.setItem('modoPanel', modo);
+      actualizarToggleModo();
+      renderCanchas();
+    }
+
+    function actualizarToggleModo() {
+      var btnSimple = document.getElementById('btn-modo-simple');
+      var btnCompleto = document.getElementById('btn-modo-completo');
+      if (!btnSimple || !btnCompleto) return;
+
+      [btnSimple, btnCompleto].forEach(function(btn, i) {
+        var activo = (i === 0 && MODO_PANEL === 'simple') || (i === 1 && MODO_PANEL === 'completo');
+        btn.style.background = activo ? '#1F2937' : 'transparent';
+        btn.style.color = activo ? '#fff' : '#6B7280';
+      });
+    }
+
+    function cambiarFecha(fecha) {
+      FECHA_SELECCIONADA = fecha;
+      DB_LOCAL.canchas = obtenerDatosPorFecha(fecha);
+
+      renderFechaHoy();
+      renderSelectorFechas();
+      renderCanchas();
+      if (typeof actualizarResumen === 'function') actualizarResumen();
+    }
+
+    /* ================================================
+       RESUMEN DEL DIA (lee DB_LOCAL)
+       ================================================ */
+
+    function actualizarResumen() {
+      var contadores = {
+        libre: 0, ocupado: 0,
+        padelya1: 0, padelya2: 0, padelya3: 0,
+        padelya4: 0, cancelado: 0, finalizado: 0
+      };
+      Object.keys(DB_LOCAL.canchas).forEach(function(canchaId) {
+        var turnos = DB_LOCAL.canchas[canchaId].turnos;
+        Object.keys(turnos).forEach(function(hora) {
+          var estado = turnos[hora].estado;
+          if (contadores[estado] !== undefined) contadores[estado]++;
+        });
+      });
+
+      var padel = contadores.padelya1 + contadores.padelya2;
+      var falta1 = contadores.padelya3;
+      var completos = contadores.padelya4;
+
+      var resumen = document.getElementById('resumen-dia');
+      if (!resumen) return;
+      resumen.innerHTML =
+        itemResumen(contadores.libre, 'Libres', '#16A34A') +
+        sepResumen() +
+        itemResumen(contadores.ocupado, 'Ocupadas', '#1F2937') +
+        sepResumen() +
+        itemResumen(padel, 'PadelYa', '#D97706') +
+        sepResumen() +
+        itemResumen(falta1, 'Falta 1', '#F59E0B') +
+        sepResumen() +
+        itemResumen(completos, 'Completos', '#2563EB') +
+        sepResumen() +
+        itemResumen(contadores.cancelado, 'Cancelados', '#DC2626');
+    }
+    function itemResumen(n, label, color) {
+      return '<div style="text-align:center;padding:0 12px;">' +
+        '<p style="font-size:22px;font-weight:800;color:' + color + ';margin:0;">' + n + '</p>' +
+        '<p style="font-size:11px;color:#6B7280;margin:0;">' + label + '</p>' +
+        '</div>';
+    }
+    function sepResumen() {
+      return '<div style="width:1px;background:#E5E7EB;"></div>';
+    }
+
+    /* ================================================
+       RENDER DE CANCHAS (lee DB_LOCAL)
+       ================================================ */
+
+    function obtenerInfoTurno(estado) {
+      switch (estado) {
+        case 'libre': return 'Libre';
+        case 'ocupado': return 'Ocupado';
+        case 'padelya1': return 'Partido PadelYa · 1/4';
+        case 'padelya2': return 'Partido PadelYa · 2/4';
+        case 'padelya3': return 'Partido PadelYa · <strong style="color:#B45309;">¡Falta 1!</strong> · 3/4';
+        case 'padelya4': return 'Partido PadelYa · 4/4';
+        case 'cancelado': return 'Cancelado';
+        case 'finalizado': return 'Finalizado';
+        default: return ESTADOS[estado] ? ESTADOS[estado].label : estado;
+      }
+    }
+
+    function renderCanchas() {
+      var contenedor = document.getElementById('grilla-canchas');
+      if (!contenedor) return;
+      contenedor.innerHTML = '';
+
+      if (MODO_PANEL === 'simple') {
+        renderCanchasSimple(contenedor);
+        return;
+      }
+
+      Object.keys(DB_LOCAL.canchas).forEach(function(canchaId) {
+        var cancha = DB_LOCAL.canchas[canchaId];
+        var horas = Object.keys(cancha.turnos);
+        var libres = horas.filter(function(h) { return cancha.turnos[h].estado === 'libre'; }).length;
+        var ocupadas = horas.length - libres;
+
+        var card = document.createElement('div');
+        card.className = 'cancha-card';
+
+        var header = '<div class="cancha-header">' +
+          '<h2>' + escapeHtml(cancha.nombre) + '</h2>' +
+          '<span class="cancha-superficie">' + escapeHtml(cancha.superficie) + '</span>' +
+          '<span class="cancha-estado-general"><span style="color:#16A34A;">●</span> ' + libres + ' libres · ' + ocupadas + ' ocupadas</span>' +
+          '</div>';
+
+        var turnos = '';
+        horas.forEach(function(hora) {
+          turnos += crearBloqueTurno(canchaId, hora, cancha.turnos[hora]);
+        });
+
+        card.innerHTML = header + '<div>' + turnos + '</div>';
+        contenedor.appendChild(card);
+      });
+    }
+
+    function crearBloqueTurno(canchaId, hora, turno) {
+      var e = ESTADOS[turno.estado] || ESTADOS['libre'];
+
+      return '<div class="turno-bloque" onclick="abrirAcciones(\'' + canchaId + '\',\'' + hora + '\')">' +
+        '<span class="turno-hora">' + hora + '</span>' +
+        '<div class="turno-indicador" style="background:' + e.bar + ';"></div>' +
+        '<div class="turno-info">' +
+        '<p class="turno-titulo">' + obtenerInfoTurno(turno.estado) + '</p>' +
+        '</div>' +
+        '<span class="turno-badge" style="background:' + e.bg + ';color:' + e.color + ';">' + escapeHtml(e.label) + '</span>' +
+        '<span class="turno-accion" onclick="event.stopPropagation();abrirAcciones(\'' + canchaId + '\',\'' + hora + '\')">···</span>' +
+        '</div>';
+    }
+
+    /* ================================================
+       MODO SIMPLE - GRILLA
+       ================================================ */
+
+    function renderCanchasSimple(contenedor) {
+      Object.keys(DB_LOCAL.canchas).forEach(function(canchaId) {
+        var cancha = DB_LOCAL.canchas[canchaId];
+        var horas = Object.keys(cancha.turnos);
+
+        var card = document.createElement('div');
+        card.className = 'cancha-card';
+
+        var header = '<div class="cancha-header"><h2>' + escapeHtml(cancha.nombre) + '</h2></div>';
+
+        var bloques = '';
+        horas.forEach(function(hora) {
+          bloques += crearBloqueTurnoSimple(canchaId, hora, cancha.turnos[hora]);
+        });
+
+        card.innerHTML = header + '<div style="padding:8px;">' + bloques + '</div>';
+        contenedor.appendChild(card);
+      });
+    }
+
+    function crearBloqueTurnoSimple(canchaId, hora, turno) {
+      var estado = turno.estado;
+      var bg;
+      if (estado === 'libre') {
+        bg = '#16A34A';
+      } else if (estado === 'padelya1' || estado === 'padelya2' || estado === 'padelya3' || estado === 'padelya4') {
+        bg = '#2563EB';
+      } else {
+        bg = '#1F2937';
+      }
+
+      return '<div onclick="abrirAccionesSimple(\'' + canchaId + '\',\'' + hora + '\')" ' +
+        'style="width:100%;height:44px;background:' + bg + ';color:#fff;' +
+        'display:flex;align-items:center;justify-content:center;' +
+        'font-size:14px;font-weight:700;cursor:pointer;border-radius:8px;margin-bottom:6px;">' +
+        hora + '</div>';
+    }
+
+    function abrirAccionesSimple(canchaId, hora) {
+      var cancha = DB_LOCAL.canchas[canchaId];
+      if (!cancha) return;
+      var estado = cancha.turnos[hora].estado;
+      var modal = getModal();
+      var acciones = '';
+
+      if (estado === 'libre') {
+        acciones =
+          '<button onclick="ejecutarMarcarOcupado(\'' + canchaId + '\',\'' + hora + '\')" style="' + btnStyle('#1F2937') + 'text-align:center;">Marcar ocupado</button>' +
+          '<button onclick="cerrarModal()" style="' + btnStyleOut('#6B7280') + 'text-align:center;">Cerrar</button>';
+
+      } else if (estado === 'padelya1' || estado === 'padelya2' || estado === 'padelya3' || estado === 'padelya4') {
+        acciones =
+          '<button onclick="cerrarModal();mostrarToastComplejo(\'Función disponible próximamente.\', \'#2563EB\')" style="' + btnStyle('#2563EB') + 'text-align:center;">Ver detalle</button>' +
+          '<button onclick="cerrarModal()" style="' + btnStyleOut('#6B7280') + 'text-align:center;">Cerrar</button>';
+
+      } else {
+        acciones =
+          '<button onclick="ejecutarLiberarTurno(\'' + canchaId + '\',\'' + hora + '\')" style="' + btnStyle('#16A34A') + 'text-align:center;">Liberar</button>' +
+          '<button onclick="cerrarModal()" style="' + btnStyleOut('#6B7280') + 'text-align:center;">Cerrar</button>';
+      }
+
+      modal.innerHTML =
+        '<div style="position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:9999;display:flex;align-items:flex-end;justify-content:center;padding:16px;">' +
+        '<div style="background:#fff;border-radius:16px;padding:20px;width:100%;max-width:420px;">' +
+        '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">' +
+        '<h3 style="font-size:16px;font-weight:700;color:#111827;margin:0;">' + escapeHtml(cancha.nombre) + ' · ' + hora + '</h3>' +
+        '<button onclick="cerrarModal()" style="background:#F3F4F6;border:none;border-radius:50%;width:28px;height:28px;cursor:pointer;font-size:16px;">×</button>' +
+        '</div>' +
+        '<div style="display:flex;flex-direction:column;gap:8px;">' + acciones + '</div>' +
+        '</div></div>';
+      modal.style.display = 'block';
+    }
+
+    function rerender() {
+      renderCanchas();
+      actualizarResumen();
+    }
+
+    /* ================================================
+       MODAL DE ACCIONES
+       ================================================ */
+
+    function getModal() {
+      var modal = document.getElementById('modal-acciones');
+      if (!modal) {
+        modal = document.createElement('div');
+        modal.id = 'modal-acciones';
+        document.body.appendChild(modal);
+      }
+      return modal;
+    }
+
+    function cerrarModal() {
+      var m = document.getElementById('modal-acciones');
+      if (m) m.style.display = 'none';
+    }
+
+    function btnStyle(color) {
+      return 'width:100%;padding:12px;background:' + color + ';color:white;border:none;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;text-align:left;font-family:inherit;';
+    }
+    function btnStyleOut(color) {
+      return 'width:100%;padding:12px;background:transparent;color:' + color + ';border:1.5px solid ' + color + ';border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;text-align:left;font-family:inherit;';
+    }
+
+    function abrirAcciones(canchaId, hora) {
+      var cancha = DB_LOCAL.canchas[canchaId];
+      if (!cancha) return;
+      var estado = cancha.turnos[hora].estado;
+      var modal = getModal();
+      var acciones = '';
+
+      if (estado === 'libre') {
+        acciones =
+          '<button onclick="confirmarMarcarOcupado(\'' + canchaId + '\',\'' + hora + '\')" style="' + btnStyle('#1F2937') + '">Marcar como Ocupado</button>' +
+          '<button onclick="cerrarModal()" style="' + btnStyleOut('#6B7280') + '">Cancelar</button>';
+
+      } else if (estado === 'ocupado') {
+        acciones =
+          '<button onclick="ejecutarLiberarTurno(\'' + canchaId + '\',\'' + hora + '\')" style="' + btnStyle('#16A34A') + '">Liberar · Marcar como Libre</button>' +
+          '<button onclick="cerrarModal()" style="' + btnStyleOut('#6B7280') + '">Cancelar</button>';
+
+      } else if (estado === 'padelya1' || estado === 'padelya2' || estado === 'padelya3') {
+        acciones =
+          '<button onclick="cerrarModal();mostrarToastComplejo(\'Función disponible próximamente.\', \'#2563EB\')" style="' + btnStyle('#2563EB') + '">Ver jugadores</button>' +
+          '<button onclick="confirmarCancelarYOcupar(\'' + canchaId + '\',\'' + hora + '\')" style="' + btnStyle('#D97706') + '">Cancelar PadelYa y marcar ocupado</button>' +
+          '<button onclick="confirmarCancelarPadelYa(\'' + canchaId + '\',\'' + hora + '\')" style="' + btnStyleOut('#DC2626') + '">Cancelar partido</button>' +
+          '<button onclick="cerrarModal()" style="' + btnStyleOut('#6B7280') + '">Cerrar</button>';
+
+      } else if (estado === 'padelya4') {
+        acciones =
+          '<button onclick="cerrarModal();mostrarToastComplejo(\'Función disponible próximamente.\', \'#2563EB\')" style="' + btnStyle('#6B7280') + '">Ver jugadores</button>' +
+          '<button onclick="ejecutarMarcarFinalizado(\'' + canchaId + '\',\'' + hora + '\')" style="' + btnStyleOut('#6B7280') + '">Marcar finalizado</button>' +
+          '<button onclick="ejecutarNoPresento(\'' + canchaId + '\',\'' + hora + '\')" style="' + btnStyleOut('#D97706') + '">No se presentaron</button>' +
+          '<button onclick="cerrarModal()" style="' + btnStyleOut('#6B7280') + '">Cerrar</button>';
+
+      } else if (estado === 'cancelado') {
+        acciones =
+          '<button onclick="ejecutarLiberarTurno(\'' + canchaId + '\',\'' + hora + '\')" style="' + btnStyle('#16A34A') + '">Liberar horario</button>' +
+          '<button onclick="cerrarModal()" style="' + btnStyleOut('#6B7280') + '">Cerrar</button>';
+
+      } else if (estado === 'finalizado') {
+        acciones =
+          '<button onclick="cerrarModal()" style="' + btnStyleOut('#6B7280') + '">Cerrar</button>';
+      }
+
+      modal.innerHTML =
+        '<div style="position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:9999;display:flex;align-items:flex-end;justify-content:center;padding:16px;">' +
+        '<div style="background:#fff;border-radius:16px;padding:20px;width:100%;max-width:420px;">' +
+        '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">' +
+        '<h3 style="font-size:16px;font-weight:700;color:#111827;margin:0;">' + escapeHtml(cancha.nombre) + ' · ' + hora + '</h3>' +
+        '<button onclick="cerrarModal()" style="background:#F3F4F6;border:none;border-radius:50%;width:28px;height:28px;cursor:pointer;font-size:16px;">×</button>' +
+        '</div>' +
+        '<div style="display:flex;flex-direction:column;gap:8px;">' + acciones + '</div>' +
+        '</div></div>';
+      modal.style.display = 'block';
+    }
+
+    /* ================================================
+       EJECUTORES DE ACCIONES
+       En producción: llamarán a Firebase via la capa de acceso a datos
+       ================================================ */
+
+    function confirmarMarcarOcupado(canchaId, hora) {
+      var modal = getModal();
+      modal.innerHTML =
+        '<div style="position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:9999;display:flex;align-items:center;justify-content:center;padding:16px;">' +
+        '<div style="background:#fff;border-radius:16px;padding:24px;width:100%;max-width:380px;text-align:center;">' +
+        '<h3 style="font-size:16px;font-weight:700;color:#111827;margin:0 0 16px;">¿Marcás esta cancha como Ocupada?</h3>' +
+        '<button onclick="ejecutarMarcarOcupado(\'' + canchaId + '\',\'' + hora + '\')" style="' + btnStyle('#1F2937') + 'text-align:center;margin-bottom:8px;">Sí, marcar ocupada</button>' +
+        '<button onclick="cerrarModal()" style="' + btnStyleOut('#6B7280') + 'text-align:center;">Cancelar</button>' +
+        '</div></div>';
+      modal.style.display = 'block';
+    }
+
+    function ejecutarMarcarOcupado(canchaId, hora) {
+      actualizarTurno(canchaId, hora, 'ocupado', 0, null);
+      cerrarModal();
+      rerender();
+      mostrarToastComplejo('Horario marcado como Ocupado', '#1F2937');
+    }
+
+    function ejecutarLiberarTurno(canchaId, hora) {
+      actualizarTurno(canchaId, hora, 'libre', 0, null);
+      cerrarModal();
+      rerender();
+      mostrarToastComplejo('Horario liberado', '#16A34A');
+    }
+
+    function confirmarCancelarPadelYa(canchaId, hora) {
+      if (confirm('¿Cancelás este partido de PadelYa? Los jugadores serán notificados.')) {
+        ejecutarCancelarPartido(canchaId, hora);
+      }
+    }
+
+    function ejecutarCancelarPartido(canchaId, hora) {
+      actualizarTurno(canchaId, hora, 'cancelado', 0, null);
+      cerrarModal();
+      rerender();
+      mostrarToastComplejo('Partido cancelado · Jugadores notificados', '#DC2626');
+    }
+
+    function ejecutarMarcarFinalizado(canchaId, hora) {
+      actualizarTurno(canchaId, hora, 'finalizado', 0, null);
+      cerrarModal();
+      rerender();
+      mostrarToastComplejo('Partido finalizado', '#6B7280');
+    }
+
+    function ejecutarNoPresento(canchaId, hora) {
+      actualizarTurno(canchaId, hora, 'cancelado', 0, null);
+      cerrarModal();
+      rerender();
+      mostrarToastComplejo('Marcado como no presentado', '#D97706');
+    }
+
+    /* --- CANCELAR PADELYA Y MARCAR OCUPADO --- */
+    function confirmarCancelarYOcupar(canchaId, hora) {
+      cerrarModal();
+      var modal = getModal();
+
+      modal.innerHTML =
+        '<div style="position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px;">' +
+        '<div style="background:#fff;border-radius:16px;padding:24px;width:100%;max-width:400px;box-shadow:0 8px 32px rgba(0,0,0,0.2);">' +
+        '<div style="width:48px;height:48px;background:#FEF3C7;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:22px;">⚠️</div>' +
+        '<h3 style="font-size:17px;font-weight:700;color:#111827;text-align:center;margin:0 0 10px;">Cancelar partido y ocupar horario</h3>' +
+        '<p style="font-size:14px;color:#4B5563;text-align:center;line-height:1.6;margin:0 0 20px;">' +
+        'Este partido de PadelYa será cancelado y el horario quedará marcado como <strong>Ocupado</strong>.<br>' +
+        'Los jugadores anotados serán notificados.' +
+        '</p>' +
+        '<button onclick="ejecutarCancelarYOcupar(\'' + canchaId + '\',\'' + hora + '\')" style="' + btnStyle('#D97706') + 'text-align:center;margin-bottom:8px;">Confirmar y ocupar</button>' +
+        '<button onclick="cerrarModal()" style="' + btnStyleOut('#6B7280') + 'text-align:center;">Cancelar</button>' +
+        '</div></div>';
+
+      modal.style.display = 'block';
+    }
+
+    function ejecutarCancelarYOcupar(canchaId, hora) {
+      actualizarTurno(canchaId, hora, 'ocupado', 0, null);
+
+      /* FIREBASE: también cancelar el partido en /partidos/{id} */
+      var misPartidos = JSON.parse(sessionStorage.getItem('misPartidos') || '[]');
+      misPartidos = misPartidos.map(function(p) {
+        if (p.hora === hora) { p.estado = 'cancelado'; p.canceladoPorComplejo = true; }
+        return p;
+      });
+      sessionStorage.setItem('misPartidos', JSON.stringify(misPartidos));
+
+      var unidos = JSON.parse(sessionStorage.getItem('partidosUnidos') || '[]');
+      unidos = unidos.map(function(p) {
+        if (p.hora === hora) { p.estado = 'cancelado'; p.canceladoPorComplejo = true; }
+        return p;
+      });
+      sessionStorage.setItem('partidosUnidos', JSON.stringify(unidos));
+
+      cerrarModal();
+      rerender();
+      mostrarToastComplejo('Partido cancelado · Horario marcado como Ocupado', '#D97706');
+    }
+
+    /* --- PROTECCION PARA PARTIDO COMPLETO --- */
+    function intentoCancelarCompleto() {
+      cerrarModal();
+      var modal = getModal();
+      modal.innerHTML =
+        '<div style="position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px;">' +
+        '<div style="background:#fff;border-radius:16px;padding:24px;width:100%;max-width:380px;">' +
+        '<div style="width:48px;height:48px;background:#FEE2E2;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:22px;">🔒</div>' +
+        '<h3 style="font-size:16px;font-weight:700;color:#111827;text-align:center;margin:0 0 10px;">No disponible</h3>' +
+        '<p style="font-size:14px;color:#4B5563;text-align:center;line-height:1.6;margin:0 0 20px;">' +
+        'Este partido ya está completo.<br>' +
+        'No se puede cancelar desde esta acción rápida.' +
+        '</p>' +
+        '<button onclick="cerrarModal()" style="width:100%;padding:12px;background:#F3F4F6;color:#374151;border:none;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;">Entendido</button>' +
+        '</div></div>';
+      modal.style.display = 'block';
+    }
+
+    /* ================================================
+       TOAST
+       ================================================ */
+
+    function mostrarToastComplejo(msg, color) {
+      var t = document.createElement('div');
+      t.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);' +
+        'background:#fff;border:2px solid ' + color + ';color:#111827;' +
+        'padding:12px 24px;border-radius:50px;font-size:14px;font-weight:600;' +
+        'z-index:99999;white-space:nowrap;box-shadow:0 4px 20px rgba(0,0,0,0.15);';
+      t.textContent = msg;
+      document.body.appendChild(t);
+      setTimeout(function() { t.remove(); }, 3500);
+    }
+
+    /* ================================================
+       BLOQUEO MASIVO DE HORARIOS
+       ================================================ */
+
+    var tipoBloqueoActual = 'dia';
+
+    var BLOQUEO_PENDIENTE = {
+      canchaId: null,
+      horasLibres: [],
+      horasConflicto: []
+    };
+
+    function abrirBloqueoMasivo() {
+      var modal = document.getElementById('modal-bloqueo');
+      if (!modal) {
+        modal = document.createElement('div');
+        modal.id = 'modal-bloqueo';
+        document.body.appendChild(modal);
+      }
+
+      modal.innerHTML =
+        '<div style="position:fixed;inset:0;background:rgba(0,0,0,0.5);' +
+        'z-index:10000;display:flex;align-items:center;justify-content:center;padding:16px;overflow-y:auto;">' +
+        '<div style="background:#fff;border-radius:16px;padding:24px;' +
+        'width:100%;max-width:480px;max-height:90vh;overflow-y:auto;">' +
+
+        '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">' +
+        '<h3 style="font-size:18px;font-weight:700;color:#111827;margin:0;">🔒 Bloquear horarios</h3>' +
+        '<button onclick="cerrarBloqueo()" style="background:#F3F4F6;border:none;' +
+        'border-radius:50%;width:32px;height:32px;cursor:pointer;font-size:18px;">×</button>' +
+        '</div>' +
+
+        '<div style="display:flex;gap:0;margin-bottom:20px;background:#F3F4F6;border-radius:10px;padding:4px;">' +
+        '<button onclick="cambiarTipoBloqueo(\'dia\')" id="tab-dia" ' +
+        'style="flex:1;padding:8px;border:none;border-radius:8px;font-size:13px;' +
+        'font-weight:600;cursor:pointer;background:#fff;color:#111827;' +
+        'box-shadow:0 1px 4px rgba(0,0,0,0.1);">Todo el día</button>' +
+        '<button onclick="cambiarTipoBloqueo(\'franja\')" id="tab-franja" ' +
+        'style="flex:1;padding:8px;border:none;border-radius:8px;font-size:13px;' +
+        'font-weight:600;cursor:pointer;background:transparent;color:#6B7280;">Franja horaria</button>' +
+        '<button onclick="cambiarTipoBloqueo(\'recurrente\')" id="tab-recurrente" ' +
+        'style="flex:1;padding:8px;border:none;border-radius:8px;font-size:13px;' +
+        'font-weight:600;cursor:pointer;background:transparent;color:#6B7280;">Recurrente</button>' +
+        '</div>' +
+
+        '<div id="form-bloqueo"></div>' +
+
+        '</div></div>';
+
+      modal.style.display = 'block';
+      cambiarTipoBloqueo('dia');
+    }
+
+    function cambiarTipoBloqueo(tipo) {
+      tipoBloqueoActual = tipo;
+
+      ['dia', 'franja', 'recurrente'].forEach(function(t) {
+        var tab = document.getElementById('tab-' + t);
+        if (!tab) return;
+        if (t === tipo) {
+          tab.style.background = '#fff';
+          tab.style.color = '#111827';
+          tab.style.boxShadow = '0 1px 4px rgba(0,0,0,0.1)';
+        } else {
+          tab.style.background = 'transparent';
+          tab.style.color = '#6B7280';
+          tab.style.boxShadow = 'none';
+        }
+      });
+
+      var hoy = new Date().toISOString().split('T')[0];
+      var canchasOpts = Object.keys(DB_LOCAL.canchas).map(function(id) {
+        return '<option value="' + id + '">' + escapeHtml(DB_LOCAL.canchas[id].nombre) + '</option>';
+      }).join('');
+
+      var horasOpts = ['08:00', '09:30', '11:00', '12:30', '14:00', '15:30', '17:00', '18:30', '20:00', '21:30']
+        .map(function(h) { return '<option value="' + h + '">' + h + ' hs</option>'; }).join('');
+
+      var html = '';
+
+      if (tipo === 'dia') {
+        html =
+          campoBloqueo('Cancha', '<select id="bl-cancha" style="' + inputStyleBloqueo() + '">' + canchasOpts + '</select>') +
+          campoBloqueo('Fecha', '<input type="date" id="bl-fecha" value="' + hoy + '" style="' + inputStyleBloqueo() + '">') +
+          campoOpcionalBloqueo() +
+          botonConfirmarBloqueo('confirmarBloqueo()');
+
+      } else if (tipo === 'franja') {
+        html =
+          campoBloqueo('Cancha', '<select id="bl-cancha" style="' + inputStyleBloqueo() + '">' + canchasOpts + '</select>') +
+          campoBloqueo('Fecha', '<input type="date" id="bl-fecha" value="' + hoy + '" style="' + inputStyleBloqueo() + '">') +
+          '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">' +
+          campoBloqueo('Hora desde', '<select id="bl-desde" style="' + inputStyleBloqueo() + '">' + horasOpts + '</select>') +
+          campoBloqueo('Hora hasta', '<select id="bl-hasta" style="' + inputStyleBloqueo() + '">' + horasOpts + '</select>') +
+          '</div>' +
+          campoOpcionalBloqueo() +
+          botonConfirmarBloqueo('confirmarBloqueo()');
+
+      } else if (tipo === 'recurrente') {
+        html =
+          campoBloqueo('Cancha', '<select id="bl-cancha" style="' + inputStyleBloqueo() + '">' + canchasOpts + '</select>') +
+          campoBloqueo('Días de la semana',
+            '<div style="display:flex;gap:6px;flex-wrap:wrap;">' +
+            ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'].map(function(d, i) {
+              return '<label style="cursor:pointer;">' +
+                '<input type="checkbox" value="' + i + '" class="dia-check" style="display:none;">' +
+                '<span class="dia-btn" style="display:inline-block;padding:6px 12px;' +
+                'border:1.5px solid #E5E7EB;border-radius:8px;font-size:13px;font-weight:600;' +
+                'color:#374151;cursor:pointer;" ' +
+                'onclick="toggleDia(this)">' + d + '</span>' +
+                '</label>';
+            }).join('') +
+            '</div>'
+          ) +
+          '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">' +
+          campoBloqueo('Fecha desde', '<input type="date" id="bl-fecha-desde" value="' + hoy + '" style="' + inputStyleBloqueo() + '">') +
+          campoBloqueo('Fecha hasta', '<input type="date" id="bl-fecha-hasta" style="' + inputStyleBloqueo() + '">') +
+          '</div>' +
+          '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">' +
+          campoBloqueo('Hora desde', '<select id="bl-desde" style="' + inputStyleBloqueo() + '">' + horasOpts + '</select>') +
+          campoBloqueo('Hora hasta', '<select id="bl-hasta" style="' + inputStyleBloqueo() + '">' + horasOpts + '</select>') +
+          '</div>' +
+          campoOpcionalBloqueo() +
+          botonConfirmarBloqueo('confirmarBloqueo()');
+      }
+
+      var form = document.getElementById('form-bloqueo');
+      if (form) form.innerHTML = html;
+    }
+
+    function toggleDia(el) {
+      var activo = el.style.background === 'rgb(31, 41, 55)';
+      if (activo) {
+        el.style.background = '';
+        el.style.color = '#374151';
+        el.style.borderColor = '#E5E7EB';
+      } else {
+        el.style.background = '#1F2937';
+        el.style.color = '#fff';
+        el.style.borderColor = '#1F2937';
+      }
+    }
+
+    function campoBloqueo(label, input) {
+      return '<div style="margin-bottom:14px;">' +
+        '<label style="display:block;font-size:13px;font-weight:600;' +
+        'color:#374151;margin-bottom:6px;">' + label + '</label>' +
+        input + '</div>';
+    }
+
+    function campoOpcionalBloqueo() {
+      return campoBloqueo('Motivo interno (opcional)',
+        '<input type="text" id="bl-motivo" placeholder="Ej: Torneo ACOP, Mantenimiento..." style="' + inputStyleBloqueo() + '">');
+    }
+
+    function botonConfirmarBloqueo(fn) {
+      return '<div style="display:flex;gap:8px;margin-top:8px;">' +
+        '<button onclick="cerrarBloqueo()" style="flex:1;padding:12px;background:transparent;' +
+        'color:#6B7280;border:1.5px solid #E5E7EB;border-radius:10px;font-size:14px;' +
+        'font-weight:600;cursor:pointer;">Cancelar</button>' +
+        '<button onclick="' + fn + '" style="flex:2;padding:12px;background:#1F2937;' +
+        'color:white;border:none;border-radius:10px;font-size:14px;' +
+        'font-weight:600;cursor:pointer;">Ver resumen →</button>' +
+        '</div>';
+    }
+
+    function inputStyleBloqueo() {
+      return 'width:100%;padding:10px 12px;border:1.5px solid #E5E7EB;' +
+        'border-radius:8px;font-size:14px;color:#111827;box-sizing:border-box;' +
+        'background:#F9FAFB;';
+    }
+
+    function confirmarBloqueo() {
+      var canchaSelect = document.getElementById('bl-cancha');
+      var canchaId = canchaSelect ? canchaSelect.value : null;
+      if (!canchaId) return;
+
+      var cancha = DB_LOCAL.canchas[canchaId];
+      var motivoInput = document.getElementById('bl-motivo');
+      var motivo = motivoInput ? motivoInput.value : '';
+
+      var horas = Object.keys(cancha.turnos);
+      var horasBloqueables = [];
+      var horasConflicto = [];
+      var horasProtegidas = [];
+
+      var horasSeleccionadas = obtenerHorasSeleccionadas(horas);
+
+      horasSeleccionadas.forEach(function(h) {
+        var t = cancha.turnos[h];
+        if (!t) return;
+        var est = t.estado;
+        if (est === 'padelya4') {
+          horasProtegidas.push(h);
+        } else if (est === 'padelya1' || est === 'padelya2' || est === 'padelya3') {
+          horasConflicto.push(h);
+        } else if (est === 'finalizado' || est === 'ocupado') {
+          // no tocar
+        } else {
+          horasBloqueables.push(h);
+        }
+      });
+
+      var resumenTexto = generarTextoResumen(cancha.nombre, horasSeleccionadas);
+      var contenidoModal = document.querySelector('#modal-bloqueo > div > div');
+      if (!contenidoModal) return;
+
+      BLOQUEO_PENDIENTE.canchaId = canchaId;
+      BLOQUEO_PENDIENTE.horasLibres = horasBloqueables;
+      BLOQUEO_PENDIENTE.horasConflicto = horasConflicto;
+
+      var avisoConflicto = horasConflicto.length > 0 ?
+        '<div style="background:#FEF3C7;border:1px solid #D97706;border-radius:8px;' +
+        'padding:10px;margin:12px 0;font-size:13px;color:#92400E;">' +
+        '⚠ ' + horasConflicto.length + ' horario(s) con PadelYa incompleto serán cancelados y marcados como Ocupado.' +
+        '</div>' : '';
+
+      var avisoProtegido = horasProtegidas.length > 0 ?
+        '<div style="background:#FEE2E2;border:1px solid #DC2626;border-radius:8px;' +
+        'padding:10px;margin:12px 0;font-size:13px;color:#991B1B;">' +
+        '🔒 ' + horasProtegidas.length + ' horario(s) con partido completo NO serán bloqueados.' +
+        '</div>' : '';
+
+      contenidoModal.innerHTML =
+        '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">' +
+        '<h3 style="font-size:18px;font-weight:700;color:#111827;margin:0;">Confirmar bloqueo</h3>' +
+        '<button onclick="cerrarBloqueo()" style="background:#F3F4F6;border:none;' +
+        'border-radius:50%;width:32px;height:32px;cursor:pointer;font-size:18px;">×</button>' +
+        '</div>' +
+
+        '<div style="background:#F8FAFC;border:1px solid #E5E7EB;border-radius:12px;padding:16px;margin-bottom:12px;">' +
+        '<p style="font-size:11px;color:#6B7280;text-transform:uppercase;letter-spacing:0.5px;margin:0 0 10px;">Vas a ocupar:</p>' +
+        '<p style="font-size:15px;font-weight:600;color:#111827;margin:0;line-height:1.8;">' + resumenTexto + '</p>' +
+        (motivo ? '<p style="font-size:13px;color:#6B7280;margin:8px 0 0;">Motivo: ' + escapeHtml(motivo) + '</p>' : '') +
+        '</div>' +
+
+        '<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:12px;">' +
+        '<div style="text-align:center;padding:10px;background:#DCFCE7;border-radius:8px;">' +
+        '<p style="font-size:18px;font-weight:800;color:#16A34A;margin:0;">' + horasBloqueables.length + '</p>' +
+        '<p style="font-size:11px;color:#16A34A;margin:0;">A bloquear</p>' +
+        '</div>' +
+        '<div style="text-align:center;padding:10px;background:#FEF3C7;border-radius:8px;">' +
+        '<p style="font-size:18px;font-weight:800;color:#D97706;margin:0;">' + horasConflicto.length + '</p>' +
+        '<p style="font-size:11px;color:#D97706;margin:0;">Con PadelYa</p>' +
+        '</div>' +
+        '<div style="text-align:center;padding:10px;background:#FEE2E2;border-radius:8px;">' +
+        '<p style="font-size:18px;font-weight:800;color:#DC2626;margin:0;">' + horasProtegidas.length + '</p>' +
+        '<p style="font-size:11px;color:#DC2626;margin:0;">Protegidos</p>' +
+        '</div>' +
+        '</div>' +
+
+        avisoConflicto +
+        avisoProtegido +
+
+        '<div style="display:flex;gap:8px;margin-top:16px;">' +
+        '<button onclick="abrirBloqueoMasivo()" style="flex:1;padding:12px;background:transparent;' +
+        'color:#6B7280;border:1.5px solid #E5E7EB;border-radius:10px;font-size:14px;' +
+        'font-weight:600;cursor:pointer;">← Volver</button>' +
+        '<button onclick="ejecutarBloqueoMasivo()" ' +
+        'style="flex:2;padding:12px;background:#1F2937;color:white;border:none;' +
+        'border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;">Confirmar bloqueo</button>' +
+        '</div>';
+    }
+
+    function obtenerHorasSeleccionadas(todasLasHoras) {
+      if (tipoBloqueoActual === 'dia') {
+        return todasLasHoras;
+      }
+
+      var desdeEl = document.getElementById('bl-desde');
+      var hastaEl = document.getElementById('bl-hasta');
+      var desde = desdeEl ? desdeEl.value : null;
+      var hasta = hastaEl ? hastaEl.value : null;
+
+      if (!desde || !hasta) return todasLasHoras;
+
+      return todasLasHoras.filter(function(h) {
+        return h >= desde && h <= hasta;
+      });
+    }
+
+    function generarTextoResumen(nombreCancha, horas) {
+      var texto = escapeHtml(nombreCancha) + '<br>';
+
+      if (tipoBloqueoActual === 'dia') {
+        var fechaEl = document.getElementById('bl-fecha');
+        var fecha = fechaEl ? fechaEl.value : '';
+        texto += 'Todo el día · ' + formatearFechaBloqueo(fecha);
+
+      } else if (tipoBloqueoActual === 'franja') {
+        var fechaEl2 = document.getElementById('bl-fecha');
+        var fecha2 = fechaEl2 ? fechaEl2.value : '';
+        var desdeEl = document.getElementById('bl-desde');
+        var hastaEl = document.getElementById('bl-hasta');
+        var desde = desdeEl ? desdeEl.value : '';
+        var hasta = hastaEl ? hastaEl.value : '';
+        texto += formatearFechaBloqueo(fecha2) + ' · ' + desde + ' a ' + hasta + ' hs';
+
+      } else if (tipoBloqueoActual === 'recurrente') {
+        var diasSeleccionados = [];
+        var nombres = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'];
+        document.querySelectorAll('.dia-btn').forEach(function(el, i) {
+          if (el.style.background === 'rgb(31, 41, 55)') diasSeleccionados.push(nombres[i]);
+        });
+        var desdeEl3 = document.getElementById('bl-desde');
+        var hastaEl3 = document.getElementById('bl-hasta');
+        var desde3 = desdeEl3 ? desdeEl3.value : '';
+        var hasta3 = hastaEl3 ? hastaEl3.value : '';
+        var fechaDesdeEl = document.getElementById('bl-fecha-desde');
+        var fechaHastaEl = document.getElementById('bl-fecha-hasta');
+        var fechaDesde = fechaDesdeEl ? fechaDesdeEl.value : '';
+        var fechaHasta = fechaHastaEl ? fechaHastaEl.value : '';
+        texto += diasSeleccionados.join(', ') + '<br>';
+        texto += desde3 + ' a ' + hasta3 + ' hs<br>';
+        texto += 'Desde ' + formatearFechaBloqueo(fechaDesde) + ' hasta ' + formatearFechaBloqueo(fechaHasta);
+      }
+
+      return texto;
+    }
+
+    function formatearFechaBloqueo(iso) {
+      if (!iso) return '';
+      var d = new Date(iso + 'T00:00:00');
+      var dias = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
+      return dias[d.getDay()] + ' ' + d.getDate() + '/' + (d.getMonth() + 1);
+    }
+
+    function ejecutarBloqueoMasivo() {
+      var canchaId = BLOQUEO_PENDIENTE.canchaId;
+      var horasLibres = BLOQUEO_PENDIENTE.horasLibres;
+      var horasConflicto = BLOQUEO_PENDIENTE.horasConflicto;
+
+      if (!canchaId) {
+        mostrarToastComplejo('Error: no hay bloqueo pendiente.', '#DC2626');
+        return;
+      }
+
+      var total = 0;
+
+      horasLibres.forEach(function(hora) {
+        if (DB_LOCAL.canchas[canchaId] && DB_LOCAL.canchas[canchaId].turnos[hora]) {
+          DB_LOCAL.canchas[canchaId].turnos[hora].estado = 'ocupado';
+          DB_LOCAL.canchas[canchaId].turnos[hora].jugadores = 0;
+          DB_LOCAL.canchas[canchaId].turnos[hora].partidoId = null;
+        }
+        var clave = 'turno_' + CONFIG.COMPLEJO_ID + '_' + canchaId + '_' + hora.replace(':', '');
+        sessionStorage.setItem(clave, 'ocupado');
+        total++;
+      });
+
+      horasConflicto.forEach(function(hora) {
+        if (DB_LOCAL.canchas[canchaId] && DB_LOCAL.canchas[canchaId].turnos[hora]) {
+          DB_LOCAL.canchas[canchaId].turnos[hora].estado = 'ocupado';
+          DB_LOCAL.canchas[canchaId].turnos[hora].jugadores = 0;
+          DB_LOCAL.canchas[canchaId].turnos[hora].partidoId = null;
+        }
+        var clave = 'turno_' + CONFIG.COMPLEJO_ID + '_' + canchaId + '_' + hora.replace(':', '');
+        sessionStorage.setItem(clave, 'ocupado');
+
+        var misPartidos = JSON.parse(sessionStorage.getItem('misPartidos') || '[]');
+        misPartidos = misPartidos.map(function(p) {
+          if (p.hora === hora) { p.estado = 'cancelado'; p.canceladoPorComplejo = true; }
+          return p;
+        });
+        sessionStorage.setItem('misPartidos', JSON.stringify(misPartidos));
+
+        var unidos = JSON.parse(sessionStorage.getItem('partidosUnidos') || '[]');
+        unidos = unidos.map(function(p) {
+          if (p.hora === hora) { p.estado = 'cancelado'; p.canceladoPorComplejo = true; }
+          return p;
+        });
+        sessionStorage.setItem('partidosUnidos', JSON.stringify(unidos));
+
+        total++;
+      });
+
+      BLOQUEO_PENDIENTE = { canchaId: null, horasLibres: [], horasConflicto: [] };
+
+      cerrarBloqueo();
+      renderCanchas();
+      if (typeof actualizarResumen === 'function') actualizarResumen();
+
+      mostrarToastComplejo('✓ ' + total + ' horario(s) bloqueados', '#1F2937');
+    }
+
+    function cerrarBloqueo() {
+      var m = document.getElementById('modal-bloqueo');
+      if (m) m.style.display = 'none';
+    }
+
+    /* ================================================
+       SINCRONIZACION CON PADELYA
+       Lee partidos creados/sumados desde la app del jugador
+       ================================================ */
+
+    function sincronizarConPadelYa() {
+      var misPartidos = JSON.parse(sessionStorage.getItem('misPartidos') || '[]');
+      var partidosUnidos = JSON.parse(sessionStorage.getItem('partidosUnidos') || '[]');
+      var todosPartidos = misPartidos.concat(partidosUnidos);
+
+      todosPartidos.forEach(function(p) {
+        if (!p.canchaId || !p.hora || p.estado === 'cancelado') return;
+        var jugadores = p.jugadores || 1;
+        actualizarJugadoresPartido(CONFIG.COMPLEJO_ID, p.canchaId, p.hora, jugadores);
+      });
+    }
+
+    function aplicarEstadosGuardados() {
+      Object.keys(DB_LOCAL.canchas).forEach(function(canchaId) {
+        var turnos = DB_LOCAL.canchas[canchaId].turnos;
+        Object.keys(turnos).forEach(function(hora) {
+          var clave = 'turno_' + CONFIG.COMPLEJO_ID + '_' + canchaId + '_' + hora.replace(':', '');
+          var guardado = sessionStorage.getItem(clave);
+          if (guardado && ESTADOS[guardado]) {
+            turnos[hora].estado = guardado;
+          }
+        });
+      });
+    }
+
+    /* ================================================
+       INICIALIZACIÓN
+       ================================================ */
+
+    document.addEventListener('DOMContentLoaded', function() {
+      DB_LOCAL.canchas = obtenerDatosPorFecha(FECHA_SELECCIONADA);
+      actualizarToggleModo();
+      renderFechaHoy();
+      renderSelectorFechas();
+      iniciarHeartbeat();
+      sincronizarConPadelYa();
+      aplicarEstadosGuardados();
+      renderCanchas();
+      actualizarResumen();
+    });
   </script>
 
 </body>

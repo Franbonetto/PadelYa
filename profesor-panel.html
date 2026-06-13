@@ -9,10 +9,30 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <style>
+    /* Light mode profesional - paleta local de este panel */
+    :root {
+      --color-primary: #178BFF;
+      --color-accent: #0A5FCC;
+      --color-light-blue: #EBF4FF;
+      --color-white: #FFFFFF;
+      --color-bg-secondary: #F4F7FB;
+      --color-gray: #4B6080;
+      --color-dark: #111827;
+      --color-border: #E2EAF4;
+      --color-success: #16A34A;
+      --color-danger: #DC2626;
+    }
     body {
       background: var(--color-bg-secondary);
+      color: var(--color-dark);
       padding-bottom: 2rem;
+      -webkit-font-smoothing: antialiased;
+      font-size: 16px;
+      line-height: 1.6;
     }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #F4F7FB; }
+    ::-webkit-scrollbar-thumb { background: #C8D9EE; border-radius: 3px; }
     .page-content {
       max-width: 720px;
       margin: 0 auto;
@@ -26,6 +46,7 @@
       z-index: 100;
       background: var(--color-white);
       border-bottom: 1px solid var(--color-border);
+      box-shadow: 0 1px 8px rgba(23,139,255,0.06);
       padding: 0.85rem 1.25rem;
       display: flex;
       align-items: center;
@@ -86,15 +107,15 @@
       font-weight: 700;
       white-space: nowrap;
     }
-    .badge-certified { background: #EBF5FB; color: var(--color-accent); }
+    .badge-certified { background: var(--color-light-blue); color: var(--color-primary); }
     .badge-gold {
       background: linear-gradient(135deg, #F9A825, #F57F17);
       color: #fff;
       font-size: 0.65rem;
     }
-    .badge-green { background: #D5F5E3; color: #1E8449; }
+    .badge-green { background: #DCFCE7; color: #16A34A; }
     .badge-gray { background: var(--color-bg-secondary); color: var(--color-gray); }
-    .badge-orange { background: #FDEBD0; color: #D35400; }
+    .badge-orange { background: #FEF9C3; color: #854D0E; }
 
     /* Section */
     .section { margin-top: 1.5rem; }
@@ -130,7 +151,8 @@
     .stat-card {
       background: var(--color-white);
       border: 1px solid var(--color-border);
-      border-radius: 14px;
+      border-radius: 16px;
+      box-shadow: 0 2px 8px rgba(23,139,255,0.06);
       padding: 1rem;
       text-align: center;
     }
@@ -149,176 +171,17 @@
       letter-spacing: 0.03em;
     }
 
-    /* Calendar */
-    .calendar-card {
-      background: var(--color-white);
-      border: 1px solid var(--color-border);
-      border-radius: 14px;
-      overflow: hidden;
-    }
-    .calendar-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 1rem 1.25rem;
-      border-bottom: 1px solid var(--color-border);
-    }
-    .calendar-header h4 {
-      font-size: 0.9375rem;
-      font-weight: 700;
-      color: var(--color-dark);
-    }
-    .cal-nav {
-      display: flex;
-      gap: 0.5rem;
-    }
-    .cal-nav button {
-      width: 32px;
-      height: 32px;
-      border: 1px solid var(--color-border);
-      background: var(--color-white);
-      border-radius: 8px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--color-dark);
-      transition: background 0.15s;
-    }
-    .cal-nav button:hover { background: var(--color-bg-secondary); }
-
-    .week-grid {
-      display: grid;
-      grid-template-columns: repeat(7, 1fr);
-      border-bottom: 1px solid var(--color-border);
-    }
-    .week-day {
-      padding: 0.5rem 0.25rem;
-      text-align: center;
-      font-size: 0.7rem;
-      font-weight: 700;
-      color: var(--color-gray);
-      text-transform: uppercase;
-      border-right: 1px solid var(--color-border);
-    }
-    .week-day:last-child { border-right: none; }
-
-    .week-dates {
-      display: grid;
-      grid-template-columns: repeat(7, 1fr);
-    }
-    .week-date {
-      padding: 0.5rem 0.25rem;
-      text-align: center;
-      font-size: 0.875rem;
-      font-weight: 600;
-      color: var(--color-dark);
-      border-right: 1px solid var(--color-border);
-      cursor: pointer;
-      transition: background 0.15s;
-      position: relative;
-    }
-    .week-date:last-child { border-right: none; }
-    .week-date:hover { background: var(--color-bg-secondary); }
-    .week-date.today {
-      background: var(--color-primary);
-      color: var(--color-white);
-      border-radius: 0;
-    }
-    .week-date .dot {
-      position: absolute;
-      bottom: 4px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 5px;
-      height: 5px;
-      border-radius: 50%;
-      background: var(--color-accent);
-    }
-    .week-date.today .dot { background: var(--color-light-blue); }
-
-    /* Time slots */
-    .slots-list {
-      padding: 0.75rem 1rem;
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
-    }
-    .slot-item {
-      display: flex;
-      align-items: center;
-      gap: 0.875rem;
-      padding: 0.75rem 1rem;
-      border: 1px solid var(--color-border);
-      border-radius: 10px;
-      background: var(--color-white);
-      transition: background 0.15s;
-    }
-    .slot-item:hover { background: var(--color-bg-secondary); }
-    .slot-time {
-      font-size: 0.875rem;
-      font-weight: 700;
-      color: var(--color-primary);
-      min-width: 72px;
-    }
-    .slot-info { flex: 1; }
-    .slot-student {
-      font-size: 0.875rem;
-      font-weight: 600;
-      color: var(--color-dark);
-    }
-    .slot-detail {
-      font-size: 0.775rem;
-      color: var(--color-gray);
-      margin-top: 1px;
-    }
-    .slot-actions {
-      display: flex;
-      gap: 0.375rem;
-    }
-    .btn-xs {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      padding: 0.3rem 0.7rem;
-      border-radius: 6px;
-      font-size: 0.75rem;
-      font-weight: 700;
-      cursor: pointer;
-      font-family: inherit;
-      border: none;
-      transition: background 0.15s;
-    }
-    .btn-xs-primary { background: var(--color-accent); color: white; }
-    .btn-xs-primary:hover { background: var(--color-primary); }
-    .btn-xs-outline { background: transparent; color: var(--color-dark); border: 1px solid var(--color-border); }
-    .btn-xs-outline:hover { border-color: var(--color-accent); color: var(--color-accent); }
-
-    .add-slot-btn {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.5rem;
-      padding: 0.65rem;
-      border: 2px dashed var(--color-border);
-      border-radius: 10px;
-      background: transparent;
-      color: var(--color-gray);
-      font-size: 0.8125rem;
-      font-weight: 600;
-      cursor: pointer;
-      font-family: inherit;
-      width: 100%;
-      transition: border-color 0.2s, color 0.2s;
-    }
-    .add-slot-btn:hover { border-color: var(--color-accent); color: var(--color-accent); }
-
     /* Students list */
     .students-list {
       background: var(--color-white);
       border: 1px solid var(--color-border);
-      border-radius: 14px;
+      border-radius: 16px;
+      box-shadow: 0 2px 8px rgba(23,139,255,0.06);
       overflow: hidden;
+    }
+    .card {
+      border-radius: 16px;
+      box-shadow: 0 2px 8px rgba(23,139,255,0.06);
     }
     .student-row {
       display: flex;
@@ -370,7 +233,8 @@
     /* Earnings */
     .earnings-card {
       background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
-      border-radius: 14px;
+      border-radius: 16px;
+      box-shadow: 0 4px 20px rgba(23,139,255,0.25);
       padding: 1.5rem;
       color: var(--color-white);
     }
@@ -419,43 +283,46 @@
       justify-content: center;
       gap: 0.5rem;
       width: 100%;
-      padding: 0.75rem;
-      background: var(--color-accent);
+      padding: 13px 24px;
+      background: var(--color-primary);
       color: white;
       border: none;
-      border-radius: 10px;
-      font-size: 0.9rem;
+      border-radius: 50px;
+      font-size: 15px;
       font-weight: 700;
       cursor: pointer;
       font-family: inherit;
       text-decoration: none;
       transition: background 0.2s;
       margin-top: 1rem;
+      box-shadow: 0 4px 14px rgba(23,139,255,0.3);
     }
-    .btn-full:hover { background: var(--color-primary); }
+    .btn-full:hover { background: var(--color-accent); }
     .btn-full-outline {
       background: transparent;
-      color: var(--color-accent);
-      border: 1.5px solid var(--color-accent);
+      color: var(--color-primary);
+      border: 1.5px solid var(--color-primary);
+      box-shadow: none;
     }
-    .btn-full-outline:hover { background: var(--color-accent); color: white; }
+    .btn-full-outline:hover { background: var(--color-primary); color: white; }
 
     /* Panel tabs */
     .panel-tabs {
       display: flex;
       gap: 0;
       background: var(--color-white);
-      border: 1px solid var(--color-border);
-      border-radius: 12px;
-      overflow: hidden;
+      border: none;
+      border-bottom: 1px solid var(--color-border);
+      border-radius: 0;
       overflow-x: auto;
       scrollbar-width: none;
     }
     .panel-tabs::-webkit-scrollbar { display: none; }
     .panel-tab {
       flex: none;
-      padding: 0.6rem 1rem;
+      padding: 0.75rem 1rem;
       border: none;
+      border-bottom: 2px solid transparent;
       background: transparent;
       font-size: 0.8125rem;
       font-weight: 600;
@@ -463,12 +330,10 @@
       cursor: pointer;
       font-family: inherit;
       white-space: nowrap;
-      transition: background 0.15s, color 0.15s;
-      border-right: 1px solid var(--color-border);
+      transition: color 0.15s, border-color 0.15s;
     }
-    .panel-tab:last-child { border-right: none; }
-    .panel-tab.active { background: var(--color-primary); color: white; }
-    .panel-tab:not(.active):hover { background: var(--color-bg-secondary); color: var(--color-dark); }
+    .panel-tab.active { color: var(--color-primary); border-bottom-color: var(--color-primary); font-weight: 700; }
+    .panel-tab:not(.active):hover { color: var(--color-dark); }
 
     /* Agenda calendar */
     .cal-day {
@@ -494,21 +359,22 @@
 
     /* Form */
     .form-group { margin-bottom: 1rem; }
-    .form-group label { display: block; font-size: 0.8125rem; font-weight: 600; color: var(--color-dark); margin-bottom: 0.375rem; }
+    .form-group label { display: block; font-size: 14px; font-weight: 600; color: var(--color-gray); margin-bottom: 0.375rem; }
     .form-group input, .form-group textarea, .form-group select {
       width: 100%;
-      padding: 0.65rem 0.875rem;
+      padding: 13px 16px;
       border: 1.5px solid var(--color-border);
       border-radius: 10px;
-      font-size: 0.875rem;
+      font-size: 15px;
       font-family: inherit;
       color: var(--color-dark);
-      background: white;
+      background: var(--color-bg-secondary);
       outline: none;
       box-sizing: border-box;
-      transition: border-color 0.15s;
+      transition: border-color 0.15s, box-shadow 0.15s;
     }
-    .form-group input:focus, .form-group textarea:focus { border-color: var(--color-accent); }
+    .form-group input::placeholder, .form-group textarea::placeholder { color: #9BB0C8; }
+    .form-group input:focus, .form-group textarea:focus { border-color: var(--color-primary); box-shadow: 0 0 0 3px rgba(23,139,255,0.12); }
     .form-group textarea { resize: vertical; min-height: 72px; }
 
     /* Chips */
@@ -525,7 +391,29 @@
       background: white;
       transition: border-color 0.15s, color 0.15s, background 0.15s;
     }
-    .chip.selected { border-color: var(--color-accent); color: var(--color-accent); background: #EBF5FB; }
+    .chip.selected { border-color: var(--color-primary); color: var(--color-primary); background: var(--color-light-blue); }
+
+    /* Toast */
+    .toast-profe {
+      display: none;
+      position: fixed;
+      bottom: 90px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #FFFFFF;
+      color: var(--color-dark);
+      border: 1px solid var(--color-border);
+      padding: 0.75rem 1.25rem;
+      border-radius: 10px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.12);
+      z-index: 600;
+      white-space: nowrap;
+    }
+    .toast-profe.success { border-color: var(--color-success); }
+    .toast-profe.error { border-color: var(--color-danger); }
+    .toast-profe.info { border-color: var(--color-primary); }
   </style>
 </head>
 <body>
@@ -538,7 +426,7 @@
         <strong>Hola, Lucas</strong>
         <div style="display:flex;align-items:center;gap:0.4rem;margin-top:1px;">
           <span class="meta">Profesor certificado</span>
-          <span style="display:inline-flex;align-items:center;gap:3px;padding:0.15rem 0.5rem;border-radius:99px;font-size:0.65rem;font-weight:700;background:#EBF5FB;color:var(--color-accent);white-space:nowrap;">
+          <span style="display:inline-flex;align-items:center;gap:3px;padding:0.15rem 0.5rem;border-radius:99px;font-size:0.65rem;font-weight:700;background:#EBF4FF;color:var(--color-accent);white-space:nowrap;">
             <svg width="8" height="8" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
             Membresía Activa
           </span>
@@ -587,29 +475,94 @@
     <!-- TAB: Dashboard -->
     <div id="tab-dashboard">
 
-    <!-- Beneficios profe -->
+    <!-- Tu semana -->
     <div class="section" style="margin-top:1rem;">
-      <div style="background:linear-gradient(135deg,var(--color-primary),var(--color-accent));border-radius:14px;padding:1.25rem;color:white;position:relative;overflow:hidden;">
-        <div style="position:absolute;top:-20px;right:-20px;width:80px;height:80px;background:rgba(255,255,255,0.06);border-radius:50%;"></div>
-        <div style="display:flex;align-items:flex-start;gap:1rem;">
-          <div style="width:44px;height:44px;background:rgba(255,255,255,0.18);border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-            <svg width="22" height="22" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
-              <ellipse cx="11" cy="11" rx="8" ry="8" transform="rotate(-45 11 11)"/>
-              <line x1="16" y1="16" x2="22" y2="22"/>
-              <line x1="8" y1="11" x2="14" y2="11"/>
-              <line x1="11" y1="8" x2="11" y2="14"/>
-            </svg>
+      <div style="background:linear-gradient(135deg,var(--color-primary),var(--color-accent));border-radius:16px;padding:20px;box-shadow:0 4px 20px rgba(23,139,255,0.25);">
+        <p style="font-size:11px;color:rgba(255,255,255,0.8);letter-spacing:1px;text-transform:uppercase;margin:0 0 16px;">Tu semana</p>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;text-align:center;">
+          <div>
+            <p style="font-size:28px;font-weight:800;line-height:1;color:#FFFFFF;margin:0;">47</p>
+            <p style="font-size:11px;margin:4px 0 0;color:rgba(255,255,255,0.75);">Vistas perfil</p>
+            <p style="font-size:11px;margin:2px 0 0;color:#D6FF00;">↑ 40% esta semana</p>
           </div>
-          <div style="flex:1;">
-            <div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:0.25rem;">
-              <span style="font-weight:800;font-size:0.9375rem;">Jugá con descuento de profe</span>
-              <span style="font-size:0.65rem;font-weight:700;background:rgba(255,255,255,0.2);border:1px solid rgba(255,255,255,0.3);border-radius:99px;padding:0.15rem 0.5rem;white-space:nowrap;">Beneficio exclusivo</span>
+          <div style="border-left:1px solid rgba(255,255,255,0.2);border-right:1px solid rgba(255,255,255,0.2);">
+            <p style="font-size:28px;font-weight:800;line-height:1;color:#FFFFFF;margin:0;">3</p>
+            <p style="font-size:11px;margin:4px 0 0;color:rgba(255,255,255,0.75);">Contactos</p>
+            <p style="font-size:11px;margin:2px 0 0;color:#D6FF00;">↑ vs semana pasada</p>
+          </div>
+          <div>
+            <p style="font-size:28px;font-weight:800;line-height:1;color:#FFFFFF;margin:0;">$29.990</p>
+            <p style="font-size:11px;margin:4px 0 0;color:rgba(255,255,255,0.75);">Ingresos mes</p>
+            <p style="font-size:11px;margin:2px 0 0;color:rgba(255,255,255,0.6);">Membresía activa</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tu reputación -->
+    <div class="section">
+      <div style="background:var(--color-white);border:1px solid var(--color-border);border-radius:16px;padding:16px;box-shadow:0 2px 8px rgba(23,139,255,0.06);">
+        <p style="font-size:11px;color:var(--color-gray);letter-spacing:1px;text-transform:uppercase;margin:0 0 14px;">Tu reputación</p>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+          <div style="text-align:center;padding:12px;background:var(--color-light-blue);border-radius:10px;">
+            <p style="font-size:24px;font-weight:800;line-height:1;color:var(--color-dark);margin:0;">18</p>
+            <p style="font-size:11px;margin:4px 0 0;color:var(--color-gray);">Alumnos activos</p>
+            <p style="font-size:11px;margin:2px 0 0;color:var(--color-success);">+2 esta semana</p>
+          </div>
+          <div style="text-align:center;padding:12px;background:var(--color-light-blue);border-radius:10px;">
+            <p style="font-size:24px;font-weight:800;line-height:1;color:var(--color-dark);margin:0;">4.9 ⭐</p>
+            <p style="font-size:11px;margin:4px 0 0;color:var(--color-gray);">Reseñas (23)</p>
+            <p style="font-size:11px;margin:2px 0 0;color:var(--color-primary);font-weight:600;cursor:pointer;" onclick="switchPanelTab('resenas', document.querySelectorAll('.panel-tab')[3])">Ver reseñas →</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tu posición -->
+    <div class="section">
+      <div style="background:var(--color-white);border:1px solid var(--color-border);border-radius:16px;padding:16px;box-shadow:0 2px 8px rgba(23,139,255,0.06);">
+        <p style="font-size:11px;color:var(--color-gray);letter-spacing:1px;text-transform:uppercase;margin:0 0 12px;">Tu posición</p>
+        <div style="display:flex;align-items:center;gap:14px;">
+          <div style="width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,var(--color-primary),var(--color-accent));display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <span style="font-size:22px;font-weight:800;color:white;">#2</span>
+          </div>
+          <div>
+            <p style="font-size:15px;font-weight:700;color:var(--color-dark);margin:0;">Profesor más buscado</p>
+            <p style="font-size:12px;margin:2px 0 0;color:var(--color-gray);">En Olavarría esta semana</p>
+            <p style="font-size:11px;margin:4px 0 0;color:var(--color-success);">↑ Subiste 1 posición</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Esta semana (agenda compacta) -->
+    <div class="section">
+      <div style="background:var(--color-white);border:1px solid var(--color-border);border-radius:16px;padding:16px;box-shadow:0 2px 8px rgba(23,139,255,0.06);">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+          <p style="font-size:11px;color:var(--color-gray);letter-spacing:1px;text-transform:uppercase;margin:0;">Esta semana</p>
+          <span style="font-size:12px;color:var(--color-primary);font-weight:600;cursor:pointer;" onclick="switchPanelTab('agenda', document.querySelectorAll('.panel-tab')[2])">Ver todo →</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 12px;border-radius:10px;background:var(--color-light-blue);border-left:3px solid var(--color-primary);">
+            <div>
+              <p style="font-size:13px;font-weight:600;color:var(--color-dark);margin:0;">Clase individual</p>
+              <p style="font-size:11px;color:var(--color-gray);margin:2px 0 0;">Lunes · 18:00 hs · Chingoland</p>
             </div>
-            <p style="font-size:0.8rem;opacity:0.85;line-height:1.5;margin:0 0 0.875rem;">Como profesor activo, pagás solo $500 por partido (50% de descuento). Tu membresía incluye este beneficio.</p>
-            <a href="jugador-buscar.html" style="display:inline-flex;align-items:center;gap:0.4rem;background:white;color:var(--color-primary);font-size:0.8125rem;font-weight:800;padding:0.5rem 1rem;border-radius:8px;text-decoration:none;transition:opacity 0.15s;" onmouseover="this.style.opacity='0.9'" onmouseout="this.style.opacity='1'">
-              <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-              Buscar partido
-            </a>
+            <span style="font-size:11px;font-weight:600;color:var(--color-success);">Confirmada</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 12px;border-radius:10px;background:var(--color-bg-secondary);border-left:3px solid var(--color-border);">
+            <div>
+              <p style="font-size:13px;font-weight:600;color:var(--color-dark);margin:0;">Clase grupal</p>
+              <p style="font-size:11px;color:var(--color-gray);margin:2px 0 0;">Miércoles · 19:00 hs · Las Terrazas</p>
+            </div>
+            <span style="font-size:11px;color:var(--color-gray);">3 alumnos</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 12px;border-radius:10px;background:var(--color-bg-secondary);border-left:3px solid var(--color-border);">
+            <div>
+              <p style="font-size:13px;font-weight:600;color:var(--color-dark);margin:0;">Clase individual</p>
+              <p style="font-size:11px;color:var(--color-gray);margin:2px 0 0;">Viernes · 17:00 hs · Chingoland</p>
+            </div>
+            <span style="font-size:11px;color:var(--color-gray);">Pendiente</span>
           </div>
         </div>
       </div>
@@ -652,91 +605,6 @@
             <div class="earnings-item-value">$32,000</div>
             <div class="earnings-item-label">Pendiente</div>
           </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Weekly calendar -->
-    <div class="section">
-      <div class="section-head">
-        <h3>Agenda semanal</h3>
-        <a href="#">Ver mes →</a>
-      </div>
-
-      <div class="calendar-card">
-        <div class="calendar-header">
-          <h4>Mayo 2026</h4>
-          <div class="cal-nav">
-            <button aria-label="Semana anterior">
-              <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
-            </button>
-            <button aria-label="Semana siguiente">
-              <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
-            </button>
-          </div>
-        </div>
-
-        <div class="week-grid">
-          <div class="week-day">Lun</div>
-          <div class="week-day">Mar</div>
-          <div class="week-day">Mié</div>
-          <div class="week-day">Jue</div>
-          <div class="week-day">Vie</div>
-          <div class="week-day">Sáb</div>
-          <div class="week-day">Dom</div>
-        </div>
-
-        <div class="week-dates">
-          <div class="week-date">19</div>
-          <div class="week-date today">20<span class="dot"></span></div>
-          <div class="week-date">21<span class="dot"></span></div>
-          <div class="week-date">22<span class="dot"></span></div>
-          <div class="week-date">23</div>
-          <div class="week-date">24<span class="dot"></span></div>
-          <div class="week-date">25</div>
-        </div>
-
-        <!-- Today's slots -->
-        <div class="slots-list">
-          <div style="font-size:0.75rem;font-weight:700;color:var(--color-gray);text-transform:uppercase;letter-spacing:0.04em;margin-bottom:0.25rem;">Martes 20 · Hoy</div>
-
-          <div class="slot-item">
-            <div class="slot-time">09:00 hs</div>
-            <div class="slot-info">
-              <div class="slot-student">Valentina Romero</div>
-              <div class="slot-detail">Cancha 2 · Las Terrazas Pádel · 6ta categoría</div>
-            </div>
-            <div class="slot-actions">
-              <button class="btn-xs btn-xs-outline" onclick="alert('Cancelar clase')">Cancelar</button>
-            </div>
-          </div>
-
-          <div class="slot-item">
-            <div class="slot-time">11:00 hs</div>
-            <div class="slot-info">
-              <div class="slot-student">Pedro Salcedo</div>
-              <div class="slot-detail">Cancha 1 · Chingoland · 7ma categoría</div>
-            </div>
-            <div class="slot-actions">
-              <button class="btn-xs btn-xs-outline" onclick="alert('Cancelar clase')">Cancelar</button>
-            </div>
-          </div>
-
-          <div class="slot-item">
-            <div class="slot-time">18:00 hs</div>
-            <div class="slot-info">
-              <div class="slot-student">Grupo 7ma Bs (3 alumnos)</div>
-              <div class="slot-detail">Cancha 3 · Sport Arena Pádel · clase grupal</div>
-            </div>
-            <div class="slot-actions">
-              <button class="btn-xs btn-xs-primary" onclick="alert('Ver detalle')">Ver</button>
-            </div>
-          </div>
-
-          <button class="add-slot-btn" onclick="alert('Agregar disponibilidad')">
-            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-            Agregar disponibilidad
-          </button>
         </div>
       </div>
     </div>
@@ -839,25 +707,25 @@
     <!-- TAB: Mi perfil -->
     <div id="tab-perfil" style="display:none;" class="section">
       <!-- Indicador de completitud -->
-<div style="background:white;border-radius:14px;border:1.5px solid var(--color-border);padding:1.25rem;margin-bottom:1rem;">
+<div style="background:var(--color-white);border-radius:16px;border:1.5px solid var(--color-border);box-shadow:0 2px 8px rgba(23,139,255,0.06);padding:1.25rem;margin-bottom:1rem;">
   <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.75rem;">
     <span style="font-size:0.9375rem;font-weight:800;color:var(--color-dark);">Tu perfil está <span id="perfil-pct">72</span>% completo</span>
-    <span style="font-size:0.8125rem;font-weight:700;color:#27AE60;">Buen comienzo</span>
+    <span style="font-size:0.8125rem;font-weight:700;color:#16A34A;">Buen comienzo</span>
   </div>
   <div style="height:8px;background:var(--color-bg-secondary);border-radius:99px;overflow:hidden;margin-bottom:0.875rem;">
-    <div id="perfil-bar" style="height:100%;width:72%;background:linear-gradient(90deg,#1B4F72,#2E86C1);border-radius:99px;transition:width 0.4s ease;"></div>
+    <div id="perfil-bar" style="height:100%;width:72%;background:linear-gradient(90deg,#178BFF,#0A5FCC);border-radius:99px;transition:width 0.4s ease;"></div>
   </div>
   <div style="font-size:0.8rem;color:var(--color-gray);line-height:1.6;">
-    <div style="display:flex;align-items:center;gap:0.5rem;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#27AE60" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Foto de perfil · Bio · Especialidades · WhatsApp</div>
+    <div style="display:flex;align-items:center;gap:0.5rem;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Foto de perfil · Bio · Especialidades · WhatsApp</div>
     <div style="display:flex;align-items:center;gap:0.5rem;margin-top:0.25rem;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#E67E22" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>Falta: precios, horarios orientativos</div>
   </div>
 </div>
 
 <!-- SECCIÓN: Foto -->
-<div style="background:white;border-radius:14px;border:1.5px solid var(--color-border);padding:1.25rem;margin-bottom:1rem;">
+<div style="background:var(--color-white);border-radius:16px;border:1.5px solid var(--color-border);box-shadow:0 2px 8px rgba(23,139,255,0.06);padding:1.25rem;margin-bottom:1rem;">
   <div style="font-size:0.75rem;font-weight:700;color:var(--color-gray);text-transform:uppercase;letter-spacing:0.04em;margin-bottom:1rem;">Foto de perfil</div>
   <div style="display:flex;align-items:center;gap:1rem;">
-    <div style="width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,#1B4F72,#2E86C1);display:flex;align-items:center;justify-content:center;font-size:1.5rem;font-weight:900;color:white;flex-shrink:0;">LF</div>
+    <div style="width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,#178BFF,#0A5FCC);display:flex;align-items:center;justify-content:center;font-size:1.5rem;font-weight:900;color:white;flex-shrink:0;">LF</div>
     <div>
       <button type="button" style="padding:0.5rem 1rem;background:var(--color-bg-secondary);border:1.5px solid var(--color-border);border-radius:8px;font-size:0.8125rem;font-weight:700;color:var(--color-dark);cursor:pointer;font-family:inherit;margin-bottom:0.5rem;display:block;" onclick="document.getElementById('input-foto').click()">Cambiar foto principal</button>
       <button type="button" style="padding:0.5rem 1rem;background:var(--color-bg-secondary);border:1.5px solid var(--color-border);border-radius:8px;font-size:0.8125rem;font-weight:700;color:var(--color-dark);cursor:pointer;font-family:inherit;" onclick="document.getElementById('input-fotos').click()">Agregar fotos (máx. 2)</button>
@@ -868,95 +736,95 @@
 </div>
 
 <!-- SECCIÓN: Información básica -->
-<div style="background:white;border-radius:14px;border:1.5px solid var(--color-border);padding:1.25rem;margin-bottom:1rem;">
+<div style="background:var(--color-white);border-radius:16px;border:1.5px solid var(--color-border);box-shadow:0 2px 8px rgba(23,139,255,0.06);padding:1.25rem;margin-bottom:1rem;">
   <div style="font-size:0.75rem;font-weight:700;color:var(--color-gray);text-transform:uppercase;letter-spacing:0.04em;margin-bottom:1rem;">Información básica</div>
 
   <div style="margin-bottom:1rem;">
     <label style="display:block;font-size:0.8125rem;font-weight:700;color:var(--color-dark);margin-bottom:0.375rem;">Nombre completo</label>
-    <input type="text" value="Lucas Fernández" style="width:100%;padding:0.75rem;border:1.5px solid var(--color-border);border-radius:10px;font-size:0.9375rem;font-family:inherit;color:var(--color-dark);outline:none;" onfocus="this.style.borderColor='#2E86C1'" onblur="this.style.borderColor='var(--color-border)'">
+    <input type="text" value="Lucas Fernández" style="width:100%;padding:0.75rem;border:1.5px solid var(--color-border);border-radius:10px;font-size:0.9375rem;font-family:inherit;color:var(--color-dark);outline:none;" onfocus="this.style.borderColor='#178BFF'" onblur="this.style.borderColor='var(--color-border)'">
   </div>
 
   <div style="margin-bottom:1rem;">
     <label style="display:block;font-size:0.8125rem;font-weight:700;color:var(--color-dark);margin-bottom:0.375rem;">Bio corta</label>
-    <textarea id="bio-field" maxlength="200" rows="3" style="width:100%;padding:0.75rem;border:1.5px solid var(--color-border);border-radius:10px;font-size:0.9375rem;font-family:inherit;color:var(--color-dark);resize:none;outline:none;line-height:1.5;" onfocus="this.style.borderColor='#2E86C1'" onblur="this.style.borderColor='var(--color-border)'" oninput="updateBioCounter(this)">Profe de pádel con 8 años de experiencia. Especializado en menores y adultos recreativos. Clases individuales y grupales en los mejores complejos de Olavarría.</textarea>
+    <textarea id="bio-field" maxlength="200" rows="3" style="width:100%;padding:0.75rem;border:1.5px solid var(--color-border);border-radius:10px;font-size:0.9375rem;font-family:inherit;color:var(--color-dark);resize:none;outline:none;line-height:1.5;" onfocus="this.style.borderColor='#178BFF'" onblur="this.style.borderColor='var(--color-border)'" oninput="updateBioCounter(this)">Profe de pádel con 8 años de experiencia. Especializado en menores y adultos recreativos. Clases individuales y grupales en los mejores complejos de Olavarría.</textarea>
     <div style="text-align:right;font-size:0.75rem;color:var(--color-gray);margin-top:0.25rem;"><span id="bio-counter">133</span>/200</div>
   </div>
 
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem;">
     <div>
       <label style="display:block;font-size:0.8125rem;font-weight:700;color:var(--color-dark);margin-bottom:0.375rem;">Años de experiencia</label>
-      <input type="number" value="8" min="0" max="50" style="width:100%;padding:0.75rem;border:1.5px solid var(--color-border);border-radius:10px;font-size:0.9375rem;font-family:inherit;color:var(--color-dark);outline:none;" onfocus="this.style.borderColor='#2E86C1'" onblur="this.style.borderColor='var(--color-border)'">
+      <input type="number" value="8" min="0" max="50" style="width:100%;padding:0.75rem;border:1.5px solid var(--color-border);border-radius:10px;font-size:0.9375rem;font-family:inherit;color:var(--color-dark);outline:none;" onfocus="this.style.borderColor='#178BFF'" onblur="this.style.borderColor='var(--color-border)'">
     </div>
     <div>
       <label style="display:block;font-size:0.8125rem;font-weight:700;color:var(--color-dark);margin-bottom:0.375rem;">WhatsApp</label>
-      <input type="tel" value="2284000001" placeholder="Sin 0 ni 15" style="width:100%;padding:0.75rem;border:1.5px solid var(--color-border);border-radius:10px;font-size:0.9375rem;font-family:inherit;color:var(--color-dark);outline:none;" onfocus="this.style.borderColor='#2E86C1'" onblur="this.style.borderColor='var(--color-border)'">
+      <input type="tel" value="2284000001" placeholder="Sin 0 ni 15" style="width:100%;padding:0.75rem;border:1.5px solid var(--color-border);border-radius:10px;font-size:0.9375rem;font-family:inherit;color:var(--color-dark);outline:none;" onfocus="this.style.borderColor='#178BFF'" onblur="this.style.borderColor='var(--color-border)'">
     </div>
   </div>
 
   <div>
     <label style="display:block;font-size:0.8125rem;font-weight:700;color:var(--color-dark);margin-bottom:0.5rem;">Estado</label>
     <div style="display:flex;gap:0.75rem;">
-      <button type="button" class="toggle-estado active" data-val="activo" onclick="selectEstado(this)" style="flex:1;padding:0.625rem;border:1.5px solid #1B4F72;border-radius:10px;background:#EBF5FB;font-size:0.8125rem;font-weight:700;color:#1B4F72;cursor:pointer;font-family:inherit;">Jugador activo</button>
+      <button type="button" class="toggle-estado active" data-val="activo" onclick="selectEstado(this)" style="flex:1;padding:0.625rem;border:1.5px solid #178BFF;border-radius:10px;background:#EBF4FF;font-size:0.8125rem;font-weight:700;color:#178BFF;cursor:pointer;font-family:inherit;">Jugador activo</button>
       <button type="button" class="toggle-estado" data-val="ex" onclick="selectEstado(this)" style="flex:1;padding:0.625rem;border:1.5px solid var(--color-border);border-radius:10px;background:white;font-size:0.8125rem;font-weight:700;color:var(--color-gray);cursor:pointer;font-family:inherit;">Ex jugador competitivo</button>
     </div>
   </div>
 </div>
 
 <!-- SECCIÓN: Especialidades -->
-<div style="background:white;border-radius:14px;border:1.5px solid var(--color-border);padding:1.25rem;margin-bottom:1rem;">
+<div style="background:var(--color-white);border-radius:16px;border:1.5px solid var(--color-border);box-shadow:0 2px 8px rgba(23,139,255,0.06);padding:1.25rem;margin-bottom:1rem;">
   <div style="font-size:0.75rem;font-weight:700;color:var(--color-gray);text-transform:uppercase;letter-spacing:0.04em;margin-bottom:1rem;">Especialidades <span style="font-weight:500;text-transform:none;font-size:0.7rem;">(máx. 3)</span></div>
   <div style="display:flex;flex-wrap:wrap;gap:0.5rem;">
-    <button type="button" class="edit-chip active" onclick="toggleEditChip(this,'esp',3)" style="padding:0.5rem 1rem;border-radius:99px;border:1.5px solid #1B4F72;background:#EBF5FB;color:#1B4F72;font-size:0.8125rem;font-weight:700;cursor:pointer;font-family:inherit;">Menores</button>
-    <button type="button" class="edit-chip active" onclick="toggleEditChip(this,'esp',3)" style="padding:0.5rem 1rem;border-radius:99px;border:1.5px solid #1B4F72;background:#EBF5FB;color:#1B4F72;font-size:0.8125rem;font-weight:700;cursor:pointer;font-family:inherit;">Adultos</button>
+    <button type="button" class="edit-chip active" onclick="toggleEditChip(this,'esp',3)" style="padding:0.5rem 1rem;border-radius:99px;border:1.5px solid #178BFF;background:#EBF4FF;color:#178BFF;font-size:0.8125rem;font-weight:700;cursor:pointer;font-family:inherit;">Menores</button>
+    <button type="button" class="edit-chip active" onclick="toggleEditChip(this,'esp',3)" style="padding:0.5rem 1rem;border-radius:99px;border:1.5px solid #178BFF;background:#EBF4FF;color:#178BFF;font-size:0.8125rem;font-weight:700;cursor:pointer;font-family:inherit;">Adultos</button>
     <button type="button" class="edit-chip" onclick="toggleEditChip(this,'esp',3)" style="padding:0.5rem 1rem;border-radius:99px;border:1.5px solid var(--color-border);background:white;color:var(--color-gray);font-size:0.8125rem;font-weight:700;cursor:pointer;font-family:inherit;">Alto rendimiento</button>
   </div>
 </div>
 
 <!-- SECCIÓN: Categorías que enseña -->
-<div style="background:white;border-radius:14px;border:1.5px solid var(--color-border);padding:1.25rem;margin-bottom:1rem;">
+<div style="background:var(--color-white);border-radius:16px;border:1.5px solid var(--color-border);box-shadow:0 2px 8px rgba(23,139,255,0.06);padding:1.25rem;margin-bottom:1rem;">
   <div style="font-size:0.75rem;font-weight:700;color:var(--color-gray);text-transform:uppercase;letter-spacing:0.04em;margin-bottom:1rem;">Categorías que enseña</div>
   <div style="display:flex;flex-wrap:wrap;gap:0.5rem;">
     <button type="button" class="edit-chip" onclick="toggleEditChip(this,'cat',6)" style="padding:0.5rem 1rem;border-radius:99px;border:1.5px solid var(--color-border);background:white;color:var(--color-gray);font-size:0.8125rem;font-weight:700;cursor:pointer;font-family:inherit;">7ma B</button>
-    <button type="button" class="edit-chip active" onclick="toggleEditChip(this,'cat',6)" style="padding:0.5rem 1rem;border-radius:99px;border:1.5px solid #1B4F72;background:#EBF5FB;color:#1B4F72;font-size:0.8125rem;font-weight:700;cursor:pointer;font-family:inherit;">7ma</button>
-    <button type="button" class="edit-chip active" onclick="toggleEditChip(this,'cat',6)" style="padding:0.5rem 1rem;border-radius:99px;border:1.5px solid #1B4F72;background:#EBF5FB;color:#1B4F72;font-size:0.8125rem;font-weight:700;cursor:pointer;font-family:inherit;">6ta</button>
-    <button type="button" class="edit-chip active" onclick="toggleEditChip(this,'cat',6)" style="padding:0.5rem 1rem;border-radius:99px;border:1.5px solid #1B4F72;background:#EBF5FB;color:#1B4F72;font-size:0.8125rem;font-weight:700;cursor:pointer;font-family:inherit;">5ta</button>
-    <button type="button" class="edit-chip active" onclick="toggleEditChip(this,'cat',6)" style="padding:0.5rem 1rem;border-radius:99px;border:1.5px solid #1B4F72;background:#EBF5FB;color:#1B4F72;font-size:0.8125rem;font-weight:700;cursor:pointer;font-family:inherit;">4ta</button>
+    <button type="button" class="edit-chip active" onclick="toggleEditChip(this,'cat',6)" style="padding:0.5rem 1rem;border-radius:99px;border:1.5px solid #178BFF;background:#EBF4FF;color:#178BFF;font-size:0.8125rem;font-weight:700;cursor:pointer;font-family:inherit;">7ma</button>
+    <button type="button" class="edit-chip active" onclick="toggleEditChip(this,'cat',6)" style="padding:0.5rem 1rem;border-radius:99px;border:1.5px solid #178BFF;background:#EBF4FF;color:#178BFF;font-size:0.8125rem;font-weight:700;cursor:pointer;font-family:inherit;">6ta</button>
+    <button type="button" class="edit-chip active" onclick="toggleEditChip(this,'cat',6)" style="padding:0.5rem 1rem;border-radius:99px;border:1.5px solid #178BFF;background:#EBF4FF;color:#178BFF;font-size:0.8125rem;font-weight:700;cursor:pointer;font-family:inherit;">5ta</button>
+    <button type="button" class="edit-chip active" onclick="toggleEditChip(this,'cat',6)" style="padding:0.5rem 1rem;border-radius:99px;border:1.5px solid #178BFF;background:#EBF4FF;color:#178BFF;font-size:0.8125rem;font-weight:700;cursor:pointer;font-family:inherit;">4ta</button>
     <button type="button" class="edit-chip" onclick="toggleEditChip(this,'cat',6)" style="padding:0.5rem 1rem;border-radius:99px;border:1.5px solid var(--color-border);background:white;color:var(--color-gray);font-size:0.8125rem;font-weight:700;cursor:pointer;font-family:inherit;">3ra</button>
   </div>
 </div>
 
 <!-- SECCIÓN: Modalidad -->
-<div style="background:white;border-radius:14px;border:1.5px solid var(--color-border);padding:1.25rem;margin-bottom:1rem;">
+<div style="background:var(--color-white);border-radius:16px;border:1.5px solid var(--color-border);box-shadow:0 2px 8px rgba(23,139,255,0.06);padding:1.25rem;margin-bottom:1rem;">
   <div style="font-size:0.75rem;font-weight:700;color:var(--color-gray);text-transform:uppercase;letter-spacing:0.04em;margin-bottom:1rem;">Modalidad</div>
   <div style="display:flex;gap:0.5rem;flex-wrap:wrap;">
-    <button type="button" class="edit-chip active" onclick="toggleEditChip(this,'mod',3)" style="padding:0.5rem 1rem;border-radius:99px;border:1.5px solid #1B4F72;background:#EBF5FB;color:#1B4F72;font-size:0.8125rem;font-weight:700;cursor:pointer;font-family:inherit;">Individual</button>
-    <button type="button" class="edit-chip active" onclick="toggleEditChip(this,'mod',3)" style="padding:0.5rem 1rem;border-radius:99px;border:1.5px solid #1B4F72;background:#EBF5FB;color:#1B4F72;font-size:0.8125rem;font-weight:700;cursor:pointer;font-family:inherit;">Grupal</button>
+    <button type="button" class="edit-chip active" onclick="toggleEditChip(this,'mod',3)" style="padding:0.5rem 1rem;border-radius:99px;border:1.5px solid #178BFF;background:#EBF4FF;color:#178BFF;font-size:0.8125rem;font-weight:700;cursor:pointer;font-family:inherit;">Individual</button>
+    <button type="button" class="edit-chip active" onclick="toggleEditChip(this,'mod',3)" style="padding:0.5rem 1rem;border-radius:99px;border:1.5px solid #178BFF;background:#EBF4FF;color:#178BFF;font-size:0.8125rem;font-weight:700;cursor:pointer;font-family:inherit;">Grupal</button>
   </div>
 </div>
 
 <!-- SECCIÓN: Precios -->
-<div style="background:white;border-radius:14px;border:1.5px solid var(--color-border);padding:1.25rem;margin-bottom:1rem;">
+<div style="background:var(--color-white);border-radius:16px;border:1.5px solid var(--color-border);box-shadow:0 2px 8px rgba(23,139,255,0.06);padding:1.25rem;margin-bottom:1rem;">
   <div style="font-size:0.75rem;font-weight:700;color:var(--color-gray);text-transform:uppercase;letter-spacing:0.04em;margin-bottom:1rem;">Precios orientativos</div>
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
     <div>
       <label style="display:block;font-size:0.8125rem;font-weight:700;color:var(--color-dark);margin-bottom:0.375rem;">Clase individual desde</label>
-      <div style="display:flex;align-items:center;border:1.5px solid var(--color-border);border-radius:10px;overflow:hidden;" onfocuswithin="this.style.borderColor='#2E86C1'">
+      <div style="display:flex;align-items:center;border:1.5px solid var(--color-border);border-radius:10px;overflow:hidden;" onfocuswithin="this.style.borderColor='#178BFF'">
         <span style="padding:0.75rem 0.5rem 0.75rem 0.875rem;font-size:0.9375rem;color:var(--color-gray);font-weight:600;">$</span>
-        <input type="number" value="15000" min="0" style="flex:1;padding:0.75rem 0.75rem 0.75rem 0;border:none;font-size:0.9375rem;font-family:inherit;color:var(--color-dark);outline:none;width:100%;" onfocus="this.closest('div').style.borderColor='#2E86C1'" onblur="this.closest('div').style.borderColor='var(--color-border)'">
+        <input type="number" value="15000" min="0" style="flex:1;padding:0.75rem 0.75rem 0.75rem 0;border:none;font-size:0.9375rem;font-family:inherit;color:var(--color-dark);outline:none;width:100%;" onfocus="this.closest('div').style.borderColor='#178BFF'" onblur="this.closest('div').style.borderColor='var(--color-border)'">
       </div>
     </div>
     <div>
       <label style="display:block;font-size:0.8125rem;font-weight:700;color:var(--color-dark);margin-bottom:0.375rem;">Clase grupal desde</label>
       <div style="display:flex;align-items:center;border:1.5px solid var(--color-border);border-radius:10px;overflow:hidden;">
         <span style="padding:0.75rem 0.5rem 0.75rem 0.875rem;font-size:0.9375rem;color:var(--color-gray);font-weight:600;">$</span>
-        <input type="number" value="8000" min="0" style="flex:1;padding:0.75rem 0.75rem 0.75rem 0;border:none;font-size:0.9375rem;font-family:inherit;color:var(--color-dark);outline:none;width:100%;" onfocus="this.closest('div').style.borderColor='#2E86C1'" onblur="this.closest('div').style.borderColor='var(--color-border)'">
+        <input type="number" value="8000" min="0" style="flex:1;padding:0.75rem 0.75rem 0.75rem 0;border:none;font-size:0.9375rem;font-family:inherit;color:var(--color-dark);outline:none;width:100%;" onfocus="this.closest('div').style.borderColor='#178BFF'" onblur="this.closest('div').style.borderColor='var(--color-border)'">
       </div>
     </div>
   </div>
 </div>
 
 <!-- SECCIÓN: Horarios orientativos -->
-<div style="background:white;border-radius:14px;border:1.5px solid var(--color-border);padding:1.25rem;margin-bottom:5rem;">
+<div style="background:var(--color-white);border-radius:16px;border:1.5px solid var(--color-border);box-shadow:0 2px 8px rgba(23,139,255,0.06);padding:1.25rem;margin-bottom:5rem;">
   <div style="font-size:0.75rem;font-weight:700;color:var(--color-gray);text-transform:uppercase;letter-spacing:0.04em;margin-bottom:1rem;">Horarios orientativos</div>
   <div style="font-size:0.8125rem;color:var(--color-gray);margin-bottom:1rem;">Marcá los días y franjas en que solés estar disponible</div>
   <div id="horarios-grid" style="display:flex;flex-direction:column;gap:0.625rem;">
@@ -965,7 +833,7 @@
 
 <!-- Botón guardar sticky -->
 <div style="position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:680px;background:white;border-top:1px solid var(--color-border);padding:1rem 1.25rem calc(1rem + env(safe-area-inset-bottom));z-index:50;">
-  <button type="button" onclick="guardarPerfil()" style="width:100%;padding:0.875rem;background:linear-gradient(135deg,#1B4F72,#2E86C1);color:white;border:none;border-radius:12px;font-size:1rem;font-weight:800;cursor:pointer;font-family:inherit;letter-spacing:-0.2px;">Guardar cambios</button>
+  <button type="button" onclick="guardarPerfil()" style="width:100%;padding:0.875rem;background:linear-gradient(135deg,#178BFF,#0A5FCC);color:white;border:none;border-radius:12px;font-size:1rem;font-weight:800;cursor:pointer;font-family:inherit;letter-spacing:-0.2px;">Guardar cambios</button>
 </div>
     </div>
 
@@ -974,7 +842,7 @@
 
       <!-- Resumen del día -->
       <div class="section" id="agenda-hoy-card">
-        <div style="background:linear-gradient(135deg,var(--color-primary),var(--color-accent));border-radius:14px;padding:1.25rem;color:white;">
+        <div style="background:linear-gradient(135deg,var(--color-primary),var(--color-accent));border-radius:16px;padding:1.25rem;color:white;box-shadow:0 4px 20px rgba(23,139,255,0.25);">
           <div style="font-size:0.8rem;opacity:0.85;margin-bottom:0.25rem;">Buenos días, Lucas</div>
           <div style="font-size:1.1rem;font-weight:800;margin-bottom:0.875rem;">Hoy tenés <span id="agenda-count-hoy">0</span> clases programadas</div>
           <div id="agenda-list-hoy" style="display:flex;flex-direction:column;gap:0.5rem;">
@@ -989,7 +857,7 @@
         <div class="section-head">
           <h3>Mi Agenda</h3>
         </div>
-        <div style="background:var(--color-white);border:1px solid var(--color-border);border-radius:14px;overflow:hidden;">
+        <div style="background:var(--color-white);border:1px solid var(--color-border);border-radius:16px;box-shadow:0 2px 8px rgba(23,139,255,0.06);overflow:hidden;">
           <!-- Header del mes -->
           <div style="display:flex;align-items:center;justify-content:space-between;padding:1rem 1.25rem;border-bottom:1px solid var(--color-border);">
             <button onclick="agendaPrevMonth()" style="width:32px;height:32px;border:1px solid var(--color-border);background:white;border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--color-dark);font-family:inherit;">
@@ -1024,7 +892,7 @@
 
     <!-- TAB: Reseñas (placeholder) -->
     <div id="tab-resenas" style="display:none;" class="section">
-      <div style="background:var(--color-white);border:1px solid var(--color-border);border-radius:14px;padding:1.5rem;text-align:center;">
+      <div style="background:var(--color-white);border:1px solid var(--color-border);border-radius:16px;box-shadow:0 2px 8px rgba(23,139,255,0.06);padding:1.5rem;text-align:center;">
         <svg width="40" height="40" fill="none" stroke="var(--color-gray)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" style="margin-bottom:0.75rem;"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
         <div style="font-weight:700;color:var(--color-dark);margin-bottom:0.375rem;">Tus reseñas</div>
         <p style="font-size:0.8125rem;color:var(--color-gray);">Las reseñas de tus alumnos van a aparecer acá.</p>
@@ -1035,7 +903,7 @@
     <div id="tab-suscripcion" style="display:none;" class="section">
 
       <!-- Estado de membresía -->
-      <div style="background:var(--color-white);border:1px solid var(--color-border);border-radius:14px;overflow:hidden;margin-bottom:1rem;">
+      <div style="background:var(--color-white);border:1px solid var(--color-border);border-radius:16px;box-shadow:0 2px 8px rgba(23,139,255,0.06);overflow:hidden;margin-bottom:1rem;">
         <div style="background:linear-gradient(135deg,var(--color-primary),var(--color-accent));padding:1.5rem;color:white;">
           <div style="font-size:0.75rem;font-weight:700;opacity:0.8;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:0.25rem;">Tu membresía PadelYa Profesores</div>
           <div style="font-size:1.5rem;font-weight:800;line-height:1.1;">Período gratuito</div>
@@ -1044,7 +912,7 @@
         <div style="padding:1rem 1.25rem;">
           <div style="display:flex;justify-content:space-between;align-items:center;padding:0.5rem 0;border-bottom:1px solid var(--color-border);font-size:0.875rem;">
             <span style="color:var(--color-gray);">Estado</span>
-            <span style="display:inline-flex;align-items:center;gap:4px;font-weight:700;color:#1E8449;">
+            <span style="display:inline-flex;align-items:center;gap:4px;font-weight:700;color:#16A34A;">
               <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
               Activa
             </span>
@@ -1061,47 +929,47 @@
       </div>
 
       <!-- Lo que incluye -->
-      <div style="background:var(--color-white);border:1px solid var(--color-border);border-radius:14px;padding:1.25rem;margin-bottom:1rem;">
+      <div style="background:var(--color-white);border:1px solid var(--color-border);border-radius:16px;box-shadow:0 2px 8px rgba(23,139,255,0.06);padding:1.25rem;margin-bottom:1rem;">
         <div style="font-weight:700;font-size:0.9375rem;color:var(--color-dark);margin-bottom:1rem;">Tu membresía incluye</div>
         <div style="display:flex;flex-direction:column;gap:0.75rem;">
 
           <div style="display:flex;align-items:flex-start;gap:0.75rem;">
-            <div style="width:20px;height:20px;background:#EBF5FB;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;">
+            <div style="width:20px;height:20px;background:#EBF4FF;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;">
               <svg width="10" height="10" fill="none" stroke="var(--color-accent)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
             </div>
             <span style="font-size:0.875rem;color:var(--color-dark);line-height:1.4;">Perfil público visible para todos los jugadores</span>
           </div>
 
           <div style="display:flex;align-items:flex-start;gap:0.75rem;">
-            <div style="width:20px;height:20px;background:#EBF5FB;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;">
+            <div style="width:20px;height:20px;background:#EBF4FF;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;">
               <svg width="10" height="10" fill="none" stroke="var(--color-accent)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
             </div>
             <span style="font-size:0.875rem;color:var(--color-dark);line-height:1.4;">Estadísticas de visibilidad de tu perfil</span>
           </div>
 
           <div style="display:flex;align-items:flex-start;gap:0.75rem;">
-            <div style="width:20px;height:20px;background:#EBF5FB;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;">
+            <div style="width:20px;height:20px;background:#EBF4FF;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;">
               <svg width="10" height="10" fill="none" stroke="var(--color-accent)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
             </div>
             <span style="font-size:0.875rem;color:var(--color-dark);line-height:1.4;">Reseñas verificadas de alumnos</span>
           </div>
 
           <div style="display:flex;align-items:flex-start;gap:0.75rem;">
-            <div style="width:20px;height:20px;background:#EBF5FB;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;">
+            <div style="width:20px;height:20px;background:#EBF4FF;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;">
               <svg width="10" height="10" fill="none" stroke="var(--color-accent)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
             </div>
             <span style="font-size:0.875rem;color:var(--color-dark);line-height:1.4;">Agenda personal de clases</span>
           </div>
 
           <div style="display:flex;align-items:flex-start;gap:0.75rem;">
-            <div style="width:20px;height:20px;background:#EBF5FB;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;">
+            <div style="width:20px;height:20px;background:#EBF4FF;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;">
               <svg width="10" height="10" fill="none" stroke="var(--color-accent)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
             </div>
             <span style="font-size:0.875rem;color:var(--color-dark);line-height:1.4;">50% de descuento en partidos (<strong>$500 por partido</strong>)</span>
           </div>
 
           <div style="display:flex;align-items:flex-start;gap:0.75rem;">
-            <div style="width:20px;height:20px;background:#EBF5FB;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;">
+            <div style="width:20px;height:20px;background:#EBF4FF;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;">
               <svg width="10" height="10" fill="none" stroke="var(--color-accent)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
             </div>
             <span style="font-size:0.875rem;color:var(--color-dark);line-height:1.4;">Resumen diario de clases a las 7am por WhatsApp</span>
@@ -1158,9 +1026,12 @@
   </div>
 
   <!-- Botón flotante agregar clase -->
-  <button id="btn-add-clase" style="display:none;position:fixed;bottom:1.5rem;right:1.5rem;width:52px;height:52px;background:var(--color-accent);color:white;border:none;border-radius:50%;cursor:pointer;font-size:1.5rem;font-weight:300;box-shadow:0 4px 16px rgba(46,134,193,0.4);align-items:center;justify-content:center;z-index:200;font-family:inherit;" onclick="abrirModalClase(agendaSelectedDay)">
+  <button id="btn-add-clase" style="display:none;position:fixed;bottom:1.5rem;right:1.5rem;width:52px;height:52px;background:var(--color-primary);color:white;border:none;border-radius:50%;cursor:pointer;font-size:1.5rem;font-weight:300;box-shadow:0 4px 16px rgba(23,139,255,0.4);align-items:center;justify-content:center;z-index:200;font-family:inherit;" onclick="abrirModalClase(agendaSelectedDay)">
     <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
   </button>
+
+  <!-- Toast -->
+  <div id="toast-profe" class="toast-profe"></div>
 
   <script>
     (function() {
@@ -1254,7 +1125,7 @@
       }
 
       clases.forEach(function(c) {
-        var borderColor = c.tipo === 'Individual' ? 'var(--color-accent)' : '#1E8449';
+        var borderColor = c.tipo === 'Individual' ? 'var(--color-accent)' : '#16A34A';
         container.innerHTML += '<div style="background:white;border:1px solid var(--color-border);border-left:3px solid ' + borderColor + ';border-radius:10px;padding:0.75rem 1rem;display:flex;align-items:flex-start;gap:0.75rem;margin-bottom:0.5rem;">' +
           '<div style="font-size:0.875rem;font-weight:700;color:var(--color-primary);min-width:52px;">' + c.hora + '</div>' +
           '<div style="flex:1;">' +
@@ -1264,7 +1135,7 @@
           '</div>' +
           '<div style="display:flex;gap:0.375rem;">' +
             '<button style="font-size:0.7rem;font-weight:700;padding:0.25rem 0.6rem;border-radius:6px;border:1px solid var(--color-border);background:transparent;cursor:pointer;color:var(--color-dark);font-family:inherit;" onclick="editarClase(' + c.id + ')">Editar</button>' +
-            '<button style="font-size:0.7rem;font-weight:700;padding:0.25rem 0.6rem;border-radius:6px;border:1px solid #F5B7B1;background:transparent;cursor:pointer;color:#C0392B;font-family:inherit;" onclick="eliminarClase(' + c.id + ')">Eliminar</button>' +
+            '<button style="font-size:0.7rem;font-weight:700;padding:0.25rem 0.6rem;border-radius:6px;border:1px solid #FCA5A5;background:transparent;cursor:pointer;color:#DC2626;font-family:inherit;" onclick="eliminarClase(' + c.id + ')">Eliminar</button>' +
           '</div>' +
         '</div>';
       });
@@ -1398,9 +1269,9 @@
         b.style.background = 'white';
         b.style.color = 'var(--color-gray)';
       });
-      btn.style.borderColor = '#1B4F72';
-      btn.style.background = '#EBF5FB';
-      btn.style.color = '#1B4F72';
+      btn.style.borderColor = '#178BFF';
+      btn.style.background = '#EBF4FF';
+      btn.style.color = '#178BFF';
     }
 
     function toggleEditChip(btn, group, max) {
@@ -1419,9 +1290,9 @@
           activos[0].style.color = 'var(--color-gray)';
         }
         btn.classList.add('active');
-        btn.style.borderColor = '#1B4F72';
-        btn.style.background = '#EBF5FB';
-        btn.style.color = '#1B4F72';
+        btn.style.borderColor = '#178BFF';
+        btn.style.background = '#EBF4FF';
+        btn.style.color = '#178BFF';
       }
       recalcularPerfil();
     }
@@ -1471,9 +1342,9 @@
           btn.onclick = function() {
             var sel = btn.classList.toggle('sel');
             if (sel) {
-              btn.style.borderColor = '#1B4F72';
-              btn.style.background = '#EBF5FB';
-              btn.style.color = '#1B4F72';
+              btn.style.borderColor = '#178BFF';
+              btn.style.background = '#EBF4FF';
+              btn.style.color = '#178BFF';
             } else {
               btn.style.borderColor = 'var(--color-border)';
               btn.style.background = 'white';
@@ -1495,11 +1366,22 @@
       var btn = event.currentTarget;
       var orig = btn.textContent;
       btn.textContent = 'Guardado';
-      btn.style.background = '#27AE60';
+      btn.style.background = '#16A34A';
       setTimeout(function() {
         btn.textContent = orig;
-        btn.style.background = 'linear-gradient(135deg,#1B4F72,#2E86C1)';
+        btn.style.background = 'linear-gradient(135deg,#178BFF,#0A5FCC)';
       }, 2000);
+    }
+
+    /* ---- Toast genérico ---- */
+    function showToast(msg, type) {
+      var t = document.getElementById('toast-profe');
+      if (!t) return;
+      t.textContent = msg;
+      t.className = 'toast-profe ' + (type || 'info');
+      t.style.display = 'block';
+      clearTimeout(t._tid);
+      t._tid = setTimeout(function() { t.style.display = 'none'; }, 3000);
     }
 
     document.addEventListener('DOMContentLoaded', function() {
@@ -1508,6 +1390,14 @@
       if (bioField) {
         var counter = document.getElementById('bio-counter');
         if (counter) counter.textContent = bioField.value.length;
+      }
+
+      var yaVioNotif = sessionStorage.getItem('profNotifHoy');
+      if (!yaVioNotif) {
+        sessionStorage.setItem('profNotifHoy', 'true');
+        setTimeout(function() {
+          showToast('Tu perfil fue visto 47 veces esta semana 🎾', 'success');
+        }, 1000);
       }
     });
   </script>

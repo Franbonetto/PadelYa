@@ -3,6 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#050816">
+  <link rel="preload" href="logo-padelya.png" as="image">
   <title>PadelYa - Acceder</title>
   <link rel="stylesheet" href="style.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -1173,28 +1175,28 @@
       complejo: 'complejo-panel.html'
     };
 
-    /* Lee ?redirect= de la URL y lo guarda en sessionStorage */
+    /* Lee ?redirect= de la URL y lo guarda en localStorage */
     (function() {
       var params = new URLSearchParams(window.location.search);
       var redirect = params.get('redirect');
-      if (redirect) sessionStorage.setItem('redirect', redirect);
+      if (redirect) localStorage.setItem('redirect', redirect);
     })();
 
     /* Guarda sesión y redirige respetando ?redirect= */
     function loginAs(rol) {
-      sessionStorage.setItem('loggedIn', 'true');
-      sessionStorage.setItem('rol', rol);
+      localStorage.setItem('loggedIn', 'true');
+      localStorage.setItem('rol', rol);
       if (rol === 'jugador') {
-        if (!sessionStorage.getItem('mesActual')) {
-          sessionStorage.setItem('partidosJugados', '0');
-          sessionStorage.setItem('mesActual', String(new Date().getMonth()));
-          sessionStorage.setItem('sexo', _sexoSeleccionado || 'masculino');
-      sessionStorage.setItem('esPremium', 'false');
+        if (!localStorage.getItem('mesActual')) {
+          localStorage.setItem('partidosJugados', '0');
+          localStorage.setItem('mesActual', String(new Date().getMonth()));
+          localStorage.setItem('sexo', _sexoSeleccionado || 'masculino');
+      localStorage.setItem('esPremium', 'false');
         }
       }
-      var redirect = sessionStorage.getItem('redirect');
+      var redirect = localStorage.getItem('redirect');
       if (redirect) {
-        sessionStorage.removeItem('redirect');
+        localStorage.removeItem('redirect');
         window.location.href = redirect;
         return;
       }
@@ -1306,8 +1308,8 @@
 
     function loginSocial() {
       _socialLogin = true;
-      sessionStorage.setItem('_pendingNombre', 'Usuario');
-      sessionStorage.setItem('_pendingEmail', 'usuario@social.com');
+      localStorage.setItem('_pendingNombre', 'Usuario');
+      localStorage.setItem('_pendingEmail', 'usuario@social.com');
       var backBtn = document.getElementById('btn-step-back');
       if (backBtn) backBtn.style.display = 'none';
       showRegStep(2);
@@ -1356,32 +1358,32 @@
       var apellidoEl = document.getElementById('j-apellido');
       var emailEl = document.getElementById('j-email');
       var nombre = _socialLogin
-        ? (sessionStorage.getItem('_pendingNombre') || 'Usuario')
+        ? (localStorage.getItem('_pendingNombre') || 'Usuario')
         : ((nombreEl ? nombreEl.value.trim() : '') + ' ' + (apellidoEl ? apellidoEl.value.trim() : '')).trim();
       var email = _socialLogin
-        ? (sessionStorage.getItem('_pendingEmail') || 'usuario@google.com')
+        ? (localStorage.getItem('_pendingEmail') || 'usuario@google.com')
         : (emailEl && emailEl.value.trim() ? emailEl.value.trim() : 'jugador@padelya.com');
 
       var selectedCatEl = document.querySelector('#chips-reg-cat .reg-cat-chip.selected');
       var categoria = selectedCatEl ? selectedCatEl.textContent.trim() : '7ma';
 
-      sessionStorage.setItem('loggedIn', 'true');
-      sessionStorage.setItem('rol', 'jugador');
-      sessionStorage.setItem('email', email);
-      sessionStorage.setItem('nombre', nombre);
-      sessionStorage.setItem('sexo', _sexoSeleccionado);
-      sessionStorage.setItem('categoria', categoria);
-      sessionStorage.setItem('estadoCategoria', 'orientativa');
-      sessionStorage.setItem('acopVerificado', 'false');
-      sessionStorage.setItem('partidosJugados', '0');
-      sessionStorage.setItem('mesActual', String(new Date().getMonth()));
-      sessionStorage.setItem('esPremium', 'false');
-      sessionStorage.removeItem('_pendingNombre');
-      sessionStorage.removeItem('_pendingEmail');
+      localStorage.setItem('loggedIn', 'true');
+      localStorage.setItem('rol', 'jugador');
+      localStorage.setItem('email', email);
+      localStorage.setItem('nombre', nombre);
+      localStorage.setItem('sexo', _sexoSeleccionado);
+      localStorage.setItem('categoria', categoria);
+      localStorage.setItem('estadoCategoria', 'orientativa');
+      localStorage.setItem('acopVerificado', 'false');
+      localStorage.setItem('partidosJugados', '0');
+      localStorage.setItem('mesActual', String(new Date().getMonth()));
+      localStorage.setItem('esPremium', 'false');
+      localStorage.removeItem('_pendingNombre');
+      localStorage.removeItem('_pendingEmail');
 
-      var redirect = sessionStorage.getItem('redirect');
+      var redirect = localStorage.getItem('redirect');
       if (redirect) {
-        sessionStorage.removeItem('redirect');
+        localStorage.removeItem('redirect');
         window.location.href = redirect;
       } else {
         window.location.href = 'jugador-home.html';
@@ -1401,25 +1403,25 @@
         alert('Email o contraseña incorrectos.\n\nUsuarios de demo:\njugador@padelya.com / jugador123\nprofe@padelya.com / profe123\ncomplejo@padelya.com / complejo123\nadmin@padelya.com / admin123');
         return;
       }
-      sessionStorage.setItem('email', user.email);
+      localStorage.setItem('email', user.email);
       loginAs(user.rol);
     }
 
     function handleRegister(e, role) {
       e.preventDefault();
       if (role === 'jugador') {
-        sessionStorage.setItem('loggedIn', 'true');
-        sessionStorage.setItem('rol', 'jugador');
-        var nombre = (document.getElementById('j-nombre-completo') && document.getElementById('j-nombre-completo').value.trim()) || sessionStorage.getItem('nombre') || 'Jugador';
-        sessionStorage.setItem('nombre', nombre);
+        localStorage.setItem('loggedIn', 'true');
+        localStorage.setItem('rol', 'jugador');
+        var nombre = (document.getElementById('j-nombre-completo') && document.getElementById('j-nombre-completo').value.trim()) || localStorage.getItem('nombre') || 'Jugador';
+        localStorage.setItem('nombre', nombre);
         var catEl = document.querySelector('#chips-reg-cat .reg-cat-chip.selected');
-        if (catEl) sessionStorage.setItem('categoria', catEl.textContent.trim());
-        sessionStorage.setItem('estadoCategoria', 'orientativa');
-        if (!sessionStorage.getItem('mesActual')) {
-          sessionStorage.setItem('partidosJugados', '0');
-          sessionStorage.setItem('mesActual', String(new Date().getMonth()));
-          sessionStorage.setItem('sexo', _sexoSeleccionado || 'masculino');
-          sessionStorage.setItem('esPremium', 'false');
+        if (catEl) localStorage.setItem('categoria', catEl.textContent.trim());
+        localStorage.setItem('estadoCategoria', 'orientativa');
+        if (!localStorage.getItem('mesActual')) {
+          localStorage.setItem('partidosJugados', '0');
+          localStorage.setItem('mesActual', String(new Date().getMonth()));
+          localStorage.setItem('sexo', _sexoSeleccionado || 'masculino');
+          localStorage.setItem('esPremium', 'false');
         }
         window.location.href = 'jugador-home.html';
       } else {
