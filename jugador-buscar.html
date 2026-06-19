@@ -558,6 +558,7 @@
     <div class="tab-selector">
       <button class="tab-btn" id="tab-mis" onclick="switchTab('mis')">Mis partidos</button>
       <button class="tab-btn active" id="tab-todos" onclick="switchTab('todos')">Todos los partidos</button>
+      <button class="tab-btn" id="tab-comunidad" onclick="switchTab('comunidad')">Comunidad</button>
     </div>
 
     <!-- MIS PARTIDOS SECTION -->
@@ -791,6 +792,17 @@
 
     </div><!-- /section-todos -->
 
+    <!-- COMUNIDAD -->
+    <div id="section-comunidad" style="display:none;padding-top:4px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+        <div>
+          <h2 style="font-size:16px;font-weight:700;color:#F5F7FA;margin:0;">Comunidad</h2>
+          <p style="font-size:12px;color:#A8B3C7;margin:4px 0 0;">Últimos partidos en Olavarría</p>
+        </div>
+      </div>
+      <div id="feed-comunidad"></div>
+    </div>
+
   </main>
 
   <!-- ════════ BOTTOM NAV ════════ -->
@@ -818,10 +830,9 @@
     </button>
     <a href="profes.html" class="nav-item" aria-label="Clases">
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M15.5 3.5C18.5 4.5 20 7 19 10C18 13 15 14.5 12.5 13.5L7 19C6.2 19.8 5 19.8 4.2 19C3.4 18.2 3.4 17 4.2 16.2L9.5 10.5C8.5 8 10 5 13 4C13.8 3.7 14.7 3.5 15.5 3.5Z"/>
-        <circle cx="13" cy="8" r="0.6" fill="currentColor" stroke="none"/>
-        <circle cx="15" cy="9.5" r="0.6" fill="currentColor" stroke="none"/>
-        <circle cx="11.5" cy="10" r="0.6" fill="currentColor" stroke="none"/>
+        <circle cx="12" cy="12" r="9"/>
+        <path d="M6 5.5 C8 9 8 15 6 18.5"/>
+        <path d="M18 5.5 C16 9 16 15 18 18.5"/>
       </svg>
       <span>Clases</span>
     </a>
@@ -839,29 +850,8 @@
     (function() {
       var loggedIn = localStorage.getItem('loggedIn');
       var rol = localStorage.getItem('rol');
-
-      if (!loggedIn || rol !== 'jugador') {
-        window.location.href = 'index.html';
-        return;
-      }
-
-      var defaults = {
-        nombre: 'Jugador',
-        apellido: '',
-        categoria: '5ta',
-        estadoCategoria: 'orientativa',
-        sexo: 'masculino',
-        partidosJugados: '0',
-        esPremium: 'false',
-        acopVerificado: 'false',
-        telefonoVerificado: 'false'
-      };
-
-      Object.keys(defaults).forEach(function(key) {
-        if (!localStorage.getItem(key)) {
-          localStorage.setItem(key, defaults[key]);
-        }
-      });
+      if (!loggedIn || loggedIn !== 'true') { window.location.replace('auth.html'); return; }
+      if (rol !== 'jugador') { window.location.replace('auth.html'); return; }
     })();
 
     /* ── Estado de red ── */
@@ -904,22 +894,16 @@
 
     /* ── Tab switcher ── */
     function switchTab(tab) {
-      var sectionMis   = document.getElementById('section-mis');
-      var sectionTodos = document.getElementById('section-todos');
-      var btnMis   = document.getElementById('tab-mis');
-      var btnTodos = document.getElementById('tab-todos');
-      if (tab === 'mis') {
-        sectionMis.style.display   = 'block';
-        sectionTodos.style.display = 'none';
-        btnMis.classList.add('active');
-        btnTodos.classList.remove('active');
-        renderMisPartidos();
-      } else {
-        sectionMis.style.display   = 'none';
-        sectionTodos.style.display = 'block';
-        btnMis.classList.remove('active');
-        btnTodos.classList.add('active');
-      }
+      var sections = { mis: 'section-mis', todos: 'section-todos', comunidad: 'section-comunidad' };
+      var tabs = { mis: 'tab-mis', todos: 'tab-todos', comunidad: 'tab-comunidad' };
+      Object.keys(sections).forEach(function(k) {
+        var el = document.getElementById(sections[k]);
+        if (el) el.style.display = k === tab ? 'block' : 'none';
+        var btn = document.getElementById(tabs[k]);
+        if (btn) btn.classList.toggle('active', k === tab);
+      });
+      if (tab === 'mis') renderMisPartidos();
+      if (tab === 'comunidad') renderFeedComunidad();
     }
 
     /* ── Helpers fecha ── */
@@ -1039,6 +1023,9 @@
           if (d < p.jugadores) avHtml += '<div class="av" style="background:#0F766E;">??</div>';
           else avHtml += '<div class="av av-empty"></div>';
         }
+        var resenaBtn = (p.jugadores >= p.total)
+          ? '<button onclick=\'abrirResenaPartido(' + JSON.stringify({complejo:p.complejo||"",fecha:p.fecha||"Hoy",tipo:p.tipo||"Casual"}).replace(/'/g,"&#39;") + ')\' style="background:transparent;border:1px solid rgba(255,255,255,0.15);color:#A8B3C7;border-radius:50px;padding:5px 14px;font-size:12px;cursor:pointer;font-family:inherit;">⭐ Dejar reseña</button>'
+          : '';
         return '<div class="match-card-own" style="border-left-color:#F59E0B;">' +
           '<span class="badge-creado" style="background:#F59E0B;">ME SUMÉ</span>' +
           '<div class="own-club-name">' + p.complejo + '</div>' +
@@ -1047,6 +1034,7 @@
           '<div class="own-avatars-row">' + avHtml + '<span class="own-count">' + p.jugadores + '/' + p.total + '</span></div>' +
           '<div class="own-progress-wrap"><div class="own-progress-bar" style="width:' + pct + '%;background:#F59E0B;"></div></div>' +
           '<div class="own-actions">' +
+            resenaBtn +
             '<button class="btn-abandonar" onclick="abandonarPartidoUnido(' + p.id + ')">Abandonar partido</button>' +
           '</div></div>';
       }
@@ -1203,18 +1191,38 @@
       _sumarmeBtn = null;
     }
     function confirmarSumarme() {
-      var jugados = parseInt(localStorage.getItem('partidosJugados') || '0');
-      var esPremium = localStorage.getItem('esPremium') === 'true';
-      if (!esPremium && jugados >= 3) {
-        document.getElementById('sumarme-overlay').style.display = 'none';
-        document.body.style.overflow = '';
-        window.location.href = 'premium.html';
-        return;
-      }
-      localStorage.setItem('partidosJugados', String(jugados + 1));
       document.getElementById('sumarme-overlay').style.display = 'none';
       document.body.style.overflow = '';
       if (_sumarmeBtn) {
+        var card = _sumarmeBtn.closest('.match-card');
+        if (card) {
+          var clubEl = card.querySelector('.match-club');
+          var fechaEl = card.querySelector('.match-date');
+          var catEl = card.querySelector('.tag-cat');
+          var tags = card.querySelectorAll('.tag');
+          var genero = '', tipo = '';
+          tags.forEach(function(t) {
+            if (!t.classList.contains('tag-cat') && !t.classList.contains('tag-comp') && !t.classList.contains('tag-cas') && !genero) genero = t.textContent.trim();
+            if (t.classList.contains('tag-comp')) tipo = 'Competitivo';
+            if (t.classList.contains('tag-cas')) tipo = 'Casual';
+          });
+          var countEl = card.querySelector('span[style*="color:#178BFF"]');
+          var jugNum = 0, totNum = 4;
+          if (countEl) { var pts = countEl.textContent.split('/'); jugNum = parseInt(pts[0]) || 0; totNum = parseInt(pts[1]) || 4; }
+          var unidos = JSON.parse(localStorage.getItem('partidosUnidos') || '[]');
+          unidos.push({
+            id: Date.now(),
+            complejo: clubEl ? clubEl.textContent.trim() : '',
+            fecha: fechaEl ? fechaEl.textContent.trim() : '',
+            categoria: catEl ? catEl.textContent.trim() : '',
+            genero: genero,
+            tipo: tipo,
+            jugadores: jugNum + 1,
+            total: totNum,
+            organizador: 'Otro jugador'
+          });
+          localStorage.setItem('partidosUnidos', JSON.stringify(unidos));
+        }
         _sumarmeBtn.textContent = '¡Listo!';
         _sumarmeBtn.style.background = 'rgba(16,185,129,0.2)';
         _sumarmeBtn.style.color = '#34D399';
@@ -1280,89 +1288,161 @@
       if (cb) cb();
     }
 
+    /* ── Community feed data ── */
+    var FEED_POSTS = [
+      { id:1, usuario:'Martín R.', iniciales:'MR', complejo:'Chingoland', fecha:'Hoy', categoria:'5ta', tipo:'Competitivo', estrellas:5, comentario:'Partidazo. Nivel parejo los cuatro. Revancha la semana que viene.', likes:8, jugadores:['MR','AG','RS','FC'], tiempo:'Hace 2 horas' },
+      { id:2, usuario:'Ana G.', iniciales:'AG', complejo:'Las Terrazas Pádel', fecha:'Ayer', categoria:'4ta', tipo:'Casual', estrellas:4, comentario:'Cancha impecable. El complejo excelente como siempre.', likes:5, jugadores:['AG','LP','VS','NR'], tiempo:'Ayer' },
+      { id:3, usuario:'Roberto S.', iniciales:'RS', complejo:'Serrano Pádel', fecha:'Ayer', categoria:'5ta', tipo:'Competitivo', estrellas:5, comentario:'Gran partido. Se nota cuando encontrás jugadores de tu nivel.', likes:12, jugadores:['RS','CM','JG','PV'], tiempo:'Hace 1 día' },
+      { id:4, usuario:'Laura P.', iniciales:'LP', complejo:'Padel Time', fecha:'Hace 2 días', categoria:'6ta', tipo:'Casual', estrellas:5, comentario:'¡Primera vez usando PadelYa y ya enganchada!', likes:15, jugadores:['LP','VS','CM','AG'], tiempo:'Hace 2 días' }
+    ];
+
+    function renderFeedComunidad() {
+      var contenedor = document.getElementById('feed-comunidad');
+      if (!contenedor) return;
+      contenedor.innerHTML = '';
+      FEED_POSTS.forEach(function(post) {
+        var estrellas = '';
+        for (var i = 0; i < 5; i++) estrellas += i < post.estrellas ? '★' : '☆';
+        var avatares = post.jugadores.map(function(j) {
+          return '<div style="width:28px;height:28px;border-radius:50%;background:#178BFF;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:white;flex-shrink:0;">' + j + '</div>';
+        }).join('');
+        var card = document.createElement('div');
+        card.style.cssText = 'background:#0D1E3A;border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:16px;margin-bottom:12px;';
+        card.innerHTML =
+          '<div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">' +
+            '<div style="width:38px;height:38px;border-radius:50%;background:#178BFF;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:white;flex-shrink:0;">' + post.iniciales + '</div>' +
+            '<div style="flex:1;"><p style="font-size:14px;font-weight:700;color:#F5F7FA;margin:0;">' + post.usuario + '</p><p style="font-size:11px;color:#A8B3C7;margin:2px 0 0;">' + post.tiempo + '</p></div>' +
+            '<span style="font-size:14px;color:#F59E0B;">' + estrellas + '</span>' +
+          '</div>' +
+          '<div style="background:rgba(255,255,255,0.04);border-radius:10px;padding:10px 12px;margin-bottom:10px;">' +
+            '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">' +
+              '<p style="font-size:14px;font-weight:700;color:#F5F7FA;margin:0;">' + post.complejo + '</p>' +
+              '<span style="font-size:11px;color:#A8B3C7;">' + post.fecha + '</span>' +
+            '</div>' +
+            '<div style="display:flex;gap:6px;">' +
+              '<span style="font-size:11px;color:#A8B3C7;background:rgba(255,255,255,0.06);padding:2px 8px;border-radius:50px;">' + post.categoria + '</span>' +
+              '<span style="font-size:11px;color:#A8B3C7;background:rgba(255,255,255,0.06);padding:2px 8px;border-radius:50px;">' + post.tipo + '</span>' +
+            '</div>' +
+          '</div>' +
+          '<div style="display:flex;gap:6px;align-items:center;margin-bottom:10px;">' + avatares +
+            '<span style="font-size:11px;color:#A8B3C7;margin-left:4px;">jugaron</span></div>' +
+          (post.comentario ? '<p style="font-size:14px;color:#F5F7FA;line-height:1.5;margin:0 0 12px;">' + post.comentario + '</p>' : '') +
+          '<div style="display:flex;align-items:center;justify-content:space-between;border-top:1px solid rgba(255,255,255,0.06);padding-top:10px;">' +
+            '<button onclick="toggleLike(' + post.id + ',this)" style="background:transparent;border:none;color:#A8B3C7;font-size:13px;cursor:pointer;display:flex;align-items:center;gap:6px;padding:0;font-family:inherit;">' +
+              '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>' +
+              '<span id="likes-' + post.id + '">' + post.likes + '</span></button>' +
+            '<span style="font-size:12px;color:#A8B3C7;">4/4 jugadores</span>' +
+          '</div>';
+        contenedor.appendChild(card);
+      });
+    }
+
+    function toggleLike(postId, btn) {
+      var post = FEED_POSTS.find(function(p) { return p.id === postId; });
+      if (!post) return;
+      var liked = btn.getAttribute('data-liked');
+      if (liked === 'true') {
+        post.likes--;
+        btn.setAttribute('data-liked', 'false');
+        btn.style.color = '#A8B3C7';
+        btn.querySelector('svg').setAttribute('fill', 'none');
+      } else {
+        post.likes++;
+        btn.setAttribute('data-liked', 'true');
+        btn.style.color = '#EF4444';
+        btn.querySelector('svg').setAttribute('fill', '#EF4444');
+      }
+      document.getElementById('likes-' + postId).textContent = post.likes;
+    }
+
+    /* ── Post-match review ── */
+    var estrellaSeleccionada = 0;
+
+    function abrirResenaPartido(partido) {
+      var modal = document.getElementById('modal-global');
+      if (!modal) return;
+      var estrellasBtns = '';
+      for (var n = 1; n <= 5; n++) {
+        estrellasBtns += '<button onclick="seleccionarEstrella(' + n + ')" id="estrella-' + n + '" style="background:transparent;border:none;font-size:28px;cursor:pointer;color:#A8B3C7;padding:4px;">☆</button>';
+      }
+      estrellaSeleccionada = 0;
+      document.getElementById('modal-titulo').textContent = '¿Cómo estuvo el partido?';
+      document.getElementById('modal-texto').innerHTML =
+        '<p style="font-size:13px;color:#A8B3C7;margin-bottom:16px;">' + (partido ? partido.complejo : 'Tu partido') + ' · ' + (partido ? partido.fecha : 'Hoy') + '</p>' +
+        '<div style="display:flex;justify-content:center;gap:4px;margin-bottom:16px;">' + estrellasBtns + '</div>' +
+        '<textarea id="resena-comentario" placeholder="Contale a la comunidad cómo estuvo... (opcional)" style="width:100%;padding:12px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:10px;color:#F5F7FA;font-size:14px;font-family:inherit;resize:none;height:80px;box-sizing:border-box;margin-bottom:12px;"></textarea>' +
+        '<label style="display:flex;align-items:center;gap:8px;padding:10px 12px;background:rgba(255,255,255,0.04);border:1px dashed rgba(255,255,255,0.15);border-radius:10px;cursor:pointer;">' +
+          '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#A8B3C7" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>' +
+          '<span style="font-size:13px;color:#A8B3C7;">Agregar foto del partido (opcional)</span>' +
+          '<input type="file" accept="image/*" style="display:none;" onchange="previsualizarFoto(this)">' +
+        '</label>' +
+        '<div id="foto-preview" style="margin-top:8px;"></div>';
+      var btnConf = document.getElementById('modal-btn-confirmar');
+      btnConf.textContent = 'Compartir con la comunidad';
+      btnConf.style.background = '#178BFF';
+      btnConf.onclick = function() { publicarEnComunidad(partido); };
+      document.getElementById('modal-btn-cancelar').textContent = 'Ahora no';
+      modal.style.display = 'flex';
+    }
+
+    function seleccionarEstrella(n) {
+      estrellaSeleccionada = n;
+      for (var i = 1; i <= 5; i++) {
+        var btn = document.getElementById('estrella-' + i);
+        if (!btn) continue;
+        btn.textContent = i <= n ? '★' : '☆';
+        btn.style.color = i <= n ? '#F59E0B' : '#A8B3C7';
+      }
+    }
+
+    function previsualizarFoto(input) {
+      var preview = document.getElementById('foto-preview');
+      if (!preview || !input.files[0]) return;
+      var reader = new FileReader();
+      reader.onload = function(e) {
+        preview.innerHTML = '<img src="' + e.target.result + '" style="width:100%;border-radius:10px;max-height:160px;object-fit:cover;">';
+      };
+      reader.readAsDataURL(input.files[0]);
+    }
+
+    function publicarEnComunidad(partido) {
+      var comentario = document.getElementById('resena-comentario');
+      var texto = comentario ? comentario.value.trim() : '';
+      var nombre = localStorage.getItem('nombre') || 'Jugador';
+      var partes = nombre.trim().split(' ');
+      var iniciales = (partes[0] ? partes[0][0] : '') + (partes.length > 1 ? partes[partes.length-1][0] : '');
+      var displayName = partes[0] + (partes.length > 1 ? ' ' + partes[partes.length-1][0] + '.' : '');
+      FEED_POSTS.unshift({
+        id: Date.now(),
+        usuario: displayName,
+        iniciales: iniciales.toUpperCase(),
+        complejo: partido ? partido.complejo : 'Complejo',
+        fecha: 'Hoy',
+        categoria: localStorage.getItem('categoria') || '5ta',
+        tipo: partido ? (partido.tipo || 'Casual') : 'Casual',
+        estrellas: estrellaSeleccionada || 5,
+        comentario: texto,
+        likes: 0,
+        jugadores: [iniciales.toUpperCase(),'···','···','···'],
+        tiempo: 'Ahora'
+      });
+      cerrarModal();
+      showToast('¡Gracias! Tu reseña fue compartida. 🎾', 'success');
+      switchTab('comunidad');
+    }
+
     /* ── Tab param from URL ── */
     (function() {
       var params = new URLSearchParams(window.location.search);
       if (params.get('tab') === 'mis') switchTab('mis');
+      if (params.get('tab') === 'comunidad') switchTab('comunidad');
     })();
 
 
-    /* ── Matchmaking panel ── */
+    /* ── Abrir confirmación ── */
     function abrirMatchmaking() {
-      var jugados = parseInt(localStorage.getItem('partidosJugados') || '0');
-      var esPremium = localStorage.getItem('esPremium') === 'true';
-      var disponibles = esPremium ? 99 : Math.max(0, 3 - jugados);
-      var pct = esPremium ? 100 : (disponibles / 3) * 100;
-      document.getElementById('mm-counter-text').textContent = esPremium ? 'Premium · ilimitado' : disponibles + ' de 3 disponibles';
-      document.getElementById('mm-progress-bar').style.width = pct + '%';
-      if (esPremium || disponibles > 0) {
-        document.getElementById('mm-available').style.display = 'block';
-        document.getElementById('mm-no-free').style.display = 'none';
-        var txt = esPremium ? 'Premium activo · partidos ilimitados' : 'Te quedan ' + disponibles + ' partido' + (disponibles !== 1 ? 's' : '') + ' gratis este mes';
-        document.getElementById('mm-remaining-text').textContent = txt;
-      } else {
-        document.getElementById('mm-available').style.display = 'none';
-        document.getElementById('mm-no-free').style.display = 'block';
-      }
-      document.getElementById('matchmaking-overlay').style.display = 'flex';
+      document.getElementById('sumarme-overlay').style.display = 'flex';
       document.body.style.overflow = 'hidden';
-    }
-    function cerrarMatchmaking(e) {
-      if (e && e.target !== document.getElementById('matchmaking-overlay')) return;
-      document.getElementById('matchmaking-overlay').style.display = 'none';
-      document.body.style.overflow = '';
-      _sumarmeBtn = null;
-    }
-    function usarPartidoGratis() {
-      var jugados = parseInt(localStorage.getItem('partidosJugados') || '0');
-      localStorage.setItem('partidosJugados', String(jugados + 1));
-
-      /* Guardar en partidosUnidos */
-      if (_sumarmeBtn) {
-        var card = _sumarmeBtn.closest('.match-card');
-        if (card) {
-          var clubEl   = card.querySelector('.match-club');
-          var fechaEl  = card.querySelector('.match-date');
-          var catEl    = card.querySelector('.tag-cat');
-          var tags     = card.querySelectorAll('.tag');
-          var genero = '', tipo = '';
-          tags.forEach(function(t) {
-            if (!t.classList.contains('tag-cat') && !t.classList.contains('tag-comp') && !t.classList.contains('tag-cas') && !genero) genero = t.textContent.trim();
-            if (t.classList.contains('tag-comp')) tipo = 'Competitivo';
-            if (t.classList.contains('tag-cas'))  tipo = 'Casual';
-          });
-          var countEl = card.querySelector('span[style*="color:#178BFF"]');
-          var jugNum = 0, totNum = 4;
-          if (countEl) { var pts = countEl.textContent.split('/'); jugNum = parseInt(pts[0]) || 0; totNum = parseInt(pts[1]) || 4; }
-          var unidos = JSON.parse(localStorage.getItem('partidosUnidos') || '[]');
-          unidos.push({
-            id: Date.now(),
-            complejo:   clubEl  ? clubEl.textContent.trim()  : '',
-            fecha:      fechaEl ? fechaEl.textContent.trim()  : '',
-            categoria:  catEl   ? catEl.textContent.trim()    : '',
-            genero:     genero,
-            tipo:       tipo,
-            jugadores:  jugNum + 1,
-            total:      totNum,
-            organizador: 'Otro jugador'
-          });
-          localStorage.setItem('partidosUnidos', JSON.stringify(unidos));
-        }
-      }
-
-      document.getElementById('matchmaking-overlay').style.display = 'none';
-      document.body.style.overflow = '';
-      if (_sumarmeBtn) {
-        _sumarmeBtn.textContent = '¡Listo!';
-        _sumarmeBtn.style.background = 'rgba(16,185,129,0.2)';
-        _sumarmeBtn.style.color = '#34D399';
-        _sumarmeBtn.style.borderColor = 'rgba(16,185,129,0.4)';
-        _sumarmeBtn.onclick = null;
-        _sumarmeBtn = null;
-      }
-      var toast = document.getElementById('toast-sumarme');
-      toast.style.display = 'block';
-      setTimeout(function() { toast.style.display = 'none'; }, 3000);
     }
     /* ── Category priority: in-range first, out-range after separator ── */
     (function() {
@@ -1417,31 +1497,6 @@
 
 
   <!-- MODAL SUMARME -->
-  <!-- MATCHMAKING PANEL -->
-  <div id="matchmaking-overlay" onclick="cerrarMatchmaking(event)" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.65);z-index:350;align-items:center;justify-content:center;">
-    <div onclick="event.stopPropagation()" style="background:#0C1A2E;border:1px solid rgba(255,255,255,0.13);border-radius:20px;padding:1.5rem;max-width:340px;width:calc(100% - 2rem);position:relative;">
-      <button onclick="cerrarMatchmaking()" style="position:absolute;top:10px;right:12px;background:none;border:none;color:#A8B3C7;font-size:22px;cursor:pointer;line-height:1;padding:4px;">&times;</button>
-      <div style="font-size:1rem;font-weight:800;color:#F5F7FA;margin-bottom:1.25rem;">Tu lugar en el partido</div>
-      <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:14px;margin-bottom:1rem;">
-        <div style="font-size:12px;font-weight:600;color:#A8B3C7;margin-bottom:6px;">Partidos gratis este mes</div>
-        <div id="mm-counter-text" style="font-size:22px;font-weight:800;color:#178BFF;margin-bottom:10px;"></div>
-        <div style="background:rgba(255,255,255,0.08);border-radius:99px;height:6px;overflow:hidden;">
-          <div id="mm-progress-bar" style="height:100%;border-radius:99px;background:#178BFF;transition:width 0.4s;width:0%;"></div>
-        </div>
-      </div>
-      <div id="mm-available" style="display:none;">
-        <button onclick="usarPartidoGratis()" style="width:100%;background:#059669;color:white;border:none;border-radius:10px;padding:0.75rem;font-size:0.9rem;font-weight:700;cursor:pointer;font-family:inherit;margin-bottom:0.5rem;">Usar partido gratis</button>
-        <div id="mm-remaining-text" style="text-align:center;font-size:12px;color:#A8B3C7;margin-bottom:0.75rem;"></div>
-      </div>
-      <div id="mm-no-free" style="display:none;">
-        <a href="premium.html" style="display:block;background:#178BFF;color:white;border:none;border-radius:10px;padding:0.75rem;font-size:0.9rem;font-weight:700;text-align:center;text-decoration:none;margin-bottom:0.5rem;">Ver Premium desde $5.999/mes</a>
-        <a href="premium.html" style="display:block;background:none;color:#178BFF;border:1.5px solid rgba(23,139,255,0.4);border-radius:10px;padding:0.65rem;font-size:0.9rem;font-weight:700;text-align:center;text-decoration:none;margin-bottom:0.75rem;">Comprar pase · $999</a>
-      </div>
-      <p style="font-size:11px;color:#5C6E87;text-align:center;line-height:1.6;">Por lanzamiento tenés 3 partidos gratis por mes.<br>Los partidos se renuevan el 1ro de cada mes.</p>
-      <div style="font-size:12px;color:#A8B3C7;background:rgba(255,255,255,0.03);border-radius:8px;padding:10px 12px;margin-top:0.75rem;line-height:1.6;">💡 El valor de la cancha se abona directamente en el complejo al llegar.</div>
-    </div>
-  </div>
-
   <div id="sumarme-overlay" onclick="cerrarModalSumarme(event)" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:300;align-items:center;justify-content:center;">
     <div style="background:#0F2040;border:1px solid rgba(255,255,255,0.13);border-radius:20px;padding:2rem 1.5rem;max-width:320px;width:calc(100% - 2rem);text-align:center;" onclick="event.stopPropagation()">
       <div style="width:54px;height:54px;background:rgba(23,139,255,0.12);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;border:1px solid rgba(23,139,255,0.3);">

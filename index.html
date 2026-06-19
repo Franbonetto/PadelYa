@@ -9,6 +9,14 @@
   <meta name="theme-color" content="#050816">
   <link rel="preload" href="logo-padelya.png" as="image">
   <title>PadelYa</title>
+  <script>
+    var loggedIn = localStorage.getItem('loggedIn');
+    var rol = localStorage.getItem('rol');
+    if (loggedIn === 'true' && rol) {
+      var destinos = { 'jugador':'jugador-home.html', 'complejo':'complejo-panel.html', 'profesor':'profesor-panel.html', 'admin':'admin-panel.html' };
+      if (destinos[rol]) window.location.replace(destinos[rol]);
+    }
+  </script>
   <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }

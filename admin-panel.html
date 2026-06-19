@@ -954,9 +954,11 @@
 
   <script>
     // ── Auth guard ──
-    (function () {
-      var rol = sessionStorage.getItem('rol');
-      if (!rol || rol !== 'admin') window.location.href = 'auth.html';
+    (function() {
+      var loggedIn = localStorage.getItem('loggedIn');
+      var rol = localStorage.getItem('rol');
+      if (!loggedIn || loggedIn !== 'true') { window.location.replace('auth.html'); return; }
+      if (rol !== 'admin') { window.location.replace('auth.html'); return; }
     })();
 
     // ══════════════════════════════════════════

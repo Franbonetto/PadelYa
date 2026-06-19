@@ -234,16 +234,21 @@
     </div>
     <div class="panel-header-center" id="fecha-hoy"></div>
     <div class="panel-header-right">
-      <div id="modo-toggle" style="display:flex;background:#F3F4F6;border-radius:8px;padding:3px;gap:2px;">
-        <button id="btn-modo-simple" onclick="cambiarModoPanel('simple')" style="border:none;border-radius:6px;padding:6px 12px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;">Modo simple</button>
-        <button id="btn-modo-completo" onclick="cambiarModoPanel('completo')" style="border:none;border-radius:6px;padding:6px 12px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;">Modo completo</button>
-      </div>
       <button onclick="abrirBloqueoMasivo()" style="background:#1F2937;color:white;border:none;border-radius:8px;padding:8px 16px;font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px;">🔒 Bloquear horarios</button>
       <span id="indicador-conexion" class="indicador-conexion" style="background:#DCFCE7;color:#16A34A;border-color:#86EFAC;">● Online</span>
       <span class="complejo-nombre">Chingoland</span>
       <button class="btn-logout" onclick="cerrarSesion()">Cerrar sesión</button>
     </div>
   </header>
+
+  <!-- TABS -->
+  <div style="background:white;border-bottom:1px solid #E5E7EB;display:flex;padding:0 20px;">
+    <button id="btn-tab-operativo" onclick="cambiarTabComplejo('operativo')" style="padding:14px 20px;border:none;background:transparent;font-size:14px;font-weight:700;color:#111827;cursor:pointer;font-family:inherit;border-bottom:2px solid #2563EB;">Operativo</button>
+    <button id="btn-tab-historial" onclick="cambiarTabComplejo('historial')" style="padding:14px 20px;border:none;background:transparent;font-size:14px;font-weight:500;color:#6B7280;cursor:pointer;font-family:inherit;border-bottom:2px solid transparent;">Historial</button>
+  </div>
+
+  <!-- TAB OPERATIVO -->
+  <div id="tab-operativo">
 
   <!-- SELECTOR DE FECHA -->
   <div class="date-selector" id="date-selector"></div>
@@ -265,15 +270,38 @@
   <!-- GRILLA PRINCIPAL -->
   <main class="panel-main" id="grilla-canchas"></main>
 
+  </div><!-- /tab-operativo -->
+
+  <!-- TAB HISTORIAL -->
+  <div id="tab-historial" style="display:none;padding:20px;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+      <h2 style="font-size:18px;font-weight:700;color:#111827;margin:0;">Junio 2026</h2>
+      <button onclick="exportarResumen()" style="background:transparent;border:1px solid #E5E7EB;border-radius:8px;padding:8px 14px;font-size:13px;font-weight:600;color:#374151;cursor:pointer;font-family:inherit;">Exportar resumen</button>
+    </div>
+    <div style="background:#2563EB;border-radius:16px;padding:24px;text-align:center;margin-bottom:20px;">
+      <p style="font-size:13px;color:rgba(255,255,255,0.75);margin:0 0 8px;letter-spacing:0.5px;text-transform:uppercase;">Partidos generados por PadelYa</p>
+      <p id="contador-partidos-mes" style="font-size:52px;font-weight:800;color:white;margin:0;line-height:1;">0</p>
+      <p style="font-size:13px;color:rgba(255,255,255,0.6);margin:8px 0 0;">este mes</p>
+    </div>
+    <div style="background:white;border:1px solid #E5E7EB;border-radius:12px;overflow:hidden;">
+      <div style="padding:14px 16px;border-bottom:1px solid #E5E7EB;background:#F8FAFC;">
+        <p style="font-size:13px;font-weight:700;color:#374151;margin:0;">Detalle de partidos</p>
+      </div>
+      <div id="lista-historial"></div>
+    </div>
+  </div>
+
   <script>
     (function() {
-      var rol = sessionStorage.getItem('rol');
-      if (!rol || (rol !== 'complejo' && rol !== 'admin')) window.location.href = 'auth.html';
+      var loggedIn = localStorage.getItem('loggedIn');
+      var rol = localStorage.getItem('rol');
+      if (!loggedIn || loggedIn !== 'true') { window.location.replace('auth.html'); return; }
+      if (rol !== 'complejo' && rol !== 'admin') { window.location.replace('auth.html'); return; }
     })();
 
     function cerrarSesion() {
-      sessionStorage.clear();
-      window.location.href = 'index.html';
+      localStorage.clear();
+      window.location.replace('auth.html');
     }
 
     /* ================================================
@@ -324,7 +352,6 @@
     var FECHA_SELECCIONADA = new Date().toISOString().split('T')[0];
 
     /* ------ MODO DE VISTA DEL PANEL ------ */
-    var MODO_PANEL = sessionStorage.getItem('modoPanel') || 'simple';
 
     /* ------ ESTADO LOCAL (simula Firebase Realtime) ------ */
     var DB_LOCAL = {
@@ -730,29 +757,6 @@
       }
     }
 
-    /* ================================================
-       MODO SIMPLE / MODO COMPLETO
-       ================================================ */
-
-    function cambiarModoPanel(modo) {
-      MODO_PANEL = modo;
-      sessionStorage.setItem('modoPanel', modo);
-      actualizarToggleModo();
-      renderCanchas();
-    }
-
-    function actualizarToggleModo() {
-      var btnSimple = document.getElementById('btn-modo-simple');
-      var btnCompleto = document.getElementById('btn-modo-completo');
-      if (!btnSimple || !btnCompleto) return;
-
-      [btnSimple, btnCompleto].forEach(function(btn, i) {
-        var activo = (i === 0 && MODO_PANEL === 'simple') || (i === 1 && MODO_PANEL === 'completo');
-        btn.style.background = activo ? '#1F2937' : 'transparent';
-        btn.style.color = activo ? '#fff' : '#6B7280';
-      });
-    }
-
     function cambiarFecha(fecha) {
       FECHA_SELECCIONADA = fecha;
       DB_LOCAL.canchas = obtenerDatosPorFecha(fecha);
@@ -833,11 +837,6 @@
       if (!contenedor) return;
       contenedor.innerHTML = '';
 
-      if (MODO_PANEL === 'simple') {
-        renderCanchasSimple(contenedor);
-        return;
-      }
-
       Object.keys(DB_LOCAL.canchas).forEach(function(canchaId) {
         var cancha = DB_LOCAL.canchas[canchaId];
         var horas = Object.keys(cancha.turnos);
@@ -875,83 +874,6 @@
         '<span class="turno-badge" style="background:' + e.bg + ';color:' + e.color + ';">' + escapeHtml(e.label) + '</span>' +
         '<span class="turno-accion" onclick="event.stopPropagation();abrirAcciones(\'' + canchaId + '\',\'' + hora + '\')">···</span>' +
         '</div>';
-    }
-
-    /* ================================================
-       MODO SIMPLE - GRILLA
-       ================================================ */
-
-    function renderCanchasSimple(contenedor) {
-      Object.keys(DB_LOCAL.canchas).forEach(function(canchaId) {
-        var cancha = DB_LOCAL.canchas[canchaId];
-        var horas = Object.keys(cancha.turnos);
-
-        var card = document.createElement('div');
-        card.className = 'cancha-card';
-
-        var header = '<div class="cancha-header"><h2>' + escapeHtml(cancha.nombre) + '</h2></div>';
-
-        var bloques = '';
-        horas.forEach(function(hora) {
-          bloques += crearBloqueTurnoSimple(canchaId, hora, cancha.turnos[hora]);
-        });
-
-        card.innerHTML = header + '<div style="padding:8px;">' + bloques + '</div>';
-        contenedor.appendChild(card);
-      });
-    }
-
-    function crearBloqueTurnoSimple(canchaId, hora, turno) {
-      var estado = turno.estado;
-      var bg;
-      if (estado === 'libre') {
-        bg = '#16A34A';
-      } else if (estado === 'padelya1' || estado === 'padelya2' || estado === 'padelya3' || estado === 'padelya4') {
-        bg = '#2563EB';
-      } else {
-        bg = '#1F2937';
-      }
-
-      return '<div onclick="abrirAccionesSimple(\'' + canchaId + '\',\'' + hora + '\')" ' +
-        'style="width:100%;height:44px;background:' + bg + ';color:#fff;' +
-        'display:flex;align-items:center;justify-content:center;' +
-        'font-size:14px;font-weight:700;cursor:pointer;border-radius:8px;margin-bottom:6px;">' +
-        hora + '</div>';
-    }
-
-    function abrirAccionesSimple(canchaId, hora) {
-      var cancha = DB_LOCAL.canchas[canchaId];
-      if (!cancha) return;
-      var estado = cancha.turnos[hora].estado;
-      var modal = getModal();
-      var acciones = '';
-
-      if (estado === 'libre') {
-        acciones =
-          '<button onclick="ejecutarMarcarOcupado(\'' + canchaId + '\',\'' + hora + '\')" style="' + btnStyle('#1F2937') + 'text-align:center;">Marcar ocupado</button>' +
-          '<button onclick="cerrarModal()" style="' + btnStyleOut('#6B7280') + 'text-align:center;">Cerrar</button>';
-
-      } else if (estado === 'padelya1' || estado === 'padelya2' || estado === 'padelya3' || estado === 'padelya4') {
-        acciones =
-          '<button onclick="cerrarModal();mostrarToastComplejo(\'Función disponible próximamente.\', \'#2563EB\')" style="' + btnStyle('#2563EB') + 'text-align:center;">Ver detalle</button>' +
-          '<button onclick="cerrarModal()" style="' + btnStyleOut('#6B7280') + 'text-align:center;">Cerrar</button>';
-
-      } else {
-        acciones =
-          '<button onclick="ejecutarLiberarTurno(\'' + canchaId + '\',\'' + hora + '\')" style="' + btnStyle('#16A34A') + 'text-align:center;">Liberar</button>' +
-          '<button onclick="cerrarModal()" style="' + btnStyleOut('#6B7280') + 'text-align:center;">Cerrar</button>';
-      }
-
-      modal.innerHTML =
-        '<div style="position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:9999;display:flex;align-items:flex-end;justify-content:center;padding:16px;">' +
-        '<div style="background:#fff;border-radius:16px;padding:20px;width:100%;max-width:420px;">' +
-        '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">' +
-        '<h3 style="font-size:16px;font-weight:700;color:#111827;margin:0;">' + escapeHtml(cancha.nombre) + ' · ' + hora + '</h3>' +
-        '<button onclick="cerrarModal()" style="background:#F3F4F6;border:none;border-radius:50%;width:28px;height:28px;cursor:pointer;font-size:16px;">×</button>' +
-        '</div>' +
-        '<div style="display:flex;flex-direction:column;gap:8px;">' + acciones + '</div>' +
-        '</div></div>';
-      modal.style.display = 'block';
     }
 
     function rerender() {
@@ -1594,12 +1516,89 @@
     }
 
     /* ================================================
+       TABS OPERATIVO / HISTORIAL
+       ================================================ */
+
+    var HISTORIAL_PARTIDOS = [
+      { fecha: 'Vie 13/6', cancha: 'Cancha 1', hora: '20:00' },
+      { fecha: 'Vie 13/6', cancha: 'Cancha 3', hora: '18:30' },
+      { fecha: 'Sáb 14/6', cancha: 'Cancha 2', hora: '21:00' },
+      { fecha: 'Sáb 14/6', cancha: 'Cancha 1', hora: '19:00' },
+      { fecha: 'Dom 15/6', cancha: 'Cancha 4', hora: '20:00' },
+      { fecha: 'Dom 15/6', cancha: 'Cancha 2', hora: '18:30' },
+      { fecha: 'Lun 16/6', cancha: 'Cancha 1', hora: '21:30' },
+      { fecha: 'Mar 17/6', cancha: 'Cancha 3', hora: '20:00' },
+      { fecha: 'Mié 18/6', cancha: 'Cancha 2', hora: '19:00' },
+      { fecha: 'Jue 19/6', cancha: 'Cancha 1', hora: '20:00' }
+    ];
+
+    function cambiarTabComplejo(tab) {
+      var operativo = document.getElementById('tab-operativo');
+      var historial = document.getElementById('tab-historial');
+      var btnOp = document.getElementById('btn-tab-operativo');
+      var btnHis = document.getElementById('btn-tab-historial');
+      if (tab === 'operativo') {
+        if (operativo) operativo.style.display = 'block';
+        if (historial) historial.style.display = 'none';
+        if (btnOp) { btnOp.style.color = '#111827'; btnOp.style.borderBottom = '2px solid #2563EB'; btnOp.style.fontWeight = '700'; }
+        if (btnHis) { btnHis.style.color = '#6B7280'; btnHis.style.borderBottom = '2px solid transparent'; btnHis.style.fontWeight = '500'; }
+      } else {
+        if (operativo) operativo.style.display = 'none';
+        if (historial) historial.style.display = 'block';
+        if (btnHis) { btnHis.style.color = '#111827'; btnHis.style.borderBottom = '2px solid #2563EB'; btnHis.style.fontWeight = '700'; }
+        if (btnOp) { btnOp.style.color = '#6B7280'; btnOp.style.borderBottom = '2px solid transparent'; btnOp.style.fontWeight = '500'; }
+        renderHistorial();
+      }
+    }
+
+    function renderHistorial() {
+      var lista = document.getElementById('lista-historial');
+      var contador = document.getElementById('contador-partidos-mes');
+      if (!lista) return;
+
+      var misPartidos = JSON.parse(localStorage.getItem('misPartidos') || '[]');
+      var completados = misPartidos.filter(function(p) { return p.jugadores >= 4 || p.estado === 'finalizado'; });
+
+      var todos = HISTORIAL_PARTIDOS.concat(completados.map(function(p) {
+        return { fecha: p.fecha || 'Este mes', cancha: 'Cancha 1', hora: p.hora || '20:00' };
+      }));
+
+      if (contador) contador.textContent = todos.length;
+
+      if (todos.length === 0) {
+        lista.innerHTML = '<div style="padding:32px;text-align:center;"><p style="font-size:15px;color:#9CA3AF;">Todavía no hay partidos este mes.</p></div>';
+        return;
+      }
+
+      lista.innerHTML = '';
+      todos.forEach(function(p, idx) {
+        var fila = document.createElement('div');
+        fila.style.cssText = 'display:flex;align-items:center;padding:14px 16px;' + (idx < todos.length - 1 ? 'border-bottom:1px solid #F3F4F6;' : '') + 'gap:12px;';
+        fila.innerHTML =
+          '<span style="font-size:13px;font-weight:700;color:#9CA3AF;min-width:24px;">' + (idx + 1) + '</span>' +
+          '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><path d="M3.5 9.5 Q7 12 3.5 14.5"/><path d="M20.5 9.5 Q17 12 20.5 14.5"/></svg>' +
+          '<div style="flex:1;"><p style="font-size:14px;font-weight:600;color:#111827;margin:0;">' + escapeHtml(p.cancha) + ' · ' + p.hora + ' hs</p><p style="font-size:12px;color:#6B7280;margin:2px 0 0;">' + escapeHtml(p.fecha) + '</p></div>' +
+          '<span style="font-size:11px;font-weight:700;background:#DBEAFE;color:#2563EB;padding:3px 10px;border-radius:50px;">PadelYa</span>';
+        lista.appendChild(fila);
+      });
+    }
+
+    function exportarResumen() {
+      var total = HISTORIAL_PARTIDOS.length;
+      var texto = 'Resumen PadelYa · Junio 2026\nComplejo: Chingoland\n\nPartidos generados: ' + total + '\n\nDetalle:\n';
+      HISTORIAL_PARTIDOS.forEach(function(p, i) {
+        texto += (i + 1) + '. ' + p.fecha + ' · ' + p.cancha + ' · ' + p.hora + ' hs\n';
+      });
+      texto += '\nContacto: contactopadelya@gmail.com';
+      window.open('https://wa.me/?text=' + encodeURIComponent(texto), '_blank');
+    }
+
+    /* ================================================
        INICIALIZACIÓN
        ================================================ */
 
     document.addEventListener('DOMContentLoaded', function() {
       DB_LOCAL.canchas = obtenerDatosPorFecha(FECHA_SELECCIONADA);
-      actualizarToggleModo();
       renderFechaHoy();
       renderSelectorFechas();
       iniciarHeartbeat();
@@ -1607,6 +1606,7 @@
       aplicarEstadosGuardados();
       renderCanchas();
       actualizarResumen();
+      cambiarTabComplejo('operativo');
     });
   </script>
 

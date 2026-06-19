@@ -596,6 +596,7 @@
         </div>
 
         <button type="submit" class="btn-primary">Iniciar sesión</button>
+        <p id="login-error" style="color:#EF4444;font-size:13px;text-align:center;margin-top:8px;"></p>
       </form>
 
       <div class="divider">o</div>
@@ -1162,12 +1163,13 @@
 
   <script>
     /* ── Demo users ── */
-    var USERS = [
-      { email: 'admin@padelya.com',    password: 'admin123',    rol: 'admin' },
-      { email: 'jugador@padelya.com',  password: 'jugador123',  rol: 'jugador' },
-      { email: 'profe@padelya.com',    password: 'profe123',    rol: 'profesor' },
-      { email: 'complejo@padelya.com', password: 'complejo123', rol: 'complejo' }
+    var USUARIOS_DEMO = [
+      { email:'admin@padelya.com', password:'admin123', rol:'admin', nombre:'Admin', apellido:'PadelYa', destino:'admin-panel.html' },
+      { email:'jugador@padelya.com', password:'jugador123', rol:'jugador', nombre:'Federico', apellido:'López', categoria:'5ta', estadoCategoria:'orientativa', sexo:'masculino', destino:'jugador-home.html' },
+      { email:'complejo@padelya.com', password:'complejo123', rol:'complejo', nombre:'Chingoland', apellido:'', destino:'complejo-panel.html' },
+      { email:'profesor@padelya.com', password:'profesor123', rol:'profesor', nombre:'Lucas', apellido:'Fernández', destino:'profesor-panel.html' }
     ];
+    var USERS = USUARIOS_DEMO;
     var ROL_DEST = {
       admin:    'admin-panel.html',
       jugador:  'jugador-home.html',
@@ -1186,21 +1188,13 @@
     function loginAs(rol) {
       localStorage.setItem('loggedIn', 'true');
       localStorage.setItem('rol', rol);
-      if (rol === 'jugador') {
-        if (!localStorage.getItem('mesActual')) {
-          localStorage.setItem('partidosJugados', '0');
-          localStorage.setItem('mesActual', String(new Date().getMonth()));
-          localStorage.setItem('sexo', _sexoSeleccionado || 'masculino');
-      localStorage.setItem('esPremium', 'false');
-        }
-      }
-      var redirect = localStorage.getItem('redirect');
-      if (redirect) {
-        localStorage.removeItem('redirect');
-        window.location.href = redirect;
-        return;
-      }
-      window.location.href = ROL_DEST[rol] || 'jugador-home.html';
+      if (!localStorage.getItem('nombre')) localStorage.setItem('nombre', 'Jugador');
+      if (!localStorage.getItem('sexo')) localStorage.setItem('sexo', _sexoSeleccionado || 'masculino');
+      localStorage.setItem('categoria', localStorage.getItem('categoria') || '5ta');
+      localStorage.setItem('estadoCategoria', localStorage.getItem('estadoCategoria') || 'orientativa');
+      localStorage.setItem('acopVerificado', localStorage.getItem('acopVerificado') || 'false');
+      localStorage.setItem('telefonoVerificado', localStorage.getItem('telefonoVerificado') || 'false');
+      window.location.replace(ROL_DEST[rol] || 'jugador-home.html');
     }
 
     var selectedRole = null;
@@ -1375,9 +1369,7 @@
       localStorage.setItem('categoria', categoria);
       localStorage.setItem('estadoCategoria', 'orientativa');
       localStorage.setItem('acopVerificado', 'false');
-      localStorage.setItem('partidosJugados', '0');
       localStorage.setItem('mesActual', String(new Date().getMonth()));
-      localStorage.setItem('esPremium', 'false');
       localStorage.removeItem('_pendingNombre');
       localStorage.removeItem('_pendingEmail');
 
@@ -1392,19 +1384,43 @@
 
     /* ── Form submissions ── */
     function handleLogin(e) {
-      e.preventDefault();
-      var email = document.getElementById('login-email').value.trim().toLowerCase();
-      var password = document.getElementById('login-password').value;
-      var user = null;
-      for (var i = 0; i < USERS.length; i++) {
-        if (USERS[i].email === email && USERS[i].password === password) { user = USERS[i]; break; }
+      if (e && e.preventDefault) e.preventDefault();
+
+      var email = document.getElementById('login-email').value.trim();
+      var password = document.getElementById('login-password').value.trim();
+
+      var usuarios = [
+        { email: 'admin@padelya.com',    password: 'admin123',    rol: 'admin',    nombre: 'Admin',      destino: 'admin-panel.html' },
+        { email: 'jugador@padelya.com',  password: 'jugador123',  rol: 'jugador',  nombre: 'Federico',   destino: 'jugador-home.html' },
+        { email: 'complejo@padelya.com', password: 'complejo123', rol: 'complejo', nombre: 'Chingoland', destino: 'complejo-panel.html' },
+        { email: 'profesor@padelya.com', password: 'profesor123', rol: 'profesor', nombre: 'Lucas',      destino: 'profesor-panel.html' }
+      ];
+
+      var usuario = null;
+      for (var i = 0; i < usuarios.length; i++) {
+        if (usuarios[i].email === email && usuarios[i].password === password) {
+          usuario = usuarios[i];
+          break;
+        }
       }
-      if (!user) {
-        alert('Email o contraseña incorrectos.\n\nUsuarios de demo:\njugador@padelya.com / jugador123\nprofe@padelya.com / profe123\ncomplejo@padelya.com / complejo123\nadmin@padelya.com / admin123');
+
+      if (!usuario) {
+        var err = document.getElementById('login-error');
+        if (err) err.textContent = 'Email o contraseña incorrectos.';
         return;
       }
-      localStorage.setItem('email', user.email);
-      loginAs(user.rol);
+
+      localStorage.setItem('loggedIn', 'true');
+      localStorage.setItem('rol', usuario.rol);
+      localStorage.setItem('nombre', usuario.nombre);
+      localStorage.setItem('email', usuario.email);
+      localStorage.setItem('categoria', '5ta');
+      localStorage.setItem('estadoCategoria', 'orientativa');
+      localStorage.setItem('sexo', 'masculino');
+      localStorage.setItem('acopVerificado', 'false');
+      localStorage.setItem('telefonoVerificado', 'false');
+
+      window.location.replace(usuario.destino);
     }
 
     function handleRegister(e, role) {
@@ -1418,10 +1434,8 @@
         if (catEl) localStorage.setItem('categoria', catEl.textContent.trim());
         localStorage.setItem('estadoCategoria', 'orientativa');
         if (!localStorage.getItem('mesActual')) {
-          localStorage.setItem('partidosJugados', '0');
           localStorage.setItem('mesActual', String(new Date().getMonth()));
           localStorage.setItem('sexo', _sexoSeleccionado || 'masculino');
-          localStorage.setItem('esPremium', 'false');
         }
         window.location.href = 'jugador-home.html';
       } else {

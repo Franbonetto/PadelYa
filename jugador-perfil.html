@@ -953,34 +953,6 @@
       </div>
     </div>
 
-    <!-- ── SECCIÓN 7: PREMIUM ── -->
-    <div id="premium-section" style="margin:12px 16px 0;">
-      <div id="premium-card-free" style="background:linear-gradient(135deg,#0D1E3A,#112244);border:1px solid rgba(23,139,255,0.3);border-radius:14px;padding:16px;">
-        <div style="font-size:10px;color:#178BFF;font-weight:700;letter-spacing:1px;margin-bottom:8px;">PREMIUM</div>
-        <div style="font-size:16px;font-weight:800;color:#F5F7FA;margin-bottom:3px;">Jugás ilimitado</div>
-        <div style="font-size:12px;color:#A8B3C7;margin-bottom:14px;">Por lo que cuesta 6 pases · $5.999/mes</div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px 0;background:rgba(255,255,255,0.04);border-radius:10px;padding:10px 12px;margin-bottom:14px;">
-          <div style="font-size:11px;font-weight:600;color:#A8B3C7;margin-bottom:5px;">Gratis</div>
-          <div style="font-size:11px;font-weight:600;color:#178BFF;margin-bottom:5px;">Premium</div>
-          <div style="font-size:12px;color:#F5F7FA;padding:2px 0;">3 partidos/mes</div>
-          <div style="font-size:12px;color:#F5F7FA;padding:2px 0;">Ilimitado</div>
-          <div style="font-size:12px;color:#3A4A5C;padding:2px 0;">—</div>
-          <div style="font-size:12px;color:#F5F7FA;padding:2px 0;">Perfil destacado</div>
-          <div style="font-size:12px;color:#3A4A5C;padding:2px 0;">—</div>
-          <div style="font-size:12px;color:#F5F7FA;padding:2px 0;">Alertas prioritarias</div>
-          <div style="font-size:12px;color:#3A4A5C;padding:2px 0;">—</div>
-          <div style="font-size:12px;color:#F5F7FA;padding:2px 0;">Descuentos sponsors</div>
-        </div>
-        <a href="premium.html" style="display:block;background:#178BFF;color:white;border-radius:50px;padding:13px;font-size:0.9rem;font-weight:700;text-align:center;text-decoration:none;font-family:inherit;">Probar 14 días gratis</a>
-      </div>
-      <div id="premium-card-active" style="display:none;background:linear-gradient(135deg,#0D1E3A,#112244);border:1px solid rgba(23,139,255,0.3);border-radius:14px;padding:16px;">
-        <div style="display:inline-flex;align-items:center;gap:6px;background:rgba(16,185,129,0.15);border:1px solid rgba(16,185,129,0.3);border-radius:99px;padding:4px 12px;margin-bottom:10px;">
-          <span style="font-size:10px;font-weight:700;color:#34D399;letter-spacing:0.5px;">&#10003; PREMIUM ACTIVO</span>
-        </div>
-        <div style="font-size:13px;color:#A8B3C7;">Próxima renovación: 01/07/2026</div>
-      </div>
-    </div>
-
     <!-- ── SECCIÓN 9: LOGROS ── -->
     <div class="section-pad" style="padding-top:12px;padding-bottom:8px;">
       <div class="achievements-card">
@@ -1125,10 +1097,9 @@
     </button>
     <a href="profes.html" class="nav-item" aria-label="Clases">
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M15.5 3.5C18.5 4.5 20 7 19 10C18 13 15 14.5 12.5 13.5L7 19C6.2 19.8 5 19.8 4.2 19C3.4 18.2 3.4 17 4.2 16.2L9.5 10.5C8.5 8 10 5 13 4C13.8 3.7 14.7 3.5 15.5 3.5Z"/>
-        <circle cx="13" cy="8" r="0.6" fill="currentColor" stroke="none"/>
-        <circle cx="15" cy="9.5" r="0.6" fill="currentColor" stroke="none"/>
-        <circle cx="11.5" cy="10" r="0.6" fill="currentColor" stroke="none"/>
+        <circle cx="12" cy="12" r="9"/>
+        <path d="M6 5.5 C8 9 8 15 6 18.5"/>
+        <path d="M18 5.5 C16 9 16 15 18 18.5"/>
       </svg>
       <span>Clases</span>
     </a>
@@ -1200,29 +1171,8 @@
     (function() {
       var loggedIn = localStorage.getItem('loggedIn');
       var rol = localStorage.getItem('rol');
-
-      if (!loggedIn || rol !== 'jugador') {
-        window.location.href = 'index.html';
-        return;
-      }
-
-      var defaults = {
-        nombre: 'Jugador',
-        apellido: '',
-        categoria: '5ta',
-        estadoCategoria: 'orientativa',
-        sexo: 'masculino',
-        partidosJugados: '0',
-        esPremium: 'false',
-        acopVerificado: 'false',
-        telefonoVerificado: 'false'
-      };
-
-      Object.keys(defaults).forEach(function(key) {
-        if (!localStorage.getItem(key)) {
-          localStorage.setItem(key, defaults[key]);
-        }
-      });
+      if (!loggedIn || loggedIn !== 'true') { window.location.replace('auth.html'); return; }
+      if (rol !== 'jugador') { window.location.replace('auth.html'); return; }
     })();
 
     /* ── Datos de sesión en perfil ── */
@@ -1473,23 +1423,15 @@
       });
     });
 
-    // ── Plan mode (demo toggle) ──
-    function applyPlanMode(isPremium) {
-      var cardFree   = document.getElementById('premium-card-free');
-      var cardActive = document.getElementById('premium-card-active');
-      if (cardFree)   cardFree.style.display   = isPremium ? 'none'  : 'block';
-      if (cardActive) cardActive.style.display = isPremium ? 'block' : 'none';
-    }
-
     function cerrarSesion() {
       var claves = [
         'loggedIn','rol','nombre','apellido','email',
         'categoria','estadoCategoria','sexo',
         'acopVerificado','telefonoVerificado',
-        'esPremium','misPartidos','partidosUnidos'
+        'misPartidos','partidosUnidos'
       ];
       claves.forEach(function(k) { localStorage.removeItem(k); });
-      window.location.href = 'index.html';
+      window.location.replace('auth.html');
     }
 
     // ── Copy referral code ──

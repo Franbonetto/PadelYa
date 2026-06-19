@@ -1035,8 +1035,10 @@
 
   <script>
     (function() {
-      var rol = sessionStorage.getItem('rol');
-      if (!rol || (rol !== 'profesor' && rol !== 'admin')) window.location.href = 'auth.html';
+      var loggedIn = localStorage.getItem('loggedIn');
+      var rol = localStorage.getItem('rol');
+      if (!loggedIn || loggedIn !== 'true') { window.location.replace('auth.html'); return; }
+      if (rol !== 'profesor' && rol !== 'admin') { window.location.replace('auth.html'); return; }
     })();
 
     /* Datos de la agenda */

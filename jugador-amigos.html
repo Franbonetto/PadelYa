@@ -545,10 +545,9 @@
     </button>
     <a href="profes.html" class="nav-item" aria-label="Clases">
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M15.5 3.5C18.5 4.5 20 7 19 10C18 13 15 14.5 12.5 13.5L7 19C6.2 19.8 5 19.8 4.2 19C3.4 18.2 3.4 17 4.2 16.2L9.5 10.5C8.5 8 10 5 13 4C13.8 3.7 14.7 3.5 15.5 3.5Z"/>
-        <circle cx="13" cy="8" r="0.6" fill="currentColor" stroke="none"/>
-        <circle cx="15" cy="9.5" r="0.6" fill="currentColor" stroke="none"/>
-        <circle cx="11.5" cy="10" r="0.6" fill="currentColor" stroke="none"/>
+        <circle cx="12" cy="12" r="9"/>
+        <path d="M6 5.5 C8 9 8 15 6 18.5"/>
+        <path d="M18 5.5 C16 9 16 15 18 18.5"/>
       </svg>
       <span>Clases</span>
     </a>
@@ -612,29 +611,8 @@
     (function() {
       var loggedIn = localStorage.getItem('loggedIn');
       var rol = localStorage.getItem('rol');
-
-      if (!loggedIn || rol !== 'jugador') {
-        window.location.href = 'index.html';
-        return;
-      }
-
-      var defaults = {
-        nombre: 'Jugador',
-        apellido: '',
-        categoria: '5ta',
-        estadoCategoria: 'orientativa',
-        sexo: 'masculino',
-        partidosJugados: '0',
-        esPremium: 'false',
-        acopVerificado: 'false',
-        telefonoVerificado: 'false'
-      };
-
-      Object.keys(defaults).forEach(function(key) {
-        if (!localStorage.getItem(key)) {
-          localStorage.setItem(key, defaults[key]);
-        }
-      });
+      if (!loggedIn || loggedIn !== 'true') { window.location.replace('auth.html'); return; }
+      if (rol !== 'jugador') { window.location.replace('auth.html'); return; }
     })();
 
     var JUGADORES_DB = [
