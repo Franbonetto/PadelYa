@@ -924,7 +924,10 @@
         var fechaLabel = p.fecha ? formatFechaOwn(p.fecha) : '';
         var horaLabel  = p.hora  ? p.hora : '';
         var fechaDisplay = fechaLabel ? (horaLabel ? fechaLabel + ' · ' + horaLabel : fechaLabel) : horaLabel;
-        return '<div class="match-card-own">' +
+        var card = document.createElement('div');
+        card.className = 'match-card-own';
+        card.style.cursor = 'pointer';
+        card.innerHTML =
           '<span class="badge-creado">CREADO POR VOS</span>' +
           '<div class="own-club-name">' + p.club + '</div>' +
           (fechaDisplay ? '<div class="own-fecha">' + fechaDisplay + '</div>' : '') +
@@ -934,7 +937,27 @@
           '<div class="own-actions">' +
             '<button class="btn-editar" onclick="editarPartido(' + p.id + ')">Editar</button>' +
             '<button class="btn-cancelar" onclick="cancelarPartido(' + p.id + ')">Cancelar partido</button>' +
-          '</div></div>';
+          '</div>';
+        (function(partido) {
+          card.addEventListener('click', function(e) {
+            if (e.target.tagName === 'BUTTON') return;
+            abrirDetallePartido({
+              id: partido.id,
+              complejo: partido.club,
+              fecha: partido.fecha ? formatFechaOwn(partido.fecha) : 'Hoy',
+              hora: (partido.hora || '').replace(' hs', ''),
+              categoria: partido.cat,
+              genero: partido.tipo,
+              tipo: partido.mod,
+              jugadores: partido.jugadores,
+              total: partido.total,
+              avatares: partido.avatares || [initials, null, null, null],
+              nombresJugadores: partido.nombresJugadores || [userName, null, null, null],
+              nivelesJugadores: partido.nivelesJugadores || ['—', null, null, null]
+            });
+          });
+        })(p);
+        return card;
       }
 
       function buildSumadoCard(p) {
@@ -947,17 +970,40 @@
         var resenaBtn = (p.jugadores >= p.total)
           ? '<button onclick=\'abrirResenaPartido(' + JSON.stringify({complejo:p.complejo||"",fecha:p.fecha||"Hoy",tipo:p.tipo||"Casual"}).replace(/'/g,"&#39;") + ')\' style="background:transparent;border:1px solid rgba(255,255,255,0.15);color:#A8B3C7;border-radius:50px;padding:5px 14px;font-size:12px;cursor:pointer;font-family:inherit;">⭐ Dejar reseña</button>'
           : '';
-        return '<div class="match-card-own" style="border-left-color:#F59E0B;">' +
+        var card = document.createElement('div');
+        card.className = 'match-card-own';
+        card.style.cssText = 'border-left-color:#F59E0B;cursor:pointer;';
+        card.innerHTML =
           '<span class="badge-creado" style="background:#F59E0B;">ME SUMÉ</span>' +
           '<div class="own-club-name">' + p.complejo + '</div>' +
-          '<div class="own-fecha">' + p.fecha + '</div>' +
+          '<div class="own-fecha">' + p.fecha + (p.hora ? ' · ' + p.hora + ' hs' : '') + '</div>' +
           '<div class="own-cat-line">' + p.categoria + ' · ' + p.genero + ' · ' + p.tipo + '</div>' +
           '<div class="own-avatars-row">' + avHtml + '<span class="own-count">' + p.jugadores + '/' + p.total + '</span></div>' +
           '<div class="own-progress-wrap"><div class="own-progress-bar" style="width:' + pct + '%;background:#F59E0B;"></div></div>' +
           '<div class="own-actions">' +
             resenaBtn +
             '<button class="btn-abandonar" onclick="abandonarPartidoUnido(' + p.id + ')">Abandonar partido</button>' +
-          '</div></div>';
+          '</div>';
+        (function(partido) {
+          card.addEventListener('click', function(e) {
+            if (e.target.tagName === 'BUTTON') return;
+            abrirDetallePartido({
+              id: partido.id,
+              complejo: partido.complejo,
+              fecha: partido.fecha,
+              hora: partido.hora || '',
+              categoria: partido.categoria,
+              genero: partido.genero,
+              tipo: partido.tipo,
+              jugadores: partido.jugadores,
+              total: partido.total,
+              avatares: partido.avatares || ['?', null, null, null],
+              nombresJugadores: partido.nombresJugadores || ['Jugador', null, null, null],
+              nivelesJugadores: partido.nivelesJugadores || ['—', null, null, null]
+            });
+          });
+        })(p);
+        return card;
       }
 
       /* Sección A: Organizados por vos */
@@ -966,7 +1012,7 @@
         organizadosEmpty.style.display = 'block';
       } else {
         organizadosEmpty.style.display = 'none';
-        partidos.forEach(function(p) { organizadosList.innerHTML += buildOrgCard(p); });
+        partidos.forEach(function(p) { organizadosList.appendChild(buildOrgCard(p)); });
       }
 
       /* Sección B: Te sumaste a — lee de partidosUnidos */
@@ -976,7 +1022,7 @@
         sumadosEmpty.style.display = 'block';
       } else {
         sumadosEmpty.style.display = 'none';
-        unidos.forEach(function(p) { sumadosList.innerHTML += buildSumadoCard(p); });
+        unidos.forEach(function(p) { sumadosList.appendChild(buildSumadoCard(p)); });
       }
     }
     var renderizarMisPartidos = renderMisPartidos;
@@ -1511,6 +1557,11 @@
     function abrirDetallePartido(partido) {
       _partidoDetalle = partido;
 
+      var misPartidos = JSON.parse(localStorage.getItem('misPartidos') || '[]');
+      var esPropio = misPartidos.some(function(p) {
+        return p.id === partido.id;
+      });
+
       var unidos = JSON.parse(localStorage.getItem('partidosUnidos') || '[]');
       var yaUnido = unidos.some(function(p) {
         return p.id === partido.id;
@@ -1518,9 +1569,13 @@
 
       var badge = document.getElementById('detalle-badge-ya-unido');
       if (badge) {
-        badge.innerHTML = yaUnido
-          ? '<div style="background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.3);border-radius:10px;padding:10px 14px;display:flex;align-items:center;gap:8px;margin-bottom:8px;"><span style="font-size:16px;">✓</span><p style="font-size:14px;font-weight:600;color:#10B981;margin:0;">Ya te sumaste a este partido</p></div>'
-          : '';
+        if (esPropio) {
+          badge.innerHTML = '<div style="background:rgba(23,139,255,0.08);border:1px solid rgba(23,139,255,0.2);border-radius:10px;padding:10px 14px;display:flex;align-items:center;gap:8px;"><span style="font-size:16px;">🎾</span><p style="font-size:14px;font-weight:600;color:#178BFF;margin:0;">Este partido es tuyo</p></div>';
+        } else if (yaUnido) {
+          badge.innerHTML = '<div style="background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.3);border-radius:10px;padding:10px 14px;display:flex;align-items:center;gap:8px;margin-bottom:8px;"><span style="font-size:16px;">✓</span><p style="font-size:14px;font-weight:600;color:#10B981;margin:0;">Ya te sumaste a este partido</p></div>';
+        } else {
+          badge.innerHTML = '';
+        }
       }
 
       var titulo = document.getElementById('detalle-titulo');
@@ -1597,7 +1652,10 @@
 
       var btnSumarme = document.getElementById('btn-sumarme-detalle');
       if (btnSumarme) {
-        if (yaUnido) {
+        if (esPropio) {
+          btnSumarme.style.display = 'none';
+        } else if (yaUnido) {
+          btnSumarme.style.display = '';
           btnSumarme.textContent = '✓ Ya estás en este partido';
           btnSumarme.style.background = 'rgba(16,185,129,0.1)';
           btnSumarme.style.color = '#10B981';
@@ -1605,6 +1663,7 @@
           btnSumarme.disabled = true;
           btnSumarme.onclick = null;
         } else {
+          btnSumarme.style.display = '';
           btnSumarme.textContent = 'Sumarme al partido';
           btnSumarme.style.background = '#178BFF';
           btnSumarme.style.color = 'white';
