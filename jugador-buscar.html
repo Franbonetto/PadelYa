@@ -1554,7 +1554,52 @@
     /* ══════════ PANEL DE DETALLE DEL PARTIDO ══════════ */
     var _partidoDetalle = null;
 
+    /* ── Sincronizar avatares/nombres/niveles con el número real de jugadores ── */
+    function sincronizarAvatares(partido) {
+      var jugadores = partido.jugadores || 0;
+      var total = partido.total || 4;
+
+      if (!partido.avatares) {
+        partido.avatares = [];
+      }
+      if (!partido.nombresJugadores) {
+        partido.nombresJugadores = [];
+      }
+      if (!partido.nivelesJugadores) {
+        partido.nivelesJugadores = [];
+      }
+
+      var avataresPorDefecto = ['MR','AG','RS','CM'];
+      var nombresPorDefecto = [
+        'Martín R.','Ana G.','Roberto S.','Carlos M.'
+      ];
+      var nivelesPorDefecto = ['1.8','2.1','1.6','1.4'];
+
+      for (var i = 0; i < total; i++) {
+        if (i < jugadores) {
+          if (!partido.avatares[i]) {
+            partido.avatares[i] = avataresPorDefecto[i] || '?';
+          }
+          if (!partido.nombresJugadores[i]) {
+            partido.nombresJugadores[i] =
+              nombresPorDefecto[i] || 'Jugador';
+          }
+          if (!partido.nivelesJugadores[i]) {
+            partido.nivelesJugadores[i] =
+              nivelesPorDefecto[i] || '—';
+          }
+        } else {
+          partido.avatares[i] = null;
+          partido.nombresJugadores[i] = null;
+          partido.nivelesJugadores[i] = null;
+        }
+      }
+
+      return partido;
+    }
+
     function abrirDetallePartido(partido) {
+      partido = sincronizarAvatares(partido);
       _partidoDetalle = partido;
 
       var misPartidos = JSON.parse(localStorage.getItem('misPartidos') || '[]');
@@ -1569,13 +1614,9 @@
 
       var badge = document.getElementById('detalle-badge-ya-unido');
       if (badge) {
-        if (esPropio) {
-          badge.innerHTML = '<div style="background:rgba(23,139,255,0.08);border:1px solid rgba(23,139,255,0.2);border-radius:10px;padding:10px 14px;display:flex;align-items:center;gap:8px;"><span style="font-size:16px;">🎾</span><p style="font-size:14px;font-weight:600;color:#178BFF;margin:0;">Este partido es tuyo</p></div>';
-        } else if (yaUnido) {
-          badge.innerHTML = '<div style="background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.3);border-radius:10px;padding:10px 14px;display:flex;align-items:center;gap:8px;margin-bottom:8px;"><span style="font-size:16px;">✓</span><p style="font-size:14px;font-weight:600;color:#10B981;margin:0;">Ya te sumaste a este partido</p></div>';
-        } else {
-          badge.innerHTML = '';
-        }
+        badge.innerHTML = esPropio
+          ? '<div style="background:rgba(23,139,255,0.08);border:1px solid rgba(23,139,255,0.2);border-radius:10px;padding:10px 14px;display:flex;align-items:center;gap:8px;"><span style="font-size:16px;">🎾</span><p style="font-size:14px;font-weight:600;color:#178BFF;margin:0;">Este partido es tuyo</p></div>'
+          : '';
       }
 
       var titulo = document.getElementById('detalle-titulo');
@@ -1624,11 +1665,12 @@
       var contenedorJugadores = document.getElementById('detalle-jugadores');
       if (contenedorJugadores) {
         contenedorJugadores.innerHTML = '';
-        var jugadoresEjemplo = partido.avatares || ['MR', 'AG', null, null];
-        var nombres = partido.nombresJugadores || ['Martín R.', 'Ana G.', null, null];
-        var niveles = partido.nivelesJugadores || ['1.8', '2.1', null, null];
+        var jugadoresEjemplo = partido.avatares;
+        var nombres = partido.nombresJugadores;
+        var niveles = partido.nivelesJugadores;
+        var totalLugares = partido.total || 4;
 
-        for (var i = 0; i < 4; i++) {
+        for (var i = 0; i < totalLugares; i++) {
           var jugador = jugadoresEjemplo[i];
           var nombre = nombres[i];
           var nivel = niveles[i];
