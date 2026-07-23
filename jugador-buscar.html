@@ -671,7 +671,20 @@
         </div>
         <span style="font-size:12px;color:#178BFF;font-weight:600;">2/4</span>
       </div>
-      <button class="btn-sumarme" onclick="sumarse(this)" style="width:100%;">Sumarme</button>
+      <button class="btn-sumarme" onclick="abrirDetallePartido({
+        id: 99,
+        complejo: 'Runa Pádel',
+        fecha: 'Hoy',
+        hora: '20:00',
+        categoria: '5ta',
+        genero: 'Masculino',
+        tipo: 'Competitivo',
+        jugadores: 2,
+        total: 4,
+        avatares: ['MR', 'AG', null, null],
+        nombresJugadores: ['Martín R.', 'Ana G.', null, null],
+        nivelesJugadores: ['1.8', '2.1', null, null]
+      })" style="width:100%;">Sumarme</button>
     </div>
 
     <!-- Cards de partidos (renderizadas dinámicamente desde PARTIDOS, click abre el panel de detalle) -->
@@ -1437,6 +1450,11 @@
         for (var i = 0; i < p.total; i++) {
           avHtml += avatares[i] ? '<div class="av">' + avatares[i] + '</div>' : '<div class="av av-empty"></div>';
         }
+        var unidos = JSON.parse(localStorage.getItem('partidosUnidos') || '[]');
+        var yaUnido = unidos.some(function(u) { return u.id === p.id; });
+        var btnHtml = yaUnido
+          ? '<button id="btn-card-' + p.id + '" disabled style="width:100%;padding:11px;background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.3);color:#10B981;border-radius:50px;font-size:13px;font-weight:600;cursor:default;margin-top:10px;">✓ Ya estás en este partido</button>'
+          : '<button id="btn-card-' + p.id + '" style="width:100%;padding:11px;background:transparent;border:1px solid #178BFF;color:#178BFF;border-radius:50px;font-size:13px;font-weight:600;cursor:pointer;margin-top:10px;">Sumarme</button>';
         var card = document.createElement('div');
         card.className = 'match-card' + (p.jugadores === p.total - 1 ? ' urgent' : '');
         card.style.cursor = 'pointer';
@@ -1456,8 +1474,18 @@
               '<div style="width:' + pct + '%;height:100%;background:#178BFF;border-radius:2px;"></div>' +
             '</div>' +
             '<span style="font-size:12px;color:#178BFF;font-weight:600;">' + p.jugadores + '/' + p.total + '</span>' +
-          '</div>';
+          '</div>' +
+          btnHtml;
         card.addEventListener('click', function() { abrirDetallePartido(p); });
+        if (!yaUnido) {
+          var btnCard = card.querySelector('#btn-card-' + p.id);
+          if (btnCard) {
+            btnCard.addEventListener('click', function(e) {
+              e.stopPropagation();
+              abrirDetallePartido(p);
+            });
+          }
+        }
         return card;
       }
 
@@ -1607,7 +1635,51 @@
 
     function confirmarDesdeDetalle() {
       if (!_partidoDetalle) return;
+
+      // Guardar en localStorage
       guardarPartidoUnido(_partidoDetalle);
+
+      // Actualizar jugadores en el panel
+      var miNombre = localStorage.getItem('nombre') || 'Vos';
+      var miInicial = miNombre[0].toUpperCase();
+
+      // Encontrar primer lugar vacío y ocuparlo
+      if (_partidoDetalle.avatares) {
+        for (var i = 0; i < _partidoDetalle.avatares.length; i++) {
+          if (!_partidoDetalle.avatares[i]) {
+            _partidoDetalle.avatares[i] = miInicial;
+            _partidoDetalle.nombresJugadores[i] = miNombre;
+            _partidoDetalle.nivelesJugadores[i] = localStorage.getItem('indice') || '—';
+            break;
+          }
+        }
+      }
+
+      // Re-renderizar jugadores en el panel
+      var contenedor = document.getElementById('detalle-jugadores');
+      if (contenedor) {
+        contenedor.innerHTML = '';
+        for (var j = 0; j < 4; j++) {
+          var av = _partidoDetalle.avatares[j];
+          var nom = _partidoDetalle.nombresJugadores[j];
+          var niv = _partidoDetalle.nivelesJugadores[j];
+          var div = document.createElement('div');
+          div.style.cssText = 'text-align:center;';
+          if (av) {
+            div.innerHTML =
+              '<div style="width:56px;height:56px;border-radius:50%;background:#178BFF;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;color:white;margin:0 auto 6px;">' + av + '</div>' +
+              '<p style="font-size:11px;font-weight:600;color:#111827;margin:0 0 2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + (nom || av) + '</p>' +
+              '<span style="font-size:10px;background:#EBF4FF;color:#178BFF;padding:1px 6px;border-radius:50px;font-weight:600;">' + (niv || '—') + '</span>';
+          } else {
+            div.innerHTML =
+              '<div style="width:56px;height:56px;border-radius:50%;border:2px dashed rgba(0,0,0,0.15);display:flex;align-items:center;justify-content:center;margin:0 auto 6px;"><span style="font-size:20px;color:#D1D5DB;">+</span></div>' +
+              '<p style="font-size:11px;color:#9CA3AF;margin:0;">Libre</p>';
+          }
+          contenedor.appendChild(div);
+        }
+      }
+
+      // Actualizar botón sumarme en el panel
       var btn = document.getElementById('btn-sumarme-detalle');
       if (btn) {
         btn.textContent = '✓ Ya estás en este partido';
@@ -1615,7 +1687,20 @@
         btn.style.color = '#10B981';
         btn.style.border = '1px solid rgba(16,185,129,0.3)';
         btn.onclick = null;
+        btn.disabled = true;
       }
+
+      // Actualizar botón en la card de la lista
+      var btnCard = document.getElementById('btn-card-' + _partidoDetalle.id);
+      if (btnCard) {
+        btnCard.textContent = '✓ Ya estás en este partido';
+        btnCard.style.background = 'rgba(16,185,129,0.1)';
+        btnCard.style.color = '#10B981';
+        btnCard.style.border = '1px solid rgba(16,185,129,0.3)';
+        btnCard.disabled = true;
+        btnCard.onclick = null;
+      }
+
       showToast('¡Te sumaste! Nos vemos en la cancha. 🎾', 'success');
     }
 

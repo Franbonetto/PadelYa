@@ -597,7 +597,7 @@
     <div class="hero">
       <div class="hero-eyebrow">
         <span class="pulse-dot"></span>
-        <span id="hero-contador">3 partidos abiertos ahora</span>
+        <span id="hero-contador">Hay jugadores buscando partido</span>
       </div>
       <h1 class="hero-title">¿Jugás hoy?</h1>
       <p class="hero-sub">Encontramos jugadores de tu nivel automáticamente.</p>
@@ -621,19 +621,6 @@
         </div>
       </div>
     </div>
-
-    <!-- LES FALTA 1 / PARTIDOS DINÁMICOS -->
-    <section id="seccion-partidos" class="section" style="margin-top:8px;border-top:1px solid rgba(255,255,255,0.07);padding-top:20px;">
-      <div class="section-header">
-        <div>
-          <div id="titulo-partidos" class="section-title" style="font-size:20px;font-weight:800;">Les falta 1</div>
-          <div id="subtitulo-partidos" class="section-sub">Completá el partido</div>
-        </div>
-        <a href="jugador-buscar.html" class="section-link">Ver todos</a>
-      </div>
-      <div id="lista-partidos"></div>
-      <div id="estado-vacio-partidos" style="display:none;justify-content:center;"></div>
-    </section>
 
     <!-- MEJORÁ -->
     <section class="section">
@@ -712,23 +699,6 @@
     </a>
   </nav>
 
-  <!-- MODAL SUMARME -->
-  <div id="sumarme-overlay" onclick="cerrarModalSumarme(event)" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:300;align-items:center;justify-content:center;">
-    <div class="modal-box" onclick="event.stopPropagation()">
-      <div class="modal-icon">
-        <svg width="24" height="24" fill="none" stroke="#178BFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-      </div>
-      <div class="modal-title">¿Sumarte al partido?</div>
-      <p class="modal-desc">Te unirás a este partido. Los otros jugadores verán tu perfil y categoría.</p>
-      <div style="display:flex;align-items:flex-start;gap:8px;background:rgba(255,255,255,0.04);border-radius:8px;padding:10px 12px;border-left:3px solid rgba(168,179,199,0.3);margin-bottom:1rem;"><svg style="flex-shrink:0;margin-top:1px;" width="14" height="14" fill="none" stroke="#A8B3C7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg><span style="font-size:12px;color:#A8B3C7;line-height:1.5;">El valor de la cancha se abona directamente en el complejo.</span></div>
-      <button class="modal-btn" onclick="confirmarSumarme()">Confirmar</button>
-      <button onclick="cerrarModalSumarme()" style="background:none;border:none;color:var(--text-sub);font-size:0.875rem;cursor:pointer;font-family:inherit;margin-top:10px;width:100%;padding:8px;">Cancelar</button>
-    </div>
-  </div>
-
-  <!-- TOAST -->
-  <div id="toast-sumarme" style="display:none;position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:#059669;color:white;padding:10px 20px;border-radius:10px;font-size:0.875rem;font-weight:600;z-index:600;white-space:nowrap;box-shadow:0 4px 20px rgba(0,0,0,0.3);">¡Te sumaste! Nos vemos en la cancha. 🎾</div>
-
   <!-- PANEL NOTIFICACIONES -->
   <div id="notif-overlay" onclick="closeNotifPanel(event)" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:300;align-items:flex-start;justify-content:flex-end;">
     <div id="notif-panel" onclick="event.stopPropagation()" style="background:#0C1A2E;width:300px;max-width:calc(100vw - 32px);height:100%;padding:20px 16px;overflow-y:auto;border-left:1px solid rgba(255,255,255,0.08);">
@@ -778,64 +748,6 @@
       if (subEl) subEl.textContent = cat;
     })();
 
-    /* ── Sumarme modal ── */
-    var _sumarmeBtn = null;
-    var _sumarmePartido = null;
-    function abrirModalSumarme(btn, partidoId) {
-      _sumarmeBtn = btn;
-      _sumarmePartido = PARTIDOS.find(function(p) { return p.id === partidoId; }) || null;
-      document.getElementById('sumarme-overlay').style.display = 'flex';
-      document.body.style.overflow = 'hidden';
-    }
-    function cerrarModalSumarme(e) {
-      if (e && e.target !== document.getElementById('sumarme-overlay')) return;
-      document.getElementById('sumarme-overlay').style.display = 'none';
-      document.body.style.overflow = '';
-      _sumarmeBtn = null;
-      _sumarmePartido = null;
-    }
-
-    /* ── Guardar partido al que el jugador se sumó ── */
-    function guardarPartidoUnido(partido) {
-      var unidos = JSON.parse(localStorage.getItem('partidosUnidos') || '[]');
-      var yaExiste = unidos.find(function(p) { return p.id === partido.id; });
-      if (yaExiste) return;
-      unidos.push({
-        id: partido.id || Date.now(),
-        complejo: partido.complejo || 'Complejo',
-        fecha: partido.fecha || 'Hoy',
-        hora: partido.hora || '',
-        categoria: partido.categoria || localStorage.getItem('categoria') || '5ta',
-        genero: partido.genero || 'Masculino',
-        tipo: partido.tipo || 'Casual',
-        jugadores: (partido.jugadores || 3) + 1,
-        total: partido.total || 4,
-        estado: 'confirmado',
-        organizador: 'Otro jugador'
-      });
-      localStorage.setItem('partidosUnidos', JSON.stringify(unidos));
-    }
-
-    function confirmarSumarme() {
-      document.getElementById('sumarme-overlay').style.display = 'none';
-      document.body.style.overflow = '';
-      if (_sumarmePartido) {
-        guardarPartidoUnido(_sumarmePartido);
-        _sumarmePartido = null;
-      }
-      if (_sumarmeBtn) {
-        _sumarmeBtn.textContent = '¡Listo!';
-        _sumarmeBtn.style.background = 'rgba(16,185,129,0.2)';
-        _sumarmeBtn.style.color = '#34D399';
-        _sumarmeBtn.style.borderColor = 'rgba(16,185,129,0.4)';
-        _sumarmeBtn.onclick = null;
-        _sumarmeBtn = null;
-      }
-      var toast = document.getElementById('toast-sumarme');
-      toast.style.display = 'block';
-      setTimeout(function() { toast.style.display = 'none'; }, 3000);
-    }
-
     /* ── Notif panel ── */
     function openNotifPanel() {
       document.getElementById('notif-overlay').style.display = 'flex';
@@ -847,145 +759,6 @@
       document.body.style.overflow = '';
     }
 
-
-    /* ── Escenario y partidos simulados ── */
-    var ESCENARIO = 'conPartidos';
-    var PARTIDOS = [
-      { id:1, complejo:'Chingoland',        fecha:'Hoy',    categoria:'5ta', genero:'Masculino', tipo:'Competitivo', jugadores:3, total:4 },
-      { id:2, complejo:'Serrano Pádel',     fecha:'Hoy',    categoria:'5ta', genero:'Masculino', tipo:'Casual',      jugadores:2, total:4 },
-      { id:3, complejo:'Padel Time',        fecha:'Mañana', categoria:'4ta', genero:'Masculino', tipo:'Casual',      jugadores:1, total:4 },
-      { id:4, complejo:'Las Terrazas Pádel',fecha:'Mañana', categoria:'6ta', genero:'Femenino',  tipo:'Competitivo', jugadores:2, total:4 }
-    ];
-
-    /* ── Hero dinámico ── */
-    function actualizarHero() {
-      var n = PARTIDOS.length;
-      var texto;
-      if (n === 0) {
-        texto = 'Hay jugadores buscando partido';
-      } else if (n === 1) {
-        texto = '1 partido abierto ahora';
-      } else {
-        texto = n + ' partidos abiertos ahora';
-      }
-      var el = document.getElementById('hero-contador');
-      if (el) el.textContent = texto;
-    }
-
-    /* ── Ordenar por prioridad temporal (hoy > mañana > resto) ── */
-    function ordenarPartidos(partidos) {
-      return partidos.slice().sort(function(a, b) {
-        var prioA = a.fecha === 'Hoy' ? 0 : a.fecha === 'Mañana' ? 1 : 2;
-        var prioB = b.fecha === 'Hoy' ? 0 : b.fecha === 'Mañana' ? 1 : 2;
-        if (prioA !== prioB) return prioA - prioB;
-        return b.jugadores - a.jugadores;
-      });
-    }
-
-    /* ── Render cards ── */
-    function renderizarCards(partidos) {
-      var lista = document.getElementById('lista-partidos');
-      lista.innerHTML = '';
-      partidos.forEach(function(p) {
-        var pct = (p.jugadores / p.total) * 100;
-        var badgeHtml = '';
-        if (p.fecha === 'Hoy') {
-          badgeHtml = '<span style="font-size:9px;font-weight:700;padding:2px 7px;border-radius:50px;background:rgba(214,255,0,0.12);color:#D6FF00;border:1px solid rgba(214,255,0,0.3);white-space:nowrap;">HOY</span>';
-        } else if (p.fecha === 'Mañana') {
-          badgeHtml = '<span style="font-size:9px;font-weight:700;padding:2px 7px;border-radius:50px;background:rgba(23,139,255,0.12);color:#178BFF;border:1px solid rgba(23,139,255,0.3);white-space:nowrap;">MAÑANA</span>';
-        }
-        var card = document.createElement('div');
-        card.className = 'partido-card';
-        card.innerHTML =
-          '<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px;">' +
-            '<div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">' +
-              '<span style="font-size:15px;font-weight:700;color:#F5F7FA;">' + p.complejo + '</span>' +
-              badgeHtml +
-            '</div>' +
-            '<span style="font-size:11px;color:#A8B3C7;flex-shrink:0;margin-left:8px;">' + p.fecha + '</span>' +
-          '</div>' +
-          '<div style="display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap;">' +
-            '<span style="font-size:11px;color:#A8B3C7;background:rgba(255,255,255,0.06);padding:3px 8px;border-radius:50px;">' + p.categoria + '</span>' +
-            '<span style="font-size:11px;color:#A8B3C7;background:rgba(255,255,255,0.06);padding:3px 8px;border-radius:50px;">' + p.genero + '</span>' +
-            '<span style="font-size:11px;color:#A8B3C7;background:rgba(255,255,255,0.06);padding:3px 8px;border-radius:50px;">' + p.tipo + '</span>' +
-          '</div>' +
-          '<div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">' +
-            '<div style="flex:1;height:4px;background:rgba(255,255,255,0.08);border-radius:2px;">' +
-              '<div style="width:' + pct + '%;height:100%;background:#178BFF;border-radius:2px;"></div>' +
-            '</div>' +
-            '<span style="font-size:12px;color:#178BFF;font-weight:600;">' + p.jugadores + '/' + p.total + '</span>' +
-          '</div>' +
-          '<button onclick="abrirModalSumarme(this, ' + p.id + ')" ' +
-            'style="width:100%;padding:10px;background:transparent;border:1px solid #178BFF;color:#178BFF;border-radius:50px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;">Sumarme</button>';
-        lista.appendChild(card);
-      });
-    }
-
-    /* ── Renderizar sección de partidos ── */
-    function renderizarPartidos() {
-      var miCategoria = localStorage.getItem('categoria') || '5ta';
-      var CATEGORIAS = ['1ra','2da','3ra','4ta','5ta','6ta','7ma','7ma B'];
-      var miIdx = CATEGORIAS.indexOf(miCategoria);
-
-      var misPartidos = PARTIDOS.filter(function(p) {
-        var pIdx = CATEGORIAS.indexOf(p.categoria);
-        return Math.abs(pIdx - miIdx) <= 1;
-      });
-      misPartidos.sort(function(a, b) { return b.jugadores - a.jugadores; });
-
-      var faltaUno = PARTIDOS.filter(function(p) {
-        return p.jugadores === p.total - 1;
-      });
-      faltaUno.sort(function(a, b) { return b.jugadores - a.jugadores; });
-
-      var titulo   = document.getElementById('titulo-partidos');
-      var subtitulo = document.getElementById('subtitulo-partidos');
-      var lista    = document.getElementById('lista-partidos');
-      var vacio    = document.getElementById('estado-vacio-partidos');
-
-      if (faltaUno.length > 0) {
-        titulo.textContent    = 'Les falta 1';
-        subtitulo.textContent = 'Completá el partido';
-        vacio.style.display   = 'none';
-        lista.style.display   = 'block';
-        renderizarCards(ordenarPartidos(faltaUno));
-        return;
-      }
-
-      if (misPartidos.length > 0) {
-        titulo.textContent    = 'Partidos abiertos';
-        subtitulo.textContent = 'Hay jugadores esperando completar su partido.';
-        vacio.style.display   = 'none';
-        lista.style.display   = 'block';
-        renderizarCards(ordenarPartidos(misPartidos));
-        return;
-      }
-
-      if (PARTIDOS.length > 0) {
-        lista.style.display  = 'none';
-        vacio.style.display  = 'flex';
-        vacio.innerHTML =
-          '<div style="text-align:center;padding:32px 16px;">' +
-          '<div style="font-size:32px;margin-bottom:12px;">🎾</div>' +
-          '<p style="color:#F5F7FA;font-size:16px;font-weight:600;margin-bottom:8px;">No hay partidos para tu categoría</p>' +
-          '<p style="color:#A8B3C7;font-size:13px;margin-bottom:20px;">Creá uno y encontrá jugadores.</p>' +
-          '<button onclick="window.location.href=\'jugador-crear.html\'" ' +
-          'style="background:#178BFF;color:white;border:none;border-radius:50px;padding:12px 28px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;">Crear partido</button>' +
-          '</div>';
-        return;
-      }
-
-      lista.style.display  = 'none';
-      vacio.style.display  = 'flex';
-      vacio.innerHTML =
-        '<div style="text-align:center;padding:32px 16px;">' +
-        '<div style="font-size:32px;margin-bottom:12px;">🎾</div>' +
-        '<p style="color:#F5F7FA;font-size:16px;font-weight:600;margin-bottom:8px;">Todavía no hay partidos abiertos.</p>' +
-        '<p style="color:#A8B3C7;font-size:13px;margin-bottom:20px;">Sé el primero en crear uno.</p>' +
-        '<button onclick="window.location.href=\'jugador-crear.html\'" ' +
-        'style="background:#178BFF;color:white;border:none;border-radius:50px;padding:12px 28px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;">Crear partido</button>' +
-        '</div>';
-    }
 
     /* ── Sponsor rotation ── */
     var SPONSORS = [
@@ -1079,9 +852,7 @@
     }
 
     /* ── Inicializar ── */
-    actualizarHero();
     renderizarSponsor();
-    renderizarPartidos();
   </script>
 
 </body>
