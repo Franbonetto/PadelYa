@@ -2,7 +2,7 @@
 <html lang="es-AR">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, interactive-widget=resizes-content" />
   <meta name="theme-color" content="#050816">
   <link rel="preload" href="logo-padelya.png" as="image">
   <title>PadelYa - Buscar partido</title>
@@ -11,6 +11,40 @@
   <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    /* ── Chat del partido: adaptación al teclado virtual en mobile ── */
+    #panel-chat-partido {
+      position: fixed;
+      inset: 0;
+      z-index: 10000;
+      display: none;
+      align-items: flex-end;
+      justify-content: center;
+    }
+
+    #panel-chat-partido > div {
+      width: 100%;
+      max-width: 480px;
+      display: flex;
+      flex-direction: column;
+      background: #071224;
+      border-radius: 20px 20px 0 0;
+      /* Usar dvh para detectar teclado virtual */
+      height: 85dvh;
+      max-height: 85dvh;
+    }
+
+    #chat-mensajes {
+      flex: 1;
+      overflow-y: auto;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      /* Importante: permite scroll cuando
+         el teclado reduce el espacio */
+      min-height: 0;
+    }
 
     :root {
       --bg:        #071224;
@@ -1743,6 +1777,22 @@
       renderizarMensajes(_partidoChat.id);
     }
 
+    /* Mantener el último mensaje visible cuando aparece el teclado virtual
+       (el input se agrega al DOM después de este <script>) */
+    document.addEventListener('DOMContentLoaded', function() {
+      var chatInput = document.getElementById('chat-input');
+      if (chatInput) {
+        chatInput.addEventListener('focus', function() {
+          setTimeout(function() {
+            var mensajes = document.getElementById('chat-mensajes');
+            if (mensajes) {
+              mensajes.scrollTop = mensajes.scrollHeight;
+            }
+          }, 300);
+        });
+      }
+    });
+
     /* ── Sincronizar avatares/nombres/niveles con el número real de jugadores ── */
     function sincronizarAvatares(partido) {
       var jugadores = partido.jugadores || 0;
@@ -2375,12 +2425,13 @@
     inset:0;z-index:10000;
     background:rgba(0,0,0,0.6);
     align-items:flex-end;
-    justify-content:center;">
+    justify-content:center;
+    padding-bottom:env(safe-area-inset-bottom, 0px);">
 
     <div style="background:#071224;
       border-radius:20px 20px 0 0;
       width:100%;max-width:480px;
-      height:85vh;display:flex;
+      display:flex;
       flex-direction:column;">
 
       <!-- Header -->
@@ -2418,7 +2469,9 @@
       <div style="padding:12px 16px;
         border-top:1px solid rgba(255,255,255,0.08);
         display:flex;gap:8px;align-items:center;
-        flex-shrink:0;background:#071224;">
+        flex-shrink:0;position:sticky;bottom:0;
+        background:#071224;
+        padding-bottom:env(safe-area-inset-bottom, 12px);">
         <input id="chat-input" type="text"
           placeholder="Escribí un mensaje..."
           style="flex:1;padding:10px 14px;
