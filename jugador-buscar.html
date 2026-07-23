@@ -886,6 +886,34 @@
     }
 
     /* ── Render mis partidos (dos secciones) ── */
+    /* ── Determinar si un partido ya se jugó (para habilitar "Dejar reseña") ── */
+    function partidoYaJugo(partido) {
+      if (partido.estado === 'finalizado') return true;
+
+      var ahora = new Date();
+      var fecha = partido.fecha || '';
+      var hora = partido.hora || '00:00';
+
+      // Si dice "Hoy" comparar solo la hora
+      if (fecha === 'Hoy') {
+        var partes = hora.split(':');
+        var horaPartido = new Date();
+        horaPartido.setHours(parseInt(partes[0]));
+        horaPartido.setMinutes(parseInt(partes[1] || 0));
+        horaPartido.setSeconds(0);
+        // Agregar 90 minutos (duración del partido)
+        horaPartido.setMinutes(horaPartido.getMinutes() + 90);
+        return ahora > horaPartido;
+      }
+
+      // Si dice "Mañana" todavía no jugó
+      if (fecha === 'Mañana') return false;
+
+      // Para cualquier otro caso asumir que ya jugó
+      // (fecha pasada)
+      return true;
+    }
+
     function renderMisPartidos() {
       var organizadosList  = document.getElementById('organizados-list');
       var organizadosEmpty = document.getElementById('organizados-empty');
@@ -967,9 +995,9 @@
           if (d < p.jugadores) avHtml += '<div class="av" style="background:#0F766E;">??</div>';
           else avHtml += '<div class="av av-empty"></div>';
         }
-        var resenaBtn = (p.jugadores >= p.total)
+        var resenaBtn = partidoYaJugo(p)
           ? '<button onclick=\'abrirResenaPartido(' + JSON.stringify({complejo:p.complejo||"",fecha:p.fecha||"Hoy",tipo:p.tipo||"Casual"}).replace(/'/g,"&#39;") + ')\' style="background:transparent;border:1px solid rgba(255,255,255,0.15);color:#A8B3C7;border-radius:50px;padding:5px 14px;font-size:12px;cursor:pointer;font-family:inherit;">⭐ Dejar reseña</button>'
-          : '';
+          : '<span style="color:#A8B3C7;font-size:12px;padding:5px 14px;font-weight:600;">Pendiente de jugar</span>';
         var card = document.createElement('div');
         card.className = 'match-card-own';
         card.style.cssText = 'border-left-color:#F59E0B;cursor:pointer;';
@@ -1017,6 +1045,30 @@
 
       /* Sección B: Te sumaste a — lee de partidosUnidos */
       var unidos = JSON.parse(localStorage.getItem('partidosUnidos') || '[]');
+
+      // Agregar partido demo finalizado (para probar el flujo de reseña)
+      // solo si no existe ya
+      var tieneFinalizados = unidos.some(function(p) {
+        return p.id === 999;
+      });
+
+      if (!tieneFinalizados) {
+        unidos.unshift({
+          id: 999,
+          complejo: 'Chingoland',
+          fecha: 'Hoy',
+          hora: '08:00',
+          categoria: '5ta',
+          genero: 'Masculino',
+          tipo: 'Competitivo',
+          jugadores: 4,
+          total: 4,
+          estado: 'finalizado',
+          organizador: 'Otro jugador'
+        });
+        localStorage.setItem('partidosUnidos', JSON.stringify(unidos));
+      }
+
       sumadosList.innerHTML = '';
       if (unidos.length === 0) {
         sumadosEmpty.style.display = 'block';
