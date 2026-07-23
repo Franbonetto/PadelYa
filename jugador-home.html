@@ -780,8 +780,10 @@
 
     /* ── Sumarme modal ── */
     var _sumarmeBtn = null;
-    function abrirModalSumarme(btn) {
+    var _sumarmePartido = null;
+    function abrirModalSumarme(btn, partidoId) {
       _sumarmeBtn = btn;
+      _sumarmePartido = PARTIDOS.find(function(p) { return p.id === partidoId; }) || null;
       document.getElementById('sumarme-overlay').style.display = 'flex';
       document.body.style.overflow = 'hidden';
     }
@@ -790,10 +792,37 @@
       document.getElementById('sumarme-overlay').style.display = 'none';
       document.body.style.overflow = '';
       _sumarmeBtn = null;
+      _sumarmePartido = null;
     }
+
+    /* ── Guardar partido al que el jugador se sumó ── */
+    function guardarPartidoUnido(partido) {
+      var unidos = JSON.parse(localStorage.getItem('partidosUnidos') || '[]');
+      var yaExiste = unidos.find(function(p) { return p.id === partido.id; });
+      if (yaExiste) return;
+      unidos.push({
+        id: partido.id || Date.now(),
+        complejo: partido.complejo || 'Complejo',
+        fecha: partido.fecha || 'Hoy',
+        hora: partido.hora || '',
+        categoria: partido.categoria || localStorage.getItem('categoria') || '5ta',
+        genero: partido.genero || 'Masculino',
+        tipo: partido.tipo || 'Casual',
+        jugadores: (partido.jugadores || 3) + 1,
+        total: partido.total || 4,
+        estado: 'confirmado',
+        organizador: 'Otro jugador'
+      });
+      localStorage.setItem('partidosUnidos', JSON.stringify(unidos));
+    }
+
     function confirmarSumarme() {
       document.getElementById('sumarme-overlay').style.display = 'none';
       document.body.style.overflow = '';
+      if (_sumarmePartido) {
+        guardarPartidoUnido(_sumarmePartido);
+        _sumarmePartido = null;
+      }
       if (_sumarmeBtn) {
         _sumarmeBtn.textContent = '¡Listo!';
         _sumarmeBtn.style.background = 'rgba(16,185,129,0.2)';
@@ -886,7 +915,7 @@
             '</div>' +
             '<span style="font-size:12px;color:#178BFF;font-weight:600;">' + p.jugadores + '/' + p.total + '</span>' +
           '</div>' +
-          '<button onclick="abrirModalSumarme(this)" ' +
+          '<button onclick="abrirModalSumarme(this, ' + p.id + ')" ' +
             'style="width:100%;padding:10px;background:transparent;border:1px solid #178BFF;color:#178BFF;border-radius:50px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;">Sumarme</button>';
         lista.appendChild(card);
       });
