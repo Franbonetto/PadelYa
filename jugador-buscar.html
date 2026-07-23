@@ -988,11 +988,10 @@
       var mis = JSON.parse(localStorage.getItem('misPartidos') || '[]');
       var partido = mis.find(function(p) { return p.id == id; });
       if (!partido) return;
-      var modal = document.createElement('div');
-      modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:1000;display:flex;align-items:center;justify-content:center;padding:24px;';
-      modal.innerHTML =
-        '<div style="background:#0D1E3A;border:1px solid rgba(255,255,255,0.1);border-radius:20px;padding:24px;width:100%;max-width:340px;" onclick="event.stopPropagation()">' +
-        '<h3 style="color:#F5F7FA;font-size:17px;font-weight:700;margin-bottom:16px;">Editar partido</h3>' +
+      var modal = document.getElementById('modal-global');
+      if (!modal) return;
+      document.getElementById('modal-titulo').textContent = 'Editar partido';
+      document.getElementById('modal-texto').innerHTML =
         '<label style="color:#A8B3C7;font-size:13px;display:block;margin-bottom:6px;">Complejo</label>' +
         '<select id="edit-complejo" style="width:100%;padding:11px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:10px;color:#F5F7FA;font-size:14px;margin-bottom:14px;">' +
         '<option value="' + partido.club + '">' + partido.club + '</option>' +
@@ -1001,11 +1000,13 @@
         '<option>Padel Time</option><option>El Triunfo</option>' +
         '</select>' +
         '<label style="color:#A8B3C7;font-size:13px;display:block;margin-bottom:6px;">Fecha</label>' +
-        '<input type="date" id="edit-fecha" value="' + (partido.fechaISO || '') + '" style="width:100%;padding:11px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:10px;color:#F5F7FA;font-size:14px;margin-bottom:20px;">' +
-        '<button onclick="guardarEdicion(' + id + ')" style="width:100%;padding:13px;background:#178BFF;border:none;border-radius:50px;color:white;font-size:14px;font-weight:700;cursor:pointer;margin-bottom:10px;">Guardar cambios</button>' +
-        '<button onclick="this.closest(\'div[style*=\\\"inset\\\"]\').remove()" style="width:100%;padding:13px;background:transparent;border:1px solid rgba(255,255,255,0.15);border-radius:50px;color:#A8B3C7;font-size:14px;cursor:pointer;">Cancelar</button>' +
-        '</div>';
-      document.body.appendChild(modal);
+        '<input type="date" id="edit-fecha" value="' + (partido.fechaISO || '') + '" style="width:100%;padding:11px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:10px;color:#F5F7FA;font-size:14px;">';
+      var btnConf = document.getElementById('modal-btn-confirmar');
+      btnConf.textContent = 'Guardar cambios';
+      btnConf.style.background = '#178BFF';
+      btnConf.onclick = function() { guardarEdicion(id); };
+      document.getElementById('modal-btn-cancelar').textContent = 'Cancelar';
+      modal.style.display = 'flex';
     }
     function guardarEdicion(id) {
       var mis = JSON.parse(localStorage.getItem('misPartidos') || '[]');
@@ -1026,9 +1027,11 @@
         }
         localStorage.setItem('misPartidos', JSON.stringify(mis));
       }
-      document.querySelector('div[style*="inset:0"]').remove();
       showToast('Partido actualizado.', 'success');
       setTimeout(renderMisPartidos, 500);
+
+      // Cerrar modal después de guardar
+      cerrarModal();
     }
     /* ── Modal global reutilizable ── */
     function abrirModal(titulo, texto, btnTexto, btnColor, onConfirmar, btnCancelarTexto) {
@@ -1508,6 +1511,18 @@
     function abrirDetallePartido(partido) {
       _partidoDetalle = partido;
 
+      var unidos = JSON.parse(localStorage.getItem('partidosUnidos') || '[]');
+      var yaUnido = unidos.some(function(p) {
+        return p.id === partido.id;
+      });
+
+      var badge = document.getElementById('detalle-badge-ya-unido');
+      if (badge) {
+        badge.innerHTML = yaUnido
+          ? '<div style="background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.3);border-radius:10px;padding:10px 14px;display:flex;align-items:center;gap:8px;margin-bottom:8px;"><span style="font-size:16px;">✓</span><p style="font-size:14px;font-weight:600;color:#10B981;margin:0;">Ya te sumaste a este partido</p></div>'
+          : '';
+      }
+
       var titulo = document.getElementById('detalle-titulo');
       if (titulo) titulo.textContent = partido.complejo || 'Partido';
 
@@ -1582,23 +1597,19 @@
 
       var btnSumarme = document.getElementById('btn-sumarme-detalle');
       if (btnSumarme) {
-        var yaUnido = false;
-        var unidos = JSON.parse(localStorage.getItem('partidosUnidos') || '[]');
-        unidos.forEach(function(p) {
-          if (p.id === partido.id) yaUnido = true;
-        });
-
         if (yaUnido) {
           btnSumarme.textContent = '✓ Ya estás en este partido';
           btnSumarme.style.background = 'rgba(16,185,129,0.1)';
           btnSumarme.style.color = '#10B981';
           btnSumarme.style.border = '1px solid rgba(16,185,129,0.3)';
+          btnSumarme.disabled = true;
           btnSumarme.onclick = null;
         } else {
           btnSumarme.textContent = 'Sumarme al partido';
           btnSumarme.style.background = '#178BFF';
           btnSumarme.style.color = 'white';
           btnSumarme.style.border = 'none';
+          btnSumarme.disabled = false;
           btnSumarme.onclick = confirmarDesdeDetalle;
         }
       }
@@ -2001,6 +2012,9 @@
             </svg>
             Chat del partido
           </button>
+
+          <!-- Badge "ya te sumaste" -->
+          <div id="detalle-badge-ya-unido"></div>
 
           <!-- Sumarme -->
           <button id="btn-sumarme-detalle"
