@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PadelYa · Para complejos de pádel</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --azul: #178BFF;
+    --azul-oscuro: #0A1630;
+    --negro: #050816;
+    --blanco: #FFFFFF;
+    --gris: #F4F7FB;
+    --texto: #111827;
+    --texto-suave: #4B6080;
+    --verde: #16A34A;
+  }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    background: var(--blanco);
+    color: var(--texto);
+    line-height: 1.6;
+  }
+
+  /* PORTADA */
+  .portada {
+    background: linear-gradient(160deg, #050816 0%, #071224 60%, #0A1E3A 100%);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 60px 32px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .portada::before {
+    content: '';
+    position: absolute;
+    width: 700px;
+    height: 700px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(23,139,255,0.1) 0%, transparent 70%);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .chip-ciudad {
+    display: inline-block;
+    background: rgba(23,139,255,0.15);
+    border: 1px solid rgba(23,139,255,0.3);
+    color: var(--azul);
+    font-size: 13px;
+    font-weight: 600;
+    padding: 6px 16px;
+    border-radius: 50px;
+    margin-bottom: 32px;
+    position: relative;
+  }
+
+  .marca-portada {
+    font-size: 56px;
+    font-weight: 800;
+    color: #FFFFFF;
+    letter-spacing: -1px;
+    margin-bottom: 8px;
+    position: relative;
+  }
+
+  .marca-portada span { color: var(--azul); }
+
+  .tagline {
+    font-size: 18px;
+    color: rgba(255,255,255,0.45);
+    font-weight: 400;
+    margin-bottom: 56px;
+    position: relative;
+  }
+
+  .portada-bajada {
+    font-size: 34px;
+    font-weight: 700;
+    color: #FFFFFF;
+    line-height: 1.3;
+    max-width: 640px;
+    margin-bottom: 16px;
+    position: relative;
+  }
+
+  .portada-sub {
+    font-size: 17px;
+    color: rgba(255,255,255,0.45);
+    max-width: 480px;
+    position: relative;
+  }
+
+  /* SECCIONES */
+  .seccion { padding: 80px 32px; max-width: 920px; margin: 0 auto; }
+  .seccion-gris { background: var(--gris); padding: 80px 32px; }
+  .seccion-gris .inner { max-width: 920px; margin: 0 auto; }
+  .seccion-dark { background: #071224; padding: 80px 32px; }
+  .seccion-dark .inner { max-width: 920px; margin: 0 auto; }
+
+  .eyebrow {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--azul);
+    margin-bottom: 12px;
+  }
+
+  .eyebrow-dark {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: rgba(23,139,255,0.7);
+    margin-bottom: 12px;
+  }
+
+  h2 {
+    font-size: 36px;
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: -0.5px;
+    margin-bottom: 16px;
+  }
+
+  h2.dark { color: #FFFFFF; }
+
+  .bajada {
+    font-size: 18px;
+    color: var(--texto-suave);
+    max-width: 640px;
+    margin-bottom: 48px;
+    line-height: 1.7;
+  }
+
+  .bajada-dark {
+    font-size: 18px;
+    color: rgba(255,255,255,0.5);
+    max-width: 640px;
+    margin-bottom: 48px;
+    line-height: 1.7;
+  }
+
+  /* PROBLEMA */
+  .problema-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 48px;
+  }
+
+  .problema-card {
+    background: #FFFFFF;
+    border: 1px solid #E5E7EB;
+    border-radius: 14px;
+    padding: 28px;
+  }
+
+  .problema-card .icono { font-size: 28px; margin-bottom: 12px; }
+  .problema-card h3 { font-size: 17px; font-weight: 700; margin-bottom: 8px; }
+  .problema-card p { font-size: 14px; color: var(--texto-suave); line-height: 1.6; }
+
+  /* HIGHLIGHT BOX */
+  .highlight-box {
+    background: linear-gradient(135deg, #0D1E3A, #071224);
+    border: 1px solid rgba(23,139,255,0.2);
+    border-radius: 20px;
+    padding: 40px;
+    margin: 40px 0;
+    text-align: center;
+  }
+
+  .highlight-box .numero {
+    font-size: 64px;
+    font-weight: 900;
+    color: var(--azul);
+    line-height: 1;
+    letter-spacing: -2px;
+  }
+
+  .highlight-box .desc {
+    font-size: 18px;
+    color: rgba(255,255,255,0.6);
+    margin-top: 8px;
+  }
+
+  /* PASOS */
+  .pasos { display: flex; flex-direction: column; gap: 0; }
+
+  .paso {
+    display: flex;
+    gap: 24px;
+    align-items: flex-start;
+    padding-bottom: 36px;
+    position: relative;
+  }
+
+  .paso:last-child { padding-bottom: 0; }
+
+  .paso-numero {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--azul);
+    color: white;
+    font-size: 18px;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 1;
+  }
+
+  .paso-linea {
+    position: absolute;
+    left: 21px;
+    top: 44px;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(to bottom, rgba(23,139,255,0.25), transparent);
+  }
+
+  .paso:last-child .paso-linea { display: none; }
+
+  .paso-contenido h3 {
+    font-size: 19px;
+    font-weight: 700;
+    margin-bottom: 6px;
+    padding-top: 10px;
+  }
+
+  .paso-contenido p { font-size: 15px; color: var(--texto-suave); line-height: 1.6; }
+
+  /* CAPTURAS MÓVIL */
+  .phones-container {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    margin: 40px 0;
+  }
+
+  .phone-wrap { flex: 1; min-width: 180px; max-width: 220px; }
+
+  .phone-wrap img {
+    width: 100%;
+    border-radius: 20px;
+    border: 1px solid rgba(0,0,0,0.1);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+    display: block;
+  }
+
+  .phone-label {
+    text-align: center;
+    font-size: 12px;
+    color: var(--texto-suave);
+    font-weight: 600;
+    margin-top: 10px;
+  }
+
+  /* PANEL DESKTOP */
+  .panel-desktop {
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid #E5E7EB;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.1);
+    margin: 32px 0;
+  }
+
+  .panel-desktop img { width: 100%; display: block; }
+
+  /* MODELO */
+  .modelo-card {
+    background: linear-gradient(135deg, #0D1E3A, #112244);
+    border: 1px solid rgba(23,139,255,0.2);
+    border-radius: 20px;
+    padding: 40px;
+    margin: 32px 0;
+  }
+
+  .modelo-card .titulo-modelo {
+    font-size: 15px;
+    font-weight: 700;
+    color: rgba(255,255,255,0.5);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+  }
+
+  .calculo-fila {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    font-size: 15px;
+  }
+
+  .calculo-fila:last-child { border-bottom: none; }
+  .calculo-fila .label { color: rgba(255,255,255,0.55); }
+  .calculo-fila .valor { color: #FFFFFF; font-weight: 700; }
+  .calculo-fila.total .label { color: rgba(255,255,255,0.9); font-weight: 700; font-size: 16px; }
+  .calculo-fila.total .valor { color: #4ADE80; font-size: 20px; }
+
+  .porcentaje-grande {
+    font-size: 80px;
+    font-weight: 900;
+    color: var(--azul);
+    line-height: 1;
+    letter-spacing: -3px;
+    text-align: center;
+    margin-bottom: 8px;
+  }
+
+  .porcentaje-desc {
+    text-align: center;
+    font-size: 17px;
+    color: rgba(255,255,255,0.55);
+    margin-bottom: 32px;
+  }
+
+  /* GARANTÍA */
+  .garantia {
+    background: var(--verde);
+    border-radius: 20px;
+    padding: 40px;
+    text-align: center;
+    color: white;
+    margin: 32px 0;
+  }
+
+  .garantia h3 { font-size: 28px; font-weight: 800; margin-bottom: 12px; }
+  .garantia p { font-size: 17px; opacity: 0.85; line-height: 1.6; }
+
+  /* BENEFICIOS */
+  .beneficios-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin: 32px 0;
+  }
+
+  .beneficio-card {
+    background: #FFFFFF;
+    border: 1px solid #E5E7EB;
+    border-radius: 14px;
+    padding: 24px 20px;
+    text-align: center;
+  }
+
+  .beneficio-card .icono { font-size: 30px; margin-bottom: 12px; }
+  .beneficio-card h3 { font-size: 15px; font-weight: 700; margin-bottom: 6px; }
+  .beneficio-card p { font-size: 13px; color: var(--texto-suave); line-height: 1.5; }
+
+  /* CIUDAD */
+  .ciudad-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 16px;
+    overflow: hidden;
+    margin: 32px 0;
+  }
+
+  .ciudad-stat { text-align: center; padding: 32px 20px; }
+
+  .ciudad-stat .n {
+    font-size: 52px;
+    font-weight: 900;
+    color: #FFFFFF;
+    line-height: 1;
+    letter-spacing: -2px;
+  }
+
+  .ciudad-stat .l { font-size: 13px; color: rgba(255,255,255,0.45); margin-top: 6px; }
+  .ciudad-stat:not(:last-child) { border-right: 1px solid rgba(255,255,255,0.08); }
+
+  /* QUOTE */
+  .quote-bloque {
+    border-left: 3px solid var(--azul);
+    padding: 16px 24px;
+    background: rgba(23,139,255,0.04);
+    border-radius: 0 12px 12px 0;
+    margin: 32px 0;
+  }
+
+  .quote-bloque p { font-size: 18px; font-style: italic; line-height: 1.6; }
+
+  /* CTA */
+  .cta-final {
+    background: linear-gradient(160deg, #050816 0%, #071224 100%);
+    padding: 100px 32px;
+    text-align: center;
+  }
+
+  .cta-final h2 { font-size: 38px; color: #FFFFFF; max-width: 600px; margin: 0 auto 16px; }
+  .cta-final p { font-size: 18px; color: rgba(255,255,255,0.45); margin-bottom: 48px; }
+
+  .btn-cta {
+    display: inline-block;
+    background: #25D366;
+    color: white;
+    font-size: 17px;
+    font-weight: 700;
+    padding: 18px 48px;
+    border-radius: 50px;
+    text-decoration: none;
+    box-shadow: 0 8px 32px rgba(37,211,102,0.3);
+  }
+
+  .contacto-info { margin-top: 32px; font-size: 15px; color: rgba(255,255,255,0.3); }
+  .contacto-info a { color: rgba(255,255,255,0.55); text-decoration: none; }
+
+  .divisor { height: 1px; background: #E5E7EB; }
+
+  /* FUNDADORES */
+  .fundadores-card {
+    background: linear-gradient(135deg, #0D1E3A, #071224);
+    border: 1px solid rgba(23,139,255,0.25);
+    border-radius: 20px;
+    padding: 40px;
+    margin: 32px 0;
+    text-align: center;
+  }
+
+  .fundadores-numero {
+    font-size: 80px;
+    font-weight: 900;
+    color: var(--azul);
+    line-height: 1;
+    letter-spacing: -3px;
+    margin-bottom: 8px;
+  }
+
+  .fundadores-desc {
+    font-size: 20px;
+    color: rgba(255,255,255,0.6);
+    margin-bottom: 32px;
+  }
+
+  .fundadores-items {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    text-align: left;
+  }
+
+  .fundador-item {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 12px;
+    padding: 16px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .fundador-item .fi { font-size: 20px; flex-shrink: 0; }
+  .fundador-item h4 { font-size: 14px; font-weight: 700; color: #FFFFFF; margin-bottom: 4px; }
+  .fundador-item p { font-size: 12px; color: rgba(255,255,255,0.45); line-height: 1.4; }
+
+  /* RESPONSIVE */
+  @media (max-width: 640px) {
+    .problema-grid { grid-template-columns: 1fr; }
+    .beneficios-grid { grid-template-columns: 1fr; }
+    .ciudad-grid { grid-template-columns: 1fr; }
+    .ciudad-stat:not(:last-child) { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.08); }
+    .fundadores-items { grid-template-columns: 1fr; }
+    h2 { font-size: 28px; }
+    .marca-portada { font-size: 42px; }
+    .portada-bajada { font-size: 26px; }
+    .porcentaje-grande { font-size: 64px; }
+    .seccion { padding: 56px 24px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- PORTADA -->
+<section class="portada">
+  <div class="chip-ciudad">🎾 Olavarría, Buenos Aires</div>
+  <div class="marca-portada">Padel<span>Ya</span></div>
+  <div class="tagline">La app de pádel de Olavarría</div>
+  <div class="portada-bajada">
+    Más jugadores en tus canchas.<br>Sin esfuerzo de tu parte.
+  </div>
+  <p class="portada-sub" style="margin-top:16px;">
+    Una propuesta para dueños y administradores de complejos de pádel.
+  </p>
+</section>
+
+<!-- EL PROBLEMA -->
+<section class="seccion">
+  <div class="eyebrow">El problema de hoy</div>
+  <h2>Canchas vacías que no facturan. Todos los días.</h2>
+  <p class="bajada">
+    Un turno vacío no se recupera. Si esa cancha no se jugó a las 20hs, ese dinero se perdió para siempre. Y esto pasa en todos los complejos de Olavarría, todos los días, en varios horarios.
+  </p>
+
+  <div class="problema-grid">
+    <div class="problema-card">
+      <div class="icono">📵</div>
+      <h3>Los jugadores dependen de sus contactos</h3>
+      <p>Si no tienen cuatro personas disponibles ese día, no juegan. No porque no quieran, sino porque no encuentran con quién. La cancha queda vacía y vos perdés ese ingreso.</p>
+    </div>
+    <div class="problema-card">
+      <div class="icono">💸</div>
+      <h3>Horarios libres = dinero que no entra</h3>
+      <p>Cada turno vacío es plata que no volvés a ver. Un complejo con 4 canchas puede perder 3 o 4 turnos por día sin darse cuenta. Al mes, eso es mucho dinero.</p>
+    </div>
+    <div class="problema-card">
+      <div class="icono">🔍</div>
+      <h3>Hay jugadores buscando partido ahora mismo</h3>
+      <p>La demanda existe. En Olavarría hay miles de jugadores activos. El problema no es que no haya gente, es que no se encuentran entre ellos.</p>
+    </div>
+    <div class="problema-card">
+      <div class="icono">📉</div>
+      <h3>No podés medir lo que se está perdiendo</h3>
+      <p>Sin datos, no sabés cuántos turnos perdiste esta semana ni cuánto te costó. Lo que no se mide, no se puede mejorar.</p>
+    </div>
+  </div>
+
+  <div class="highlight-box">
+    <div class="numero">$0</div>
+    <div class="desc">es lo que genera una cancha vacía.<br>Cada turno libre que no se juega es pérdida directa.</div>
+  </div>
+</section>
+
+<div class="divisor"></div>
+
+<!-- IMPORTANTE: NO COMPETIMOS -->
+<section class="seccion-gris">
+  <div class="inner">
+    <div class="eyebrow">Importante aclarar</div>
+    <h2>PadelYa no toca tus reservas actuales. Para nada.</h2>
+    <p class="bajada">
+      Antes de explicar cómo funciona, queremos ser claros en algo fundamental: PadelYa solo trabaja con los horarios que hoy están vacíos.
+    </p>
+
+    <div class="problema-grid">
+      <div class="problema-card" style="border-left: 3px solid #16A34A;">
+        <div class="icono">✅</div>
+        <h3>Tus reservas por WhatsApp: sin cambios</h3>
+        <p>El cliente que te llama o te manda mensaje directo sigue siendo tuyo. PadelYa no cobra nada por esas reservas ni interfiere con ellas.</p>
+      </div>
+      <div class="problema-card" style="border-left: 3px solid #16A34A;">
+        <div class="icono">✅</div>
+        <h3>Tus torneos: sin cambios</h3>
+        <p>Los torneos que organizás son completamente tuyos. PadelYa no tiene nada que ver con ellos ni te cobra por esos horarios.</p>
+      </div>
+      <div class="problema-card" style="border-left: 3px solid #16A34A;">
+        <div class="icono">✅</div>
+        <h3>Tus clases y profesores: sin cambios</h3>
+        <p>Las clases particulares y grupales siguen igual. Bloqueás esos horarios en el panel y PadelYa no genera partidos ahí.</p>
+      </div>
+      <div class="problema-card" style="border-left: 3px solid #16A34A;">
+        <div class="icono">✅</div>
+        <h3>Tus clientes habituales: sin cambios</h3>
+        <p>El jugador que viene todos los jueves a la misma hora sigue siendo tuyo. PadelYa actúa sobre los turnos que quedarían vacíos de todas formas.</p>
+      </div>
+    </div>
+
+    <div class="quote-bloque">
+      <p>"Solo cobramos por los partidos que completamos nosotros, en horarios que sin PadelYa habrían quedado vacíos."</p>
+    </div>
+  </div>
+</section>
+
+<!-- CÓMO FUNCIONA -->
+<section class="seccion">
+  <div class="eyebrow">La solución</div>
+  <h2>Cómo funciona PadelYa para tu complejo</h2>
+  <p class="bajada">
+    Un jugador de Olavarría abre la app, encuentra un partido en tu complejo, se suma y aparece. Vos no tenés que hacer nada más que recibir a los cuatro jugadores.
+  </p>
+
+  <div class="pasos">
+    <div class="paso">
+      <div class="paso-numero">1</div>
+      <div class="paso-linea"></div>
+      <div class="paso-contenido">
+        <h3>El jugador abre PadelYa y ve partidos disponibles</h3>
+        <p>La app muestra los partidos abiertos en Olavarría. El jugador ve el complejo, el día, la hora y qué categoría es. Filtra automáticamente según su nivel.</p>
+      </div>
+    </div>
+    <div class="paso">
+      <div class="paso-numero">2</div>
+      <div class="paso-linea"></div>
+      <div class="paso-contenido">
+        <h3>Se suma al partido o crea uno nuevo</h3>
+        <p>Toca el partido, ve quiénes van a jugar y confirma su lugar. La app se encarga del matchmaking: une a jugadores del mismo nivel automáticamente.</p>
+      </div>
+    </div>
+    <div class="paso">
+      <div class="paso-numero">3</div>
+      <div class="paso-linea"></div>
+      <div class="paso-contenido">
+        <h3>El partido se completa con 4 jugadores</h3>
+        <p>Cuando los 4 lugares están confirmados, el partido está listo. Los jugadores se coordinan dentro de la app para llegar a horario.</p>
+      </div>
+    </div>
+    <div class="paso">
+      <div class="paso-numero">4</div>
+      <div class="paso-linea"></div>
+      <div class="paso-contenido">
+        <h3>Los 4 jugadores van a tu complejo y pagan la cancha</h3>
+        <p>El valor de la cancha se abona directamente en el complejo, como siempre. Vos cobrás el turno completo, nada cambia en ese momento.</p>
+      </div>
+    </div>
+    <div class="paso">
+      <div class="paso-numero">5</div>
+      <div class="paso-linea"></div>
+      <div class="paso-contenido">
+        <h3>Tu empleado ve todo desde el panel operativo</h3>
+        <p>Una pantalla clara con el estado de cada cancha en tiempo real. Sin complicaciones, sin capacitación especial. Verde es libre, azul es partido PadelYa.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divisor"></div>
+
+<!-- CAPTURAS APP JUGADOR -->
+<section class="seccion-gris">
+  <div class="inner">
+    <div class="eyebrow">La experiencia del jugador</div>
+    <h2>Así ve la app un jugador de Olavarría</h2>
+    <p class="bajada">
+      Diseñada para jugadores de todas las edades. Simple, rápida y clara.
+    </p>
+
+    <div class="phones-container">
+      <div class="phone-wrap">
+        <img src="captura-home.png" alt="Home PadelYa">
+        <div class="phone-label">Pantalla principal</div>
+      </div>
+      <div class="phone-wrap">
+        <img src="captura-detalle.png" alt="Detalle del partido">
+        <div class="phone-label">Detalle del partido</div>
+      </div>
+      <div class="phone-wrap">
+        <img src="captura-mis-partidos.png" alt="Mis partidos">
+        <div class="phone-label">Mis partidos</div>
+      </div>
+      <div class="phone-wrap">
+        <img src="captura-comunidad.png" alt="Comunidad">
+        <div class="phone-label">Comunidad</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PANEL COMPLEJO -->
+<section class="seccion">
+  <div class="eyebrow">Para tu recepción</div>
+  <h2>Tu empleado entiende todo en dos segundos</h2>
+  <p class="bajada">
+    El panel operativo muestra el estado de cada cancha y cada horario del día. Un color, una acción. Sin capacitación especial.
+  </p>
+
+  <div class="panel-desktop">
+    <img src="captura-panel-operativo.png" alt="Panel operativo del complejo">
+  </div>
+
+  <div class="beneficios-grid" style="margin-top: 32px;">
+    <div class="beneficio-card">
+      <div class="icono">🟢</div>
+      <h3>Verde = Libre</h3>
+      <p>El horario está disponible. El empleado puede bloquearlo si llega una reserva externa.</p>
+    </div>
+    <div class="beneficio-card">
+      <div class="icono">🔵</div>
+      <h3>Azul = Partido PadelYa</h3>
+      <p>Un partido se formó desde la app. El empleado ve cuántos jugadores confirmaron.</p>
+    </div>
+    <div class="beneficio-card">
+      <div class="icono">⚫</div>
+      <h3>Negro = Ocupado</h3>
+      <p>Un toque y el horario queda bloqueado. Para clases, torneos, reservas propias o lo que sea.</p>
+    </div>
+  </div>
+</section>
+
+<div class="divisor"></div>
+
+<!-- HISTORIAL -->
+<section class="seccion-gris">
+  <div class="inner">
+    <div class="eyebrow">Transparencia total</div>
+    <h2>Ves exactamente cuántos partidos generó PadelYa</h2>
+    <p class="bajada">
+      Al final de cada mes tenés el detalle completo: qué cancha, qué día, a qué hora. Todo claro, sin letra chica.
+    </p>
+
+    <div class="panel-desktop">
+      <img src="captura-historial.png" alt="Historial de partidos">
+    </div>
+
+    <p style="font-size:15px;color:var(--texto-suave);text-align:center;margin-top:8px;">
+      Podés exportar el resumen del mes en un toque y recibirlo directamente por WhatsApp.
+    </p>
+  </div>
+</section>
+
+<!-- MODELO DE NEGOCIO -->
+<section class="seccion-dark">
+  <div class="inner">
+    <div class="eyebrow-dark">El modelo de negocio</div>
+    <h2 class="dark">Si PadelYa no llena canchas, no cobramos.</h2>
+    <p class="bajada-dark">
+      Sin membresía fija. Sin cuota mensual. Sin riesgo. Solo pagás cuando PadelYa efectivamente generó un partido que llenó una cancha que estaba vacía.
+    </p>
+
+    <div class="modelo-card">
+      <div class="porcentaje-grande">25%</div>
+      <div class="porcentaje-desc">únicamente sobre los partidos que completó PadelYa</div>
+
+      <div class="calculo-fila">
+        <span class="label">Reservas por WhatsApp o teléfono</span>
+        <span class="valor" style="color:#4ADE80;">No se cobra</span>
+      </div>
+      <div class="calculo-fila">
+        <span class="label">Torneos y eventos propios</span>
+        <span class="valor" style="color:#4ADE80;">No se cobra</span>
+      </div>
+      <div class="calculo-fila">
+        <span class="label">Clases y profesores</span>
+        <span class="valor" style="color:#4ADE80;">No se cobra</span>
+      </div>
+      <div class="calculo-fila">
+        <span class="label">Clientes habituales del complejo</span>
+        <span class="valor" style="color:#4ADE80;">No se cobra</span>
+      </div>
+      <div class="calculo-fila" style="margin-top:12px;padding-top:20px;border-top:1px solid rgba(255,255,255,0.1);">
+        <span class="label">Partidos completados por PadelYa</span>
+        <span class="valor" style="color:var(--azul);">25% de la cancha</span>
+      </div>
+    </div>
+
+    <div class="modelo-card" style="margin-top:24px;">
+      <div class="titulo-modelo">Ejemplo real de un mes</div>
+      <div class="calculo-fila">
+        <span class="label">Partidos completados por PadelYa</span>
+        <span class="valor">20 partidos</span>
+      </div>
+      <div class="calculo-fila">
+        <span class="label">Precio de la cancha por turno</span>
+        <span class="valor">$9.500</span>
+      </div>
+      <div class="calculo-fila">
+        <span class="label">Ingresos brutos generados</span>
+        <span class="valor">$190.000</span>
+      </div>
+      <div class="calculo-fila">
+        <span class="label">Comisión PadelYa (25%)</span>
+        <span class="valor">$47.500</span>
+      </div>
+      <div class="calculo-fila total">
+        <span class="label">Ingreso extra para el complejo</span>
+        <span class="valor">$142.500</span>
+      </div>
+    </div>
+
+    <div class="quote-bloque" style="border-color:rgba(23,139,255,0.4);background:rgba(23,139,255,0.06);">
+      <p style="color:rgba(255,255,255,0.7);">
+        "Ese dinero no existía antes. Son ingresos que el complejo no hubiera generado sin PadelYa, en horarios que habrían quedado vacíos de todas formas."
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- COMPLEJOS FUNDADORES -->
+<section class="seccion">
+  <div class="eyebrow">Propuesta de lanzamiento</div>
+  <h2>Buscamos 5 complejos fundadores en Olavarría</h2>
+  <p class="bajada">
+    No vamos con todos a la vez. Queremos arrancar con los complejos que quieran ser los primeros, construir algo sólido, y crecer juntos desde el día uno.
+  </p>
+
+  <div class="fundadores-card">
+    <div class="fundadores-numero">2</div>
+    <div class="fundadores-desc">meses completamente gratis para los 5 complejos fundadores</div>
+    <p style="font-size:14px;color:rgba(255,255,255,0.4);margin-bottom:32px;">
+      Empezás a abonar recién en el tercer mes, con partidos reales y datos concretos en la mano.
+    </p>
+
+    <div class="fundadores-items">
+      <div class="fundador-item">
+        <div class="fi">🏆</div>
+        <div>
+          <h4>Badge "Complejo Fundador"</h4>
+          <p>Tu complejo aparece destacado en la app frente a todos los jugadores de Olavarría.</p>
+        </div>
+      </div>
+      <div class="fundador-item">
+        <div class="fi">📊</div>
+        <div>
+          <h4>Panel operativo incluido</h4>
+          <p>Visibilidad total de tus canchas en tiempo real, sin costo adicional.</p>
+        </div>
+      </div>
+      <div class="fundador-item">
+        <div class="fi">🔒</div>
+        <div>
+          <h4>Control total de tus horarios</h4>
+          <p>Bloqueás cuando quieras. PadelYa nunca interfiere con tus reservas propias.</p>
+        </div>
+      </div>
+      <div class="fundador-item">
+        <div class="fi">💬</div>
+        <div>
+          <h4>Soporte directo</h4>
+          <p>Contacto directo con el equipo para cualquier consulta o ajuste.</p>
+        </div>
+      </div>
+      <div class="fundador-item">
+        <div class="fi">📅</div>
+        <div>
+          <h4>Sin compromiso de permanencia</h4>
+          <p>Si al tercer mes sentís que no te sirve, no seguís. Sin contratos ni penalidades.</p>
+        </div>
+      </div>
+      <div class="fundador-item">
+        <div class="fi">📱</div>
+        <div>
+          <h4>Presencia en la comunidad</h4>
+          <p>Tu complejo aparece en el feed de reseñas de partidos jugados por jugadores reales.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="garantia">
+    <h3>Si PadelYa no genera partidos, no pagás nada.</h3>
+    <p>
+      El modelo es simple: solo cobramos cuando efectivamente llenamos una cancha que estaba vacía. Si en los primeros dos meses no generamos ningún partido en tu complejo, el tercer mes sigue siendo gratis.
+    </p>
+  </div>
+</section>
+
+<!-- OLAVARRÍA -->
+<section class="seccion-dark">
+  <div class="inner">
+    <div class="eyebrow-dark">La oportunidad</div>
+    <h2 class="dark">Olavarría tiene todo para que esto funcione</h2>
+    <p class="bajada-dark">
+      Una ciudad con cultura deportiva fuerte, complejos de calidad y una comunidad de pádel activa. Solo faltaba la herramienta para conectarlos.
+    </p>
+
+    <div class="ciudad-grid">
+      <div class="ciudad-stat">
+        <div class="n">+2.000</div>
+        <div class="l">jugadores activos estimados en Olavarría</div>
+      </div>
+      <div class="ciudad-stat">
+        <div class="n">14</div>
+        <div class="l">complejos de pádel en la ciudad</div>
+      </div>
+      <div class="ciudad-stat">
+        <div class="n">0</div>
+        <div class="l">apps de pádel locales hasta hoy</div>
+      </div>
+    </div>
+
+    <div class="quote-bloque" style="border-color:rgba(23,139,255,0.4);background:rgba(23,139,255,0.06);">
+      <p style="color:rgba(255,255,255,0.7);">
+        "PadelYa no compite con tu complejo. Trabaja para tu complejo. Cada partido que genera es dinero que sin la app no existía."
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- CTA FINAL -->
+<section class="cta-final">
+  <h2>¿Querés ser uno de los 5 complejos fundadores?</h2>
+  <p>Te mostramos la app en vivo y respondemos todas tus preguntas. Sin compromiso.</p>
+  <a href="https://wa.me/5492284000000" class="btn-cta">📱 Escribinos por WhatsApp</a>
+  <div class="contacto-info">
+    <p>O por email: <a href="mailto:contactopadelya@gmail.com">contactopadelya@gmail.com</a></p>
+  </div>
+</section>
+
+</body>
+</html>
