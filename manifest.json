@@ -1,0 +1,20 @@
+{
+  "name": "PadelYa",
+  "short_name": "PadelYa",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#050816",
+  "theme_color": "#050816",
+  "icons": [
+    {
+      "src": "assets/logo-padelya.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "assets/logo-padelya.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
